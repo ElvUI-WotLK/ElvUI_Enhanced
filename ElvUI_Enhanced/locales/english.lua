@@ -10,25 +10,6 @@ L["Your version of ElvUI is to old (required v5.25 or higher). Please, download 
 
 -- Equipment
 L["Equipment"] = true
-L["EQUIPMENT_DESC"] = "Adjust the settings for switching your gear set when you change specialization or enter a battleground."
-L["No Change"] = true
-
-L["Specialization"] = true
-L["Enable/Disable the specialization switch."] = true
-
-L["Primary Talent"] = true
-L["Choose the equipment set to use for your primary specialization."] = true
-
-L["Secondary Talent"] = true
-L["Choose the equipment set to use for your secondary specialization."] = true
-
-L["Battleground"] = true
-L['Enable/Disable the battleground switch.'] = true
-
-L["Equipment Set"] = true
-L["Choose the equipment set to use when you enter a battleground or arena."] = true
-
-L["You have equipped equipment set: "] = true
 
 L["DURABILITY_DESC"] = "Adjust the settings for the durability information on the character screen."
 L['Enable/Disable the display of durability information on the character screen.'] = true
@@ -46,17 +27,9 @@ L['Show the associated equipment sets for the items in your bags (or bank).'] = 
 L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
--- Automatic Role Assignment
-L['Automatic Role Assignment'] = true
-L['Enables the automatic role assignment based on specialization for party / raid members (only work when you are group leader or group assist).'] = true
-
 -- Auto Hide Role Icons in combat
 L['Hide Role Icon in combat'] = true
 L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = true
-
--- GPS module
-L['GPS'] = true
-L['Show the direction and distance to the selected party or raid member.'] = true
 
 -- Attack Icon
 L['Attack Icon'] = true

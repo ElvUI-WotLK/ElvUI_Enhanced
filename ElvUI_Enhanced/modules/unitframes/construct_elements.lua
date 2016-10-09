@@ -1,35 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI);
 local UF = E:GetModule("UnitFrames");
 
-function UF:Construct_Unit_GPS(frame, unit)
-	if(not frame) then return; end
-
-	local gps = CreateFrame("Frame", nil, frame);
-	gps:SetTemplate("Transparent");
-	gps:EnableMouse(false);
-	gps:SetFrameLevel(frame:GetFrameLevel() + 10);
-	gps:Size(48, 13);
-	gps:SetAlpha(.7);
-
-	gps.Texture = gps:CreateTexture(nil, "OVERLAY");
-	gps.Texture:SetTexture([[Interface\AddOns\ElvUI_Enhanced\media\textures\arrow.tga]]);
-	gps.Texture:Size(12, 12);
-	gps.Texture:SetPoint("LEFT", gps, "LEFT", 0, 0);
-
-	gps.Text = gps:CreateFontString(nil, "OVERLAY");
-	gps.Text:FontTemplate(E.media.font, 12, "OUTLINE");
-	gps.Text:SetPoint("RIGHT", gps, "RIGHT", 0 , 0);
-
-	UF:Configure_FontString(gps.Text);
-
-	gps.unit = unit;
-	gps:Hide();
-
-	frame.gps = gps;
-
-	UF:CreateAndUpdateUF(unit);
-end
-
 function UF:Construct_HealGlow(frame)
 	frame:CreateShadow("Default");
 	local x = frame.shadow;
@@ -60,22 +31,14 @@ function UF:AddShouldIAttackIcon(frame)
 	tag:RegisterEvent("UNIT_COMBAT")
 
 	tag:SetScript("OnEvent", function()
-		if UnitIsTapped("target") and not (UnitIsTappedByPlayer("target") or UnitIsTappedByAllThreatList("target")) then
-			tag:Hide()
-		end
-		if UnitCanAttack("player", "target") and (not UnitIsTapped("target") or UnitIsTappedByAllThreatList("target")) then
-			tag:Show()
+		if(tag.db.enable and not UnitIsDeadOrGhost("target") and UnitCanAttack("player", "target") and UnitIsTapped("target") and not UnitIsTappedByPlayer("target") and UnitIsTappedByAllThreatList("target")) then
+			tag:ClearAllPoints();
+			tag:SetPoint("CENTER", frame, "CENTER", tag.db.xOffset, tag.db.yOffset);
+			tag:Show();
 		else
-			tag:Hide()
+			tag:Hide();
 		end
-		--[[if tag.db.enable and not UnitIsDeadOrGhost("target") and UnitCanAttack("player", "target") then
-			tag:ClearAllPoints()
-			tag:SetPoint("CENTER", frame, "CENTER", tag.db.xOffset, tag.db.yOffset)
-			tag:Show()
-		else
-			tag:Hide()
-		end]]
-	end)
+	end);
 end
 
 function UF:EnhanceUpdateRoleIcon()
@@ -105,9 +68,7 @@ function UF:UpdateRoleIconFrame(frame)
 end
 
 function UF:ApplyUnitFrameEnhancements()
-	--self:AddShouldIAttackIcon(_G["ElvUF_Target"]);
-	self:Construct_Unit_GPS(_G["ElvUF_Target"], "target");
-	self:Construct_Unit_GPS(_G["ElvUF_Focus"], "focus");
+	self:AddShouldIAttackIcon(_G["ElvUF_Target"]);
 	self:EnhanceUpdateRoleIcon();
 end
 

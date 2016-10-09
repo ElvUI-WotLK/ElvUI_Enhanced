@@ -9,25 +9,6 @@ L["Your version of ElvUI is to old (required v5.25 or higher). Please, download 
 
 -- Equipment
 L["Equipment"] = "Equipamento"
-L["EQUIPMENT_DESC"] = "Ajuste os parâmetros para a mudança de equipamento quando muda de especialização ou entra num campo de batalha."
-L["No Change"] = "Sem mudança"
-
-L["Specialization"] = "Especialização"
-L["Enable/Disable the specialization switch."] = "Activar/desactivar a mudança com a especialização."
-
-L["Primary Talent"] = "Talento primário"
-L["Choose the equipment set to use for your primary specialization."] = "Escolha o conjunto de equipamento para usar com a especialização primária."
-
-L["Secondary Talent"] = "Talento secundário"
-L["Choose the equipment set to use for your secondary specialization."] = "Escolha o conjunto de equipamento para usar com a especialização secundária."
-
-L["Battleground"] = "Campo de batalha"
-L['Enable/Disable the battleground switch.'] = "Activar/desactivar a mudança em Campo de batalha."
-
-L["Equipment Set"] = "Conjunto de Equipamento"
-L["Choose the equipment set to use when you enter a battleground or arena."] = "Escolha o conjunto de equipamento para usar quando entra num Campo de batalha."
-
-L["You have equipped equipment set: "] = "Você tem equipado o conjunto: "
 
 L["DURABILITY_DESC"] = "Ajuste as opções para a informação de durabilidade no ecrã de informação do personagem."
 L['Enable/Disable the display of durability information on the character screen.'] = "Activar/desactivar a informação de durabilidade no ecrã de informação do personagem."
@@ -45,17 +26,9 @@ L['Show the associated equipment sets for the items in your bags (or bank).'] = 
 L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
--- Automatic Role Assignment
-L['Automatic Role Assignment'] = true
-L['Enables the automatic role assignment based on specialization for party / raid members (only work when you are group leader or group assist).'] = true
-
 -- Auto Hide Role Icons in combat
 L['Hide Role Icon in combat'] = true
 L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = true
-
--- GPS module
-L['GPS'] = "GPS"
-L['Show the direction and distance to the selected party or raid member.'] = "Mostrar a direcção e distância para o membro do grupo ou raide seleccionado."
 
 -- Attack Icon
 L['Attack Icon'] = true

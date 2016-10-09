@@ -11,25 +11,6 @@ L["Your version of ElvUI is to old (required v5.25 or higher). Please, download 
 
 -- Equipment
 L["Equipment"] = "Ausrüstung"
-L["EQUIPMENT_DESC"] = "Passen Sie die Einstellungen für das Ändern Ihrer Ausrüstung an, wenn Sie Ihre Talentspezialisierung ändern oder ein Schlachtfeld betreten."
-L["No Change"] = "Keine Änderung"
-
-L["Specialization"] = "Talentspezialisierung"
-L["Enable/Disable the specialization switch."] = "Automatische Änderung der Ausrüstung beim Talentwechsel aktivieren / deaktivieren."
-
-L["Primary Talent"] = "Primäre Talentspezialisierung"
-L["Choose the equipment set to use for your primary specialization."] = "Wählen Sie das Ausrüstungsset für Ihre primäre Talentspezialisierung."
-
-L["Secondary Talent"] = "Sekundäre Talentspezialisierung"
-L["Choose the equipment set to use for your secondary specialization."] = "Wählen Sie das Ausrüstungsset für Ihre sekundäre Talentspezialisierung."
-
-L["Battleground"] = "Schlachtfeld"
-L['Enable/Disable the battleground switch.'] = "Automatische Änderung der Ausrüstung beim Betreten eines Schlachtfelds aktivieren / deaktivieren."
-
-L["Equipment Set"] = "Ausrüstungsset"
-L["Choose the equipment set to use when you enter a battleground or arena."] = "Wählen Sie Ihr Ausrüstungsset für Schlachtfelder oder die Arena."
-
-L["You have equipped equipment set: "] = "Sie haben das folgende Ausrüstungsset angelegt: "
 
 L["DURABILITY_DESC"] = "Passen Sie die Einstellungen für die Haltbarkeit im Charakterfenster an."
 L["Enable/Disable the display of durability information on the character screen."] = "Anzeige der Haltbarkeit im Charakterfenster."
@@ -47,16 +28,9 @@ L['Show the associated equipment sets for the items in your bags (or bank).'] = 
 L["Mover Transparency"] = "Transparenz Ankerpunkte"
 L["Changes the transparency of all the movers."] = "Konfiguriere die Einstellungen der Transparenz der Ankerpukte"
 
--- Automatic Role Assignment
-L['Automatic Role Assignment'] = 'Automatische Rollenzuweisung'
-L['Enables the automatic role assignment based on specialization for party / raid members (only work when you are group leader or group assist).'] = 'Aktiviert die automatische Rollenzuweisung basierend auf der Talentspezialisierung der Gruppen- oder Schlachtzugsmitglieder. Funktioniert nur, wenn Sie Gruppenleiter oder -assistent sind.'
-
 -- Auto Hide Role Icons in combat
 L['Hide Role Icon in combat'] = 'Verstecke Rollensymbol im Kampf'
 L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = 'Alle Rollensymbole (Schaden/Heiler/Tank) auf den Einheitenfenstern werden versteckt, wenn der Charakter sich im Kampf befindet.'
-
--- GPS module
-L['Show the direction and distance to the selected party or raid member.'] = "Zeige die Richtung und Entfernung zum ausgewählten Gruppen- oder Schlachtzugsmitglied an."
 
 -- Attack Icon
 L['Attack Icon'] = 'Angriffssymbol'

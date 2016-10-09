@@ -9,11 +9,6 @@ P["unitframe"]["hideroleincombat"] = false
 P["unitframe"]["glowtime"] = .8
 P["unitframe"]["glowcolor"] = { r = 1, g = 1, b = 0}
 
-P["unitframe"]["units"]["target"]["gps"] = {
-	["enable"] = true,
-	["position"] = "BOTTOMRIGHT"
-}
-
 P["unitframe"]["units"]["target"]["attackicon"] = {
 	["enable"] = true,
 	["xOffset"] = 24,
@@ -25,11 +20,6 @@ P["unitframe"]["units"]["target"]["classicon"] = {
 	["size"] = 28,
 	["xOffset"] = -58,
 	["yOffset"] = -22,
-}
-
-P["unitframe"]["units"]["focus"]["gps"]= {
-	["enable"] = true,
-	["position"] = "LEFT"
 }
 
 P.nameplate.showthreat = true;

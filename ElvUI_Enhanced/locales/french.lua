@@ -11,25 +11,6 @@ L["Your version of ElvUI is to old (required v5.25 or higher). Please, download 
 
 -- Equipment
 L["Equipment"] = "Équipement"
-L["EQUIPMENT_DESC"] = "Ajustez les réglages pour passer d'un équipement à l'autre lorsque vous changez de spécialisation ou lorsque que vous effectuez un Champs de Bataille."
-L["No Change"] = "Ne pas changer"
-
-L["Specialization"] = "Spécialisation"
-L["Enable/Disable the specialization switch."] = "Activer / Désactiver la fonction du changement d'équipement lorsque vous changez de spécialisation."
-
-L["Primary Talent"] = "Spécialisation principale"
-L["Choose the equipment set to use for your primary specialization."] = "Choisissez le set d'équipement à utiliser pour votre spécialisation principale."
-
-L["Secondary Talent"] = "Spécialisaion secondaire"
-L["Choose the equipment set to use for your secondary specialization."] = "Choisissez le set d'équipement à utiliser pour votre spécialisation secondaire."
-
-L["Battleground"] = "Champs de Bataille"
-L['Enable/Disable the battleground switch.'] = "Activer / Désactiver la fonction du changement d'équipement lorsque vous entrez dans un Champs de Bataille ou une Arène."
-
-L["Equipment Set"] = "Set d'équipement"
-L["Choose the equipment set to use when you enter a battleground or arena."] = "Choisissez le set d'équipement à utiliser quant vous entrez dans un Champs de Bataille ou une Arène."
-
-L["You have equipped equipment set: "] = "Vous avez équipez le set d'équipement: "
 
 L["DURABILITY_DESC"] = "Ajustez les réglages pour afficher la durabilité sur l'écran d'infos de personnage."
 L['Enable/Disable the display of durability information on the character screen.'] = "Activer / Désactiver l'affichage des informations de durabilité sur l'écran d'infos de personnage."
@@ -47,17 +28,9 @@ L['Show the associated equipment sets for the items in your bags (or bank).'] = 
 L["Mover Transparency"] = "Transparence des Ancres"
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
 
--- Automatic Role Assignment
-L['Automatic Role Assignment'] = "Assigner automatiquement le rôle"
-L['Enables the automatic role assignment based on specialization for party / raid members (only work when you are group leader or group assist).'] = "Active l'assignation automatique des rôles des membres selon la spécialisation dans le Groupe / Raid (Fonctionne seulement quand vous êtes le leader ou que vous possédez une assiste.)"
-
 -- Auto Hide Role Icons in combat
 L['Hide Role Icon in combat'] = "Cachez les icônes de rôle en combat"
 L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
-
--- GPS module
-L['GPS'] = "GPS"
-L['Show the direction and distance to the selected party or raid member.'] = "Affiche la direction et la distance entre vous et la cible du groupe ou du raid."
 
 -- Attack Icon
 L['Attack Icon'] = "Icône d'Attaque"

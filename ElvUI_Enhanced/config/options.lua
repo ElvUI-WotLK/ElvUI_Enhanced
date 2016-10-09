@@ -59,6 +59,87 @@ function EO:DataTextOptions()
 	};
 end
 
+function EO:EquipmentOptions()
+	local PD = E:GetModule("PaperDoll");
+	local BI = E:GetModule("BagInfo");
+
+	E.Options.args.equipment = {
+		type = "group",
+		name = ColorizeSettingName(L["Equipment"]),
+		get = function(info) return E.private.equipment[ info[#info] ]; end,
+		set = function(info, value) E.private.equipment[ info[#info] ] = value; end,
+		args = {
+			intro = {
+				order = 1,
+				type = "description",
+				name = L["DURABILITY_DESC"]
+			},
+			durability = {
+				order = 2,
+				type = "group",
+				name = DURABILITY,
+				guiInline = true,
+				get = function(info) return E.private.equipment.durability[ info[#info] ]; end,
+				set = function(info, value) E.private.equipment.durability[ info[#info] ] = value PD:UpdatePaperDoll(); end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						desc = L["Enable/Disable the display of durability information on the character screen."]
+					},
+					onlydamaged = {
+						order = 2,
+						type = "toggle",
+						name = L["Damaged Only"],
+						desc = L["Only show durabitlity information for items that are damaged."],
+						disabled = function() return not E.private.equipment.durability.enable; end
+					}
+				}
+			},
+			intro2 = {
+				order = 3,
+				type = "description",
+				name = L["ITEMLEVEL_DESC"]
+			},
+			itemlevel = {
+				order = 4,
+				type = "group",
+				name = L["Item Level"],
+				guiInline = true,
+				get = function(info) return E.private.equipment.itemlevel[ info[#info] ]; end,
+				set = function(info, value) E.private.equipment.itemlevel[ info[#info] ] = value PD:UpdatePaperDoll(); end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						desc = L["Enable/Disable the display of item levels on the character screen."]
+					}
+				}
+			},
+			misc = {
+				order = 5,
+				type = "group",
+				name = L["Miscellaneous"],
+				guiInline = true,
+				get = function(info) return E.private.equipment.misc[ info[#info] ] end,
+				set = function(info, value) E.private.equipment.misc[ info[#info] ] = value end,
+				disabled = function() return not E.private.bags.enable end,
+				args = {
+					setoverlay = {
+						order = 1,
+						type = "toggle",
+						name = L["Equipment Set Overlay"],
+						desc = L["Show the associated equipment sets for the items in your bags (or bank)."],
+						set = function(info, value) E.private.equipment.misc[ info[#info] ] = value BI:ToggleSettings(); end
+					}
+				}
+			}
+		}
+	};
+end
+
 function EO:MapOptions()
 	E.Options.args.maps.args.minimap.args.locationdigits = {
 		order = 4,
@@ -157,7 +238,6 @@ function EO:NameplateOptions()
 end
 
 function EO:UnitFramesOptions()
-	local UF = E:GetModule("UnitFrames")
 	local HG = E:GetModule("HealGlow")
 	local TC = E:GetModule("TargetClass")
 
@@ -196,29 +276,6 @@ function EO:UnitFramesOptions()
 					HG:UpdateSettings()
 				end,
 			}
-		},
-	}
-
-	--Target
-	E.Options.args.unitframe.args.target.args.gps = {
-		order = 1000,
-		type = "group",
-		name = ColorizeSettingName(L["GPS"]),
-		get = function(info) return E.db.unitframe.units["target"]["gps"][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units["target"]["gps"][ info[#info] ] = value; UF:CreateAndUpdateUF("target") end,
-		args = {
-			enable = {
-				type = "toggle",
-				order = 1,
-				name = L["Enable"],
-				desc = L["Show the direction and distance to the selected party or raid member."],
-			},
-			position = {
-				type = "select",
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
 		},
 	}
 
@@ -285,38 +342,13 @@ function EO:UnitFramesOptions()
 		},
 	}
 
-
-	--Focus
-	E.Options.args.unitframe.args.focus.args.gps = {
-		order = 1000,
-		type = "group",
-		name = ColorizeSettingName(L["GPS"]),
-		get = function(info) return E.db.unitframe.units["focus"]["gps"][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units["focus"]["gps"][ info[#info] ] = value; UF:CreateAndUpdateUF("focus") end,
-		args = {
-			enable = {
-				type = "toggle",
-				order = 1,
-				name = L["Enable"],
-				desc = L["Show the direction and distance to the selected party or raid member."],
-			},
-			position = {
-				type = "select",
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-		},
-	}
-
 	E.Options.args.unitframe.args.general.args.generalGroup.args.hideroleincombat = {
 		order = 7,
 		name = ColorizeSettingName(L["Hide Role Icon in combat"]),
 		desc = L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."],
 		type = "toggle",
-		set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-	}
-
+		set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end
+	};
 end
 
 function EO:WatchFrame()
@@ -391,6 +423,7 @@ end
 
 function EO:GetOptions()
 	EO:DataTextOptions()
+	EO:EquipmentOptions()
 	EO:MapOptions()
 	EO:MiscOptions()
 	EO:NameplateOptions()

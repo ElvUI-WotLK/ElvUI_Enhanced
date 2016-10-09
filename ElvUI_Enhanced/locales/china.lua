@@ -10,25 +10,6 @@ L["Your version of ElvUI is to old (required v5.25 or higher). Please, download 
 
 -- Equipment
 L["Equipment"] = "自动换装"
-L["EQUIPMENT_DESC"] = "当你切换专精或进入战场时自动更换装备, 你可以在选项中选择相关的装备模组."
-L["No Change"] = "不改变"
-
-L["Specialization"] = "专精"
-L["Enable/Disable the specialization switch."] = "开启/关闭 专精切换"
-
-L["Primary Talent"] = "主专精"
-L["Choose the equipment set to use for your primary specialization."] = "选择当你使用主专精时的装备模组."
-
-L["Secondary Talent"] = "副专精"
-L["Choose the equipment set to use for your secondary specialization."] = "选择当你使用副专精时的装备模组."
-
-L["Battleground"] = "战场"
-L['Enable/Disable the battleground switch.'] = "开启/关闭 战场切换"
-
-L["Equipment Set"] = "装备模组"
-L["Choose the equipment set to use when you enter a battleground or arena."] = "选择当你进入战场时的装备模组."
-
-L["You have equipped equipment set: "] = "你已装备此模组: "
 
 L["DURABILITY_DESC"] = "调整设置人物窗口装备耐久度显示."
 L['Enable/Disable the display of durability information on the character screen.'] = "开启/关闭 人物窗口装备耐久度显示."
@@ -46,17 +27,9 @@ L['Show the associated equipment sets for the items in your bags (or bank).'] = 
 L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
--- Automatic Role Assignment
-L['Automatic Role Assignment'] = true
-L['Enables the automatic role assignment based on specialization for party / raid members (only work when you are group leader or group assist).'] = true
-
 -- Auto Hide Role Icons in combat
 L['Hide Role Icon in combat'] = true
 L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = true
-
--- GPS module
-L['GPS'] = "GPS定位"
-L['Show the direction and distance to the selected party or raid member.'] = "显示你与当前队伍或团队成员的方向与距离."
 
 -- Attack Icon
 L['Attack Icon'] = true
