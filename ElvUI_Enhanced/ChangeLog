@@ -1,0 +1,125 @@
+3.2.0-beta5
+* Updated progression check to Legion 7.0 raids.
+
+3.2.0-beta4
+* Added an option to enable the pre legion tab targeting system. You will find this option in the general ElvUI settings. It applies the "/console TargetNearestUseOld 1" command automatically when you logon.
+
+3.2.0-beta3
+* Itemlevel for twohanded artifact weapons fixed - Thanks q3fuba for the help!
+* When entering the game and a Class Hall mission is complete the alert broke the itemlvl update. This is now fixed.
+
+3.2.0-beta2
+* This update breaks support for older version of ElvUI. 
+* Updated the ElvUI Enhanced config to work with the latest ElvUI update (10.17+). 
+* Everyone should update to the latest ElvUI (10.19). 
+* If you don't update you need to keep using 3.2.0-beta1.
+
+3.2.0-beta1
+* Changed name of the add-on and switched curseforge project
+* Moved the DataText toggles to the correct settings panel
+* Small localization updates
+* fixed alignment bugs in the minimap enhancement (#29, #28)
+* Disabled the Farmer module in preparation of deleting the module
+
+3.1.1-beta6
+* Correctly disable nameplate module (caused lua errors for some people)
+
+3.1.1-beta5
+* Updated the equipment changer to the new spec system
+
+3.1.1-beta4
+* Made the minimapbuttons fix a bit more general (tickets 24, 23)
+
+3.1.1-beta3
+* Disabled Eclipse bar libs and functions (thanks whurt74)
+* Fixed small UI alignment bug in the minimap locatioin text
+
+3.1.1-beta2
+* Fixed tapped-bug (Thanks belechannas for the tip)
+* Fixed minimapbuttons (GarrisonLandingPageMinimapButton-fix)
+
+3.1.1-beta1
+* Started work on update for 7.0.3 en ElvUI 10+
+* updated toc file to new WoW version 
+* updated LibBalancePowerTracker to version LibBalancePowerTracker-2.0
+* updated config.lua to work with ElvUi >10
+* updated minimap buttons
+* updated minimap bar
+* updated target class icons
+* disabled nameplate enhancements (for now)
+
+3.1.0-beta5
+* added HFC to progression tooltip
+* progression info is not updated or shown while in combat. This is to fix the performance problems while use mouseover spells during combat.
+
+3.1.0-beta4
+* bumb version for 6.2.0
+
+3.1.0-beta3
+* fixed bug with garrison button skinning
+
+3.1.0-beta2
+* fixed bug: 5-pet-battles-and-garrison-button-skin-error-in-the-minimap/
+
+3.1.0-beta1
+* Fixed role icons hiding in combat
+* Removed the option "Auto role icon" since this is now a feature of WoW and ElvUI it self.
+* Fixed bug when entering or leaving a raid. (Ticket: 4-lua-error-when-i-enter-in-raid)
+* Changed the color of the enhanced settings.
+
+3.0.9
+* Minimapbar: Added the option to add the Garrison button to the minimap button bar. (General -> Minimap Button Bar)
+* Minimapbar: Added the option to add the Calendar button to the minimap button bar. (General -> Minimap Button Bar)
+* Minimapbar: Error with minimapbar in No Anchor mode and TradeSkillMaster. Workaround for the error in place. icon position is not saved on reload.
+* Minimapbar: Bugfix where in no anchor mode the position of the icons would reset onclick.
+* HealGlow: updated Wild Mushroom SpellId
+* HealGlow: Added Paladin Daybreak
+* HealGlow: Fixed for flexraid frames
+
+Known Issue:
+* TradeSkillMaster icon position in NO ANCHOR mode is not saved.
+
+3.0.8
+* updated to 6.1.0
+* fixed location bar position. thanks pletfjerner@curse for the report.
+* fixed raidmarkerbar illegal interface actions error
+
+3.0.7.1
+* Removed Garrison icon from the minimapbutton due to bug. I will re-add it as an option and when i fix the bug.
+
+3.0.7
+* Updated welcome message.
+* Raidmarkerbar: Updated the bar to hide when leaving a party/group.
+* Raidmarkerbar: Added the option "Always Visible".
+* Raidmarkerbar: Fixed the tooltip of the "remove marks" button.
+* Progression: Fixed spelling.
+* MinimapButtons: Added the Garrison Icon to the MinimapButtons bar
+* MinimapButtons: Fixed the Calendar button.
+
+2015-02-09 (3.0.6)
+* Updated the progression module for WoD.  modules/tooltip/progression.lua
+* The progression module now shows relevant progression. It stops showing lower levels of a tier on a full clear.
+
+2014-11-24 (3.0.5)
+* Changed modules\datatexts\extratexts.lua#201 with suggested errorfix from Zamma@Curseforge related to Datatexts.  Thanks :)
+
+2014-10-26 (3.0.4)
+* Changed misc/questreward.lua to properly skin rewards (Thanks Shenj@Curse)
+* Changed hooksecure updatesettings in modules/maps/minimaplocation.lua to align buff bar with minimap
+
+2014-10-20
+* Added changes to Libs/LibBalancePowerTracker-1.1 for Druid Eclipse changes (Thanks N30Ex@Curseforge)
+
+2014-10-19
+* Added modules/watchframe again; (Thanks to kkthnxbyegaming@Curse)
+
+2014-10-18
+* Modified misc/QuestReward.lua to remove error messages with single and multi-reward quest. It should now autopick the one with the highest value (like before).
+
+2014-10-17
+* Removed WatchFrame
+* Modified Elvui_Enhanced.toc for version 6.0 UI
+* Modified misc/PaperDoll.lua to show correct item level (with upgrades)
+* Modified misc/QuestReward.lua to no longer give error messages
+* MOdified misc/Raidmarkers.lua with accurate markers (Credits jessehulsey@TukUI)
+

@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='misc.lua'/>
+	<Script file='faction.lua'/>
+	<Script file='questreward.lua'/>
+	<Script file='paperdoll.lua'/>
+	<Script file='movers.lua'/>
+	<Script file='targetclass.lua'/>
+</Ui>

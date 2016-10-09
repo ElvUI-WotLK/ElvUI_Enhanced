@@ -1,0 +1,5 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='extratexts.lua'/>
+	<Script file='itemlevel.lua'/>
+	<Script file='range.lua'/>
+</Ui>
