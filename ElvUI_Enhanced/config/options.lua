@@ -61,7 +61,6 @@ end
 
 function EO:EquipmentOptions()
 	local PD = E:GetModule("PaperDoll");
-	local BI = E:GetModule("BagInfo");
 
 	E.Options.args.equipment = {
 		type = "group",
