@@ -117,24 +117,6 @@ function EO:EquipmentOptions()
 						desc = L["Enable/Disable the display of item levels on the character screen."]
 					}
 				}
-			},
-			misc = {
-				order = 5,
-				type = "group",
-				name = L["Miscellaneous"],
-				guiInline = true,
-				get = function(info) return E.private.equipment.misc[ info[#info] ] end,
-				set = function(info, value) E.private.equipment.misc[ info[#info] ] = value end,
-				disabled = function() return not E.private.bags.enable end,
-				args = {
-					setoverlay = {
-						order = 1,
-						type = "toggle",
-						name = L["Equipment Set Overlay"],
-						desc = L["Show the associated equipment sets for the items in your bags (or bank)."],
-						set = function(info, value) E.private.equipment.misc[ info[#info] ] = value BI:ToggleSettings(); end
-					}
-				}
 			}
 		}
 	};
@@ -199,15 +181,6 @@ function EO:MiscOptions()
 		desc = L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."],
 		get = function(info) return E.private.general.autorepchange; end,
 		set = function(info, value) E.private.general.autorepchange = value; end
-	};
-
-	E.Options.args.general.args.general.args.selectquestreward = {
-		order = 25,
-		type = "toggle",
-		name = ColorizeSettingName(L["Select Quest Reward"]),
-		desc = L["Automatically select the quest reward with the highest vendor sell value."],
-		get = function(info) return E.private.general.selectquestreward; end,
-		set = function(info, value) E.private.general.selectquestreward = value; end
 	};
 
 	E.Options.args.general.args.general.args.movertransparancy = {

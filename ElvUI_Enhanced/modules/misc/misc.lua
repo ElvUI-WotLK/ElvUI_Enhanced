@@ -21,7 +21,6 @@ end
 
 function M:Initialize()
 	self:LoadAutoRelease()
-	self:LoadQuestReward()
 	self:LoadWatchedFaction()
 	self:LoadMoverTransparancy()
 end

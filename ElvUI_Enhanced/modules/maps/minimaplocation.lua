@@ -8,7 +8,7 @@ local cluster, panel, location, xMap, yMap;
 local digits = {
 	[0] = {.5, "%.0f"},
 	[1] = {.2, "%.1f"},
-	[2] = {.1, "%.2f"},
+	[2] = {.1, "%.2f"}
 };
 
 local function UpdateLocation(self, elapsed)

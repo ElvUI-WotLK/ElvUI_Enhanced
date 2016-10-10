@@ -20,10 +20,6 @@ L["Only show durabitlity information for items that are damaged."] = "Nur die Ha
 L["ITEMLEVEL_DESC"] = "Passen Sie die Einstellungen für die Anzeige von Gegenstandsstufen im Charakterfenster an."
 L["Enable/Disable the display of item levels on the character screen."] = "Anzeige von Gegenstandsstufen im Charakterfenster aktivieren / deaktivieren."
 
-L["Miscellaneous"] = "Verschiedenes"
-L['Equipment Set Overlay'] = 'Ausrüstungssettext'
-L['Show the associated equipment sets for the items in your bags (or bank).'] = 'Zeige auf Gegenständen im Rucksack (oder der Bank) die zugehörigen Ausrüstungssets als Text an.'
-
 -- Movers
 L["Mover Transparency"] = "Transparenz Ankerpunkte"
 L["Changes the transparency of all the movers."] = "Konfiguriere die Einstellungen der Transparenz der Ankerpukte"
@@ -56,10 +52,6 @@ L['Automatically release body when killed inside a battleground.'] = "Gibt autom
 -- Track Reputation
 L['Track Reputation'] = "Ruf beobachten"
 L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "Ändere automatisch die beobachtete Fraktion auf der Erfahrungsleiste zu der Fraktion für die Sie grade Rufpunkte erhalten haben."
-
--- Select Quest Reward
-L['Select Quest Reward'] = 'Wähle Questbelohnung'
-L['Automatically select the quest reward with the highest vendor sell value.'] = 'Wählt automatisch die Questbelohnung mit dem höchsten Wiederverkaufswert beim Händler'
 
 -- Item Level Datatext
 L['Item Level'] = 'Gegenstandsstufe'

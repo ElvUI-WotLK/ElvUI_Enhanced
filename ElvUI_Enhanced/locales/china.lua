@@ -19,10 +19,6 @@ L["Only show durabitlity information for items that are damaged."] = "只在装�
 L["ITEMLEVEL_DESC"] = "Adjust the settings for the item level information on the character screen."
 L["Enable/Disable the display of item levels on the character screen."] = true
 
-L["Miscellaneous"] = true
-L['Equipment Set Overlay'] = true
-L['Show the associated equipment sets for the items in your bags (or bank).'] = true
-
 -- Movers
 L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
@@ -55,10 +51,6 @@ L['Automatically release body when killed inside a battleground.'] = "在战场�
 -- Track Reputation
 L['Track Reputation'] = "声望追踪"
 L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "当你获得某个阵营的声望时, 将自动追踪此阵营的声望至经验栏位." 
-
--- Select Quest Reward
-L['Select Quest Reward'] = true
-L['Automatically select the quest reward with the highest vendor sell value.'] = true
 
 -- Item Level Datatext
 L['Item Level'] = true

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI);
 
 V.general.pvpautorelease = true;
 V.general.autorepchange = true;
-V.general.selectquestreward = true;
 V.general.useoldtabtarget = false;
 
 V.general.minimap.hideincombat = false;
@@ -16,9 +15,6 @@ V.equipment = {
 	},
 	itemlevel = {
 		enable = true
-	},
-	misc = {
-		setoverlay = true
 	}
 };
 

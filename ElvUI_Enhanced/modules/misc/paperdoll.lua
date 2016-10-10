@@ -23,7 +23,7 @@ local slots = {
 	["Finger1Slot"] = {true, false},
 	["Trinket0Slot"] = {true, false},
 	["Trinket1Slot"] = {true, false},
-	["RangedSlot"] = {true, false}
+	["RangedSlot"] = {true, true}
 };
 
 local levelColors = {
