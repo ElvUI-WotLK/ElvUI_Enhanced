@@ -19,8 +19,8 @@ L["ITEMLEVEL_DESC"] = "Настройка параметров информац�
 L["Enable/Disable the display of item levels on the character screen."] = "Включить/Выключить отображение уровня предмета в окне персонажа."
 
 -- Movers
-L["Mover Transparency"] = true --Не понял за что отвечает эта функция
-L["Changes the transparency of all the movers."] = true
+L["Mover Transparency"] = "Прозрачные фиксаторы"
+L["Changes the transparency of all the movers."] = "Изменяет фиксаторы на прозрачные"
 
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = "Скрыть иконку роли в бою"
