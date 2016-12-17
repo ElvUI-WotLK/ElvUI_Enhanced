@@ -32,30 +32,31 @@ local function CreateEnhancedMaplocation()
 
 	xMap = CreateFrame("Frame", "MapCoordinatesX", panel);
 	xMap:SetTemplate("Transparent");
-	xMap:Point("LEFT", panel, "LEFT", 2, 0);
+	xMap:Point("LEFT", panel, "LEFT", 0, 0);
 	xMap:Size(40, 22);
 
 	xMap.text = xMap:CreateFontString(nil, "OVERLAY");
 	xMap.text:FontTemplate(E.media.font, 12, "OUTLINE");
 	xMap.text:SetAllPoints(xMap);
 
-	location = CreateFrame("Frame", "EnhancedLocationText", panel);
-	location:SetTemplate("Transparent");
-	location:Point("CENTER", panel, "CENTER", 0, 0);
-	location:Size(126, 22);
-
-	location.text = location:CreateFontString(nil, "OVERLAY");
-	location.text:FontTemplate(E.media.font, 12, "OUTLINE");
-	location.text:SetAllPoints(location);
-
 	yMap = CreateFrame("Frame", "MapCoordinatesY", panel);
 	yMap:SetTemplate("Transparent");
-	yMap:Point("RIGHT", panel, "RIGHT", -2.5, 0);
+	MapCoordinatesY:Point("RIGHT", panel, "RIGHT", 0, 0);
 	yMap:Size(40, 22);
 
 	yMap.text = yMap:CreateFontString(nil, "OVERLAY");
 	yMap.text:FontTemplate(E.media.font, 12, "OUTLINE");
 	yMap.text:SetAllPoints(yMap);
+
+	location = CreateFrame("Frame", "EnhancedLocationText", panel);
+	location:SetTemplate("Transparent");
+	location:Size(40, 22);
+	location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0);
+	location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0);
+
+	location.text = location:CreateFontString(nil, "OVERLAY");
+	location.text:FontTemplate(E.media.font, 12, "OUTLINE");
+	location.text:SetAllPoints(location);
 end
 
 local function FadeFrame(frame, direction, startAlpha, endAlpha, time, func)
@@ -108,14 +109,13 @@ hooksecurefunc(M, "UpdateSettings", function()
 	end
 
 	local holder = _G["MMHolder"];
-	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", -(E.PixelMode and 3 or 4), -(E.PixelMode and 3 or 2));
-	panel:Size(holder:GetWidth() + (E.PixelMode and 5 or 7), 22);
+	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
+	panel:Size(holder:GetWidth(), 22);
 	panel:Show();
-	location:Width(holder:GetWidth() - 77);
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = holder:GetPoint();
 	if(E.db.general.minimap.locationText == "ABOVE") then
-		holder:SetPoint(point, relativeTo, relativePoint, 0, -19);
+		holder:SetPoint(point, relativeTo, relativePoint, 0, -22);
 		holder:Height(holder:GetHeight() + 22);
 		panel:SetScript("OnUpdate", UpdateLocation);
 		panel:Show();

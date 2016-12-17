@@ -41,6 +41,7 @@ L['Location Digits'] = "Chiffres d'emplacement"
 L['Number of digits for map location.'] = "Nombre de chiffres pour l'emplacement."
 
 -- Minimap Combat Hide
+L["Combat Hide"] = true;
 L["Hide minimap while in combat."] = "Cacher la minicarte quand vous êtes en combat"
 L["FadeIn Delay"] = "Délais d'estompage"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Le temps à attendre avant que la minicarte s'estompe avec que le combat ait commencé. (0 = désactié)"

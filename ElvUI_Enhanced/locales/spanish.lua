@@ -38,6 +38,7 @@ L['Location Digits'] = true
 L['Number of digits for map location.'] = true
 
 -- Minimap Combat Hide
+L["Combat Hide"] = true;
 L["Hide minimap while in combat."] = true
 L["FadeIn Delay"] = true
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = true

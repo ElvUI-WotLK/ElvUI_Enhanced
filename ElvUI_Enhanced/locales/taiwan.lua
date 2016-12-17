@@ -40,6 +40,7 @@ L['Location Digits'] = "坐標位數"
 L['Number of digits for map location.'] = "坐標顯示的小數位數"
 
 -- Minimap Combat Hide
+L["Combat Hide"] = true;
 L["Hide minimap while in combat."] = "戰鬥中隱藏小地圖"
 L["FadeIn Delay"] = "隱藏延遲"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "戰鬥開始後隱藏小地圖前的延遲時間 (0=停用)"

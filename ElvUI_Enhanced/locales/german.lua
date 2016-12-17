@@ -41,6 +41,7 @@ L['Location Digits'] = "Koordinaten Nachkommastellen"
 L['Number of digits for map location.'] = "Anzahl der Nachkommastellen der Koordinaten."
 
 -- Minimap Combat Hide
+L["Combat Hide"] = true;
 L["Hide minimap while in combat."] = "Ausblenden der Minimap während des Kampfes."
 L["FadeIn Delay"] = "Einblendungsverzögerung"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Die Zeit vor dem wieder Einblenden der Minimap nach dem Kampf. (0 = deaktiviert)"
