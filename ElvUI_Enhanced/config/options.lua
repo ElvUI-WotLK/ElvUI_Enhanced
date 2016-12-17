@@ -170,46 +170,7 @@ function EO:NameplateOptions()
 end
 
 function EO:UnitFramesOptions()
-	local HG = E:GetModule("HealGlow")
 	local TC = E:GetModule("TargetClass")
-
-	E.Options.args.unitframe.args.general.args.healglowGroup = {
-		order = 2,
-		type = "group",
-		guiInline = true,
-		name = ColorizeSettingName(L["Heal Glow"]),
-		args = {
-			healglow = {
-				type = "toggle",
-				order = 2,
-				name = L["Enable"],
-				desc = L["Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period."],
-				set = function(info, value) E.db.unitframe[ info[#info] ] = value; HG:UpdateSettings() end,
-			},
-			glowtime = {
-				type = "range",
-				order = 3,
-				name = L["Glow Duration"],
-				desc = L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."],
-				min = .2, max = 3, step = .1,
-				set = function(info, value) E.db.unitframe[ info[#info] ] = value; HG:UpdateSettings() end,
-			},
-			glowcolor = {
-				type = "color",
-				name = L["Glow Color"],
-				order = 4,
-				get = function(info)
-					local t = E.db.unitframe[ info[#info] ]
-					return t.r, t.g, t.b, t.a
-				end,
-				set = function(info, r, g, b)
-					local t = E.db.unitframe[ info[#info] ]
-					t.r, t.g, t.b = r, g, b
-					HG:UpdateSettings()
-				end,
-			}
-		},
-	}
 
 	E.Options.args.unitframe.args.target.args.attackicon = {
 		order = 1001,
