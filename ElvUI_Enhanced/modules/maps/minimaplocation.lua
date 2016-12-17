@@ -36,7 +36,7 @@ local function CreateEnhancedMaplocation()
 	xMap:Size(40, 22);
 
 	xMap.text = xMap:CreateFontString(nil, "OVERLAY");
-	xMap.text:FontTemplate(E.media.font, 12, "OUTLINE");
+	xMap.text:FontTemplate();
 	xMap.text:SetAllPoints(xMap);
 
 	yMap = CreateFrame("Frame", "MapCoordinatesY", panel);
@@ -45,7 +45,7 @@ local function CreateEnhancedMaplocation()
 	yMap:Size(40, 22);
 
 	yMap.text = yMap:CreateFontString(nil, "OVERLAY");
-	yMap.text:FontTemplate(E.media.font, 12, "OUTLINE");
+	yMap.text:FontTemplate();
 	yMap.text:SetAllPoints(yMap);
 
 	location = CreateFrame("Frame", "EnhancedLocationText", panel);
@@ -55,7 +55,7 @@ local function CreateEnhancedMaplocation()
 	location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0);
 
 	location.text = location:CreateFontString(nil, "OVERLAY");
-	location.text:FontTemplate(E.media.font, 12, "OUTLINE");
+	location.text:FontTemplate();
 	location.text:SetAllPoints(location);
 end
 
@@ -88,6 +88,9 @@ local function ShowMinimap()
 end
 
 hooksecurefunc(M, "Update_ZoneText", function()
+	xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+	yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	location.text:SetTextColor(M:GetLocTextColor());
 	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25));
 end);
@@ -111,7 +114,6 @@ hooksecurefunc(M, "UpdateSettings", function()
 	local holder = _G["MMHolder"];
 	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
 	panel:Size(holder:GetWidth(), 22);
-	panel:Show();
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = holder:GetPoint();
 	if(E.db.general.minimap.locationText == "ABOVE") then
