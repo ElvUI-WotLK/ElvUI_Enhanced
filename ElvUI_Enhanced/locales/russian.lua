@@ -39,6 +39,7 @@ L["Location Digits"] = "Цифры координат"
 L["Number of digits for map location."] = "Колличество цифр после запятой в координатах."
 
 -- Minimap Combat Hide
+L["Combat Hide"] = "Скрытие в бою";
 L["Hide minimap while in combat."] = "Скрывать миникарту во время боя."
 L["FadeIn Delay"] = "Задержка появления"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Время ожидания появления миникарты после выхода из боя. (0 = Выключено)"
