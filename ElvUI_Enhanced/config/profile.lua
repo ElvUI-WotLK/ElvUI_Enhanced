@@ -4,11 +4,6 @@ P.general.minimap.locationText = "ABOVE";
 P.general.movertransparancy = .8;
 
 --Unitframes
-P["unitframe"]["healglow"] = true
-P["unitframe"]["hideroleincombat"] = false
-P["unitframe"]["glowtime"] = .8
-P["unitframe"]["glowcolor"] = { r = 1, g = 1, b = 0}
-
 P["unitframe"]["units"]["target"]["attackicon"] = {
 	["enable"] = true,
 	["xOffset"] = 24,

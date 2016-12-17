@@ -66,13 +66,6 @@ L["Display threat level as text on targeted, boss or mouseover nameplate."] = "�
 L["Target Count"] = "目標記數"
 L["Display the number of party / raid members targetting the nameplate unit."] = "在血調旁邊顯示隊伍/團隊成員中以其為目標的個數"
 
--- HealGlow
-L['Heal Glow'] = "高亮治療"
-L['Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period.'] = "受到直接性的範圍治療法術影響的隊伍/團隊成員會被高亮指定的時間"
-L["Glow Duration"] = "高量持續時間"
-L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."] = "當隊伍/團隊成員受到直接性範圍治療法術石高亮持續的時間"
-L["Glow Color"] = "高亮顏色"
-
 -- WatchFrame
 L['WatchFrame'] = "追蹤器"
 L['WATCHFRAME_DESC'] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."

@@ -67,13 +67,6 @@ L["Display threat level as text on targeted, boss or mouseover nameplate."] = "A
 L["Target Count"] = true
 L["Display the number of party / raid members targetting the nameplate unit."] = true
 
--- HealGlow
-L['Heal Glow'] = "Prédiction des soins"
-L['Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period.'] = "Les soins directs d'AoE laisserons sur les cadres d'unités du groupe / raid un montant fixe défini pour la période du soin."
-L["Glow Duration"] = "Durée de la prédiction"
-L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."] = "Le temps que les cadres d'unités du groupe / Raid seront affectés par la prédiction de soin."
-L["Glow Color"] = "Couleur de la prédiction"
-
 -- WatchFrame
 L['WatchFrame'] = "Fenêtre d'objectifs"
 L['WATCHFRAME_DESC'] = "Réglez les paramètres pour la visibilité de la fenêtre d'objectifs (journal de quête) avec vos préférences personnelles."

@@ -66,13 +66,6 @@ L["Display threat level as text on targeted, boss or mouseover nameplate."] = tr
 L["Target Count"] = true
 L["Display the number of party / raid members targetting the nameplate unit."] = true
 
--- HealGlow
-L['Heal Glow'] = true
-L['Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period.'] = true
-L["Glow Duration"] = true
-L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."] = true
-L["Glow Color"] = true
-
 -- WatchFrame
 L['WatchFrame'] = true
 L['WATCHFRAME_DESC'] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."

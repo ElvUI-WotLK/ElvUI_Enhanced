@@ -39,7 +39,6 @@ L["Location Digits"] = "Цифры координат"
 L["Number of digits for map location."] = "Колличество цифр после запятой в координатах."
 
 -- Minimap Combat Hide
-L["Combat Hide"] = "Скрытие в бою";
 L["Hide minimap while in combat."] = "Скрывать миникарту во время боя."
 L["FadeIn Delay"] = "Задержка появления"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Время ожидания появления миникарты после выхода из боя. (0 = Выключено)"
@@ -64,13 +63,6 @@ L["Threat Text"] = "Текст угрозы";
 L["Display threat level as text on targeted, boss or mouseover nameplate."] = "Показывать уровень угрозы на цели, боссе или при наведении курсора на индикатор здоровья.";
 L["Target Count"] = "Число целей";
 L["Display the number of party / raid members targetting the nameplate unit."] = "Показывать количество членов группы/рейда выбравших текущую цель на индикаторе здоровья.";
-
--- HealGlow
-L["Heal Glow"] = "Подсветка лечения"
-L["Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period."] = "Прямое АоЕ лечение будет подсвечивать рамки юнитов раненых членов группы/рейда в течении определенного времени."
-L["Glow Duration"] = "Продолжительность подсветки"
-L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."] = "Время подсветки рамок юнитов группы/рейда во время прямого АоЕ лечения"
-L["Glow Color"] = "Цвет подсветки"
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"

@@ -67,13 +67,6 @@ L["Display threat level as text on targeted, boss or mouseover nameplate."] = " 
 L["Target Count"] = "Zähler für Angreifende"
 L["Display the number of party / raid members targetting the nameplate unit."] = "Anzahl der Gruppenmitglieder die den Gegner der Namensplakette angreifen."
 
--- HealGlow
-L['Heal Glow'] = 'Heilungsleuchten'
-L['Direct AoE heals will let the unit frames of the affected party / raid members glow for the defined time period.'] = 'Direkte AoE-Heilungen lassen die Einheitenfenster von Gruppen- oder Schlachtzugsmitgliedern für eine festgelegte Zeit leuchten.'
-L["Glow Duration"] = 'Richtung des Leuchtens'
-L["The amount of time the unit frames of party / raid members will glow when affected by a direct AoE heal."] = "Die Zeitdauer die Einheitenfenster von Gruppen- oder Schlachtzugsmitgliedern leuchten, wenn diese durch direkte AoE-Heilungen betroffen sind."
-L["Glow Color"] = 'Farbe des Leuchtens'
-
 -- WatchFrame
 L['WatchFrame'] = "Questlog"
 L['WATCHFRAME_DESC'] = 'Passen Sie die Einstellungen für die Sichtbarkeit des Questlogs ganz an ihre persönlichen Bedürfnisse an.'

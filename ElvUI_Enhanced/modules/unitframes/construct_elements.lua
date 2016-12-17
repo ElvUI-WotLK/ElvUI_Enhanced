@@ -1,15 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI);
 local UF = E:GetModule("UnitFrames");
 
-function UF:Construct_HealGlow(frame)
-	frame:CreateShadow("Default");
-	local x = frame.shadow;
-	frame.shadow = nil;
-	x:Hide();
-
-	return x;
-end
-
 function UF:AddShouldIAttackIcon(frame)
 	if not frame then return end
 
