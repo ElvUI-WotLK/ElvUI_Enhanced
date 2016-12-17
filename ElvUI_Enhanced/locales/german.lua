@@ -61,11 +61,6 @@ L['Item Level'] = 'Gegenstandsstufe'
 L['Target Range'] = 'Zielabstand'
 L['Distance'] = 'Entfernung'
 
--- Extra Datatexts
-L['Actionbar1DataPanel'] = 'Aktionsleiste 1'
-L['Actionbar3DataPanel'] = 'Aktionsleiste 3'
-L['Actionbar5DataPanel'] = 'Aktionsleiste 5'
-
 -- Nameplates
 L["Threat Text"] = "Bedrohungstext"
 L["Display threat level as text on targeted, boss or mouseover nameplate."] = " Bedrohung als Text auf der Namensplakette des Ziels anzeigen."

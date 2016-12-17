@@ -59,11 +59,6 @@ L['Item Level'] = true
 L['Target Range'] = true
 L['Distance'] = true
 
--- Extra Datatexts
-L['Actionbar1DataPanel'] = 'Actionbar 1'
-L['Actionbar3DataPanel'] = 'Actionbar 3'
-L['Actionbar5DataPanel'] = 'Actionbar 5'
-
 -- Nameplates
 L["Threat Text"] = true
 L["Display threat level as text on targeted, boss or mouseover nameplate."] = true

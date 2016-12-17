@@ -60,11 +60,6 @@ L['Item Level'] = true
 L['Target Range'] = true
 L['Distance'] = "距离"
 
--- Extra Datatexts
-L['Actionbar1DataPanel'] = '快捷列 1 资讯框'
-L['Actionbar3DataPanel'] = '快捷列 3 资讯框'
-L['Actionbar5DataPanel'] = '快捷列 5 资讯框'
-
 -- Nameplates
 L["Threat Text"] = "威胁值文字"
 L["Display threat level as text on targeted, boss or mouseover nameplate."] = "在首领或鼠标悬停的血条上显示威胁值文字."

@@ -25,19 +25,6 @@ P["unitframe"]["units"]["target"]["classicon"] = {
 P.nameplate.showthreat = true;
 P.nameplate.targetcount = true;
 
-P.datatexts.Actionbar1DataPanel = false;
-P.datatexts.Actionbar3DataPanel = false;
-P.datatexts.Actionbar5DataPanel = false;
-
-P.datatexts.panels.Actionbar1DataPanel = {
-	["left"] = "",
-	["middle"] = "",
-	["right"] = ""
-};
-
-P.datatexts.panels.Actionbar3DataPanel = "";
-P.datatexts.panels.Actionbar5DataPanel = "";
-
 P.watchframe = {
 	["city"] = "COLLAPSED",
 	["pvp"] = "HIDDEN",

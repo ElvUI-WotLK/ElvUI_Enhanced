@@ -59,11 +59,6 @@ L["Item Level"] = "Уровень предметов"
 L["Target Range"] = "Расстояние до цели"
 L["Distance"] = "Дистанция"
 
--- Extra Datatexts
-L["Actionbar1DataPanel"] = "Панель 1"
-L["Actionbar3DataPanel"] = "Панель 3"
-L["Actionbar5DataPanel"] = "Панель 5"
-
 -- Nameplates
 L["Threat Text"] = "Текст угрозы";
 L["Display threat level as text on targeted, boss or mouseover nameplate."] = "Показывать уровень угрозы на цели, боссе или при наведении курсора на индикатор здоровья.";
