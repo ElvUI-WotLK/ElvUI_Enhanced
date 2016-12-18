@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI);
-local PD = E:NewModule('PaperDoll', 'AceEvent-3.0', 'AceTimer-3.0');
+local PD = E:NewModule("PaperDoll", "AceEvent-3.0", "AceTimer-3.0");
 
 local find = string.find
 local initialized = false
@@ -32,49 +32,48 @@ local levelColors = {
 	[2] = "|cffffff88"
 };
 
-function PD:UpdatePaperDoll(inspect)
+function PD:UpdatePaperDoll(event)
 	if(not initialized) then return; end
 
 	if(InCombatLockdown()) then
-		PD:RegisterEvent("PLAYER_REGEN_ENABLED", "UpdatePaperDoll", inspect);
+		PD:RegisterEvent("PLAYER_REGEN_ENABLED", "UpdatePaperDoll");
 		return
 	else
 		PD:UnregisterEvent("PLAYER_REGEN_ENABLED");
 	end
 
-	local unit = (inspect and InspectFrame) and InspectFrame.unit or "player";
+	local unit = InspectFrame and InspectFrame.unit or "player";
 	if(not unit) then return; end
 	if(unit and not CanInspect(unit, false)) then return; end
 
-	local frame, slot, current, maximum, r, g, b;
-	local baseName = inspect and "Inspect" or "Character";
-	local itemLink, itemLevel, itemLevelMax;
+	local frame, id, durability, max, r, g, b;
+	local baseName = (unit == "player" and "Character") or "Inspect";
+	local link, iLevel;
 
 	for k, info in pairs(slots) do
 		frame = _G[("%s%s"):format(baseName, k)];
-		slot = GetInventorySlotInfo(k);
+		id = GetInventorySlotInfo(k);
 
 		if(info[1]) then
 			frame.ItemLevel:SetText();
 			if(E.private.equipment.itemlevel.enable and info[1]) then
-				itemLink = GetInventoryItemLink(unit, slot);
-
-				if(itemLink) then
-					itemLevel = self:GetItemLevel(unit, itemLink);
-					if(itemLevel) then
-						frame.ItemLevel:SetFormattedText("%s%d|r", levelColors[1], itemLevel);
+				link = GetInventoryItemLink(unit, id);
+				if(link) then
+					iLevel = self:GetItemLevel(unit, link);
+					if(iLevel) then
+						frame.ItemLevel:SetFormattedText("%s%d|r", levelColors[1], iLevel);
 					end
 				end
 			end
 		end
 
-		if(not inspect and info[2]) then
-			frame.DurabilityInfo:SetText()
+		if(unit == "player" and info[2]) then
+			frame.DurabilityInfo:SetText();
 			if(E.private.equipment.durability.enable) then
-				current, maximum = GetInventoryItemDurability(slot);
-				if(current and maximum and (not E.private.equipment.durability.onlydamaged or current < maximum)) then
-					r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0);
-					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100);
+				durability, max = GetInventoryItemDurability(id);
+				if(durability and max and (not E.private.equipment.durability.onlydamaged or durability < max)) then
+					r, g, b = E:ColorGradient((durability / max), 1, 0, 0, 1, 1, 0, 0, 1, 0);
+					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (durability / max) * 100);
 				end
 			end
 		end
@@ -82,14 +81,14 @@ function PD:UpdatePaperDoll(inspect)
 end
 
 function PD:GetItemLevel(unit, itemLink)
-	local itemLevel = select(4, GetItemInfo(itemLink));
-	itemLevel = tonumber(itemLevel);
-	return itemLevel;
+	local iLevel = select(4, GetItemInfo(itemLink));
+	iLevel = tonumber(iLevel);
+	return iLevel;
 end
 
 function PD:InspectFrame_UpdateTabsComplete()
 	originalInspectFrameUpdateTabs();
-	PD:UpdatePaperDoll(true);
+	PD:UpdatePaperDoll();
 end
 
 function PD:InitialUpdatePaperDoll()
@@ -102,8 +101,6 @@ function PD:InitialUpdatePaperDoll()
 
 	originalInspectFrameUpdateTabs = _G.InspectFrame_UpdateTabs;
 	_G.InspectFrame_UpdateTabs = PD.InspectFrame_UpdateTabsComplete;
-
-	self:ScheduleTimer("UpdatePaperDoll", 10, false);
 
 	initialized = true;
 end
@@ -133,6 +130,7 @@ function PD:Initialize()
 	PD:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", "UpdatePaperDoll");
 	PD:RegisterEvent("SOCKET_INFO_UPDATE", "UpdatePaperDoll");
 	PD:RegisterEvent("COMBAT_RATING_UPDATE", "UpdatePaperDoll");
+	PD:RegisterEvent("INSPECT_TALENT_READY", "UpdatePaperDoll");
 
 	PD:RegisterEvent("PLAYER_ENTERING_WORLD", "InitialUpdatePaperDoll");
 end
