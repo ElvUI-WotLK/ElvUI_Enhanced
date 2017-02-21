@@ -1,138 +1,171 @@
-local E, L, V, P, G = unpack(ElvUI);
-local PD = E:NewModule("PaperDoll", "AceEvent-3.0", "AceTimer-3.0");
+local E, L, V, P, G = unpack(ElvUI)
+local PD = E:NewModule("PaperDoll", "AceHook-3.0", "AceEvent-3.0")
 
-local find = string.find
-local initialized = false
-local originalInspectFrameUpdateTabs
-local updateTimer
+local format = string.format
+local pairs, select = pairs, select
+
+local CanInspect = CanInspect
+local GetInventoryItemDurability = GetInventoryItemDurability
+local GetInventoryItemLink = GetInventoryItemLink
+local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemInfo = GetItemInfo
+local InCombatLockdown = InCombatLockdown
 
 local slots = {
-	["HeadSlot"] = {true, true},
-	["NeckSlot"] = {true, false},
-	["ShoulderSlot"] = {true, true},
-	["BackSlot"] = {true, false},
-	["ChestSlot"] = {true, true},
-	["WristSlot"] = {true, true},
-	["MainHandSlot"] = {true, true},
-	["SecondaryHandSlot"] = {true, true},
-	["HandsSlot"] = {true, true},
-	["WaistSlot"] = {true, true},
-	["LegsSlot"] = {true, true},
-	["FeetSlot"] = {true, true},
-	["Finger0Slot"] = {true, false},
-	["Finger1Slot"] = {true, false},
-	["Trinket0Slot"] = {true, false},
-	["Trinket1Slot"] = {true, false},
-	["RangedSlot"] = {true, true}
-};
+	["HeadSlot"] = true,
+	["NeckSlot"] = false,
+	["ShoulderSlot"] = true,
+	["BackSlot"] = false,
+	["ChestSlot"] = true,
+--	["ShirtSlot"] = false,
+--	["TabardSlot"] = false,
+	["WristSlot"] = true,
+	["HandsSlot"] = true,
+	["WaistSlot"] = true,
+	["LegsSlot"] = true,
+	["FeetSlot"] = true,
+	["Finger0Slot"] = false,
+	["Finger1Slot"] = false,
+	["Trinket0Slot"] = false,
+	["Trinket1Slot"] = false,
+	["MainHandSlot"] = true,
+	["SecondaryHandSlot"] = true,
+	["RangedSlot"] = true,
+--	["AmmoSlot"] = false,
+}
 
-local levelColors = {
-	[0] = "|cffff0000",
-	[1] = "|cff00ff00",
-	[2] = "|cffffff88"
-};
+function PD:UpdatePaperDoll(unit)
+	if not self.initialized then return end
 
-function PD:UpdatePaperDoll(event)
-	if(not initialized) then return; end
-
-	if(InCombatLockdown()) then
-		PD:RegisterEvent("PLAYER_REGEN_ENABLED", "UpdatePaperDoll");
+	if InCombatLockdown() then
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", function(event) self:OnEvent(event, unit) end)
 		return
-	else
-		PD:UnregisterEvent("PLAYER_REGEN_ENABLED");
 	end
 
-	local unit = InspectFrame and InspectFrame.unit or "player";
-	if(not unit) then return; end
-	if(unit and not CanInspect(unit, false)) then return; end
+	unit = (unit ~= "player" and InspectFrame) and InspectFrame.unit or unit
+	if not unit then return end
+	if unit and not CanInspect(unit, false) then return end
 
-	local frame, id, durability, max, r, g, b;
-	local baseName = (unit == "player" and "Character") or "Inspect";
-	local link, iLevel;
+	local baseName = unit == "player" and "Character" or "Inspect"
+	local frame, slotID, textureName
+	local itemLink, itemLevel
+	local current, maximum, r, g, b
 
-	for k, info in pairs(slots) do
-		frame = _G[("%s%s"):format(baseName, k)];
-		id = GetInventorySlotInfo(k);
+	for slotName, durability in pairs(slots) do
+		frame = _G[("%s%s"):format(baseName, slotName)]
+		slotID = GetInventorySlotInfo(slotName)
+		hasItem = GetInventoryItemTexture(unit, slotID)
 
-		if(info[1]) then
-			frame.ItemLevel:SetText();
-			if(E.private.equipment.itemlevel.enable and info[1]) then
-				link = GetInventoryItemLink(unit, id);
-				if(link) then
-					iLevel = self:GetItemLevel(unit, link);
-					if(iLevel) then
-						frame.ItemLevel:SetFormattedText("%s%d|r", levelColors[1], iLevel);
-					end
+		frame.ItemLevel:SetText()
+		if E.private.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
+			itemLink = GetInventoryItemLink(unit, slotID)
+
+			if itemLink then
+				itemLevel = select(4, GetItemInfo(itemLink))
+				if itemLevel then
+					frame.ItemLevel:SetText(itemLevel)
 				end
 			end
 		end
 
-		if(unit == "player" and info[2]) then
-			frame.DurabilityInfo:SetText();
-			if(E.private.equipment.durability.enable) then
-				durability, max = GetInventoryItemDurability(id);
-				if(durability and max and (not E.private.equipment.durability.onlydamaged or durability < max)) then
-					r, g, b = E:ColorGradient((durability / max), 1, 0, 0, 1, 1, 0, 0, 1, 0);
-					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (durability / max) * 100);
+		if unit == "player" and durability then
+			frame.DurabilityInfo:SetText()
+			if E.private.equipment.durability.enable then
+				current, maximum = GetInventoryItemDurability(slotID)
+				if current and maximum and (not E.private.equipment.durability.onlydamaged or current < maximum) then
+					r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0)
+					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100)
 				end
 			end
 		end
 	end
-end
-
-function PD:GetItemLevel(unit, itemLink)
-	local iLevel = select(4, GetItemInfo(itemLink));
-	iLevel = tonumber(iLevel);
-	return iLevel;
-end
-
-function PD:InspectFrame_UpdateTabsComplete()
-	originalInspectFrameUpdateTabs();
-	PD:UpdatePaperDoll();
-end
-
-function PD:InitialUpdatePaperDoll()
-	PD:UnregisterEvent("PLAYER_ENTERING_WORLD");
-
-	LoadAddOn("Blizzard_InspectUI");
-
-	self:BuildInfoText("Character");
-	self:BuildInfoText("Inspect");
-
-	originalInspectFrameUpdateTabs = _G.InspectFrame_UpdateTabs;
-	_G.InspectFrame_UpdateTabs = PD.InspectFrame_UpdateTabsComplete;
-
-	initialized = true;
 end
 
 function PD:BuildInfoText(name)
-	for k, info in pairs(slots) do
-		frame = _G[("%s%s"):format(name, k)];
+	local frame
+	for slotName, durability in pairs(slots) do
+		frame = _G[("%s%s"):format(name, slotName)]
 
-		if(info[1]) then
-			frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY");
-			frame.ItemLevel:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1);
-			frame.ItemLevel:FontTemplate(E.media.font, 12, "THINOUTLINE");
+		frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY")
+		frame.ItemLevel:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1)
+		frame.ItemLevel:FontTemplate(E.media.font, 12, "THINOUTLINE")
+
+		if name == "Character" and durability then
+			frame.DurabilityInfo = frame:CreateFontString(nil, "OVERLAY")
+			frame.DurabilityInfo:Point("TOP", frame, "TOP", 0, -4)
+			frame.DurabilityInfo:FontTemplate(E.media.font, 12, "THINOUTLINE")
+		end
+	end
+end
+
+function PD:OnEvent(event, unit)
+	if event == "UPDATE_INVENTORY_DURABILITY" then
+		self:UpdatePaperDoll("player")
+	elseif event == "UNIT_INVENTORY_CHANGED" then
+		self:UpdatePaperDoll(unit)
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		self:UpdatePaperDoll(unit)
+	end
+end
+
+local function UpdateTalentTab()
+	PD:UpdatePaperDoll(InspectFrame.unit)
+end
+
+function PD:InitialUpdatePaperDoll()
+	if self.initialized then return end
+
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+	LoadAddOn("Blizzard_InspectUI")
+
+	self:BuildInfoText("Character")
+	self:BuildInfoText("Inspect")
+
+	self:SecureHook("InspectFrame_UpdateTalentTab", UpdateTalentTab)
+
+	self.initialized = true
+end
+
+function PD:ToggleState(init)
+	if E.private.equipment.enable then
+		if not self.initialized then
+			if init then
+				self:RegisterEvent("PLAYER_ENTERING_WORLD", "InitialUpdatePaperDoll")
+			else
+				self:InitialUpdatePaperDoll()
+			end
 		end
 
-		if(name == "Character" and info[2]) then
-			frame.DurabilityInfo = frame:CreateFontString(nil, "OVERLAY");
-			frame.DurabilityInfo:SetPoint("TOP", frame, "TOP", 0, -4);
-			frame.DurabilityInfo:FontTemplate(E.media.font, 12, "THINOUTLINE");
+		self:UpdatePaperDoll("player")
+
+		if self.initialized and not self:IsHooked("InspectFrame_UpdateTalentTab", UpdateTalentTab) then
+			self:SecureHook("InspectFrame_UpdateTalentTab", UpdateTalentTab)
+		end
+
+		self:RegisterEvent("UPDATE_INVENTORY_DURABILITY", "OnEvent")
+		self:RegisterEvent("UNIT_INVENTORY_CHANGED", "OnEvent")
+	elseif self.initialized then
+		self:UnhookAll()
+		self:UnregisterAllEvents()
+
+		for slotName, durability in pairs(slots) do
+			_G["Character"..slotName].ItemLevel:SetText()
+			_G["Inspect"..slotName].ItemLevel:SetText()
+
+			if durability then
+				_G["Character"..slotName].DurabilityInfo:SetText()
+			end
 		end
 	end
 end
 
 function PD:Initialize()
-	local frame;
+	if not E.private.equipment.enable then return end
 
-	PD:RegisterEvent("UPDATE_INVENTORY_DURABILITY", "UpdatePaperDoll");
-	PD:RegisterEvent("PLAYER_EQUIPMENT_CHANGED", "UpdatePaperDoll");
-	PD:RegisterEvent("SOCKET_INFO_UPDATE", "UpdatePaperDoll");
-	PD:RegisterEvent("COMBAT_RATING_UPDATE", "UpdatePaperDoll");
-	PD:RegisterEvent("INSPECT_TALENT_READY", "UpdatePaperDoll");
-
-	PD:RegisterEvent("PLAYER_ENTERING_WORLD", "InitialUpdatePaperDoll");
+	self:ToggleState(true)
 end
 
-E:RegisterModule(PD:GetName());
+E:RegisterModule(PD:GetName())

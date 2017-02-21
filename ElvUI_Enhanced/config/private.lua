@@ -9,6 +9,7 @@ V.general.minimap.fadeindelay = 5;
 V.general.minimap.locationdigits = 1;
 
 V.equipment = {
+	enable = true,
 	durability = {
 		enable = true,
 		onlydamaged = false

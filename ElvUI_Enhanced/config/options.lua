@@ -33,13 +33,22 @@ function EO:EquipmentOptions()
 				type = "description",
 				name = L["DURABILITY_DESC"]
 			},
-			durability = {
+			enable = {
 				order = 2,
+				type = "toggle",
+				name = L["Enable"],
+				set = function(info, value)
+					E.private.equipment[info[#info]] = value
+					PD:ToggleState()
+				end,
+			},
+			durability = {
+				order = 3,
 				type = "group",
 				name = DURABILITY,
 				guiInline = true,
 				get = function(info) return E.private.equipment.durability[ info[#info] ]; end,
-				set = function(info, value) E.private.equipment.durability[ info[#info] ] = value PD:UpdatePaperDoll(); end,
+				set = function(info, value) E.private.equipment.durability[ info[#info] ] = value PD:UpdatePaperDoll("player") end,
 				args = {
 					enable = {
 						order = 1,
@@ -57,17 +66,17 @@ function EO:EquipmentOptions()
 				}
 			},
 			intro2 = {
-				order = 3,
+				order = 4,
 				type = "description",
 				name = L["ITEMLEVEL_DESC"]
 			},
 			itemlevel = {
-				order = 4,
+				order = 5,
 				type = "group",
 				name = L["Item Level"],
 				guiInline = true,
 				get = function(info) return E.private.equipment.itemlevel[ info[#info] ]; end,
-				set = function(info, value) E.private.equipment.itemlevel[ info[#info] ] = value PD:UpdatePaperDoll(); end,
+				set = function(info, value) E.private.equipment.itemlevel[ info[#info] ] = value PD:UpdatePaperDoll("player"); end,
 				args = {
 					enable = {
 						order = 1,
