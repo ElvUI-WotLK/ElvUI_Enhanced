@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI);
+local E, L, V, P, G = unpack(ElvUI);
 
 P.general.minimap.locationText = "ABOVE";
 P.general.movertransparancy = .8;

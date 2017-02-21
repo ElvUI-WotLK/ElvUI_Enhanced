@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='construct_elements.lua'/>
-	<Script file='tags.lua'/>	
+	<Script file='tags.lua'/>
 </Ui>

@@ -73,7 +73,7 @@ hooksecurefunc(NP, "GetThreatReaction", function(self, frame)
 			if not (targetCount == 0) then
 				frame.targetCount:SetText(("[%d]"):format(targetCount));
 			end
-		end	
+		end
 	end
 end);
 

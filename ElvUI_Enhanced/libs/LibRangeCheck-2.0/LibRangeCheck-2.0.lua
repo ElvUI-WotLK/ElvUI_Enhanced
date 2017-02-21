@@ -14,9 +14,9 @@ License: Public Domain
 -- A callback is provided for those interested in checker changes.
 -- @usage
 -- local rc = LibStub("LibRangeCheck-2.0")
--- 
+--
 -- rc.RegisterCallback(self, rc.CHECKERS_CHANGED, function() print("need to refresh my stored checkers") end)
--- 
+--
 -- local minRange, maxRange = rc:GetRange('target')
 -- if not minRange then
 --     print("cannot get range estimate for target")
@@ -25,7 +25,7 @@ License: Public Domain
 -- else
 --     print("target is between " .. minRange .. " and " .. maxRange .. " yards")
 -- end
--- 
+--
 -- local meleeChecker = rc:GetFriendMaxChecker(rc.MeleeRange) -- 5 yds
 -- for i = 1, 4 do
 --     -- TODO: check if unit is valid, etc
@@ -78,8 +78,19 @@ local MeleeRange = 5
 
 -- list of friendly spells that have different ranges
 local FriendSpells = {}
--- list of harmful spells that have different ranges 
+-- list of harmful spells that have different ranges
 local HarmSpells = {}
+
+FriendSpells["DEATHKNIGHT"] = {
+}
+HarmSpells["DEATHKNIGHT"] = {
+    47541, -- ["Death Coil"], -- 30
+    47476, -- ["Strangulate"], -- 30 (Glyph of Strangulate: +20)
+    45477, -- ["Icy Touch"], -- 20 (Icy Reach: 25, 30)
+    56222, -- ["Dark Command"], -- 20
+    50842, -- ["Pestilence"], -- 5
+    45902, -- ["Blood Strike"], -- 5, but requires weapon, use Pestilence if possible, so keep it after Pestilence in this list
+}
 
 FriendSpells["DRUID"] = {
     5185, -- ["Healing Touch"], -- 40
@@ -130,7 +141,7 @@ HarmSpells["PALADIN"] = {
     20473, -- ["Holy Shock"], -- 20
     20271, -- ["Judgement"], -- 10
     35395, -- ["Crusader Strike"], -- 5
-} 
+}
 
 FriendSpells["PRIEST"] = {
     2050, -- ["Lesser Heal"], -- 40
@@ -183,17 +194,6 @@ HarmSpells["WARLOCK"] = {
     18223, -- ["Curse of Exhaustion"], -- 30 (Grim Reach: 33, 36, Glyph of Curse of Exhaustion: +5)
     5782, -- ["Fear"], -- 20 (Grim Reach: 22, 24)
     17877, -- ["Shadowburn"], -- 20 (Destructive Reach: 22, 24)
-}
-
-FriendSpells["DEATHKNIGHT"] = {
-}
-HarmSpells["DEATHKNIGHT"] = {
-    47541, -- ["Death Coil"], -- 30
-    47476, -- ["Strangulate"], -- 30 (Glyph of Strangulate: +20)
-    45477, -- ["Icy Touch"], -- 20 (Icy Reach: 25, 30)
-    56222, -- ["Dark Command"], -- 20
-    50842, -- ["Pestilence"], -- 5
-    45902, -- ["Blood Strike"], -- 5, but requires weapon, use Pestilence if possible, so keep it after Pestilence in this list
 }
 
 -- Items [Special thanks to Maldivia for the nice list]
@@ -345,6 +345,7 @@ local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
 local TT = ItemRefTooltip
+local math_floor = math.floor
 
 -- temporary stuff
 
@@ -385,9 +386,7 @@ local checkers_SpellWithMin = setmetatable({}, {
 local checkers_Item = setmetatable({}, {
     __index = function(t, item)
         local func = function(unit)
-            if IsItemInRange(item, unit) == 1 then
-                 return true
-            end
+            return (IsItemInRange(item, unit) == 1)
         end
         t[item] = func
         return func
@@ -467,8 +466,8 @@ local function createCheckerList(spellList, itemList, interactList)
             local name, _, _, _, _, _, _, minRange, range = GetSpellInfo(sid)
             local spellIdx = findSpellIdx(name)
             if spellIdx and range then
-                minRange = math.floor(minRange + 0.5)
-                range = math.floor(range + 0.5)
+                minRange = math_floor(minRange + 0.5)
+                range = math_floor(range + 0.5)
                 -- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
                 if minRange == 0 then -- getRange() expects minRange to be nil in this case
                     minRange = nil
@@ -484,7 +483,7 @@ local function createCheckerList(spellList, itemList, interactList)
             end
         end
     end
-    
+
     if itemList then
         for range, items in pairs(itemList) do
             for i = 1, #items do
@@ -496,7 +495,7 @@ local function createCheckerList(spellList, itemList, interactList)
             end
         end
     end
-    
+
     if interactList and not next(res) then
         for index, range in pairs(interactList) do
             addChecker(res, range, nil,  checkers_Interact[index])
@@ -616,7 +615,6 @@ local function createSmartChecker(friendChecker, harmChecker, miscChecker)
     end
 end
 
-
 -- OK, here comes the actual lib
 
 -- pre-initialize the checkerLists here so that we can return some meaningful result even if
@@ -633,7 +631,6 @@ lib.failedItemRequests = {}
 
 -- << Public API
 
- 
 
 --- The callback name that is fired when checkers are changed.
 -- @field
@@ -665,7 +662,9 @@ end
 
 -- initialize RangeCheck if not yet initialized or if "forced"
 function lib:init(forced)
-    if self.initialized and (not forced) then return end
+    if self.initialized and (not forced) then
+        return
+    end
     self.initialized = true
     local _, playerClass = UnitClass("player")
     local _, playerRace = UnitRace("player")
@@ -927,7 +926,7 @@ function lib:processItemRequests(itemRequests)
                     itemRequests[range] = nil
                     break
                 end
-                tremove(items, i)   
+                tremove(items, i)
             elseif not itemRequestTimeoutAt then
                 requestItemInfo(item)
                 itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
@@ -973,9 +972,8 @@ function lib:scheduleInit()
     self.frame:Show()
 end
 
- 
 
--- << load-time initialization 
+-- << load-time initialization
 
 function lib:activate()
     if not self.frame then

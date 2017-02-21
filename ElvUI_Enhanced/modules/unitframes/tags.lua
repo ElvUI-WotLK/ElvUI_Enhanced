@@ -18,12 +18,12 @@ ElvUF.Tags.OnUpdateThrottle['xdistance'] = .2
 ElvUF.Tags.Methods['xdistance'] = function(unit)
 	if not UnitIsConnected(unit) or UnitIsUnit(unit, 'player') then return end
 
-  local distance = E:GetDistance('player', unit, true)
-  if distance and distance > 0 then
-    return format('%d', distance)
-  end
-  return ''
-end 
+	local distance = E:GetDistance('player', unit, true)
+	if distance and distance > 0 then
+		return format('%d', distance)
+	end
+	return ''
+end
 
 ElvUF.Tags.Events['xthreat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['xthreat:percent'] = function(unit)
@@ -54,7 +54,7 @@ ElvUF.Tags.Methods['xthreatcolor'] = function(unit)
 	local status = select(2, UnitDetailedThreatSituation('player', unit))
 	if (status) then
 		return Hex(GetThreatStatusColor(status))
-	else 
+	else
 		return '|cFF808080'
 	end
 end]]

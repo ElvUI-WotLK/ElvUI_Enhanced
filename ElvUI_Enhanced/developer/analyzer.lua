@@ -9,16 +9,16 @@ SlashCmdList["ANALYZE"] = function(arg)
 	if arg ~= nil then FRAME = arg end --Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
 	if arg ~= nil and arg:GetName() ~= nil then
 		local name = arg:GetName()
-		
+
 		local childFrames = { arg:GetChildren() }
 		ChatFrame1:AddMessage("|cffCC0000----------------------------")
 		ChatFrame1:AddMessage(name)
 		for _, child in ipairs(childFrames) do
 			if child:GetName() then
 				ChatFrame1:AddMessage("+="..child:GetName())
-			end	
-		end	
-		ChatFrame1:AddMessage("|cffCC0000----------------------------")	
+			end
+		end
+		ChatFrame1:AddMessage("|cffCC0000----------------------------")
 	end
 end
 

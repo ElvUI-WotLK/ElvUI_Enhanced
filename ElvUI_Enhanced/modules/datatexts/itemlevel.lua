@@ -7,23 +7,23 @@ local lastPanel;
 local floor = math.floor;
 
 local slots = {
-	[1] = {"HeadSlot", HEADSLOT},
-	[2] = {"NeckSlot", NECKSLOT},
-	[3] = {"ShoulderSlot", SHOULDERSLOT},
-	[4] = {"BackSlot", BACKSLOT},
-	[5] = {"ChestSlot", CHESTSLOT},
-	[6] = {"WristSlot", WRISTSLOT},
-	[7] = {"HandsSlot", HANDSSLOT},
-	[8] = {"WaistSlot", WAISTSLOT},
-	[9] = {"LegsSlot", LEGSSLOT},
-	[10] = {"FeetSlot", FEETSLOT},
-	[11] = {"Finger0Slot", FINGER0SLOT_UNIQUE},
-	[12] = {"Finger1Slot", FINGER1SLOT_UNIQUE},
-	[13] = {"Trinket0Slot", TRINKET0SLOT_UNIQUE},
-	[14] = {"Trinket1Slot", TRINKET1SLOT_UNIQUE},
-	[15] = {"MainHandSlot", MAINHANDSLOT},
-	[16] = {"SecondaryHandSlot", SECONDARYHANDSLOT},
-	[17] = {"RangedSlot", RANGEDSLOT}
+	{"HeadSlot", HEADSLOT},
+	{"NeckSlot", NECKSLOT},
+	{"ShoulderSlot", SHOULDERSLOT},
+	{"BackSlot", BACKSLOT},
+	{"ChestSlot", CHESTSLOT},
+	{"WristSlot", WRISTSLOT},
+	{"HandsSlot", HANDSSLOT},
+	{"WaistSlot", WAISTSLOT},
+	{"LegsSlot", LEGSSLOT},
+	{"FeetSlot", FEETSLOT},
+	{"Finger0Slot", FINGER0SLOT_UNIQUE},
+	{"Finger1Slot", FINGER1SLOT_UNIQUE},
+	{"Trinket0Slot", TRINKET0SLOT_UNIQUE},
+	{"Trinket1Slot", TRINKET1SLOT_UNIQUE},
+	{"MainHandSlot", MAINHANDSLOT},
+	{"SecondaryHandSlot", SECONDARYHANDSLOT},
+	{"RangedSlot", RANGEDSLOT}
 };
 
 local levelColors = {
@@ -84,4 +84,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true;
 
-DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter);
+DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED"}, OnEvent, nil, nil, OnEnter);

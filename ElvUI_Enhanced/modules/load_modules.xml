@@ -1,4 +1,4 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Include file="maps\load_maps.xml"/>
 	<Include file="misc\load_misc.xml"/>
 	<Include file="nameplates\load_nameplates.xml"/>

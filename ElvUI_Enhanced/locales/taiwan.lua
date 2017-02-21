@@ -1,4 +1,4 @@
-﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
@@ -51,7 +51,7 @@ L['Automatically release body when killed inside a battleground.'] = "在戰場�
 
 -- Track Reputation
 L['Track Reputation'] = "聲望追蹤"
-L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "當你獲得某個陣營的聲望時, 將自動追蹤此陣營的聲望至經驗值欄位." 
+L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "當你獲得某個陣營的聲望時, 將自動追蹤此陣營的聲望至經驗值欄位."
 
 -- Item Level Datatext
 L['Item Level'] = "物品等級"

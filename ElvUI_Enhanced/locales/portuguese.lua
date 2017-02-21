@@ -1,4 +1,4 @@
-﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
@@ -50,7 +50,7 @@ L['Automatically release body when killed inside a battleground.'] = "Automatica
 
 -- Track Reputation
 L['Track Reputation'] = "Controlar Reputação"
-L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "Mudar automaticamente a facção controlada para a facção na qual acabou de ganhar pontos de reputação." 
+L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "Mudar automaticamente a facção controlada para a facção na qual acabou de ganhar pontos de reputação."
 
 -- Item Level Datatext
 L['Item Level'] = true

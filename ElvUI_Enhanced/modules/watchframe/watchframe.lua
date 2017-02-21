@@ -4,7 +4,7 @@ local WF = E:NewModule("WatchFrame", "AceEvent-3.0");
 local watchFrame;
 
 local statedriver = {
-	["NONE"] = function(frame) 
+	["NONE"] = function(frame)
 		WatchFrame.userCollapsed = false;
 		WatchFrame_Expand(watchFrame);
 		WatchFrame:Show();
@@ -21,7 +21,7 @@ local statedriver = {
 
 function WF:ChangeState(event)
 	if(UnitAffectingCombat("player")) then self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState"); return; end
-	
+
 	if(IsResting()) then
 		statedriver[E.db.watchframe.city](watchFrame);
 	else
