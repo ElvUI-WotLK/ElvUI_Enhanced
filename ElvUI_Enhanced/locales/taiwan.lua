@@ -5,7 +5,7 @@ if not L then return end
 -- Translation by: xjjxfpyyyf, zhouf616, mcc
 
 -- Init
-L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r version %s%s|r."
+L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 
 -- Equipment
 L["Equipment"] = "自動換裝"
@@ -25,13 +25,6 @@ L["Changes the transparency of all the movers."] = "改變所有定位器的透�
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = true
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
-
--- Attack Icon
-L["Attack Icon"] = "戰鬥標記"
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = "當目標不是被你或你的隊伍所開,但是可以取得任務道具,獎勵,道具時顯示一個戰鬥標記"
-
--- Class Icon
-L["Show class icon for units."] = "顯是職業圖標"
 
 -- Minimap Location
 L["Above Minimap"] = "小地圖之上"
@@ -58,12 +51,6 @@ L["Item Level"] = "物品等級"
 -- Range Datatext
 L["Target Range"] = "目標距離"
 L["Distance"] = "距離"
-
--- Nameplates
-L["Threat Text"] = "威脅值文字"
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = "在首領或鼠標懸停的血條上顯示威脅等級文字."
-L["Target Count"] = "目標記數"
-L["Display the number of party / raid members targetting the nameplate unit."] = "在血調旁邊顯示隊伍/團隊成員中以其為目標的個數"
 
 -- WatchFrame
 L["WatchFrame"] = "追蹤器"

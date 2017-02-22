@@ -1,28 +1,34 @@
 local E, L, V, P, G = unpack(ElvUI);
 
 P.general.minimap.locationText = "ABOVE";
-P.general.movertransparancy = 0.8;
 
-P["unitframe"]["units"]["target"]["attackicon"] = {
-	["enable"] = true,
-	["xOffset"] = 24,
-	["yOffset"] = 6,
-}
-
-P["unitframe"]["units"]["target"]["classicon"] = {
-	["enable"] = true,
-	["size"] = 28,
-	["xOffset"] = -58,
-	["yOffset"] = -22,
-}
-
-P.nameplate.showthreat = true;
-P.nameplate.targetcount = true;
-
-P.watchframe = {
-	["city"] = "COLLAPSED",
-	["pvp"] = "HIDDEN",
-	["arena"] = "HIDDEN",
-	["party"] = "COLLAPSED",
-	["raid"] = "COLLAPSED",
+P.enhanced = {
+	general = {
+		pvpAutoRelease = true,
+		autoRepChange = true,
+		moverTransparancy = 0.8,
+	},
+	equipment = {
+		enable = true,
+		durability = {
+			enable = true,
+			onlydamaged = false
+		},
+		itemlevel = {
+			enable = true
+		}
+	},
+	minimap = {
+		locationdigits = 1,
+		hideincombat = false,
+		fadeindelay = 5,
+	},
+	watchframe = {
+		enable = true,
+		city = "COLLAPSED",
+		pvp = "HIDDEN",
+		arena = "HIDDEN",
+		party = "COLLAPSED",
+		raid = "COLLAPSED",
+	},
 };

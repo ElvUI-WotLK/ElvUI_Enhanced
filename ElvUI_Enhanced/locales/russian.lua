@@ -4,7 +4,7 @@ local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
 -- Init
-L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r версии %s%s|r."
+L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r версии %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Экипировка"
@@ -24,13 +24,6 @@ L["Changes the transparency of all the movers."] = "Изменяет прозр�
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = "Скрыть иконку роли в бою"
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Все иконки ролей (дд/хил/танк) на фреймах юнитов будут скрыты во время боя."
-
--- Attack Icon
-L["Attack Icon"] = "Иконка атаки"
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = "Показывать иконку атаки на цели, которая не была затронута вами или вашей группой, но которая принесет почетную победу при атаке."
-
--- Class Icon
-L["Show class icon for units."] = "Показывать иконку класса на цели."
 
 -- Minimap Location
 L["Above Minimap"] = "Над миникартой"
@@ -56,12 +49,6 @@ L["Item Level"] = "Уровень предметов"
 -- Range Datatext
 L["Target Range"] = "Расстояние до цели"
 L["Distance"] = "Дистанция"
-
--- Nameplates
-L["Threat Text"] = "Текст угрозы";
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = "Показывать уровень угрозы на цели, боссе или при наведении курсора на индикатор здоровья.";
-L["Target Count"] = "Число целей";
-L["Display the number of party / raid members targetting the nameplate unit."] = "Показывать количество членов группы/рейда выбравших текущую цель на индикаторе здоровья.";
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"

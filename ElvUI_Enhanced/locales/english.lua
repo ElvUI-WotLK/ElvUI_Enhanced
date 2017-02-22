@@ -5,7 +5,7 @@ local L = AceLocale:NewLocale("ElvUI", "enUS", true);
 if not L then return end
 
 -- Init
-L["ENH_LOGIN_MSG"] = "You are using |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r version %s%s|r."
+L["ENH_LOGIN_MSG"] = "You are using |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 
 -- Equipment
 L["Equipment"] = true
@@ -25,13 +25,6 @@ L["Changes the transparency of all the movers."] = true
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = true
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
-
--- Attack Icon
-L["Attack Icon"] = true
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = true
-
--- Class Icon
-L["Show class icon for units."] = true
 
 -- Minimap Location
 L["Above Minimap"] = true
@@ -58,12 +51,6 @@ L["Item Level"] = true
 -- Range Datatext
 L["Target Range"] = true
 L["Distance"] = true
-
--- Nameplates
-L["Threat Text"] = true
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = true
-L["Target Count"] = true
-L["Display the number of party / raid members targetting the nameplate unit."] = true
 
 -- WatchFrame
 L["WatchFrame"] = true

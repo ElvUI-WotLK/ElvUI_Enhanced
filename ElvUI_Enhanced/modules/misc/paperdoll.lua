@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local PD = E:NewModule("PaperDoll", "AceHook-3.0", "AceEvent-3.0")
+local PD = E:NewModule("Enhanced_PaperDoll", "AceHook-3.0", "AceEvent-3.0")
 
 local format = string.format
 local pairs, select = pairs, select
@@ -58,7 +58,7 @@ function PD:UpdatePaperDoll(unit)
 		hasItem = GetInventoryItemTexture(unit, slotID)
 
 		frame.ItemLevel:SetText()
-		if E.private.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
+		if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
 			itemLink = GetInventoryItemLink(unit, slotID)
 
 			if itemLink then
@@ -71,9 +71,9 @@ function PD:UpdatePaperDoll(unit)
 
 		if unit == "player" and durability then
 			frame.DurabilityInfo:SetText()
-			if E.private.equipment.durability.enable then
+			if E.db.enhanced.equipment.durability.enable then
 				current, maximum = GetInventoryItemDurability(slotID)
-				if current and maximum and (not E.private.equipment.durability.onlydamaged or current < maximum) then
+				if current and maximum and (not E.db.enhanced.equipment.durability.onlydamaged or current < maximum) then
 					r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0)
 					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100)
 				end
@@ -130,7 +130,7 @@ function PD:InitialUpdatePaperDoll()
 end
 
 function PD:ToggleState(init)
-	if E.private.equipment.enable then
+	if E.db.enhanced.equipment.enable then
 		if not self.initialized then
 			if init then
 				self:RegisterEvent("PLAYER_ENTERING_WORLD", "InitialUpdatePaperDoll")
@@ -163,7 +163,7 @@ function PD:ToggleState(init)
 end
 
 function PD:Initialize()
-	if not E.private.equipment.enable then return end
+	if not E.db.enhanced.equipment.enable then return end
 
 	self:ToggleState(true)
 end

@@ -5,7 +5,7 @@ if not L then return end
 -- Translation by: zhouf616
 
 -- Init
-L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r version %s%s|r."
+L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 
 -- Equipment
 L["Equipment"] = "自动换装"
@@ -25,13 +25,6 @@ L["Changes the transparency of all the movers."] = true
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = true
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
-
--- Attack Icon
-L["Attack Icon"] = true
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = true
-
--- Class Icon
-L["Show class icon for units."] = true
 
 -- Minimap Location
 L["Above Minimap"] = true
@@ -58,12 +51,6 @@ L["Item Level"] = true
 -- Range Datatext
 L["Target Range"] = true
 L["Distance"] = "距离"
-
--- Nameplates
-L["Threat Text"] = "威胁值文字"
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = "在首领或鼠标悬停的血条上显示威胁值文字."
-L["Target Count"] = true
-L["Display the number of party / raid members targetting the nameplate unit."] = true
 
 -- WatchFrame
 L["WatchFrame"] = true

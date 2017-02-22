@@ -6,7 +6,7 @@ if not L then return end
 -- Translation by: Kaltzifar
 
 -- Init
-L["ENH_LOGIN_MSG"] = "Sie verwenden |cff1784d1ElvUI Again|r |cffff8000(WotLK)|r Version %s%s|r."
+L["ENH_LOGIN_MSG"] = "Sie verwenden |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r Version %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Ausrüstung"
@@ -26,13 +26,6 @@ L["Changes the transparency of all the movers."] = "Konfiguriere die Einstellung
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = "Verstecke Rollensymbol im Kampf"
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Alle Rollensymbole (Schaden/Heiler/Tank) auf den Einheitenfenstern werden versteckt, wenn der Charakter sich im Kampf befindet."
-
--- Attack Icon
-L["Attack Icon"] = "Angriffssymbol"
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = "Zeige Angriffssymbol für Gegner, die noch nicht von Ihnen markiert, aber trotzdem Belohnungen gewähren, wenn sie von Ihnen angegriffen werden"
-
--- Class Icon
-L["Show class icon for units."] = "Zeige Klassensymbole für Einheiten"
 
 -- Minimap Location
 L["Above Minimap"] = "Oberhalb der Minimap"
@@ -59,12 +52,6 @@ L["Item Level"] = "Gegenstandsstufe"
 -- Range Datatext
 L["Target Range"] = "Zielabstand"
 L["Distance"] = "Entfernung"
-
--- Nameplates
-L["Threat Text"] = "Bedrohungstext"
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = " Bedrohung als Text auf der Namensplakette des Ziels anzeigen."
-L["Target Count"] = "Zähler für Angreifende"
-L["Display the number of party / raid members targetting the nameplate unit."] = "Anzahl der Gruppenmitglieder die den Gegner der Namensplakette angreifen."
 
 -- WatchFrame
 L["WatchFrame"] = "Questlog"

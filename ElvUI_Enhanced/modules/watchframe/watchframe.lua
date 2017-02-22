@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI);
-local WF = E:NewModule("WatchFrame", "AceEvent-3.0");
+local WF = E:NewModule("Enhanced_WatchFrame", "AceEvent-3.0");
 
 local IsInInstance = IsInInstance
 local IsResting = IsResting
@@ -27,17 +27,17 @@ function WF:ChangeState()
 	if(UnitAffectingCombat("player")) then self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState"); return; end
 
 	if(IsResting()) then
-		statedriver[E.db.watchframe.city](watchFrame);
+		statedriver[E.db.enhanced.watchframe.city](watchFrame);
 	else
 		local _, instanceType = IsInInstance();
 		if(instanceType == "pvp") then
-			statedriver[E.db.watchframe.pvp](watchFrame);
+			statedriver[E.db.enhanced.watchframe.pvp](watchFrame);
 		elseif(instanceType == "arena") then
-			statedriver[E.db.watchframe.arena](watchFrame);
+			statedriver[E.db.enhanced.watchframe.arena](watchFrame);
 		elseif(instanceType == "party") then
-			statedriver[E.db.watchframe.party](watchFrame);
+			statedriver[E.db.enhanced.watchframe.party](watchFrame);
 		elseif(instanceType == "raid") then
-			statedriver[E.db.watchframe.raid](watchFrame);
+			statedriver[E.db.enhanced.watchframe.raid](watchFrame);
 		else
 			statedriver["NONE"](watchFrame);
 		end
@@ -47,7 +47,7 @@ function WF:ChangeState()
 end
 
 function WF:UpdateSettings()
-	if(E.private.watchframe.enable) then
+	if(E.db.enhanced.watchframe.enable) then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ChangeState");
 		self:RegisterEvent("PLAYER_UPDATE_RESTING", "ChangeState");
 	else

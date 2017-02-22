@@ -13,6 +13,8 @@ libs\load_libs.xml
 
 locales\load_locales.xml
 media\load_media.xml
+
+ElvUI_Enhanced.lua
+
 config\load_config.xml
 modules\load_modules.xml
-ElvUI_Enhanced.lua

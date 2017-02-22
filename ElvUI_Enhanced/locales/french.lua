@@ -6,7 +6,7 @@ if not L then return; end
 -- Translation by: Alex586, Deadse10
 
 -- Init
-L["ENH_LOGIN_MSG"] = "Vous utilisez |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r version %s%s|r."
+L["ENH_LOGIN_MSG"] = "Vous utilisez |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Équipement"
@@ -26,13 +26,6 @@ L["Changes the transparency of all the movers."] = "Change la transparence des A
 -- Auto Hide Role Icons in combat
 L["Hide Role Icon in combat"] = "Cachez les icônes de rôle en combat"
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
-
--- Attack Icon
-L["Attack Icon"] = "Icône d'Attaque"
-L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = "Affiche une icône d'attaque sur les unités que vous ou votre groupe n'avez pas encore tapé, mais dont vous pouvez revendiquer la paternité."
-
--- Class Icon
-L["Show class icon for units."] = true
 
 -- Minimap Location
 L["Above Minimap"] = "Sous la minicarte"
@@ -59,12 +52,6 @@ L["Item Level"] = "Niveau d'objet"
 -- Range Datatext
 L["Target Range"] = true
 L["Distance"] = "Distance"
-
--- Nameplates
-L["Threat Text"] = "Texte de menace"
-L["Display threat level as text on targeted, boss or mouseover nameplate."] = "Affiche le niveau de menace sur le cadre d'unité de la cible, du boss, ou en passant votre souris."
-L["Target Count"] = true
-L["Display the number of party / raid members targetting the nameplate unit."] = true
 
 -- WatchFrame
 L["WatchFrame"] = "Fenêtre d'objectifs"

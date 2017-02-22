@@ -15,11 +15,11 @@ local digits = {
 
 local function UpdateLocation(self, elapsed)
 	location.elapsed = (location.elapsed or 0) + elapsed;
-	if(location.elapsed < digits[E.private.general.minimap.locationdigits][1]) then return; end
+	if(location.elapsed < digits[E.db.enhanced.minimap.locationdigits][1]) then return; end
 
 	xMap.pos, yMap.pos = GetPlayerMapPosition("player");
-	xMap.text:SetFormattedText(digits[E.private.general.minimap.locationdigits][2], xMap.pos * 100);
-	yMap.text:SetFormattedText(digits[E.private.general.minimap.locationdigits][2], yMap.pos * 100);
+	xMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], xMap.pos * 100);
+	yMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], yMap.pos * 100);
 
 	location.elapsed = 0;
 end
@@ -106,7 +106,7 @@ hooksecurefunc(M, "UpdateSettings", function()
 		CreateEnhancedMaplocation();
 	end
 
-	if(E.private.general.minimap.hideincombat) then
+	if(E.db.enhanced.minimap.hideincombat) then
 		M:RegisterEvent("PLAYER_REGEN_DISABLED", HideMinimap);
 		M:RegisterEvent("PLAYER_REGEN_ENABLED", ShowMinimap);
 	else
