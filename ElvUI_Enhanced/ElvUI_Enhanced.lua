@@ -1,11 +1,11 @@
-local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local ENH = E:NewModule('ENH', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local E, L, V, P, G = unpack(ElvUI);
+local ENH = E:NewModule("ENH")
 
 function ENH:Initialize()
 	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
 
 	if E.db.general.loginmessage then
-		print(format(L['ENH_LOGIN_MSG'], E["media"].hexvaluecolor, ENH.version))
+		print(format(L["ENH_LOGIN_MSG"], E["media"].hexvaluecolor, ENH.version))
 	end
 end
 

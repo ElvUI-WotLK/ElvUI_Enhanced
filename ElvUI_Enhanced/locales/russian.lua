@@ -4,8 +4,7 @@ local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
 -- Init
-L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI Enhanced Again|r |cffff8000(Legion)|r версии %s%s|r."
-L["Your version of ElvUI is to old (required v5.25 or higher). Please, download the latest version from tukui.org."] = "Ваша версия ElvUI устарела(требуется v5.25 или выше). Пожалуйста, скачайте последнюю версию с tukui.org."
+L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r версии %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Экипировка"

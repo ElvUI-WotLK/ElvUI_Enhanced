@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
 
 P.general.minimap.locationText = "ABOVE";
-P.general.movertransparancy = .8;
+P.general.movertransparancy = 0.8;
 
---Unitframes
 P["unitframe"]["units"]["target"]["attackicon"] = {
 	["enable"] = true,
 	["xOffset"] = 24,

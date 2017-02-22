@@ -1,9 +1,9 @@
 ## Interface: 30300
-## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313E|r|cffC4C4C4nhanced|r
 ## Author: Feraldin
-## Credits: Instant, Tristimdorio (Omega1970), Azilroka, Lockslap, Sortokk, Repooc, moresunders
 ## Version: 3.2.0-beta5
+## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313E|r|cffC4C4C4nhanced|r
 ## Notes: Plugin-Enhancements for |cffA11313E|r|cffC4C4C4lvUI|r.
+## Credits: Instant, Tristimdorio (Omega1970), Azilroka, Lockslap, Sortokk, Repooc, moresunders
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 

@@ -1,7 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI);
 local DT = E:GetModule("DataTexts");
 
-local rc = LibStub("LibRangeCheck-2.0");
+local LRC = LibStub("LibRangeCheck-2.0");
+
+local join = string.join;
+
+local UnitName = UnitName
+
 local displayString = "";
 local lastPanel;
 local int = 1;
@@ -16,7 +21,7 @@ local function OnUpdate(self, t)
 	if(int > 0) then return; end
 	int = .25;
 
-	local min, max = rc:GetRange("target");
+	local min, max = LRC:GetRange("target");
 	if(not forceUpdate and (min == curMin and max == curMax)) then return; end
 
 	curMin = min;
@@ -42,12 +47,12 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = string.join("", "%s: ", hex, "%d|r - ", hex, "%d|r");
+	displayString = join("", "%s: ", hex, "%d|r - ", hex, "%d|r");
 
 	if(lastPanel ~= nil) then
-		OnEvent(lastPanel)
+		OnEvent(lastPanel);
 	end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true;
+E["valueColorUpdateFuncs"][ValueColorUpdate] = true;
 
 DT:RegisterDatatext("Target Range", {"PLAYER_TARGET_CHANGED"}, OnEvent, OnUpdate);

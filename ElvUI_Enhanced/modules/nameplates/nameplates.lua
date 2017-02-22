@@ -11,10 +11,6 @@ local UnitGUID, UnitName = UnitGUID, UnitName;
 
 local rosterTimer;
 
-function Hex(r, g, b)
-	return format("|cFF%02x%02x%02x", r * 255, g * 255, b * 255);
-end
-
 NP.GroupMembers = {};
 
 hooksecurefunc(NP, "CreatePlate", function(self, frame)
@@ -50,7 +46,7 @@ hooksecurefunc(NP, "GetThreatReaction", function(self, frame)
 			if(unit and not UnitIsPlayer(unit) and UnitCanAttack("player", unit)) then
 				local status, percent = select(2, UnitDetailedThreatSituation("player", unit));
 				if(status) then
-					frame.threatInfo:SetFormattedText("%s%.0f%%|r", Hex(GetThreatStatusColor(status)), percent);
+					frame.threatInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(GetThreatStatusColor(status)), percent);
 				else
 					frame.threatInfo:SetFormattedText("|cFF808080%s|r", L["None"]);
 				end
