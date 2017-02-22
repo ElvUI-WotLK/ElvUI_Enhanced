@@ -23,7 +23,7 @@ SlashCmdList["ANALYZE"] = function(arg)
 end
 
 SLASH_PROFILE1 = "/profile"
-SlashCmdList["PROFILE"] = function(arg)
+SlashCmdList["PROFILE"] = function()
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	if cpuProfiling then
 		SetCVar("scriptProfile", "0")

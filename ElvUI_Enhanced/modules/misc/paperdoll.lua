@@ -48,12 +48,12 @@ function PD:UpdatePaperDoll(unit)
 	if unit and not CanInspect(unit, false) then return end
 
 	local baseName = unit == "player" and "Character" or "Inspect"
-	local frame, slotID, textureName
+	local frame, slotID, hasItem
 	local itemLink, itemLevel
 	local current, maximum, r, g, b
 
 	for slotName, durability in pairs(slots) do
-		frame = _G[("%s%s"):format(baseName, slotName)]
+		frame = _G[format("%s%s", baseName, slotName)]
 		slotID = GetInventorySlotInfo(slotName)
 		hasItem = GetInventoryItemTexture(unit, slotID)
 
@@ -85,7 +85,7 @@ end
 function PD:BuildInfoText(name)
 	local frame
 	for slotName, durability in pairs(slots) do
-		frame = _G[("%s%s"):format(name, slotName)]
+		frame = _G[format("%s%s", name, slotName)]
 
 		frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY")
 		frame.ItemLevel:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1)

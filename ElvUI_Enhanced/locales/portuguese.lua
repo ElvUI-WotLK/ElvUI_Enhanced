@@ -4,14 +4,13 @@ if not L then return end
 
 -- Translation by: ubios
 
-L["ENH_LOGIN_MSG"] = "Você está a usar |cff1784d1ElvUI Enhanced Again|r |cffff8000(Legion)|r versão %s%s|r."
-L["Your version of ElvUI is to old (required v5.25 or higher). Please, download the latest version from tukui.org."] = "A sua versão do ElvUI é muita antiga (requerida v6.51 ou superior). Por favor, descarregue a versão mais recente em tukui.org."
+L["ENH_LOGIN_MSG"] = "Você está a usar |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r versão %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Equipamento"
 
 L["DURABILITY_DESC"] = "Ajuste as opções para a informação de durabilidade no ecrã de informação do personagem."
-L['Enable/Disable the display of durability information on the character screen.'] = "Activar/desactivar a informação de durabilidade no ecrã de informação do personagem."
+L["Enable/Disable the display of durability information on the character screen."] = "Activar/desactivar a informação de durabilidade no ecrã de informação do personagem."
 L["Damaged Only"] = "Só Danificados"
 L["Only show durabitlity information for items that are damaged."] = "Só mostrar informação de durabilidade para itens danificados."
 
@@ -23,20 +22,20 @@ L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
 -- Auto Hide Role Icons in combat
-L['Hide Role Icon in combat'] = true
-L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = true
+L["Hide Role Icon in combat"] = true
+L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
 
 -- Attack Icon
-L['Attack Icon'] = true
-L['Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked.'] = true
+L["Attack Icon"] = true
+L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = true
 
 -- Class Icon
-L['Show class icon for units.'] = true
+L["Show class icon for units."] = true
 
 -- Minimap Location
-L['Above Minimap'] = true
-L['Location Digits'] = true
-L['Number of digits for map location.'] = true
+L["Above Minimap"] = true
+L["Location Digits"] = true
+L["Number of digits for map location."] = true
 
 -- Minimap Combat Hide
 L["Combat Hide"] = true;
@@ -45,19 +44,19 @@ L["FadeIn Delay"] = true
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = true
 
 -- PvP Autorelease
-L['PvP Autorelease'] = "Auto-libertar em JxJ"
-L['Automatically release body when killed inside a battleground.'] = "Automaticamente libertar o corpo quando morto num campo de batalha."
+L["PvP Autorelease"] = "Auto-libertar em JxJ"
+L["Automatically release body when killed inside a battleground."] = "Automaticamente libertar o corpo quando morto num campo de batalha."
 
 -- Track Reputation
-L['Track Reputation'] = "Controlar Reputação"
-L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "Mudar automaticamente a facção controlada para a facção na qual acabou de ganhar pontos de reputação."
+L["Track Reputation"] = "Controlar Reputação"
+L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Mudar automaticamente a facção controlada para a facção na qual acabou de ganhar pontos de reputação."
 
 -- Item Level Datatext
-L['Item Level'] = true
+L["Item Level"] = true
 
 -- Range Datatext
-L['Target Range'] = true
-L['Distance'] = true
+L["Target Range"] = true
+L["Distance"] = true
 
 -- Nameplates
 L["Threat Text"] = true
@@ -66,13 +65,13 @@ L["Target Count"] = true
 L["Display the number of party / raid members targetting the nameplate unit."] = true
 
 -- WatchFrame
-L['WatchFrame'] = true
-L['WATCHFRAME_DESC'] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
-L['Hidden'] = true
-L['Collapsed'] = true
-L['Settings'] = true
-L['City (Resting)'] = true
-L['PvP'] = true
-L['Arena'] = true
-L['Party'] = true
-L['Raid'] = true
+L["WatchFrame"] = true
+L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
+L["Hidden"] = true
+L["Collapsed"] = true
+L["Settings"] = true
+L["City (Resting)"] = true
+L["PvP"] = true
+L["Arena"] = true
+L["Party"] = true
+L["Raid"] = true

@@ -1,31 +1,35 @@
 local E, L, V, P, G = unpack(ElvUI);
 local WF = E:NewModule("WatchFrame", "AceEvent-3.0");
 
+local IsInInstance = IsInInstance
+local IsResting = IsResting
+local UnitAffectingCombat = UnitAffectingCombat
+
 local watchFrame;
 
 local statedriver = {
-	["NONE"] = function(frame)
+	["NONE"] = function()
 		WatchFrame.userCollapsed = false;
 		WatchFrame_Expand(watchFrame);
 		WatchFrame:Show();
 	end,
-	["COLLAPSED"] = function(frame)
+	["COLLAPSED"] = function()
 		WatchFrame.userCollapsed = true;
 		WatchFrame_Collapse(watchFrame);
 		WatchFrame:Show();
 	end,
-	["HIDDEN"] = function(frame)
+	["HIDDEN"] = function()
 		WatchFrame:Hide();
 	end
 };
 
-function WF:ChangeState(event)
+function WF:ChangeState()
 	if(UnitAffectingCombat("player")) then self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState"); return; end
 
 	if(IsResting()) then
 		statedriver[E.db.watchframe.city](watchFrame);
 	else
-		local instance, instanceType = IsInInstance();
+		local _, instanceType = IsInInstance();
 		if(instanceType == "pvp") then
 			statedriver[E.db.watchframe.pvp](watchFrame);
 		elseif(instanceType == "arena") then
@@ -54,7 +58,7 @@ end
 
 function WF:Initialize()
 	watchFrame = _G["WatchFrame"];
-	WF:UpdateSettings();
+	self:UpdateSettings();
 end
 
 E:RegisterModule(WF:GetName());

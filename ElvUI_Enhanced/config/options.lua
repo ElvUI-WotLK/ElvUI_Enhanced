@@ -1,22 +1,13 @@
-local addonName = ...;
 local E, L, V, P, G = unpack(ElvUI);
 local EO = E:NewModule("EnhancedOptions", "AceEvent-3.0");
 local EP = LibStub("LibElvUIPlugin-1.0");
 
-local positionValues = {
-	TOPLEFT = "TOPLEFT",
-	LEFT = "LEFT",
-	BOTTOMLEFT = "BOTTOMLEFT",
-	RIGHT = "RIGHT",
-	TOPRIGHT = "TOPRIGHT",
-	BOTTOMRIGHT = "BOTTOMRIGHT",
-	CENTER = "CENTER",
-	TOP = "TOP",
-	BOTTOM = "BOTTOM"
-};
+local addonName = ...;
+
+local format = string.format
 
 local function ColorizeSettingName(settingName)
-	return ("|cffff8000%s|r"):format(settingName);
+	return format("|cffff8000%s|r", settingName);
 end
 
 function EO:EquipmentOptions()
@@ -25,8 +16,8 @@ function EO:EquipmentOptions()
 	E.Options.args.equipment = {
 		type = "group",
 		name = ColorizeSettingName(L["Equipment"]),
-		get = function(info) return E.private.equipment[ info[#info] ]; end,
-		set = function(info, value) E.private.equipment[ info[#info] ] = value; end,
+		get = function(info) return E.private.equipment[info[#info]]; end,
+		set = function(info, value) E.private.equipment[info[#info]] = value; end,
 		args = {
 			intro = {
 				order = 1,
@@ -47,8 +38,8 @@ function EO:EquipmentOptions()
 				type = "group",
 				name = DURABILITY,
 				guiInline = true,
-				get = function(info) return E.private.equipment.durability[ info[#info] ]; end,
-				set = function(info, value) E.private.equipment.durability[ info[#info] ] = value PD:UpdatePaperDoll("player") end,
+				get = function(info) return E.private.equipment.durability[info[#info]]; end,
+				set = function(info, value) E.private.equipment.durability[info[#info]] = value PD:UpdatePaperDoll("player") end,
 				args = {
 					enable = {
 						order = 1,
@@ -75,8 +66,8 @@ function EO:EquipmentOptions()
 				type = "group",
 				name = L["Item Level"],
 				guiInline = true,
-				get = function(info) return E.private.equipment.itemlevel[ info[#info] ]; end,
-				set = function(info, value) E.private.equipment.itemlevel[ info[#info] ] = value PD:UpdatePaperDoll("player"); end,
+				get = function(info) return E.private.equipment.itemlevel[info[#info]]; end,
+				set = function(info, value) E.private.equipment.itemlevel[info[#info]] = value PD:UpdatePaperDoll("player"); end,
 				args = {
 					enable = {
 						order = 1,
@@ -185,8 +176,8 @@ function EO:UnitFramesOptions()
 		order = 1001,
 		type = "group",
 		name = ColorizeSettingName(L["Attack Icon"]),
-		get = function(info) return E.db.unitframe.units["target"]["attackicon"][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units["target"]["attackicon"][ info[#info] ] = value end,
+		get = function(info) return E.db.unitframe.units["target"]["attackicon"][info[#info]] end,
+		set = function(info, value) E.db.unitframe.units["target"]["attackicon"][info[#info]] = value end,
 		args = {
 			enable = {
 				type = "toggle",
@@ -213,8 +204,8 @@ function EO:UnitFramesOptions()
 		order = 1002,
 		type = "group",
 		name = ColorizeSettingName(L["Class Icons"]),
-		get = function(info) return E.db.unitframe.units["target"]["classicon"][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units["target"]["classicon"][ info[#info] ] = value; TC:ToggleSettings() end,
+		get = function(info) return E.db.unitframe.units["target"]["classicon"][info[#info]] end,
+		set = function(info, value) E.db.unitframe.units["target"]["classicon"][info[#info]] = value; TC:ToggleSettings() end,
 		args = {
 			enable = {
 				type = "toggle",
@@ -249,7 +240,7 @@ function EO:UnitFramesOptions()
 		name = ColorizeSettingName(L["Hide Role Icon in combat"]),
 		desc = L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."],
 		type = "toggle",
-		set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end
+		set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end
 	};
 end
 
@@ -265,8 +256,8 @@ function EO:WatchFrame()
 	E.Options.args.watchframe = {
 		type = "group",
 		name = ColorizeSettingName(L["WatchFrame"]),
-		get = function(info) return E.private.watchframe[ info[#info] ] end,
-		set = function(info, value) E.private.watchframe[ info[#info] ] = value; WF:UpdateSettings() end,
+		get = function(info) return E.private.watchframe[info[#info]] end,
+		set = function(info, value) E.private.watchframe[info[#info]] = value; WF:UpdateSettings() end,
 		args = {
 			intro = {
 				order = 1,
@@ -284,8 +275,8 @@ function EO:WatchFrame()
 				name = L["Settings"],
 				guiInline = true,
 				disabled = function() return not E.private.watchframe.enable end,
-				get = function(info) return E.db.watchframe[ info[#info] ] end,
-				set = function(info, value) E.db.watchframe[ info[#info] ] = value end,
+				get = function(info) return E.db.watchframe[info[#info]] end,
+				set = function(info, value) E.db.watchframe[info[#info]] = value end,
 				args = {
 					city = {
 						order = 4,
@@ -323,7 +314,7 @@ function EO:WatchFrame()
 	}
 end
 
-function EO:GetOptions()
+local function GetOptions()
 	EO:EquipmentOptions()
 	EO:MapOptions()
 	EO:MiscOptions()
@@ -333,7 +324,7 @@ function EO:GetOptions()
 end
 
 function EO:Initialize()
-	EP:RegisterPlugin(addonName, EO.GetOptions);
+	EP:RegisterPlugin(addonName, GetOptions);
 end
 
 E:RegisterModule(EO:GetName());

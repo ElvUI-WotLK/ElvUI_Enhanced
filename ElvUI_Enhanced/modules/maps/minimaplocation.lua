@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI);
 local M = E:GetModule("Minimap");
 
 local GetPlayerMapPosition = GetPlayerMapPosition;
+local InCombatLockdown = InCombatLockdown;
+
 local init = false;
 local cluster, panel, location, xMap, yMap;
 
@@ -41,7 +43,7 @@ local function CreateEnhancedMaplocation()
 
 	yMap = CreateFrame("Frame", "MapCoordinatesY", panel);
 	yMap:SetTemplate("Transparent");
-	MapCoordinatesY:Point("RIGHT", panel, "RIGHT", 0, 0);
+	yMap:Point("RIGHT", panel, "RIGHT", 0, 0);
 	yMap:Size(40, 22);
 
 	yMap.text = yMap:CreateFontString(nil, "OVERLAY");
@@ -69,10 +71,6 @@ local function FadeFrame(frame, direction, startAlpha, endAlpha, time, func)
 	});
 end
 
-local function HideMinimap()
-	cluster:Hide();
-end
-
 local function FadeInMinimap()
 	if(not InCombatLockdown()) then
 		FadeFrame(cluster, "IN", 0, 1, .5, function() if(not InCombatLockdown()) then cluster:Show(); end end);
@@ -87,9 +85,14 @@ local function ShowMinimap()
 	end
 end
 
+local function HideMinimap()
+	cluster:Hide();
+end
+
 hooksecurefunc(M, "Update_ZoneText", function()
 	xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+
 	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	location.text:SetTextColor(M:GetLocTextColor());
 	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25));
@@ -115,7 +118,7 @@ hooksecurefunc(M, "UpdateSettings", function()
 	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
 	panel:Size(holder:GetWidth(), 22);
 
-	local point, relativeTo, relativePoint, xOfs, yOfs = holder:GetPoint();
+	local point, relativeTo, relativePoint = holder:GetPoint();
 	if(E.db.general.minimap.locationText == "ABOVE") then
 		holder:SetPoint(point, relativeTo, relativePoint, 0, -22);
 		holder:Height(holder:GetHeight() + 22);

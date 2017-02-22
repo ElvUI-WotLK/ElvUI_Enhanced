@@ -1,14 +1,17 @@
-local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local M = E:NewModule('MiscEnh', 'AceHook-3.0', 'AceEvent-3.0');
+local E, L, V, P, G = unpack(ElvUI);
+local M = E:NewModule("MiscEnh", "AceEvent-3.0");
 
 E.MiscEnh = M;
+
+local IsInInstance = IsInInstance
+local RepopMe = RepopMe
 
 function M:LoadAutoRelease()
 	if not E.private.general.pvpautorelease then return end
 
-	local autoreleasepvp = CreateFrame("frame")
-	autoreleasepvp:RegisterEvent("PLAYER_DEAD")
-	autoreleasepvp:SetScript("OnEvent", function(self, event)
+	local frame = CreateFrame("frame")
+	frame:RegisterEvent("PLAYER_DEAD")
+	frame:SetScript("OnEvent", function()
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == "pvp")) then
 			local soulstone = GetSpellInfo(20707)

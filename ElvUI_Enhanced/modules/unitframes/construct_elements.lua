@@ -65,7 +65,7 @@ end
 
 local CF = CreateFrame("Frame")
 CF:RegisterEvent("PLAYER_ENTERING_WORLD")
-CF:SetScript("OnEvent", function(self, event)
+CF:SetScript("OnEvent", function(self)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	if not E.private["unitframe"].enable then return end
 

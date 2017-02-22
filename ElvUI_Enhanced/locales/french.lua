@@ -6,14 +6,13 @@ if not L then return; end
 -- Translation by: Alex586, Deadse10
 
 -- Init
-L["ENH_LOGIN_MSG"] = "Vous utilisez |cff1784d1ElvUI Enhanced Again|r |cffff8000(Legion)|r version %s%s|r."
-L["Your version of ElvUI is to old (required v5.25 or higher). Please, download the latest version from tukui.org."] = "Votre version d'ElvUI est trop ancienne (requiert v6.51 ou plus). Merci de télécharger une version plus récente sur tukui.org."
+L["ENH_LOGIN_MSG"] = "Vous utilisez |cff1784d1ElvUI Enhanced Again|r |cffff8000(WotLK)|r version %s%s|r."
 
 -- Equipment
 L["Equipment"] = "Équipement"
 
 L["DURABILITY_DESC"] = "Ajustez les réglages pour afficher la durabilité sur l'écran d'infos de personnage."
-L['Enable/Disable the display of durability information on the character screen.'] = "Activer / Désactiver l'affichage des informations de durabilité sur l'écran d'infos de personnage."
+L["Enable/Disable the display of durability information on the character screen."] = "Activer / Désactiver l'affichage des informations de durabilité sur l'écran d'infos de personnage."
 L["Damaged Only"] = "Dégâts seulement"
 L["Only show durabitlity information for items that are damaged."] = "Afficher la durabilité seulement quand l'équipement est endommagé."
 
@@ -25,20 +24,20 @@ L["Mover Transparency"] = "Transparence des Ancres"
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
 
 -- Auto Hide Role Icons in combat
-L['Hide Role Icon in combat'] = "Cachez les icônes de rôle en combat"
-L['All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat.'] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
+L["Hide Role Icon in combat"] = "Cachez les icônes de rôle en combat"
+L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
 
 -- Attack Icon
-L['Attack Icon'] = "Icône d'Attaque"
-L['Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked.'] = "Affiche une icône d'attaque sur les unités que vous ou votre groupe n'avez pas encore tapé, mais dont vous pouvez revendiquer la paternité."
+L["Attack Icon"] = "Icône d'Attaque"
+L["Show attack icon for units that are not tapped by you or your group, but still give kill credit when attacked."] = "Affiche une icône d'attaque sur les unités que vous ou votre groupe n'avez pas encore tapé, mais dont vous pouvez revendiquer la paternité."
 
 -- Class Icon
-L['Show class icon for units.'] = true
+L["Show class icon for units."] = true
 
 -- Minimap Location
-L['Above Minimap'] = "Sous la minicarte"
-L['Location Digits'] = "Chiffres d'emplacement"
-L['Number of digits for map location.'] = "Nombre de chiffres pour l'emplacement."
+L["Above Minimap"] = "Sous la minicarte"
+L["Location Digits"] = "Chiffres d'emplacement"
+L["Number of digits for map location."] = "Nombre de chiffres pour l'emplacement."
 
 -- Minimap Combat Hide
 L["Combat Hide"] = true;
@@ -47,19 +46,19 @@ L["FadeIn Delay"] = "Délais d'estompage"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Le temps à attendre avant que la minicarte s'estompe avec que le combat ait commencé. (0 = désactié)"
 
 -- PvP Autorelease
-L['PvP Autorelease'] = "Libération automatique en PVP"
-L['Automatically release body when killed inside a battleground.'] = "Libère automatiquement votre corps quand vous êtes tué en Champs de Bataille."
+L["PvP Autorelease"] = "Libération automatique en PVP"
+L["Automatically release body when killed inside a battleground."] = "Libère automatiquement votre corps quand vous êtes tué en Champs de Bataille."
 
 -- Track Reputation
-L['Track Reputation'] = "Suivre la Réputation"
-L['Automatically change your watched faction on the reputation bar to the faction you got reputation points for.'] = "Change automatiquement la réputation suivie sur la barre de réputation avec la faction que vous êtes en train de faire."
+L["Track Reputation"] = "Suivre la Réputation"
+L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Change automatiquement la réputation suivie sur la barre de réputation avec la faction que vous êtes en train de faire."
 
 -- Item Level Datatext
-L['Item Level'] = "Niveau d'objet"
+L["Item Level"] = "Niveau d'objet"
 
 -- Range Datatext
-L['Target Range'] = true
-L['Distance'] = "Distance"
+L["Target Range"] = true
+L["Distance"] = "Distance"
 
 -- Nameplates
 L["Threat Text"] = "Texte de menace"
@@ -68,13 +67,13 @@ L["Target Count"] = true
 L["Display the number of party / raid members targetting the nameplate unit."] = true
 
 -- WatchFrame
-L['WatchFrame'] = "Fenêtre d'objectifs"
-L['WATCHFRAME_DESC'] = "Réglez les paramètres pour la visibilité de la fenêtre d'objectifs (journal de quête) avec vos préférences personnelles."
-L['Hidden'] = "Caché"
-L['Collapsed'] = "Replié"
-L['Settings'] = "Paramètres"
-L['City (Resting)'] = "Ville (repos)"
-L['PvP'] = "PvP"
-L['Arena'] = "Arêne"
-L['Party'] = "Groupe"
-L['Raid'] = "Raid"
+L["WatchFrame"] = "Fenêtre d'objectifs"
+L["WATCHFRAME_DESC"] = "Réglez les paramètres pour la visibilité de la fenêtre d'objectifs (journal de quête) avec vos préférences personnelles."
+L["Hidden"] = "Caché"
+L["Collapsed"] = "Replié"
+L["Settings"] = "Paramètres"
+L["City (Resting)"] = "Ville (repos)"
+L["PvP"] = "PvP"
+L["Arena"] = "Arêne"
+L["Party"] = "Groupe"
+L["Raid"] = "Raid"
