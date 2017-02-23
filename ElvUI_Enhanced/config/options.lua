@@ -190,9 +190,62 @@ local function TooltipOptions()
 			},
 			progressInfo = {
 				order = 1,
-				type = "toggle",
+				type = "group",
 				name = L["Progress Info"],
-				set = function(info, value) E.db.enhanced.tooltip[info[#info]] = value; E:GetModule("Enhanced_ProgressionInfo"):ToggleState(); end
+				guiInline = true,
+				get = function(info) return E.db.enhanced.tooltip.progressInfo[info[#info]]; end,
+				set = function(info, value) E.db.enhanced.tooltip.progressInfo[info[#info]] = value; end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						set = function(info, value) E.db.enhanced.tooltip.progressInfo[info[#info]] = value; E:GetModule("Enhanced_ProgressionInfo"):ToggleState(); end
+					},
+					checkPlayer = {
+						order = 2,
+						type = "toggle",
+						name = L["Check Player"]
+					},
+					tiers = {
+						order = 3,
+						type = "group",
+						name = L["Tiers"],
+						args = {
+							rs = {
+								order = 1,
+								type = "toggle",
+								name = "RS",
+								desc = "Ruby Sanctum",
+								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[1]; end,
+								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[1] = value; end
+							},
+							icc = {
+								order = 2,
+								type = "toggle",
+								name = "ICC",
+								desc = "Icecrown Citadel",
+								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[2]; end,
+								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[2] = value; end
+							},
+							totc = {
+								order = 3,
+								type = "toggle",
+								name = "TotC",
+								desc = "Trial of the Crusader",
+								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[3]; end,
+								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[3] = value; end
+							},
+							uld = {
+								order = 4,
+								type = "toggle",
+								name = "Ulduar",
+								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[4]; end,
+								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[4] = value; end
+							}
+						}
+					}
+				}
 			}
 		}
 	};
@@ -278,7 +331,7 @@ end
 
 function addon:GetOptions()
 	E.Options.args.enhanced = {
-		order = 100,
+		order = 50,
 		type = "group",
 		childGroups = "tab",
 		name = ColorizeSettingName("Enhanced"),

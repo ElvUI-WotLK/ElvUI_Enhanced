@@ -24,7 +24,11 @@ P.enhanced = {
 		fadeindelay = 5,
 	},
 	tooltip = {
-		progressInfo = false,
+		progressInfo = {
+			enable = false,
+			checkPlayer = false,
+			tiers = {false, true, false, false},
+		},
 	},
 	watchframe = {
 		enable = true,
