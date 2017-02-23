@@ -4,15 +4,15 @@ P.general.minimap.locationText = "ABOVE";
 
 P.enhanced = {
 	general = {
-		pvpAutoRelease = true,
-		autoRepChange = true,
+		pvpAutoRelease = false,
+		autoRepChange = false,
 		moverTransparancy = 0.8,
 	},
 	equipment = {
 		enable = true,
 		durability = {
 			enable = true,
-			onlydamaged = false
+			onlydamaged = true
 		},
 		itemlevel = {
 			enable = true
