@@ -22,10 +22,6 @@ L["Enable/Disable the display of item levels on the character screen."] = true
 L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
--- Auto Hide Role Icons in combat
-L["Hide Role Icon in combat"] = true
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
-
 -- Minimap Location
 L["Above Minimap"] = true
 L["Location Digits"] = true
@@ -51,6 +47,9 @@ L["Item Level"] = true
 -- Range Datatext
 L["Target Range"] = true
 L["Distance"] = true
+
+-- Tooltip
+L["Progress Info"] = true
 
 -- WatchFrame
 L["WatchFrame"] = true

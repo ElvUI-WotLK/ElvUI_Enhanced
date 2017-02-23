@@ -23,10 +23,6 @@ L["Enable/Disable the display of item levels on the character screen."] = "Anzei
 L["Mover Transparency"] = "Transparenz Ankerpunkte"
 L["Changes the transparency of all the movers."] = "Konfiguriere die Einstellungen der Transparenz der Ankerpukte"
 
--- Auto Hide Role Icons in combat
-L["Hide Role Icon in combat"] = "Verstecke Rollensymbol im Kampf"
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Alle Rollensymbole (Schaden/Heiler/Tank) auf den Einheitenfenstern werden versteckt, wenn der Charakter sich im Kampf befindet."
-
 -- Minimap Location
 L["Above Minimap"] = "Oberhalb der Minimap"
 L["Location Digits"] = "Koordinaten Nachkommastellen"
@@ -52,6 +48,9 @@ L["Item Level"] = "Gegenstandsstufe"
 -- Range Datatext
 L["Target Range"] = "Zielabstand"
 L["Distance"] = "Entfernung"
+
+-- Tooltip
+L["Progress Info"] = true
 
 -- WatchFrame
 L["WatchFrame"] = "Questlog"

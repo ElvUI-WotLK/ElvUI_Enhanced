@@ -21,10 +21,6 @@ L["Enable/Disable the display of item levels on the character screen."] = "Вк�
 L["Mover Transparency"] = "Прозрачность фиксаторов"
 L["Changes the transparency of all the movers."] = "Изменяет прозрачность фиксаторов"
 
--- Auto Hide Role Icons in combat
-L["Hide Role Icon in combat"] = "Скрыть иконку роли в бою"
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Все иконки ролей (дд/хил/танк) на фреймах юнитов будут скрыты во время боя."
-
 -- Minimap Location
 L["Above Minimap"] = "Над миникартой"
 L["Location Digits"] = "Цифры координат"
@@ -49,6 +45,9 @@ L["Item Level"] = "Уровень предметов"
 -- Range Datatext
 L["Target Range"] = "Расстояние до цели"
 L["Distance"] = "Дистанция"
+
+-- Tooltip
+L["Progress Info"] = "Прогресс"
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"

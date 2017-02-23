@@ -23,10 +23,6 @@ L["Enable/Disable the display of item levels on the character screen."] = "Activ
 L["Mover Transparency"] = "Transparence des Ancres"
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
 
--- Auto Hide Role Icons in combat
-L["Hide Role Icon in combat"] = "Cachez les icônes de rôle en combat"
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
-
 -- Minimap Location
 L["Above Minimap"] = "Sous la minicarte"
 L["Location Digits"] = "Chiffres d'emplacement"
@@ -52,6 +48,9 @@ L["Item Level"] = "Niveau d'objet"
 -- Range Datatext
 L["Target Range"] = true
 L["Distance"] = "Distance"
+
+-- Tooltip
+L["Progress Info"] = true
 
 -- WatchFrame
 L["WatchFrame"] = "Fenêtre d'objectifs"

@@ -175,6 +175,30 @@ local function MinimapOptions()
 	return config;
 end
 
+local function TooltipOptions()
+	local config = {
+		order = 4,
+		type = "group",
+		name = L["Tooltip"],
+		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
+		set = function(info, value) E.db.enhanced.tooltip[info[#info]] = value; end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["Tooltip"]
+			},
+			progressInfo = {
+				order = 1,
+				type = "toggle",
+				name = L["Progress Info"],
+				set = function(info, value) E.db.enhanced.tooltip[info[#info]] = value; E:GetModule("Enhanced_ProgressionInfo"):ToggleState(); end
+			}
+		}
+	};
+	return config;
+end
+
 local function WatchFrameOptions()
 	local WF = E:GetModule("Enhanced_WatchFrame");
 
@@ -185,7 +209,7 @@ local function WatchFrameOptions()
 	};
 
 	local config = {
-		order = 4,
+		order = 5,
 		type = "group",
 		name = L["WatchFrame"],
 		get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
@@ -262,6 +286,7 @@ function addon:GetOptions()
 			generalGroup = GeneralOptions(),
 			equipmentGroup = EquipmentOptions(),
 			minimapGroup = MinimapOptions(),
+			tooltipGroup = TooltipOptions(),
 			watchFrameGroup = WatchFrameOptions(),
 		}
 	};

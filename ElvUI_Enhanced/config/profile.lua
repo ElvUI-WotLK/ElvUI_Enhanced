@@ -23,6 +23,9 @@ P.enhanced = {
 		hideincombat = false,
 		fadeindelay = 5,
 	},
+	tooltip = {
+		progressInfo = false,
+	},
 	watchframe = {
 		enable = true,
 		city = "COLLAPSED",

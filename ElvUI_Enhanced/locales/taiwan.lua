@@ -22,10 +22,6 @@ L["Enable/Disable the display of item levels on the character screen."] = "在�
 L["Mover Transparency"] = "定位器透明度"
 L["Changes the transparency of all the movers."] = "改變所有定位器的透明度"
 
--- Auto Hide Role Icons in combat
-L["Hide Role Icon in combat"] = true
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = true
-
 -- Minimap Location
 L["Above Minimap"] = "小地圖之上"
 L["Location Digits"] = "坐標位數"
@@ -51,6 +47,9 @@ L["Item Level"] = "物品等級"
 -- Range Datatext
 L["Target Range"] = "目標距離"
 L["Distance"] = "距離"
+
+-- Tooltip
+L["Progress Info"] = true
 
 -- WatchFrame
 L["WatchFrame"] = "追蹤器"
