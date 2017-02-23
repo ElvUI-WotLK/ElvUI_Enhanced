@@ -48,6 +48,12 @@ L["Distance"] = "Дистанция"
 
 -- Tooltip
 L["Progress Info"] = "Прогресс"
+L["Check Player"] = "Проверять себя";
+L["Tiers"] = true;
+L["Ruby Sanctum"] = "Рубиновое святилише";
+L["Icecrown Citadel"] = "Цитадель Ледяной Кароны";
+L["Trial of the Crusader"] = "Испытание крестоносца";
+L["Ulduar"] = "Ульдуар";
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"

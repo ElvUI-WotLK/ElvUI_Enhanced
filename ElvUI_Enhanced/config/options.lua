@@ -217,25 +217,26 @@ local function TooltipOptions()
 							RS = {
 								order = 1,
 								type = "toggle",
-								name = "RS",
-								desc = "Ruby Sanctum",
+								name = E:AbbreviateString(L["Ruby Sanctum"]),
+								desc = L["Ruby Sanctum"],
 							},
 							ICC = {
 								order = 2,
 								type = "toggle",
-								name = "ICC",
-								desc = "Icecrown Citadel",
+								name = E:AbbreviateString(L["Icecrown Citadel"]),
+								desc = L["Icecrown Citadel"],
 							},
 							TotC = {
 								order = 3,
 								type = "toggle",
-								name = "TotC",
-								desc = "Trial of the Crusader",
+								name = E:AbbreviateString(L["Trial of the Crusader"]),
+								desc = L["Trial of the Crusader"],
 							},
 							Ulduar = {
 								order = 4,
 								type = "toggle",
-								name = "Ulduar",
+								name = L["Ulduar"],
+								desc = L["Ulduar"],
 							}
 						}
 					}

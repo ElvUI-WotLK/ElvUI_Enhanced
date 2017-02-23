@@ -50,6 +50,12 @@ L["Distance"] = "距离"
 
 -- Tooltip
 L["Progress Info"] = true
+L["Check Player"] = true;
+L["Tiers"] = true;
+L["Ruby Sanctum"] = true;
+L["Icecrown Citadel"] = true;
+L["Trial of the Crusader"] = true;
+L["Ulduar"] = true;
 
 -- WatchFrame
 L["WatchFrame"] = true
