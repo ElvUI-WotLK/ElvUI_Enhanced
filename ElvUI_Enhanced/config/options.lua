@@ -211,37 +211,31 @@ local function TooltipOptions()
 						order = 3,
 						type = "group",
 						name = L["Tiers"],
+						get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[info[#info]]; end,
+						set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[info[#info]] = value; E:GetModule("Enhanced_ProgressionInfo"):UpdateSettings() end,
 						args = {
-							rs = {
+							RS = {
 								order = 1,
 								type = "toggle",
 								name = "RS",
 								desc = "Ruby Sanctum",
-								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[1]; end,
-								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[1] = value; end
 							},
-							icc = {
+							ICC = {
 								order = 2,
 								type = "toggle",
 								name = "ICC",
 								desc = "Icecrown Citadel",
-								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[2]; end,
-								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[2] = value; end
 							},
-							totc = {
+							TotC = {
 								order = 3,
 								type = "toggle",
 								name = "TotC",
 								desc = "Trial of the Crusader",
-								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[3]; end,
-								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[3] = value; end
 							},
-							uld = {
+							Ulduar = {
 								order = 4,
 								type = "toggle",
 								name = "Ulduar",
-								get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[4]; end,
-								set = function(info, value) E.db.enhanced.tooltip.progressInfo.tiers[4] = value; end
 							}
 						}
 					}

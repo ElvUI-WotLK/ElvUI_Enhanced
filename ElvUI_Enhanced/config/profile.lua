@@ -27,8 +27,13 @@ P.enhanced = {
 		progressInfo = {
 			enable = false,
 			checkPlayer = false,
-			tiers = {false, true, false, false},
-		},
+			tiers = {
+				["RS"] = false,
+				["ICC"] = true,
+				["TotC"] = false,
+				["Ulduar"] = false
+			}
+		}
 	},
 	watchframe = {
 		enable = true,

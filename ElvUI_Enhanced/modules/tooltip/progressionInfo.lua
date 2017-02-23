@@ -18,13 +18,6 @@ local UnitLevel = UnitLevel
 
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
-local tiers = {
-	"RS",
-	"ICC",
-	"TotC",
-	"Ulduar",
-}
-
 local difficulties = {
 	"H25",
 	"H10",
@@ -32,12 +25,12 @@ local difficulties = {
 	"N10",
 }
 
-local bosses = {
-	{ -- Ruby Sanctum
-		{ -- Herioc 25
+local tiers = {
+	["RS"] = {
+		{ -- Heroic 25
 			4823,
 		},
-		{ -- Herioc 10
+		{ -- Heroic 10
 			4822,
 		},
 		{ -- Normal 25
@@ -47,11 +40,11 @@ local bosses = {
 			4821,
 		},
 	},
-	{ -- Icecrown Citadel
-		{ -- Herioc 25
+	["ICC"] = {
+		{ -- Heroic 25
 			4642, 4656, 4661, 4664, 4667, 4670, 4673, 4676, 4679, 4682, 4685, 4688
 		},
-		{ -- Herioc 10
+		{ -- Heroic 10
 			4640, 4654, 4659, 4662, 4665, 4668, 4671, 4674, 4677, 4680, 4684, 4686
 		},
 		{ -- Normal 25
@@ -61,11 +54,11 @@ local bosses = {
 			4639, 4643, 4644, 4645, 4646, 4647, 4648, 4649, 4650, 4651, 4652, 4653
 		},
 	},
-	{ -- Trial of the Crusader
-		{ -- Herioc 25
+	["TotC"] = {
+		{ -- Heroic 25
 			4029, 4035, 4039, 4043, 4047
 		},
-		{ -- Herioc 10
+		{ -- Heroic 10
 			4030, 4033, 4037, 4041, 4045
 		},
 		{ -- Normal 25
@@ -75,7 +68,7 @@ local bosses = {
 			4028, 4032, 4036, 4040, 4044
 		},
 	},
-	{ -- Ulduar
+	["Ulduar"] = {
 		{},
 		{},
 		{ -- Normal 25
@@ -103,16 +96,16 @@ local function GetProgression(guid)
 	local statFunc = guid == playerGUID and GetStatistic or GetComparisonStatistic
 	local total, kills, killed
 
-	for i, tier in ipairs(tiers) do
-		progressCache[guid].header[i] = {}
-		progressCache[guid].info[i] = {}
+	for tier, _ in pairs(tiers) do
+		progressCache[guid].header[tier] = {}
+		progressCache[guid].info[tier] = {}
 
-		for j, difficulty in ipairs(difficulties) do
-			if GetEntryCount(bosses[i][j]) > 0 then
+		for i, difficulty in ipairs(difficulties) do
+			if GetEntryCount(tiers[tier][i]) > 0 then
 				total, killed = 0, 0
 
-				for _, achievmentID in ipairs(bosses[i][j]) do
-					kills = tonumber(statFunc(achievmentID))
+				for _, statsID in ipairs(tiers[tier][i]) do
+					kills = tonumber(statFunc(statsID))
 					total = total + 1
 
 					if kills and kills > 0 then
@@ -121,8 +114,8 @@ local function GetProgression(guid)
 				end
 
 				if (killed > 0) then
-					progressCache[guid].header[i][j] = format("%s [%s]:", tier, difficulty)
-					progressCache[guid].info[i][j] = format("%d/%d", killed, total)
+					progressCache[guid].header[tier][i] = format("%s [%s]:", tier, difficulty)
+					progressCache[guid].info[tier][i] = format("%d/%d", killed, total)
 
 					if killed == total then
 						break
@@ -149,14 +142,14 @@ local function SetProgressionInfo(guid, tt)
 		for i = 1, tt:NumLines() do
 			local leftTipText = _G["GameTooltipTextLeft"..i]
 
-			for i, tier in ipairs(tiers) do
-				if E.db.enhanced.tooltip.progressInfo.tiers[i] then
+			for tier, _ in pairs(tiers) do
+				if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
 					for j, difficulty in ipairs(difficulties) do
-						if GetEntryCount(bosses[i][j]) > 0 then
+						if GetEntryCount(tiers[tier][j]) > 0 then
 							if (leftTipText:GetText() and find(leftTipText:GetText(), tier) and find(leftTipText:GetText(), difficulty)) then
 								local rightTipText = _G["GameTooltipTextRight"..i]
-								leftTipText:SetText(progressCache[guid].header[i][j])
-								rightTipText:SetText(progressCache[guid].info[i][j])
+								leftTipText:SetText(progressCache[guid].header[tier][j])
+								rightTipText:SetText(progressCache[guid].info[tier][j])
 								updated = 1
 							end
 						end
@@ -169,11 +162,11 @@ local function SetProgressionInfo(guid, tt)
 
 		if highest > 0 then tt:AddLine(" ") end
 
-		for tier = 1, #tiers do
+		for tier, _ in pairs(tiers) do
 			if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
-				for difficulty = 1, #difficulties do
-					if GetEntryCount(bosses[tier][difficulty]) > 0 then
-						tt:AddDoubleLine(progressCache[guid].header[tier][difficulty], progressCache[guid].info[tier][difficulty], nil, nil, nil, 1, 1, 1)
+				for i, difficulty in ipairs(difficulties) do
+					if GetEntryCount(tiers[tier][i]) > 0 then
+						tt:AddDoubleLine(progressCache[guid].header[tier][i], progressCache[guid].info[tier][i], nil, nil, nil, 1, 1, 1)
 					end
 				end
 			end
@@ -182,10 +175,9 @@ local function SetProgressionInfo(guid, tt)
 end
 
 function PI:INSPECT_ACHIEVEMENT_READY(GUID)
-	local unit = "mouseover"
-	if UnitExists(unit) then
+	if UnitExists("mouseover") then
 		UpdateProgression(GUID)
-		GameTooltip:SetUnit(unit)
+		GameTooltip:SetUnit("mouseover")
 	end
 
 	ClearAchievementComparisonUnit()
@@ -232,6 +224,23 @@ local function ShowInspectInfo(tt)
 	end
 
 	SetProgressionInfo(guid, tt)
+end
+
+function PI:UpdateSettings()
+	local db = E.db.enhanced.tooltip.progressInfo.tiers
+	local enabled
+
+	for _, state in pairs(db) do
+		enabled = state
+		if enabled then break end
+	end
+
+	if enabled then
+		self:ToggleState()
+	else
+		self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
+		self:UnhookAll()
+	end
 end
 
 function PI:ToggleState()
