@@ -1,4 +1,4 @@
---Russian localization
+-- Russian localization file for ruRU.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
@@ -27,6 +27,7 @@ L["Location Digits"] = "Цифры координат"
 L["Number of digits for map location."] = "Колличество цифр после запятой в координатах."
 
 -- Minimap Combat Hide
+L["Combat Hide"] = true;
 L["Hide minimap while in combat."] = "Скрывать миникарту во время боя."
 L["FadeIn Delay"] = "Задержка появления"
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Время ожидания появления миникарты после выхода из боя. (0 = Выключено)"
@@ -49,9 +50,9 @@ L["Distance"] = "Дистанция"
 -- Tooltip
 L["Progress Info"] = "Прогресс"
 L["Check Player"] = "Проверять себя";
-L["Tiers"] = true;
-L["Ruby Sanctum"] = "Рубиновое святилише";
-L["Icecrown Citadel"] = "Цитадель Ледяной Кароны";
+L["Tiers"] = "Тиры";
+L["Ruby Sanctum"] = "Рубиновое святилище";
+L["Icecrown Citadel"] = "Цитадель Ледяной Короны";
 L["Trial of the Crusader"] = "Испытание крестоносца";
 L["Ulduar"] = "Ульдуар";
 

@@ -1,9 +1,11 @@
+-- Portuguese localization file for ptBR.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
 -- Translation by: ubios
 
+-- Init
 L["ENH_LOGIN_MSG"] = "Você está a usar |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r versão %s%s|r."
 
 -- Equipment
