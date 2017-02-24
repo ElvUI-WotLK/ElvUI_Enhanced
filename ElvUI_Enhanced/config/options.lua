@@ -207,8 +207,20 @@ local function TooltipOptions()
 						type = "toggle",
 						name = L["Check Player"]
 					},
-					tiers = {
+					modifier = {
 						order = 3,
+						type = "select",
+						name = L["Visibility"],
+						set = function(info, value) E.db.enhanced.tooltip.progressInfo[info[#info]] = value; E:GetModule("Enhanced_ProgressionInfo"):UpdateModifier(); end,
+						values = {
+							["ALL"] = ALWAYS,
+							["SHIFT"] = SHIFT_KEY,
+							["ALT"] = ALT_KEY,
+							["CTRL"] = CTRL_KEY
+						}
+					},
+					tiers = {
+						order = 4,
 						type = "group",
 						name = L["Tiers"],
 						get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[info[#info]]; end,

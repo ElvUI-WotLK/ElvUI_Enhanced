@@ -57,6 +57,9 @@ L["Ruby Sanctum"] = true;
 L["Icecrown Citadel"] = true;
 L["Trial of the Crusader"] = true;
 L["Ulduar"] = true;
+L["RS"] = true;
+L["ICC"] = true;
+L["TotC"] = true;
 
 -- WatchFrame
 L["WatchFrame"] = "追蹤器"

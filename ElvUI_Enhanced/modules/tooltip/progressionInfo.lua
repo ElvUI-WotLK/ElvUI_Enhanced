@@ -11,9 +11,13 @@ local GetComparisonStatistic = GetComparisonStatistic
 local GetStatistic = GetStatistic
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
+local IsAltKeyDown = IsAltKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsShiftKeyDown = IsShiftKeyDown
 local SetAchievementComparisonUnit = SetAchievementComparisonUnit
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
+local UnitIsPlayer = UnitIsPlayer
 local UnitLevel = UnitLevel
 
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
@@ -82,7 +86,6 @@ local tiers = {
 
 local playerGUID = UnitGUID("player")
 local progressCache = {}
-local highest = 0
 
 local function GetEntryCount(tab)
 	local i = 0
@@ -114,7 +117,7 @@ local function GetProgression(guid)
 				end
 
 				if (killed > 0) then
-					progressCache[guid].header[tier][i] = format("%s [%s]:", tier, difficulty)
+					progressCache[guid].header[tier][i] = format("%s [%s]:", L[tier], difficulty)
 					progressCache[guid].info[tier][i] = format("%d/%d", killed, total)
 
 					if killed == total then
@@ -146,7 +149,7 @@ local function SetProgressionInfo(guid, tt)
 				if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
 					for j, difficulty in ipairs(difficulties) do
 						if GetEntryCount(tiers[tier][j]) > 0 then
-							if (leftTipText:GetText() and find(leftTipText:GetText(), tier) and find(leftTipText:GetText(), difficulty)) then
+							if (leftTipText:GetText() and find(leftTipText:GetText(), L[tier]) and find(leftTipText:GetText(), difficulty)) then
 								local rightTipText = _G["GameTooltipTextRight"..i]
 								leftTipText:SetText(progressCache[guid].header[tier][j])
 								rightTipText:SetText(progressCache[guid].info[tier][j])
@@ -159,8 +162,6 @@ local function SetProgressionInfo(guid, tt)
 		end
 
 		if updated == 1 then return end
-
-		if highest > 0 then tt:AddLine(" ") end
 
 		for tier, _ in pairs(tiers) do
 			if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
@@ -184,11 +185,20 @@ function PI:INSPECT_ACHIEVEMENT_READY(GUID)
 	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
 end
 
+function PI:MODIFIER_STATE_CHANGED(_, key)
+	if ((key == format("L%s", self.modifier) or key == format("R%s", self.modifier)) and UnitExists("mouseover")) then
+		GameTooltip:SetUnit("mouseover")
+	end
+end
+
 local function ShowInspectInfo(tt)
 	if InCombatLockdown() then return end
 
+	local modifier = E.db.enhanced.tooltip.progressInfo.modifier;
+	if(modifier ~= "ALL" and not ((modifier == "SHIFT" and IsShiftKeyDown()) or (modifier == "CTRL" and IsControlKeyDown()) or (modifier == "ALT" and IsAltKeyDown()))) then return; end
+
 	local unit = select(2, tt:GetUnit())
-	if not unit then return end
+	if not unit or not UnitIsPlayer(unit) then return end
 
 	if unit == "player" and not E.db.enhanced.tooltip.progressInfo.checkPlayer then return end
 
@@ -243,19 +253,31 @@ function PI:UpdateSettings()
 	end
 end
 
+function PI:UpdateModifier()
+	self.modifier = E.db.enhanced.tooltip.progressInfo.modifier
+
+	if self.modifier == "ALL" then
+		self:UnregisterEvent("MODIFIER_STATE_CHANGED")
+	else
+		self:RegisterEvent("MODIFIER_STATE_CHANGED")
+	end
+end
+
 function PI:ToggleState()
 	if E.db.enhanced.tooltip.progressInfo.enable then
 		if E.private.tooltip.enabled and TT then
-			if not self:IsHooked(TT, "ShowInspectInfo", ShowInspectInfo) then
-				self:SecureHook(TT, "ShowInspectInfo", ShowInspectInfo)
+			if not self:IsHooked(TT, "GameTooltip_OnTooltipSetUnit", ShowInspectInfo) then
+				self:SecureHook(TT, "GameTooltip_OnTooltipSetUnit", ShowInspectInfo)
 			end
 		else
 			if not self:IsHooked(GameTooltip, "OnTooltipSetUnit", ShowInspectInfo) then
 				self:HookScript(GameTooltip, "OnTooltipSetUnit", ShowInspectInfo)
 			end
 		end
+
+		self:UpdateModifier()
 	else
-		self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
+		self:UnregisterAllEvents()
 		self:UnhookAll()
 	end
 end

@@ -27,6 +27,7 @@ P.enhanced = {
 		progressInfo = {
 			enable = false,
 			checkPlayer = false,
+			modifier = "SHIFT",
 			tiers = {
 				["RS"] = false,
 				["ICC"] = true,

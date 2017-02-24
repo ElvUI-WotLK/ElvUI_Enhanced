@@ -51,10 +51,13 @@ L["Distance"] = "Дистанция"
 L["Progress Info"] = "Прогресс"
 L["Check Player"] = "Проверять себя";
 L["Tiers"] = "Тиры";
-L["Ruby Sanctum"] = "Рубиновое святилище";
+L["Ruby Sanctum"] = "Рубиновое Святилище";
 L["Icecrown Citadel"] = "Цитадель Ледяной Короны";
-L["Trial of the Crusader"] = "Испытание крестоносца";
+L["Trial of the Crusader"] = "Испытание Крестоносца";
 L["Ulduar"] = "Ульдуар";
+L["RS"] = "РС";
+L["ICC"] = "ЦЛК";
+L["TotC"] = "ИК";
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"
