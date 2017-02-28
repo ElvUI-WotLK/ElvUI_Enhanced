@@ -13,7 +13,9 @@ end
 
 function M:LoadMoverTransparancy()
 	hooksecurefunc(E, "CreateMover", function(_, parent)
-		parent.mover:SetAlpha(E.db.enhanced.general.moverTransparancy);
+		if parent.mover then
+			parent.mover:SetAlpha(E.db.enhanced.general.moverTransparancy);
+		end
 	end);
 
 	self:UpdateMoverTransparancy();
