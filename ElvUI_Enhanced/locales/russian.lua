@@ -47,6 +47,9 @@ L["Item Level"] = "Уровень предметов"
 L["Target Range"] = "Расстояние до цели"
 L["Distance"] = "Дистанция"
 
+-- Time Datatext
+L["Enchanced Time Color"] = true
+
 -- Tooltip
 L["Progress Info"] = "Прогресс"
 L["Check Player"] = "Проверять себя";

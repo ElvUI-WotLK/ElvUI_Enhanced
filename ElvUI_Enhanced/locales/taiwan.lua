@@ -49,6 +49,9 @@ L["Item Level"] = "物品等級"
 L["Target Range"] = "目標距離"
 L["Distance"] = "距離"
 
+-- Time Datatext
+L["Enchanced Time Color"] = true
+
 -- Tooltip
 L["Progress Info"] = true
 L["Check Player"] = true;

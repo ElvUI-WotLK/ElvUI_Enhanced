@@ -18,6 +18,9 @@ P.enhanced = {
 			enable = true
 		}
 	},
+	datatexts = {
+		timeColorEnch = false,
+	},
 	minimap = {
 		locationdigits = 1,
 		hideincombat = false,

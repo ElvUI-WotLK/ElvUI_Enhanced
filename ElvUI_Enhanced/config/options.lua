@@ -51,11 +51,34 @@ local function GeneralOptions()
 	return config;
 end
 
+local function DataTextsOptions()
+	local config = {
+		order = 2,
+		type = "group",
+		name = L["DataTexts"],
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["DataTexts"]
+			},
+			timeColorEnch = {
+				order = 1,
+				type = "toggle",
+				name = L["Enchanced Time Color"],
+				get = function(info) return E.db.enhanced.datatexts.timeColorEnch; end,
+				set = function(info, value) E.db.enhanced.datatexts.timeColorEnch = value; E:GetModule("Enhanced_DatatextTime"):UpdateSettings(); end
+			}
+		}
+	};
+	return config;
+end
+
 local function EquipmentOptions()
 	local PD = E:GetModule("Enhanced_PaperDoll");
 
 	local config = {
-		order = 2,
+		order = 3,
 		type = "group",
 		name = L["Equipment"],
 		get = function(info) return E.db.enhanced.equipment[info[#info]]; end,
@@ -131,7 +154,7 @@ end
 
 local function MinimapOptions()
 	local config = {
-		order = 3,
+		order = 4,
 		type = "group",
 		name = L["Minimap"],
 		get = function(info) return E.db.enhanced.minimap[info[#info]] end,
@@ -177,7 +200,7 @@ end
 
 local function TooltipOptions()
 	local config = {
-		order = 4,
+		order = 5,
 		type = "group",
 		name = L["Tooltip"],
 		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
@@ -269,7 +292,7 @@ local function WatchFrameOptions()
 	};
 
 	local config = {
-		order = 5,
+		order = 6,
 		type = "group",
 		name = L["WatchFrame"],
 		get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
@@ -344,6 +367,7 @@ function addon:GetOptions()
 		name = ColorizeSettingName("Enhanced"),
 		args = {
 			generalGroup = GeneralOptions(),
+			datatextsGroup = DataTextsOptions(),
 			equipmentGroup = EquipmentOptions(),
 			minimapGroup = MinimapOptions(),
 			tooltipGroup = TooltipOptions(),

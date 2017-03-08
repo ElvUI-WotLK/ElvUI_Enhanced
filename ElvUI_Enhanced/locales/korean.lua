@@ -47,6 +47,9 @@ L["Item Level"] = true
 L["Target Range"] = true
 L["Distance"] = true
 
+-- Time Datatext
+L["Enchanced Time Color"] = true
+
 -- Tooltip
 L["Progress Info"] = true
 L["Check Player"] = true;
