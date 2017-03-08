@@ -50,7 +50,7 @@ L["Target Range"] = "目標距離"
 L["Distance"] = "距離"
 
 -- Time Datatext
-L["Enchanced Time Color"] = true
+L["Enhanced Time Color"] = true
 
 -- Tooltip
 L["Progress Info"] = true

@@ -48,7 +48,7 @@ L["Target Range"] = "Расстояние до цели"
 L["Distance"] = "Дистанция"
 
 -- Time Datatext
-L["Enchanced Time Color"] = true
+L["Enhanced Time Color"] = true
 
 -- Tooltip
 L["Progress Info"] = "Прогресс"

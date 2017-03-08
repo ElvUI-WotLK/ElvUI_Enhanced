@@ -65,7 +65,7 @@ local function DataTextsOptions()
 			timeColorEnch = {
 				order = 1,
 				type = "toggle",
-				name = L["Enchanced Time Color"],
+				name = L["Enhanced Time Color"],
 				get = function(info) return E.db.enhanced.datatexts.timeColorEnch; end,
 				set = function(info, value) E.db.enhanced.datatexts.timeColorEnch = value; E:GetModule("Enhanced_DatatextTime"):UpdateSettings(); end
 			}
