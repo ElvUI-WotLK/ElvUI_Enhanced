@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local EDTT = E:NewModule("Enhanced_DatatextTime", "AceHook-3.0")
+local EDTT = E:NewModule("Enhanced_DatatextTime")
 local DT = E:GetModule("DataTexts")
 
 local time = time
@@ -36,7 +36,7 @@ local function ValueColorUpdate(hex)
 	end
 end
 
-local function CheckPanel(name)
+local function GetLastPanel(name)
 	local db = E.db.datatexts
 	local pointIndex
 
@@ -60,18 +60,16 @@ end
 function EDTT:UpdateSettings()
 	if not (DT.RegisteredDataTexts and DT.RegisteredDataTexts["Time"]) then return end
 
-	lastPanel = CheckPanel("Time")
+	lastPanel = GetLastPanel("Time")
 
 	if E.db.enhanced.datatexts.timeColorEnch then
 		original_OnUpdate = DT.RegisteredDataTexts["Time"]["onUpdate"]
 
 		DT.RegisteredDataTexts["Time"]["onUpdate"] = OnUpdate
-		lastPanel:SetScript("OnUpdate", OnUpdate)
 
 		E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 	else
 		DT.RegisteredDataTexts["Time"]["onUpdate"] = original_OnUpdate
-		lastPanel:SetScript("OnUpdate", original_OnUpdate)
 
 		for func, _ in pairs(E["valueColorUpdateFuncs"]) do
 			if func == ValueColorUpdate then
@@ -82,7 +80,11 @@ function EDTT:UpdateSettings()
 	end
 
 	E:ValueFuncCall()
-	DT.RegisteredDataTexts["Time"]["onUpdate"](lastPanel, 1)
+
+	if lastPanel then
+		lastPanel:SetScript("OnUpdate", DT.RegisteredDataTexts["Time"]["onUpdate"])
+		DT.RegisteredDataTexts["Time"]["onUpdate"](lastPanel, 1)
+	end
 end
 
 function EDTT:Initialize()
