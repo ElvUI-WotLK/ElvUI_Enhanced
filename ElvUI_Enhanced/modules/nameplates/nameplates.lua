@@ -2,6 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:NewModule("Enhanced_NamePlates", "AceHook-3.0", "AceEvent-3.0")
 local mod = E:GetModule("NamePlates")
 
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitName = UnitName
+
 if not EnhancedDB then EnhancedDB = {} end
 EnhancedDB.UnitClass = EnhancedDB.UnitClass or {}
 
@@ -11,11 +15,14 @@ local function UpdateUnitClass(frame, class)
 	mod:UpdateElement_Name(frame)
 end
 
+local myrealm = select(2, UnitName("player"))
 function NP:UPDATE_MOUSEOVER_UNIT()
 	if not UnitExists("mouseover") then return end
 
+	local name, realm = UnitName("mouseover")
+	if realm ~= myrealm then return end
+
 	if UnitIsPlayer("mouseover") then
-		local name = UnitName("mouseover")
 		local _, class = UnitClass("mouseover")
 
 		if EnhancedDB.UnitClass[name] ~= class then
@@ -30,26 +37,35 @@ function NP:UPDATE_MOUSEOVER_UNIT()
 	end
 end
 
-local function OnShowHook(frame)
-	if frame.UnitFrame.UnitType ~= "FRIENDLY_PLAYER" then return end
-
-	local class = EnhancedDB.UnitClass[frame.UnitFrame.Name:GetText()]
-	if class then
-		UpdateUnitClass(frame.UnitFrame, class)
+local function UnitClassHook(_, frame, type)
+	if type == "FRIENDLY_PLAYER" then
+		local _, class = UnitClass(frame.UnitName)
+		if class then
+			return class
+		elseif EnhancedDB.UnitClass[frame.UnitName] then
+			return EnhancedDB.UnitClass[frame.UnitName]
+		end
+	elseif type == "ENEMY_PLAYER" then
+		local r, g, b = self:RoundColors(frame.oldHealthBar:GetStatusBarColor())
+		for class, _ in pairs(RAID_CLASS_COLORS) do
+			if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+				return class
+			end
+		end
 	end
 end
 
 function NP:CacheUnitClass()
-	if(E.db.enhanced.nameplates.cacheUnitClass) then
+	if E.db.enhanced.nameplates.cacheUnitClass then
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 		
-		if not self:IsHooked(mod, "OnShow") then
-			self:SecureHook(mod, "OnShow", OnShowHook)
+		if not self:IsHooked(mod, "UnitClass") then
+			self:RawHook(mod, "UnitClass", UnitClassHook)
 		end
 	else
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
-		if self:IsHooked(mod, "OnShow") then
-			self:Unhook(mod, "OnShow")
+		if self:IsHooked(mod, "UnitClass") then
+			self:Unhook(mod, "UnitClass")
 		end
 	end
 end
