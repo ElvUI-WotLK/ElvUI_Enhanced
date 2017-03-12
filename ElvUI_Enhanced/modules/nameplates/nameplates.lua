@@ -37,7 +37,7 @@ function NP:UPDATE_MOUSEOVER_UNIT()
 	end
 end
 
-local function UnitClassHook(_, frame, type)
+local function UnitClassHook(self, frame, type)
 	if type == "FRIENDLY_PLAYER" then
 		local _, class = UnitClass(frame.UnitName)
 		if class then
