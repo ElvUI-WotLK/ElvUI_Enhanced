@@ -4,4 +4,5 @@
 	<Include file="tooltip\load_tooltip.xml"/>
 	<Include file="watchframe\load_watchframe.xml"/>
 	<Include file="datatexts\load_datatexts.xml"/>
+	<Include file="nameplates\load_nameplates.xml"/>
 </Ui>

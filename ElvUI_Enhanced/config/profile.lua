@@ -26,6 +26,9 @@ P.enhanced = {
 		hideincombat = false,
 		fadeindelay = 5,
 	},
+	nameplates = {
+		cacheUnitClass = false,
+	},
 	tooltip = {
 		progressInfo = {
 			enable = false,

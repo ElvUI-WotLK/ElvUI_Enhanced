@@ -3,6 +3,7 @@
 ## Version: 1.00
 ## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313E|r|cffC4C4C4nhanced|r
 ## Notes: Plugin-Enhancements for |cffA11313E|r|cffC4C4C4lvUI|r.
+## SavedVariables: EnhancedDB
 ## Credits: Tristimdorio (Omega1970), Azilroka, Lockslap, Sortokk
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled

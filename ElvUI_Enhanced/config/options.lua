@@ -282,6 +282,29 @@ local function TooltipOptions()
 	return config;
 end
 
+local function NamePlatesOptions()
+	local config = {
+		order = 6,
+		type = "group",
+		name = L["NamePlates"],
+		get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
+		set = function(info, value) E.db.enhanced.nameplates[info[#info]] = value; E:GetModule("Enhanced_NamePlates"):CacheUnitClass(); end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["NamePlates"]
+			},
+			cacheUnitClass = {
+				order = 1,
+				type = "toggle",
+				name = L["Cache Unit Class"],
+			}
+		}
+	};
+	return config;
+end
+
 local function WatchFrameOptions()
 	local WF = E:GetModule("Enhanced_WatchFrame");
 
@@ -292,7 +315,7 @@ local function WatchFrameOptions()
 	};
 
 	local config = {
-		order = 6,
+		order = 7,
 		type = "group",
 		name = L["WatchFrame"],
 		get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
@@ -371,6 +394,7 @@ function addon:GetOptions()
 			equipmentGroup = EquipmentOptions(),
 			minimapGroup = MinimapOptions(),
 			tooltipGroup = TooltipOptions(),
+			namePlatesGroup = NamePlatesOptions(),
 			watchFrameGroup = WatchFrameOptions(),
 		}
 	};
