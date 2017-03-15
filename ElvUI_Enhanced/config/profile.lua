@@ -28,6 +28,8 @@ P.enhanced = {
 	},
 	nameplates = {
 		cacheUnitClass = false,
+		smooth = false,
+		smoothSpeed = 0.3,
 	},
 	tooltip = {
 		progressInfo = {

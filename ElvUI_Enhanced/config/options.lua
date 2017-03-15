@@ -288,7 +288,6 @@ local function NamePlatesOptions()
 		type = "group",
 		name = L["NamePlates"],
 		get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
-		set = function(info, value) E.db.enhanced.nameplates[info[#info]] = value; E:GetModule("Enhanced_NamePlates"):CacheUnitClass(); E:GetModule("NamePlates"):ConfigureAll(); end,
 		args = {
 			header = {
 				order = 0,
@@ -299,7 +298,24 @@ local function NamePlatesOptions()
 				order = 1,
 				type = "toggle",
 				name = L["Cache Unit Class"],
-			}
+				set = function(info, value) E.db.enhanced.nameplates[info[#info]] = value; E:GetModule("Enhanced_NamePlates"):CacheUnitClass(); E:GetModule("NamePlates"):ConfigureAll(); end,
+			},
+			smooth = {
+				type = "toggle",
+				order = 2,
+				name = L["Smooth Bars"],
+				desc = L["Bars will transition smoothly."],
+				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value; E:GetModule("NamePlates"):ConfigureAll(); end
+			},
+			smoothSpeed = {
+				type = "range",
+				order = 3,
+				name = L["Animation Speed"],
+				desc = L["Speed in seconds"],
+				min = 0.1, max = 3, step = 0.01,
+				disabled = function() return not E.db.enhanced.nameplates.smooth; end,
+				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value; E:GetModule("NamePlates"):ConfigureAll(); end
+			},
 		}
 	};
 	return config;
