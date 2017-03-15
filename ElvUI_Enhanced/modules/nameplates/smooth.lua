@@ -56,14 +56,6 @@ f:SetScript("OnUpdate", function()
 end)
 
 function ENP:Smooth()
+	self:SecureHook(mod, "UpdateAllFrame")
 	self:SecureHook(mod, "OnCreated")
-	if E.db.enhanced.nameplates.smooth then
-		if not self:IsHooked(mod, "UpdateAllFrame") then
-			self:SecureHook(mod, "UpdateAllFrame")
-		end
-	else
-		if self:IsHooked(mod, "UpdateAllFrame") then
-			self:Unhook(mod, "UpdateAllFrame")
-		end
-	end
 end
