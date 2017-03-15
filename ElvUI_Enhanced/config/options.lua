@@ -305,7 +305,7 @@ local function NamePlatesOptions()
 				order = 2,
 				name = L["Smooth Bars"],
 				desc = L["Bars will transition smoothly."],
-				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value; E:GetModule("NamePlates"):ConfigureAll(); end
+				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value; E:GetModule("Enhanced_NamePlates"):Smooth(); E:GetModule("NamePlates"):ConfigureAll(); end
 			},
 			smoothSpeed = {
 				type = "range",

@@ -60,7 +60,6 @@ function ENP:Smooth()
 	if E.db.enhanced.nameplates.smooth then
 		if not self:IsHooked(mod, "UpdateAllFrame") then
 			self:SecureHook(mod, "UpdateAllFrame")
-			mod:UpdateAllFrame()
 		end
 	else
 		if self:IsHooked(mod, "UpdateAllFrame") then
