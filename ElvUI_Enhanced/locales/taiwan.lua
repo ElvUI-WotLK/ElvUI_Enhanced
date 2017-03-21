@@ -24,6 +24,8 @@ L["Mover Transparency"] = "定位器透明度"
 L["Changes the transparency of all the movers."] = "改變所有定位器的透明度"
 
 -- Minimap Location
+L["Location Panel"] = true
+L["Toggle Location Panel."] = true
 L["Above Minimap"] = "小地圖之上"
 L["Location Digits"] = "坐標位數"
 L["Number of digits for map location."] = "坐標顯示的小數位數"

@@ -22,6 +22,7 @@ P.enhanced = {
 		timeColorEnch = false,
 	},
 	minimap = {
+		location = true,
 		locationdigits = 1,
 		hideincombat = false,
 		fadeindelay = 5,

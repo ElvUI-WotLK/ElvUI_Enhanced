@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI);
+local ML = E:NewModule("Enhanced_MinimapLocation", "AceHook-3.0");
 local M = E:GetModule("Minimap");
 
 local GetPlayerMapPosition = GetPlayerMapPosition;
@@ -78,10 +79,10 @@ local function FadeInMinimap()
 end
 
 local function ShowMinimap()
-	if(E.private.general.minimap.fadeindelay == 0) then
+	if(E.db.enhanced.minimap.fadeindelay == 0) then
 		FadeInMinimap();
 	else
-		E:Delay(E.private.general.minimap.fadeindelay, FadeInMinimap);
+		E:Delay(E.db.enhanced.minimap.fadeindelay, FadeInMinimap);
 	end
 end
 
@@ -89,16 +90,16 @@ local function HideMinimap()
 	cluster:Hide();
 end
 
-hooksecurefunc(M, "Update_ZoneText", function()
+local function Update_ZoneText()
 	xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 
 	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	location.text:SetTextColor(M:GetLocTextColor());
 	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25));
-end);
+end
 
-hooksecurefunc(M, "UpdateSettings", function()
+local function UpdateSettings()
 	if(not E.private.general.minimap.enable) then return; end
 
 	if(not init) then
@@ -114,19 +115,64 @@ hooksecurefunc(M, "UpdateSettings", function()
 		M:UnregisterEvent("PLAYER_REGEN_ENABLED");
 	end
 
-	local holder = _G["MMHolder"];
+	local holder = MMHolder;
 	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
-	panel:Size(holder:GetWidth(), 22);
+	panel:Size(E:Scale(holder:GetWidth()), 22);
 
 	local point, relativeTo, relativePoint = holder:GetPoint();
 	if(E.db.general.minimap.locationText == "ABOVE") then
-		holder:SetPoint(point, relativeTo, relativePoint, 0, -22);
+		holder:Point(point, relativeTo, relativePoint, 0, -21);
 		holder:Height(holder:GetHeight() + 22);
 		panel:SetScript("OnUpdate", UpdateLocation);
 		panel:Show();
 	else
-		holder:SetPoint(point, relativeTo, relativePoint, 0, 0);
+		holder:Point(point, relativeTo, relativePoint, 0, 0);
 		panel:SetScript("OnUpdate", nil);
 		panel:Hide();
 	end
-end);
+
+	if MinimapMover then
+		MinimapMover:Size(holder:GetSize())
+	end
+end
+
+function ML:UpdateSettings()
+	if E.db.enhanced.minimap.location then
+		if not self:IsHooked("Update_ZoneText", Update_ZoneText) then
+			self:SecureHook(M, "Update_ZoneText", Update_ZoneText)
+		end
+		if not self:IsHooked("UpdateSettings", UpdateSettings) then
+			self:SecureHook(M, "UpdateSettings", UpdateSettings)
+		end
+
+		M:UpdateSettings()
+		M:Update_ZoneText()
+	else
+		self:UnhookAll()
+
+		local mmholder = MMHolder
+		local point, relativeTo, relativePoint = MMHolder:GetPoint()
+		mmholder:Point(point, relativeTo, relativePoint, 0, 0)
+
+		if E.db.datatexts.minimapPanels then
+			mmholder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing * 3)
+		else
+			mmholder:Height(Minimap:GetHeight() + E.Border + E.Spacing * 3)
+		end
+
+		if MinimapMover then
+			MinimapMover:Size(mmholder:GetSize())
+		end
+
+		panel:Hide()
+	end
+end
+
+function ML:Initialize()
+	if not E.db.enhanced.minimap.location then return end
+
+	self:SecureHook(M, "Update_ZoneText", Update_ZoneText)
+	self:SecureHook(M, "UpdateSettings", UpdateSettings)
+end
+
+E:RegisterModule(ML:GetName());

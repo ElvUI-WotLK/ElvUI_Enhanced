@@ -24,6 +24,8 @@ L["Mover Transparency"] = "Transparence des Ancres"
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
 
 -- Minimap Location
+L["Location Panel"] = true
+L["Toggle Location Panel."] = true
 L["Above Minimap"] = "Sous la minicarte"
 L["Location Digits"] = "Chiffres d'emplacement"
 L["Number of digits for map location."] = "Nombre de chiffres pour l'emplacement."

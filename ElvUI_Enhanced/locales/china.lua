@@ -24,6 +24,8 @@ L["Mover Transparency"] = true
 L["Changes the transparency of all the movers."] = true
 
 -- Minimap Location
+L["Location Panel"] = true
+L["Toggle Location Panel."] = true
 L["Above Minimap"] = true
 L["Location Digits"] = true
 L["Number of digits for map location."] = true

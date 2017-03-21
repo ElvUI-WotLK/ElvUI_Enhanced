@@ -22,6 +22,8 @@ L["Mover Transparency"] = "Прозрачность фиксаторов"
 L["Changes the transparency of all the movers."] = "Изменяет прозрачность фиксаторов"
 
 -- Minimap Location
+L["Location Panel"] = true
+L["Toggle Location Panel."] = true
 L["Above Minimap"] = "Над миникартой"
 L["Location Digits"] = "Цифры координат"
 L["Number of digits for map location."] = "Колличество цифр после запятой в координатах."

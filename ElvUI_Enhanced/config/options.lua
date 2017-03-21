@@ -165,19 +165,22 @@ local function MinimapOptions()
 				type = "header",
 				name = L["Minimap"]
 			},
-			locationdigits = {
+			location = {
 				order = 1,
-				type = "range",
-				name = L["Location Digits"],
-				desc = L["Number of digits for map location."],
-				min = 0, max = 2, step = 1,
-				disabled = function() return E.db.general.minimap.locationText ~= "ABOVE"; end
+				type = "toggle",
+				name = L["Location Panel"],
+				desc = L["Toggle Location Panel."],
+				set = function(info, value)
+					E.db.enhanced.minimap[info[#info]] = value;
+					E:GetModule("Enhanced_MinimapLocation"):UpdateSettings();
+				end
 			},
 			hideincombat = {
 				order = 2,
 				type = "toggle",
 				name = L["Combat Hide"],
-				desc = L["Hide minimap while in combat."]
+				desc = L["Hide minimap while in combat."],
+				disabled = function() return not (E.db.enhanced.minimap.location and E.db.enhanced.minimap.location) end
 			},
 			fadeindelay = {
 				order = 3,
@@ -185,7 +188,15 @@ local function MinimapOptions()
 				name = L["FadeIn Delay"],
 				desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
 				min = 0, max = 20, step = 1,
-				disabled = function() return not E.db.enhanced.minimap.hideincombat; end
+				disabled = function() return not (E.db.enhanced.minimap.location and E.db.enhanced.minimap.hideincombat) end
+			},
+			locationdigits = {
+				order = 4,
+				type = "range",
+				name = L["Location Digits"],
+				desc = L["Number of digits for map location."],
+				min = 0, max = 2, step = 1,
+				disabled = function() return not (E.db.enhanced.minimap.location and E.db.general.minimap.locationText == "ABOVE") end
 			}
 		}
 	};

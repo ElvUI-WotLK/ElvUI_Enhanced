@@ -24,6 +24,8 @@ L["Mover Transparency"] = "Transparenz Ankerpunkte"
 L["Changes the transparency of all the movers."] = "Konfiguriere die Einstellungen der Transparenz der Ankerpukte"
 
 -- Minimap Location
+L["Location Panel"] = true
+L["Toggle Location Panel."] = true
 L["Above Minimap"] = "Oberhalb der Minimap"
 L["Location Digits"] = "Koordinaten Nachkommastellen"
 L["Number of digits for map location."] = "Anzahl der Nachkommastellen der Koordinaten."
