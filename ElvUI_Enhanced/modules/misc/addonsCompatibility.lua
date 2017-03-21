@@ -9,6 +9,29 @@ local IsAddOnLoaded = IsAddOnLoaded
 local LoadAddOn = LoadAddOn
 
 local addonFixes = {
+	-- Cromulent 1.5.2
+	["Cromulent"] = function()
+		local WORLDMAP_SETTINGS = WORLDMAP_SETTINGS
+		local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
+		local WORLDMAP_QUESTLIST_SIZE = WORLDMAP_QUESTLIST_SIZE
+		local _, fontSize = CromulentZoneInfo.text:GetFont()
+
+		local function UpdateFontSize()
+			if CromulentZoneInfo:IsShown() then
+				if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
+					CromulentZoneInfo.text:FontTemplate(nil, fontSize / WORLDMAP_WINDOWED_SIZE + 10, "OUTLINE")
+				elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
+					CromulentZoneInfo.text:FontTemplate(nil, fontSize / WORLDMAP_QUESTLIST_SIZE + 5, "OUTLINE")
+				else
+					CromulentZoneInfo.text:FontTemplate(nil, fontSize, "OUTLINE")
+				end
+			end
+		end
+
+		UpdateFontSize()
+		hooksecurefunc(WorldMapFrameAreaFrame, "SetScale", UpdateFontSize)
+	end,
+
 	-- GroupCalendar 4.6.1
 	["GroupCalendar"] = function()
 		local DT = E:GetModule("DataTexts")
