@@ -14,14 +14,17 @@ local addonFixes = {
 		local WORLDMAP_SETTINGS = WORLDMAP_SETTINGS
 		local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 		local WORLDMAP_QUESTLIST_SIZE = WORLDMAP_QUESTLIST_SIZE
+
 		local _, fontSize = CromulentZoneInfo.text:GetFont()
+		local fontSizeWindowed = fontSize / WORLDMAP_WINDOWED_SIZE + 10
+		local fontSizeQuestlist = fontSize / WORLDMAP_QUESTLIST_SIZE + 5
 
 		local function UpdateFontSize()
 			if CromulentZoneInfo:IsShown() then
 				if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-					CromulentZoneInfo.text:FontTemplate(nil, fontSize / WORLDMAP_WINDOWED_SIZE + 10, "OUTLINE")
+					CromulentZoneInfo.text:FontTemplate(nil, fontSizeWindowed, "OUTLINE")
 				elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-					CromulentZoneInfo.text:FontTemplate(nil, fontSize / WORLDMAP_QUESTLIST_SIZE + 5, "OUTLINE")
+					CromulentZoneInfo.text:FontTemplate(nil, fontSizeQuestlist, "OUTLINE")
 				else
 					CromulentZoneInfo.text:FontTemplate(nil, fontSize, "OUTLINE")
 				end
