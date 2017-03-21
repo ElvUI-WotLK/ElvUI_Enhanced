@@ -116,8 +116,8 @@ local function UpdateSettings()
 	end
 
 	local holder = MMHolder;
-	panel:SetPoint("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
-	panel:Size(E:Scale(holder:GetWidth()), 22);
+	panel:Point("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
+	panel:Size(E:Scale(holder:GetWidth()) + (E.PixelMode and 1 or -1), 22);
 
 	local point, relativeTo, relativePoint = holder:GetPoint();
 	if(E.db.general.minimap.locationText == "ABOVE") then
