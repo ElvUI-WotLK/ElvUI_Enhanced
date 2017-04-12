@@ -58,7 +58,7 @@ end
 function ENP:CacheUnitClass()
 	if E.db.enhanced.nameplates.cacheUnitClass then
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-		
+
 		if not self:IsHooked(mod, "UnitClass") then
 			self:RawHook(mod, "UnitClass", UnitClassHook)
 		end

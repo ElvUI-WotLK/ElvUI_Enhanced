@@ -138,10 +138,10 @@ end
 
 function ML:UpdateSettings()
 	if E.db.enhanced.minimap.location then
-		if not self:IsHooked("Update_ZoneText", Update_ZoneText) then
+		if not self:IsHooked(M, "Update_ZoneText") then
 			self:SecureHook(M, "Update_ZoneText", Update_ZoneText)
 		end
-		if not self:IsHooked("UpdateSettings", UpdateSettings) then
+		if not self:IsHooked(M, "UpdateSettings") then
 			self:SecureHook(M, "UpdateSettings", UpdateSettings)
 		end
 
