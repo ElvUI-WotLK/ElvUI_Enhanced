@@ -8,8 +8,14 @@ P.enhanced = {
 		autoRepChange = false,
 		moverTransparancy = 0.8,
 	},
+	chat = {
+		dpsLinks = false,
+	},
+	datatexts = {
+		timeColorEnch = false,
+	},
 	equipment = {
-		enable = true,
+		enable = false,
 		durability = {
 			enable = true,
 			onlydamaged = true
@@ -18,11 +24,8 @@ P.enhanced = {
 			enable = true
 		}
 	},
-	datatexts = {
-		timeColorEnch = false,
-	},
 	minimap = {
-		location = true,
+		location = false,
 		locationdigits = 1,
 		hideincombat = false,
 		fadeindelay = 5,
@@ -46,7 +49,7 @@ P.enhanced = {
 		}
 	},
 	watchframe = {
-		enable = true,
+		enable = false,
 		city = "COLLAPSED",
 		pvp = "HIDDEN",
 		arena = "HIDDEN",

@@ -8,6 +8,9 @@ if not L then return end
 -- Init
 L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 
+-- Chat
+L["Replaces long reports from damage meters with a clickeble hyperlink to reduce chat spam."] = true
+
 -- Equipment
 L["Equipment"] = "自动换装"
 

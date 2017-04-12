@@ -51,9 +51,33 @@ local function GeneralOptions()
 	return config;
 end
 
-local function DataTextsOptions()
+local function ChatOptions()
 	local config = {
 		order = 2,
+		type = "group",
+		name = L["Chat"],
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["Chat"]
+			},
+			dpsLinks = {
+				order = 1,
+				type = "toggle",
+				name = L["Filter DPS meters Spam"],
+				desc = L["Replaces long reports from damage meters with a clickeble hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"],
+				get = function(info) return E.db.enhanced.chat.dpsLinks; end,
+				set = function(info, value) E.db.enhanced.chat.dpsLinks = value; E:GetModule("Enhanced_DPSLinks"):UpdateSettings(); end
+			}
+		}
+	};
+	return config;
+end
+
+local function DataTextsOptions()
+	local config = {
+		order = 3,
 		type = "group",
 		name = L["DataTexts"],
 		args = {
@@ -78,7 +102,7 @@ local function EquipmentOptions()
 	local PD = E:GetModule("Enhanced_PaperDoll");
 
 	local config = {
-		order = 3,
+		order = 4,
 		type = "group",
 		name = L["Equipment"],
 		get = function(info) return E.db.enhanced.equipment[info[#info]]; end,
@@ -154,7 +178,7 @@ end
 
 local function MinimapOptions()
 	local config = {
-		order = 4,
+		order = 5,
 		type = "group",
 		name = L["Minimap"],
 		get = function(info) return E.db.enhanced.minimap[info[#info]] end,
@@ -166,7 +190,7 @@ local function MinimapOptions()
 				name = L["Minimap"]
 			},
 			location = {
-				order = 1,
+				order = 2,
 				type = "toggle",
 				name = L["Location Panel"],
 				desc = L["Toggle Location Panel."],
@@ -176,14 +200,14 @@ local function MinimapOptions()
 				end
 			},
 			hideincombat = {
-				order = 2,
+				order = 3,
 				type = "toggle",
 				name = L["Combat Hide"],
 				desc = L["Hide minimap while in combat."],
 				disabled = function() return not (E.db.enhanced.minimap.location and E.db.enhanced.minimap.location) end
 			},
 			fadeindelay = {
-				order = 3,
+				order = 4,
 				type = "range",
 				name = L["FadeIn Delay"],
 				desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
@@ -191,7 +215,7 @@ local function MinimapOptions()
 				disabled = function() return not (E.db.enhanced.minimap.location and E.db.enhanced.minimap.hideincombat) end
 			},
 			locationdigits = {
-				order = 4,
+				order = 5,
 				type = "range",
 				name = L["Location Digits"],
 				desc = L["Number of digits for map location."],
@@ -206,12 +230,13 @@ local function MinimapOptions()
 		["ABOVE"] = ColorizeSettingName(L["Above Minimap"]),
 		["HIDE"] = L["Hide"]
 	};
+	config.args.locationText = E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationText
 	return config;
 end
 
 local function TooltipOptions()
 	local config = {
-		order = 5,
+		order = 6,
 		type = "group",
 		name = L["Tooltip"],
 		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
@@ -295,7 +320,7 @@ end
 
 local function NamePlatesOptions()
 	local config = {
-		order = 6,
+		order = 7,
 		type = "group",
 		name = L["NamePlates"],
 		get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
@@ -342,7 +367,7 @@ local function WatchFrameOptions()
 	};
 
 	local config = {
-		order = 7,
+		order = 8,
 		type = "group",
 		name = L["WatchFrame"],
 		get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
@@ -417,11 +442,12 @@ function addon:GetOptions()
 		name = ColorizeSettingName("Enhanced"),
 		args = {
 			generalGroup = GeneralOptions(),
+			chatGroup = ChatOptions(),
 			datatextsGroup = DataTextsOptions(),
 			equipmentGroup = EquipmentOptions(),
 			minimapGroup = MinimapOptions(),
-			tooltipGroup = TooltipOptions(),
 			namePlatesGroup = NamePlatesOptions(),
+			tooltipGroup = TooltipOptions(),
 			watchFrameGroup = WatchFrameOptions(),
 		}
 	};
