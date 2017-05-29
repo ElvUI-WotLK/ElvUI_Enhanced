@@ -6,4 +6,8 @@ function ENP:Initialize()
 	self:Smooth()
 end
 
-E:RegisterModule(ENP:GetName())
+local function InitializeCallback()
+	ENP:Initialize()
+end
+
+E:RegisterModule(ENP:GetName(), InitializeCallback)

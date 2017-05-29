@@ -15,4 +15,8 @@ function addon:Initialize()
 	LEP:RegisterPlugin(addonName, self.GetOptions);
 end
 
-E:RegisterModule(addon:GetName());
+local function InitializeCallback()
+	addon:Initialize()
+end
+
+E:RegisterModule(addon:GetName(), InitializeCallback)

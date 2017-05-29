@@ -93,4 +93,8 @@ function EDTT:Initialize()
 	self:UpdateSettings()
 end
 
-E:RegisterModule(EDTT:GetName())
+local function InitializeCallback()
+	EDTT:Initialize()
+end
+
+E:RegisterModule(EDTT:GetName(), InitializeCallback)

@@ -61,4 +61,8 @@ function WF:Initialize()
 	self:UpdateSettings();
 end
 
-E:RegisterModule(WF:GetName());
+local function InitializeCallback()
+	WF:Initialize()
+end
+
+E:RegisterModule(WF:GetName(), InitializeCallback)

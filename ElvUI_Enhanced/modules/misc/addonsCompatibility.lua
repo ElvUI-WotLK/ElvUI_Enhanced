@@ -103,4 +103,8 @@ function AC:Initialize()
 	end
 end
 
-E:RegisterModule(AC:GetName());
+local function InitializeCallback()
+	AC:Initialize()
+end
+
+E:RegisterModule(AC:GetName(), InitializeCallback)

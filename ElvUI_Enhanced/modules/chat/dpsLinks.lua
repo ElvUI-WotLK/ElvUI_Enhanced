@@ -191,4 +191,8 @@ function EDL:Initialize()
 	self:UpdateSettings()
 end
 
-E:RegisterModule(EDL:GetName())
+local function InitializeCallback()
+	EDL:Initialize()
+end
+
+E:RegisterModule(EDL:GetName(), InitializeCallback)

@@ -288,4 +288,8 @@ function PI:Initialize()
 	self:ToggleState()
 end
 
-E:RegisterModule(PI:GetName())
+local function InitializeCallback()
+	PI:Initialize()
+end
+
+E:RegisterModule(PI:GetName(), InitializeCallback)

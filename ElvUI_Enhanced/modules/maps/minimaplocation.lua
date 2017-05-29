@@ -175,4 +175,8 @@ function ML:Initialize()
 	self:SecureHook(M, "UpdateSettings", UpdateSettings)
 end
 
-E:RegisterModule(ML:GetName());
+local function InitializeCallback()
+	ML:Initialize()
+end
+
+E:RegisterModule(ML:GetName(), InitializeCallback)

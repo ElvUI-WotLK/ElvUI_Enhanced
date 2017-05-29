@@ -168,4 +168,8 @@ function PD:Initialize()
 	self:ToggleState(true)
 end
 
-E:RegisterModule(PD:GetName())
+local function InitializeCallback()
+	PD:Initialize()
+end
+
+E:RegisterModule(PD:GetName(), InitializeCallback)
