@@ -52,7 +52,7 @@ P.enhanced = {
 		portraitHDModelFix = {
 			enable = false,
 			debug = false,
-			modelsToFix = "orcmalenpc.m2; dwarfmale; humanfemale.m2; scourgemale; scourgefemale.m2"
+			modelsToFix = "scourgemale.m2; scourgefemale.m2; humanfemale.m2; dwarfmale.m2; orcmalenpc.m2; scourgemalenpc.m2; scourgefemalenpc.m2; dwarfmalenpc.m2; humanmalekid.m2; chicken.m2; rat.m2"
 		}
 	},
 	watchframe = {

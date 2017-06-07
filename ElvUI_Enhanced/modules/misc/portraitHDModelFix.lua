@@ -24,7 +24,7 @@ local function PortraitHDModelFix(self)
 		if not model or type(model) ~= "string" then return end
 
 		if UFPM.db.debug then
-			print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+)%.m2", "%1")))
+			print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+%.m2)", "%1")))
 		end
 
 		for _, modelName in ipairs(UFPM.modelsToFix) do
