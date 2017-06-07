@@ -64,7 +64,7 @@ local function GeneralOptions()
 						order = 2,
 						type = "toggle",
 						name = L["Debug"],
-						desc = L["Print to chat model names of units with enabled 3D portraits."]
+						desc = L["Print to chat model names of units with enabled 3D portraits."],
 						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.debug = value; end,
 						disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable; end
 					},
