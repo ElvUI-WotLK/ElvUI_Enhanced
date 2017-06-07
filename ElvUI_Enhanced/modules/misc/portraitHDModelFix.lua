@@ -48,8 +48,10 @@ function UFPM:UpdatePortraits()
 	modelList = gsub(modelList, "%s+", "")
 	twipe(self.modelsToFix)
 
-	for _, modelName in ipairs({split(';', modelList)}) do
-	   tinsert(self.modelsToFix, modelName)
+	for _, modelName in ipairs({split(";", modelList)}) do
+		if modelName ~= "" then
+			tinsert(self.modelsToFix, modelName)
+		end
 	end
 
 	for i = 1, 3 do
