@@ -3,5 +3,6 @@
 	<Script file="faction.lua"/>
 	<Script file="paperdoll.lua"/>
 	<Script file="movers.lua"/>
+	<Script file="portraitHDModelFix.lua"/>
 	<Script file="addonsCompatibility.lua"/>
 </Ui>

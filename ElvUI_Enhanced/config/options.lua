@@ -45,6 +45,40 @@ local function GeneralOptions()
 				min = 0, max = 1, step = 0.01,
 				get = function(info) return E.db.enhanced.general.moverTransparancy; end,
 				set = function(info, value) E.db.enhanced.general.moverTransparancy = value M:UpdateMoverTransparancy(); end
+			},
+			portraitHDModelFix = {
+				order = 4,
+				type = "group",
+				guiInline = true,
+				name = L["Portrait HD Fix"],
+				get = function(info) return E.db.enhanced.unitframe.portraitHDModelFix[info[#info]]; end,
+				set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] = value; end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.enable = value; E:GetModule("Enhanced_UF_PortraitHDModelFix"):ToggleState(); end
+					},
+					debug = {
+						order = 2,
+						type = "toggle",
+						name = L["Debug"],
+						desc = L["Print to chat model names of units with enabled 3D portraits."]
+						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.debug = value; end,
+						disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable; end
+					},
+					modelsToFix = {
+						order = 3,
+						type = "input",
+						name = L["Models to fix"],
+						desc = L["List of models with broken portrait camera. Separete each model name with \";\" simbol"],
+						width = "full",
+						multiline = true,
+						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix = value; E:GetModule("Enhanced_UF_PortraitHDModelFix"):UpdatePortraits(); end,
+						disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable; end
+					}
+				}
 			}
 		}
 	};

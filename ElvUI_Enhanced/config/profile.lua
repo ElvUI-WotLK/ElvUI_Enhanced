@@ -48,6 +48,13 @@ P.enhanced = {
 			}
 		}
 	},
+	unitframe = {
+		portraitHDModelFix = {
+			enable = false,
+			debug = false,
+			modelsToFix = "orcmalenpc.m2; dwarfmale; humanfemale.m2; scourgemale; scourgefemale.m2"
+		}
+	},
 	watchframe = {
 		enable = false,
 		city = "COLLAPSED",
