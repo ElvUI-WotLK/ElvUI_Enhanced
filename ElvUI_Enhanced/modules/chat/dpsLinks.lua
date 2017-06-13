@@ -147,7 +147,7 @@ function EDL:SetItemRef(link, text, button, chatframe)
 		return nil
 	end
 
-	return self.hooks.SetItemRef(link, text, button)
+	return self.hooks.SetItemRef(link, text, button, chatframe)
 end
 
 function EDL:ItemRefTooltip_SetHyperlink(self, link, ...)
