@@ -67,7 +67,8 @@ L["Trial of the Crusader"] = true;
 L["Ulduar"] = true;
 L["RS"] = true;
 L["ICC"] = true;
-L["TotC"] = true;
+L["ToC"] = true;
+L["ToGC"] = true;
 
 -- WatchFrame
 L["WatchFrame"] = "Questlog"

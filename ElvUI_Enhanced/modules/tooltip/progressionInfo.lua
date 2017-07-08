@@ -58,7 +58,7 @@ local tiers = {
 			4639, 4643, 4644, 4645, 4646, 4647, 4648, 4649, 4650, 4651, 4652, 4653
 		},
 	},
-	["TotC"] = {
+	["ToC"] = {
 		{ -- Heroic 25
 			4029, 4035, 4039, 4043, 4047
 		},
@@ -117,6 +117,10 @@ local function GetProgression(guid)
 				end
 
 				if (killed > 0) then
+					if i <= 2 and tier == "ToC" then
+						tier = "ToGC"
+					end
+				
 					progressCache[guid].header[tier][i] = format("%s [%s]:", L[tier], difficulty)
 					progressCache[guid].info[tier][i] = format("%d/%d", killed, total)
 

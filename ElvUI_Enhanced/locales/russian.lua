@@ -65,7 +65,8 @@ L["Trial of the Crusader"] = "Испытание Крестоносца";
 L["Ulduar"] = "Ульдуар";
 L["RS"] = "РС";
 L["ICC"] = "ЦЛК";
-L["TotC"] = "ИК";
+L["ToC"] = "ИК";
+L["ToGC"] = "ИВК";
 
 -- WatchFrame
 L["WatchFrame"] = "Список заданий"
