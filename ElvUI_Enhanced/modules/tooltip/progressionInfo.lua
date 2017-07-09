@@ -97,7 +97,7 @@ end
 
 local function GetProgression(guid)
 	local statFunc = guid == playerGUID and GetStatistic or GetComparisonStatistic
-	local total, kills, killed
+	local total, kills, killed, tierName
 
 	for tier, _ in pairs(tiers) do
 		progressCache[guid].header[tier] = {}
@@ -117,11 +117,12 @@ local function GetProgression(guid)
 				end
 
 				if (killed > 0) then
+					tierName = tier
 					if i <= 2 and tier == "ToC" then
-						tier = "ToGC"
+						tierName = "ToGC"
 					end
-				
-					progressCache[guid].header[tier][i] = format("%s [%s]:", L[tier], difficulty)
+
+					progressCache[guid].header[tier][i] = format("%s [%s]:", L[tierName], difficulty)
 					progressCache[guid].info[tier][i] = format("%d/%d", killed, total)
 
 					if killed == total then

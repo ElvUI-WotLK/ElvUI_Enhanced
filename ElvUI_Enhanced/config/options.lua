@@ -331,7 +331,7 @@ local function TooltipOptions()
 								name = E:AbbreviateString(L["Icecrown Citadel"]),
 								desc = L["Icecrown Citadel"],
 							},
-							TotC = {
+							ToC = {
 								order = 3,
 								type = "toggle",
 								name = E:AbbreviateString(L["Trial of the Crusader"]),

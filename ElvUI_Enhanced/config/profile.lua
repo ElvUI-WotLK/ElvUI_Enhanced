@@ -43,7 +43,7 @@ P.enhanced = {
 			tiers = {
 				["RS"] = false,
 				["ICC"] = true,
-				["TotC"] = false,
+				["ToC"] = false,
 				["Ulduar"] = false
 			}
 		}
