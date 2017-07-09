@@ -281,8 +281,16 @@ local function TooltipOptions()
 				type = "header",
 				name = L["Tooltip"]
 			},
-			progressInfo = {
+			itemQualityBorderColor = {
 				order = 1,
+				type = "toggle",
+				name = L["Item Border Color"],
+				desc = L["Colorize the tooltip border based on item quality."],
+				get = function(info) return E.db.enhanced.tooltip.itemQualityBorderColor end,
+				set = function(info, value) E.db.enhanced.tooltip.itemQualityBorderColor = value; E:GetModule("Enhanced_ItemBorderColor"):ToggleState(); end
+			},
+			progressInfo = {
+				order = 2,
 				type = "group",
 				name = L["Progress Info"],
 				guiInline = true,

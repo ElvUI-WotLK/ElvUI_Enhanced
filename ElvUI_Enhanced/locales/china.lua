@@ -58,6 +58,8 @@ L["Distance"] = "距离"
 L["Enhanced Time Color"] = true
 
 -- Tooltip
+L["Item Border Color"] = true
+L["Colorize the tooltip border based on item quality."] = true
 L["Progress Info"] = true
 L["Check Player"] = true;
 L["Tiers"] = true;

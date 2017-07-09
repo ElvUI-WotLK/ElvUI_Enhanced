@@ -36,6 +36,7 @@ P.enhanced = {
 		smoothSpeed = 0.3,
 	},
 	tooltip = {
+		itemQualityBorderColor = false,
 		progressInfo = {
 			enable = false,
 			checkPlayer = false,

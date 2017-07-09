@@ -56,6 +56,8 @@ L["Distance"] = "Дистанция"
 L["Enhanced Time Color"] = true
 
 -- Tooltip
+L["Item Border Color"] = "Цвет рамки предметов"
+L["Colorize the tooltip border based on item quality."] = "Окрашивать бордюр тултипа в цвет качества предмета"
 L["Progress Info"] = "Прогресс"
 L["Check Player"] = "Проверять себя";
 L["Tiers"] = "Тиры";
