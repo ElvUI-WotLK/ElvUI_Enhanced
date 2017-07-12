@@ -3,6 +3,8 @@ local IBC = E:NewModule("Enhanced_ItemBorderColor", "AceHook-3.0")
 local TT = E:GetModule("Tooltip")
 
 function IBC:SetBorderColor(_, tt)
+	if not tt.GetItem then return end
+
 	local _, link = tt:GetItem()
 	if link then
 		local _, _, quality = GetItemInfo(link)
