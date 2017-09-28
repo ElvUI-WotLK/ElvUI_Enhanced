@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Author: Bunny, Apollyon, Loaal, Crum
 ## Version: 1.01
-## Title: |cff1784d1E|r|cffe5e3e3lvUI|r |cff1784d1E|r|cffe5e3e3nhanced|r
+## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313E|r|cffC4C4C4nhanced|r
 ## Notes: Plugin-Enhancements for |cffA11313E|r|cffC4C4C4lvUI|r.
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
