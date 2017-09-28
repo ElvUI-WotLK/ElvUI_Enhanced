@@ -10,7 +10,7 @@ L["ITEMLEVEL_DESC"] = "Passen Sie die Einstellungen für die Anzeige von Gegenst
 L["WATCHFRAME_DESC"] = "Passen Sie die Einstellungen des Watchframe (Questlog) nach ihren Wünschen an."
 
 -- Actionbars
-L["Equipped Item Border"] = true;
+L["Equipped Item Border"] = true
 L["Sets actionbars' backgrounds to transparent template."] = "Setzt den Aktionsleisten Hintergrund transparent."
 L["Sets actionbars buttons' backgrounds to transparent template."] = "Setzt die Aktionsleisten Tasten transparent."
 L["Transparent ActionBars"] = "Transparente Aktionsleisten"
@@ -18,21 +18,21 @@ L["Transparent Backdrop"] = "Transparenter Hintergrund"
 L["Transparent Buttons"] = "Transparente Tasten"
 
 -- AddOn List
-L["Enable All"] = true;
-L["Dependencies: "] = true;
-L["Disable All"] = true;
-L["Load AddOn"] = true;
-L["Requires Reload"] = true;
+L["Enable All"] = true
+L["Dependencies: "] = true
+L["Disable All"] = true
+L["Load AddOn"] = true
+L["Requires Reload"] = true
 
 -- Animated Loss
-L["Animated Loss"] = true;
-L["Pause Delay"] = true;
-L["Start Delay"] = true;
-L["Postpone Delay"] = true;
+L["Animated Loss"] = true
+L["Pause Delay"] = true
+L["Start Delay"] = true
+L["Postpone Delay"] = true
 
 -- Chat
-L["Filter DPS meters Spam"] = true;
-L["Replaces long reports from damage meters with a clickable hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"] = true;
+L["Filter DPS meters Spam"] = true
+L["Replaces long reports from damage meters with a clickable hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"] = true
 
 -- Datatext
 L["Combat Indicator"] = "Kampfanzeige"
@@ -50,7 +50,7 @@ L["Total"] = "Gesamt"
 L["You are not playing a |cff0070DEShaman|r, datatext disabled."] = "Du spielst keinen |cff0070DEShaman|r, Infotext deaktiviert."
 
 -- Death Recap
-L["%s %s"] = true;
+L["%s %s"] = true
 L["%s by %s"] = "%s durch %s"
 L["%s sec before death at %s%% health."] = "%s Sekunden vor Tod bei %s%% Gesundheit."
 L["(%d Absorbed)"] = "(%d Absorbiert)"
@@ -82,16 +82,16 @@ L["Equipment Set"] = "Ausrüstungsset"
 L["Equipment"] = "Ausrüstung"
 L["No Change"] = "Keine Änderung"
 L["Only show durabitlity information for items that are damaged."] = "Nur die Haltbarkeit für beschädigte Ausrüstungsteile anzeigen."
-L["Quality Color"] = true;
+L["Quality Color"] = true
 L["Show the associated equipment sets for the items in your bags (or bank)."] = "Zeige auf Gegenständen im Rucksack (oder der Bank) die zugehörigen Ausrüstungssets als Text an."
 L["Specialization"] = "Talentspezialisierung"
 L["You have equipped equipment set: "] = "Sie haben das folgende Ausrüstungsset angelegt: "
 
 -- General
-L["Add button to Dressing Room frame with ability to undress model."] = true;
-L["Add button to Trainer frame with ability to train all available skills in one click."] = true;
-L["Alt-Click Merchant"] = true;
-L["Already Known"] = true;
+L["Add button to Dressing Room frame with ability to undress model."] = true
+L["Add button to Trainer frame with ability to train all available skills in one click."] = true
+L["Alt-Click Merchant"] = true
+L["Already Known"] = true
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Ändere automatisch die beobachtete Fraktion auf der Erfahrungsleiste zu der Fraktion für die Sie grade Rufpunkte erhalten haben."
 L["Automatically release body when killed inside a battleground."] = "Gibt automatisch Ihren Geist frei, wenn Sie auf dem Schlachtfeld getötet wurden."
 L["Automatically select the quest reward with the highest vendor sell value."] = "Wählt automatisch die Questbelohnung mit dem höchsten Wiederverkaufswert beim Händler"
@@ -99,25 +99,25 @@ L["Changes the transparency of all the movers."] = "Ändere die Transparenz alle
 L["Colorizes recipes, mounts & pets that are already known"] = "Rezepte, Reittiere und Begleiter einfärben, die bereits bekannt sind"
 L["Display quest levels at Quest Log."] = "Questlevel im Questlog anzeigen."
 L["Hide Zone Text"] = "Zonentext verstecken"
-L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true;
+L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true
 L["Mover Transparency"] = "Transparenz Ankerpunkte"
-L["Original Close Button"] = true;
+L["Original Close Button"] = true
 L["PvP Autorelease"] = "Automatische Freigabe im PvP"
 L["Select Quest Reward"] = "Wähle Questbelohnung"
 L["Show Quest Level"] = "Zeige Questlevel"
 L["Skin Animations"] = "Skin-Animationen"
 L["Track Reputation"] = "Ruf beobachten"
 L["Undress"] = "Ausziehen"
-L["Use blizzard close buttons, but desaturated"] = true;
+L["Use blizzard close buttons, but desaturated"] = true
 
 -- Nameplates
 L["Bars will transition smoothly."] = "Balken werden sanft übergehen"
-L["Cache Unit Class"] = true;
+L["Cache Unit Class"] = true
 L["Smooth Bars"] = "Sanfte Balken"
 
 -- Minimap
 L["Above Minimap"] = "Oberhalb der Minimap"
-L["Combat Hide"] = true;
+L["Combat Hide"] = true
 L["FadeIn Delay"] = "Einblendungsverzögerung"
 L["Hide minimap while in combat."] = "Ausblenden der Minimap während des Kampfes."
 L["Location Digits"] = "Koordinaten Nachkommastellen"
@@ -127,23 +127,21 @@ L["The time to wait before fading the minimap back in after combat hide. (0 = Di
 L["Toggle Location Panel."] = "Umschalten des Standort-Panels"
 
 -- Tooltip
-L["Baradin Hold"] = true;
-L["Bastion of Twilight"] = true;
-L["Blackwing Descend"] = true;
-L["Check Player"] = true;
+L["Check Player"] = true
 L["Colorize the tooltip border based on item quality."] = "Färbe den Tooltip-Rahmen basierend auf der Gegenstandsqualität"
-L["Display the players raid progression in the tooltip, this may not immediately update when mousing over a unit."] = true;
-L["Dragon Soul"] = true;
-L["Firelands"] = true;
+L["Display the players raid progression in the tooltip, this may not immediately update when mousing over a unit."] = true
+L["Icecrown Citadel"] = true
 L["Item Border Color"] = "Gegenstandsrahmen-Farbe"
-L["Progress Info"] = true;
+L["Progress Info"] = true
+L["Ruby Sanctum"] = true
 L["Show/Hides an Icon for Achievements on the Tooltip."] = "Icon für Erfolge am Tooltip anzeigen oder ausblenden."
 L["Show/Hides an Icon for Items on the Tooltip."] = "Icon für Gegenstände am Tooltip anzeigen oder ausblenden."
 L["Show/Hides an Icon for Spells on the Tooltip."] = "Icon für Zauber am Tooltip anzeigen oder ausblenden."
 L["Show/Hides an Icon for Spells and Items on the Tooltip."] = "Icon für Zauber oder Gegenstände am Tooltip anzeigen oder ausblenden."
-L["Throne of the Four Winds"] = true;
-L["Tiers"] = true;
-L["Tooltip Icon"] = true;
+L["Tiers"] = true
+L["Tooltip Icon"] = true
+L["Trial of the Crusader"] = true
+L["Uldar"] = true
 
 -- Movers
 L["Loss Control Icon"] = "Kontrollverlust-Icon"
@@ -153,7 +151,7 @@ L["Target Portrait"] = "Ziel-Portrait"
 -- Loss Control
 L["CC"] = "CC"
 L["Disarm"] = "Entwaffnen"
-L["Lose Control"] = true;
+L["Lose Control"] = true
 L["PvE"] = "PvE"
 L["Root"] = "Wurzeln"
 L["Silence"] = "Stille"
@@ -161,11 +159,11 @@ L["Snare"] = "Verlangsamung"
 
 -- Unitframes
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Alle Rollensymbole (Schaden/Heiler/Tank) auf den Einheitenfenstern werden versteckt, wenn der Charakter sich im Kampf befindet."
-L["Class Icons"] = true;
+L["Class Icons"] = true
 L["Detached Height"] = "Höhe loslösen"
 L["Hide Role Icon in combat"] = "Verstecke Rollensymbol im Kampf"
 L["Show class icon for units."] = "Zeige Klassensymbole für Einheiten"
-L["Target"] = true;
+L["Target"] = true
 
 -- WatchFrame
 L["Arena"] = "Arena"

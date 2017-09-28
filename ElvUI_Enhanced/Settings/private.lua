@@ -25,7 +25,7 @@ V.enhanced = {
 	character = {
 		enable = true
 	},
-	loseofcontrol = {
+	loseControl = {
 		enable = true
 	},
 	interruptTracker = {

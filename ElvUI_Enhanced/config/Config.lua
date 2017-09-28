@@ -846,34 +846,34 @@ local function WatchFrameOptions()
 	return config
 end
 
--- Loss Control
-local function LossControlOptions()
+-- Lose Control
+local function LoseControlOptions()
 	local config = {
 		order = 10,
 		type = "group",
-		name = L["Loss Control"],
+		name = L["Lose Control"],
 		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
 		args = {
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Loss Control"])
+				name = ColorizeSettingName(L["Lose Control"])
 			},
 			enable = {
 				order = 1,
 				type = "toggle",
 				name = L["Enable"],
-				get = function(info) return E.db.enhanced.lossofcontrol.enable end,
-				set = function(info, value) E.db.enhanced.lossofcontrol.enable = value E:StaticPopup_Show("PRIVATE_RL") end
+				get = function(info) return E.db.enhanced.loseControl.enable end,
+				set = function(info, value) E.db.enhanced.loseControl.enable = value E:StaticPopup_Show("PRIVATE_RL") end
 			},
 			typeGroup = {
 				order = 2,
 				type = "group",
 				name = TYPE,
 				guiInline = true,
-				get = function(info) return E.db.enhanced.lossofcontrol[ info[#info] ] end,
-				set = function(info, value) E.db.enhanced.lossofcontrol[ info[#info] ] = value end,
-				disabled = function() return not E.db.enhanced.lossofcontrol.enable end,
+				get = function(info) return E.db.enhanced.loseControl[ info[#info] ] end,
+				set = function(info, value) E.db.enhanced.loseControl[ info[#info] ] = value end,
+				disabled = function() return not E.db.enhanced.loseControl.enable end,
 				args = {
 					CC = {
 						type = "toggle",
@@ -1317,7 +1317,7 @@ function addon:GetOptions()
 			namePlatesGroup = NamePlatesOptions(),
 			tooltipGroup = TooltipOptions(),
 			unitframesGroup = UnitFrameOptions(),
-			losscontrolGroup = LossControlOptions(),
+			loseControlGroup = LoseControlOptions(),
 			interruptGroup = InterruptTrackerOptions(),
 			timerGroup = TimerTrackerOptions(),
 			watchFrameGroup = WatchFrameOptions(),

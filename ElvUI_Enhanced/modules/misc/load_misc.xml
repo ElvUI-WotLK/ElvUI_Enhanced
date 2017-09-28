@@ -7,7 +7,7 @@
 	<Script file="deathRecap.lua"/>
 	<Script file="questLevel.lua"/>
 	<Script file="questReward.lua"/>
-	<Script file="lossOfControl.lua"/>
+	<Script file="loseControl.lua"/>
 	<Script file="alreadyKnown.lua"/>
 	<Script file="trainAllButton.lua"/>
 	<Script file="undressButton.lua"/>

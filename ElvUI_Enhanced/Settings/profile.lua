@@ -132,7 +132,7 @@ P.enhanced = {
 			}
 		}
 	},
-	lossofcontrol = {
+	loseControl = {
 		CC = true,
 		PvE = true,
 		Silence = true,
