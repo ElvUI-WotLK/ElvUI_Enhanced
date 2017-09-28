@@ -1,12 +1,12 @@
-local E, L, V, P, G = unpack(ElvUI);
-local M = E:GetModule("Enhanced_Misc");
+local E, L, V, P, G = unpack(ElvUI)
+local M = E:GetModule("Enhanced_Misc")
 
 function M:UpdateMoverTransparancy()
-	local mover;
+	local mover
 	for name, _ in pairs(E.CreatedMovers) do
-		mover = _G[name];
-		if(mover) then
-			mover:SetAlpha(E.db.enhanced.general.moverTransparancy);
+		mover = _G[name]
+		if mover then
+			mover:SetAlpha(E.db.enhanced.general.moverTransparancy)
 		end
 	end
 end
@@ -14,9 +14,9 @@ end
 function M:LoadMoverTransparancy()
 	hooksecurefunc(E, "CreateMover", function(_, parent)
 		if parent.mover then
-			parent.mover:SetAlpha(E.db.enhanced.general.moverTransparancy);
+			parent.mover:SetAlpha(E.db.enhanced.general.moverTransparancy)
 		end
-	end);
+	end)
 
-	self:UpdateMoverTransparancy();
+	self:UpdateMoverTransparancy()
 end

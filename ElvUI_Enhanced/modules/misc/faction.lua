@@ -23,11 +23,14 @@ function M:CHAT_MSG_COMBAT_FACTION_CHANGE(_, msg)
 	end
 
 	if(faction) then
-		local active = GetWatchedFactionInfo();
+		if faction == GUILD_REPUTATION then
+			faction = GetGuildInfo("player")
+		end
+
+		local active = GetWatchedFactionInfo()
 		for factionIndex = 1, GetNumFactions() do
-			local name = GetFactionInfo(factionIndex);
+			local name = GetFactionInfo(factionIndex)
 			if(name == faction and name ~= active) then
-				-- check if watch has been disabled by user
 				if(not IsFactionInactive(factionIndex)) then
 					SetWatchedFactionIndex(factionIndex);
 				end
