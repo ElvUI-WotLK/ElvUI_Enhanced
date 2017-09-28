@@ -14,15 +14,12 @@ V.equipment = {
 
 V.enhanced = {
 	character = {
-		enable = true
+		enable = true,
+		model = {
+			enable = true
+		}
 	},
-	model = {
-		enable = true
-	},
-	timer = {
-		enable = true
-	},
-	character = {
+	timerTracker = {
 		enable = true
 	},
 	loseControl = {

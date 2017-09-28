@@ -140,7 +140,7 @@ P.enhanced = {
 		Root = false,
 		Snare = true
 	},
-	timer = {
+	timerTracker = {
 		dbm = true
 	},
 	interruptTracker = {
