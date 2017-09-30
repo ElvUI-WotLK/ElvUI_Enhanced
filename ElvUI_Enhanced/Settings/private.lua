@@ -4,11 +4,11 @@ V.general.selectQuestReward = true
 
 V.equipment = {
 	["durability"] = {
-		enable = true,
+		enable = false,
 		onlydamaged = false
 	},
 	["itemlevel"] = {
-		enable = true
+		enable = false
 	}
 }
 
