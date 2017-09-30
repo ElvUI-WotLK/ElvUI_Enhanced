@@ -1,21 +1,16 @@
 ## Interface: 30300
-## Author: Bunny
-## Version: 1.00
+## Author: Bunny, Apollyon, Loaal, Crum
+## Version: 1.01
 ## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313E|r|cffC4C4C4nhanced|r
 ## Notes: Plugin-Enhancements for |cffA11313E|r|cffC4C4C4lvUI|r.
-## SavedVariables: EnhancedDB
-## Credits: Tristimdorio (Omega1970), Azilroka, Lockslap, Sortokk
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 
-developer\load_developer.xml
-
-libs\load_libs.xml
-
-locales\load_locales.xml
-media\load_media.xml
-
+Developer\Load_Developer.xml
+Libraries\Load_Libraries.xml
+Locales\Load_Locales.xml
+Media\Load_Media.xml
 ElvUI_Enhanced.lua
-
-config\load_config.xml
-modules\load_modules.xml
+Settings\Load_Settings.xml
+Config\Load_Config.xml
+Modules\Load_Modules.xml
