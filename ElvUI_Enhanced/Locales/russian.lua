@@ -3,7 +3,7 @@ local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
 -- DESC locales
-L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(Cataclysm)|r версии %s%s|r."
+L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r версии %s%s|r."
 L["EQUIPMENT_DESC"] = "Adjust the settings for switching your gear set when you change specialization or enter a battleground."
 L["DURABILITY_DESC"] = "Настройка параметров информации о прочности предметов в окне персонажа."
 L["ITEMLEVEL_DESC"] = "Настройка параметров информации об уровне предмета в окне персонажа."

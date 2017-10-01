@@ -3,7 +3,7 @@ local L = AceLocale:NewLocale("ElvUI", "zhTW")
 if not L then return end
 
 -- DESC locales
-L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(Cataclysm)|r version %s%s|r."
+L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
 L["EQUIPMENT_DESC"] = "當你切換專精或進入戰場時自動更換裝備, 你可以在選項中選擇相關的裝備模組."
 L["DURABILITY_DESC"] = "調整設置人物窗口裝備耐久度顯示."
 L["ITEMLEVEL_DESC"] = "調整在角色資訊上顯示物品裝等的各種設定."
