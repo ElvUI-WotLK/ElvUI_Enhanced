@@ -22,6 +22,7 @@ function UB:CreateUndressButton(auction)
 	else
 		self.auctionDressUpButton = CreateFrame("Button", "AuctionDressUpFrame_UndressButton", AuctionDressUpFrame, "UIPanelButtonTemplate")
 		self.auctionDressUpButton:Size(80, 22)
+		self.auctionDressUpButton:SetFrameStrata("HIGH")
 		self.auctionDressUpButton:SetText(L["Undress"])
 		self.auctionDressUpButton:SetScript("OnClick", function(self)
 			self.model:Undress()
@@ -34,6 +35,7 @@ function UB:CreateUndressButton(auction)
 		else
 			S:HandleButton(self.auctionDressUpButton)
 			self.auctionDressUpButton:Point("RIGHT", AuctionDressUpFrameResetButton, "LEFT", -3, 0)
+			AuctionDressUpFrameResetButton:Point("BOTTOM", 42, 33)
 		end
 	end
 end
