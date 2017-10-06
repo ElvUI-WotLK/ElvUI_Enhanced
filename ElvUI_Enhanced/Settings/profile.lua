@@ -101,6 +101,7 @@ P.enhanced = {
 	},
 	minimap = {
 		location = false,
+		showlocationdigits = true,
 		locationdigits = 1,
 		hideincombat = false,
 		fadeindelay = 5,

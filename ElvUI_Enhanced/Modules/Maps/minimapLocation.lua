@@ -91,8 +91,10 @@ local function HideMinimap()
 end
 
 local function Update_ZoneText()
-	xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
-	yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+	if E.db.enhanced.minimap.showlocationdigits then
+		xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+		yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+	end
 
 	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
 	location.text:SetTextColor(M:GetLocTextColor());
@@ -123,7 +125,24 @@ local function UpdateSettings()
 	if(E.db.general.minimap.locationText == "ABOVE") then
 		holder:Point(point, relativeTo, relativePoint, 0, -21);
 		holder:Height(holder:GetHeight() + 22);
-		panel:SetScript("OnUpdate", UpdateLocation);
+
+		if E.db.enhanced.minimap.showlocationdigits then
+			panel:SetScript("OnUpdate", UpdateLocation);
+			location:ClearAllPoints();
+			location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0);
+			location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0);
+			location:Size(40, 22);
+			xMap:Show();
+			yMap:Show();
+		else
+			panel:SetScript("OnUpdate", nil);
+			location:ClearAllPoints();
+			location:Point("LEFT", panel, "LEFT", 0, 0);
+			location:Size(panel:GetWidth(), 22);
+			xMap:Hide();
+			yMap:Hide();
+		end
+
 		panel:Show();
 	else
 		holder:Point(point, relativeTo, relativePoint, 0, 0);
