@@ -533,22 +533,32 @@ local function MinimapOptions()
 					E:GetModule("Enhanced_MinimapLocation"):UpdateSettings()
 				end
 			},
-			locationdigits = {
+			showlocationdigits = {
 				order = 2,
+				type = "toggle",
+				name = L["Show Location Digits"],
+				desc = L["Toggle Location Digits."],
+				set = function(info, value)
+					E.db.enhanced.minimap.showlocationdigits = value
+					E:GetModule("Enhanced_MinimapLocation"):UpdateSettings()
+				end
+			},
+			locationdigits = {
+				order = 3,
 				type = "range",
 				name = L["Location Digits"],
 				desc = L["Number of digits for map location."],
 				min = 0, max = 2, step = 1,
-				disabled = function() return not (E.db.enhanced.minimap.location and E.db.general.minimap.locationText == "ABOVE") end
+				disabled = function() return not (E.db.enhanced.minimap.location and E.db.general.minimap.locationText == "ABOVE" and E.db.enhanced.minimap.showlocationdigits) end
 			},
 			hideincombat = {
-				order = 3,
+				order = 4,
 				type = "toggle",
 				name = L["Combat Hide"],
 				desc = L["Hide minimap while in combat."],
 			},
 			fadeindelay = {
-				order = 4,
+				order = 5,
 				type = "range",
 				name = L["FadeIn Delay"],
 				desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
