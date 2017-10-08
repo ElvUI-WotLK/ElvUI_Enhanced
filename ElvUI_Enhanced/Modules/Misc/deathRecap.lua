@@ -437,7 +437,7 @@ function mod:Initialize()
 			button.tombstone:Size(15, 20)
 			button.tombstone:Point("RIGHT", button.DamageInfo.Amount, "LEFT", -10, 0)
 			button.tombstone:SetTexCoord(0.658203125, 0.6875, 0.00390625, 0.08203125)
-			button.tombstone:SetTexture("Interface\\AddOns\\ElvUI_Bunny\\media\\textures\\DeathRecap")
+			button.tombstone:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\DeathRecap")
 		else
 			button:Point("BOTTOM", frame.DeathRecapEntry[i - 1], "TOP", 0, 14)
 		end

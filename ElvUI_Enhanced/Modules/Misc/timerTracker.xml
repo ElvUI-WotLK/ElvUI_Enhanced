@@ -61,11 +61,11 @@
 						<Scripts>
 							<OnPlay>
 								local frame = self:GetParent():GetParent();
-								ElvUI[1]:GetModule("TimerTracker"):SetTexNumbers(frame, frame.digit.digit1, frame.digit.digit2);
+								ElvUI[1]:GetModule("Enhanced_TimerTracker"):SetTexNumbers(frame, frame.digit.digit1, frame.digit.digit2);
 							</OnPlay>
 							<OnFinished>
 								local frame = self:GetParent():GetParent();
-								ElvUI[1]:GetModule("TimerTracker"):NumberAnimOnFinished(frame);
+								ElvUI[1]:GetModule("Enhanced_TimerTracker"):NumberAnimOnFinished(frame);
 							</OnFinished>
 						</Scripts>
 					</AnimationGroup>
@@ -80,7 +80,7 @@
 		</Frames>
 		<Scripts>
 			<OnShow>
-				ElvUI[1]:GetModule("TimerTracker"):OnShow(self);
+				ElvUI[1]:GetModule("Enhanced_TimerTracker"):OnShow(self);
 			</OnShow>
 		</Scripts>
 	</Frame>

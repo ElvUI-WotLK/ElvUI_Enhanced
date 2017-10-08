@@ -1,87 +1,90 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
 local module = E:NewModule("Enhanced_TimerTracker", "AceHook-3.0", "AceEvent-3.0")
 
-local format = string.format
+local tonumber = tonumber
+local format, split = string.format, string.split
 
 local locale = GetLocale()
 local chatMesage = locale == "ruRU" and {
 	-- Ущелье Песни Войны
-	["Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовьтесь!"] = { 1, 30, 120 },
-	["Битва за Ущелье Песни Войны начнется через 1 минуту."] = { 1, 60, 120 },
-	["Сражение в Ущелье Песни Войны начнется через 2 минуты."] = { 1, 60, 120 },
+	["Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовьтесь!"] = "1;30;120",
+	["Битва за Ущелье Песни Войны начнется через 1 минуту."] = "1;60;120",
+	["Сражение в Ущелье Песни Войны начнется через 2 минуты."] = "1;60;120",
 	-- Низина Арати
-	["Битва за Низину Арати начнется через 30 секунд. Приготовьтесь!"] = { 1, 30, 120 },
-	["Битва за Низину Арати начнется через 1 минуту."] = { 1, 60, 120 },
-	["Сражение в Низине Арати начнется через 2 минуты."] = { 1, 120, 120 },
+	["Битва за Низину Арати начнется через 30 секунд. Приготовьтесь!"] = "1;30;120",
+	["Битва за Низину Арати начнется через 1 минуту."] = "1;60;120",
+	["Сражение в Низине Арати начнется через 2 минуты."] = "1;120;120",
 	-- Око Бури
-	["Битва за Око Бури начнется через 30 секунд."] = { 1, 30, 120 },
-	["Битва за Око Бури начнется через 1 минуту."] = { 1, 60, 120 },
-	["Сражение в Око Бури начнется через 2 минуты."] = { 1, 120, 120 },
+	["Битва за Око Бури начнется через 30 секунд."] = "1;30;120",
+	["Битва за Око Бури начнется через 1 минуту."] = "1;60;120",
+	["Сражение в Око Бури начнется через 2 минуты."] = "1;120;120",
 	-- Альтеракская долина
-	["Сражение на Альтеракской долине начнется через 30 секунд. Приготовьтесь!"] = { 1, 30, 120 },
-	["Сражение на Альтеракской долине начнется через 1 минуту."] = { 1, 60, 120 },
-	["Сражение на Альтеракской долине начнется через 2 минуты."] = { 1, 120, 120 },
+	["Сражение на Альтеракской долине начнется через 30 секунд. Приготовьтесь!"] = "1;30;120",
+	["Сражение на Альтеракской долине начнется через 1 минуту."] = "1;60;120",
+	["Сражение на Альтеракской долине начнется через 2 минуты."] = "1;120;120",
 	-- Берег Древних
-	["Битва за Берег Древних начнется через 30 секунд. Приготовьтесь!"] = { 1, 30, 120 },
-	["Битва за Берег Древних начнется через 1 минуту."] = { 1, 60, 120 },
-	["Битва за Берег Древних начнется через 2 минуты."] = { 1, 120, 120 },
+	["Битва за Берег Древних начнется через 30 секунд. Приготовьтесь!"] = "1;30;120",
+	["Битва за Берег Древних начнется через 1 минуту."] = "1;60;120",
+	["Битва за Берег Древних начнется через 2 минуты."] = "1;120;120",
 	-- Берег древних 2-й раунд
-	["Второй раунд начнется через 30 секунд. Приготовьтесь!"] = { 1, 30, 60 },
-	["Второй раунд битвы за Берег Древних начнется через 1 минуту."] = { 1, 60, 60 },
+	["Второй раунд начнется через 30 секунд. Приготовьтесь!"] = "1;30;60",
+	["Второй раунд битвы за Берег Древних начнется через 1 минуту."] = "1;60;60",
 	-- Другие
-	["Битва начнется через 30 секунд!"] = { 1, 30, 120 },
-	["Битва начнется через 1 минуту."] = { 1, 60, 120 },
-	["Битва начнется через 2 минуты."] = { 1, 120, 120 },
+	["Битва начнется через 30 секунд!"] = "1;30;120",
+	["Битва начнется через 1 минуту."] = "1;60;120",
+	["Битва начнется через 2 минуты."] = "1;120;120",
 	-- Арена
-	["15 секунд до начала боя на арене!"] = { 1, 15, 60 },
-	["30 секунд до начала боя на арене!"] = { 1, 30, 60 },
-	["1 минута до начала боя на арене!"] = { 1, 60, 60 }
+	["15 секунд до начала боя на арене!"] = "1;15;60",
+	["30 секунд до начала боя на арене!"] = "1;30;60",
+	["1 минута до начала боя на арене!"] = "1;60;60",
 } or {
 	-- WSG
-	["The battle for Warsong Gulch begins in 30 seconds. Prepare yourselves!"] = { 1, 30, 120 },
-	["The battle for Warsong Gulch begins in 1 minute."] = { 1, 60, 120 },
-	["The battle for Warsong Gulch begins in 2 minutes."] = { 1, 120, 120 },
+	["The battle for Warsong Gulch begins in 30 seconds. Prepare yourselves!"] = "1;30;120",
+	["The battle for Warsong Gulch begins in 1 minute."] = "1;60;120",
+	["The battle for Warsong Gulch begins in 2 minutes."] = "1;120;120",
 	-- AB
-	["The Battle for Arathi Basin begins in 30 seconds. Prepare yourselves!"] = { 1, 30, 120 },
-	["The Battle for Arathi Basin begins in 1 minute."] = { 1, 60, 120 },
-	["The battle for Arathi Basin begins in 2 minutes."] = { 1, 60, 120 },
+	["The Battle for Arathi Basin begins in 30 seconds. Prepare yourselves!"] = "1;30;120",
+	["The Battle for Arathi Basin begins in 1 minute."] = "1;60;120",
+	["The battle for Arathi Basin begins in 2 minutes."] = "1;60;120",
 	-- EotS
-	["The Battle for Eye of the Storm begins in 30 seconds."] = { 1, 30, 120 },
-	["The Battle for Eye of the Storm begins in 1 minute."] = { 1, 60, 120 },
-	["The battle for Eye of the Storm begins in 2 minutes."] = { 1, 120, 120 },
+	["The Battle for Eye of the Storm begins in 30 seconds."] = "1;30;120",
+	["The Battle for Eye of the Storm begins in 1 minute."] = "1;60;120",
+	["The battle for Eye of the Storm begins in 2 minutes."] = "1;120;120",
 	-- AV
-	["The Battle for Alterac Valley begins in 30 seconds. Prepare yourselves!"] = { 1, 30, 120 },
-	["The Battle for Alterac Valley begins in 1 minute."] = { 1, 60, 120 },
-	["The Battle for Alterac Valley begins in 2 minutes."] = { 1, 120, 120 },
+	["The Battle for Alterac Valley begins in 30 seconds. Prepare yourselves!"] = "1;30;120",
+	["The Battle for Alterac Valley begins in 1 minute."] = "1;60;120",
+	["The Battle for Alterac Valley begins in 2 minutes."] = "1;120;120",
 	-- SotA
-	["The battle for Strand of the Ancients begins in 30 seconds. Prepare yourselves!."] = { 1, 30, 120 },
-	["The battle for Strand of the Ancients begins in 1 minute."] = { 1, 60, 120 },
-	["The battle for Strand of the Ancients begins in 2 minutes."] = { 1, 120, 120 },
+	["The battle for Strand of the Ancients begins in 30 seconds. Prepare yourselves!."] = "1;30;120",
+	["The battle for Strand of the Ancients begins in 1 minute."] = "1;60;120",
+	["The battle for Strand of the Ancients begins in 2 minutes."] = "1;120;120",
 	-- SotA 2 round
-	["Round 2 begins in 30 seconds. Prepare yourselves!"] = { 1, 30, 60 },
-	["Round 2 of the Battle for the Strand of the Ancients begins in 1 minute."] = { 1, 60, 60 },
+	["Round 2 begins in 30 seconds. Prepare yourselves!"] = "1;30;60",
+	["Round 2 of the Battle for the Strand of the Ancients begins in 1 minute."] = "1;60;60",
 	-- Other
-	["The battle will begin in 30 seconds!"] = { 1, 30, 120 },
-	["The battle will begin in 1 minute."] = { 1, 60, 120 },
-	["The battle will begin in two minutes."] = { 1, 120, 120 },
+	["The battle will begin in 30 seconds!"] = "1;30;120",
+	["The battle will begin in 1 minute."] = "1;60;120",
+	["The battle will begin in two minutes."] = "1;120;120",
 	-- Arena
-	["Fifteen seconds until the Arena battle begins!"] = { 1, 15, 60 },
-	["Thirty seconds until the Arena battle begins!"] = { 1, 30, 60 },
-	["One minute until the Arena battle begins!"] = { 1, 60, 60 }
+	["Fifteen seconds until the Arena battle begins!"] = "1;15;60",
+	["Thirty seconds until the Arena battle begins!"] = "1;30;60",
+	["One minute until the Arena battle begins!"] = "1;60;60",
 }
+
+ChatMesage2 = chatMesage
 
 TIMER_MINUTES_DISPLAY = "%d:%02d"
 TIMER_TYPE_PVP = 1
 TIMER_TYPE_CHALLENGE_MODE = 2
 
 local TIMER_DATA = {
-	[1] = { mediumMarker = 11, largeMarker = 6, updateInterval = 10 },
-	[2] = { mediumMarker = 100, largeMarker = 100, updateInterval = 100 }
+	[1] = {mediumMarker = 11, largeMarker = 6, updateInterval = 10},
+	[2] = {mediumMarker = 100, largeMarker = 100, updateInterval = 100}
 }
 
 TIMER_NUMBERS_SETS = {}
 TIMER_NUMBERS_SETS["BigGold"] = {
-	texture = "Interface\\AddOns\\ElvUI_Bunny\\media\\textures\\BigTimerNumbers",
+	texture = "Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\BigTimerNumbers",
 	w = 256, h = 170, texW = 1024, texH = 512,
 	numberHalfWidths = {
 		-- 0,  	 1, 	  2,  	 3, 	  4,  	 5,  	 6, 	  7,  	 8,  	 9,
@@ -336,11 +339,11 @@ function module:SetGoTexture(timer)
 		local factionGroup = UnitFactionGroup("player")
 		if factionGroup and factionGroup ~= "Neutral" then
 			timer.GoTexture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\"..factionGroup.."-Logo")
-			timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Bunny\\media\\textures\\"..factionGroup.."Glow-Logo")
+			timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\"..factionGroup.."Glow-Logo")
 		end
 	elseif timer.type == TIMER_TYPE_CHALLENGE_MODE then
-		timer.GoTexture:SetTexture("Interface\\AddOns\\ElvUI_Bunny\\media\\textures\\Challenges-Logo")
-		timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Bunny\\media\\textures\\ChallengesGlow-Logo")
+		timer.GoTexture:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\Challenges-Logo")
+		timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\ChallengesGlow-Logo")
 	end
 end
 
@@ -369,11 +372,10 @@ function module:SwitchToLargeDisplay(timer)
 	end
 end
 
-function module:CHAT_MSG_BG_SYSTEM_NEUTRAL(event, ...)
-	local msg = ...
+function module:CHAT_MSG_BG_SYSTEM_NEUTRAL(event, msg)
 	if msg and msg ~= nil and chatMesage[msg] then
-		local timerType, timeSeconds, totalTime = unpack(chatMesage[msg])
-		module:CreateTimer(timerType, timeSeconds, totalTime)
+		local timerType, timeSeconds, totalTime = split(";", chatMesage[msg])
+		module:CreateTimer(tonumber(timerType), tonumber(timeSeconds), tonumber(totalTime))
 	end
 end
 

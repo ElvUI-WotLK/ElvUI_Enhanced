@@ -99,7 +99,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Bunny\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
+								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Enhanced\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
 									<TexCoords left="0" right="1" top="0" bottom="0.5"/>
 								</Texture>
 							</Layer>
@@ -129,7 +129,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="BACKGROUND">
-								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Bunny\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
+								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Enhanced\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
 									<TexCoords left="0" right="1" top="0.5" bottom="1"/>
 								</Texture>
 							</Layer>
@@ -204,7 +204,7 @@
 				<Anchor point="RIGHT" x="-3" y="0"/>
 			</Anchors>
 		</ButtonText>
-		<HighlightTexture file="Interface\AddOns\ElvUI_Bunny\media\textures\UI-FriendsFrame-HighlightBar-Blue" alphaMode="ADD"/>
+		<HighlightTexture file="Interface\AddOns\ElvUI_Enhanced\media\textures\UI-FriendsFrame-HighlightBar-Blue" alphaMode="ADD"/>
 	</Button>
 
 	<Button name="GearSetButtonTemplate2" virtual="true">
@@ -230,7 +230,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture name="$parentHighlightBar" parentKey="HighlightBar" file="Interface\AddOns\ElvUI_Bunny\media\textures\UI-FriendsFrame-HighlightBar-Blue" alpha="0.4" alphaMode="ADD" hidden="true">
+				<Texture name="$parentHighlightBar" parentKey="HighlightBar" file="Interface\AddOns\ElvUI_Enhanced\media\textures\UI-FriendsFrame-HighlightBar-Blue" alpha="0.4" alphaMode="ADD" hidden="true">
 					<TexCoords left="0.2" right="0.8" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
@@ -409,7 +409,7 @@
                 </FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture name="$parentHighlightBar" parentKey="HighlightBar" file="Interface\AddOns\ElvUI_Bunny\media\textures\UI-FriendsFrame-HighlightBar-Blue" alpha="0.4" alphaMode="ADD" hidden="true">
+				<Texture name="$parentHighlightBar" parentKey="HighlightBar" file="Interface\AddOns\ElvUI_Enhanced\media\textures\UI-FriendsFrame-HighlightBar-Blue" alpha="0.4" alphaMode="ADD" hidden="true">
 					<TexCoords left="0.2" right="0.8" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
