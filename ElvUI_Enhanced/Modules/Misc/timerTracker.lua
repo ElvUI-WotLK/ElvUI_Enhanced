@@ -381,7 +381,7 @@ end
 
 function module:HookDBM()
 	if DBM then
-		if E.db.enhanced.timer.dbm then
+		if E.db.enhanced.timerTracker.dbm then
 			self:SecureHook(DBM, "CreatePizzaTimer", function(_, time, text)
 				if text == DBM_CORE_TIMER_PULL then
 					DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
