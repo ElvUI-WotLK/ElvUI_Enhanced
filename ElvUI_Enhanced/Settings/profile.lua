@@ -51,6 +51,7 @@ P.enhanced = {
 		petBackground = false,
 		inspectBackground = false,
 		collapsed = false,
+		style = "Cata",
 		player = {
 			orderName = "",
 			collapsedName = {

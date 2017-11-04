@@ -27,25 +27,13 @@
 			<Layer level="BACKGROUND">
 				<FontString name="$parentNameText" inherits="GameFontHighlight" justifyH="LEFT" parentKey="NameText">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="15" y="-3"/>
+						<Anchor point="TOPLEFT" x="0" y="-3"/>
 					</Anchors>
 				</FontString>
 			</Layer>
-			<Layer level="ARTWORK">
-				<Texture name="$parentCollapsedIcon" parentKey="CollapsedIcon" inherits="Char-Stat-Plus" hidden="true">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="5" y="-5"/>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentExpandedIcon" parentKey="ExpandedIcon" inherits="Char-Stat-Minus">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="5" y="-7"/>
-					</Anchors>
-				</Texture>
-			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentToolbar">
+			<Button name="$parentToolbar" parentKey="Toolbar">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="-20"/>
@@ -69,10 +57,10 @@
 					<OnClick>
 						if self:GetParent().collapsed then
 							PaperDollFrame_ExpandStatCategory(self:GetParent());
-							ElvUI[1].db.character.collapsedName[self:GetParent().Category] = false;
+							CharacterStatsPane.collapsedData[self:GetParent().Category] = false
 						else
 							PaperDollFrame_CollapseStatCategory(self:GetParent());
-							ElvUI[1].db.character.collapsedName[self:GetParent().Category] = true;
+							CharacterStatsPane.collapsedData[self:GetParent().Category] = true
 						end
 					</OnClick>
 					<OnDragStart>
@@ -156,7 +144,7 @@
 			</Button>
 			<Frame name="$parentStat1" inherits="StatFrameTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="16" y="-19"/>
+					<Anchor point="TOPLEFT" x="0" y="-23"/>
 					<Anchor point="RIGHT" x="-4"/>
 				</Anchors>
 			</Frame>
