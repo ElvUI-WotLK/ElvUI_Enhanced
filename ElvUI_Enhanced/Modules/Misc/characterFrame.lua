@@ -1826,7 +1826,7 @@ function module:Initialize()
 		if event == "COMBAT_RATING_UPDATE" then
 			module:PaperDollFrame_UpdateStats()
 		elseif event == "PLAYER_TALENT_UPDATE" then
-			mod:PaperDollFrame_SetLevel()
+			module:PaperDollFrame_SetLevel()
 		end
 	end)
 
