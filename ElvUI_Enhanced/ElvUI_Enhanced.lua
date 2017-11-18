@@ -5,9 +5,49 @@ local addonName = ...
 
 local LEP = LibStub("LibElvUIPlugin-1.0")
 
-function E:GearScoreSpam()
-	E:Print("GearScore version '3.1.20b - Release' for not WotLK. Download 3.1.7")
-end
+E.PopupDialogs["GS_VERSION_INVALID"] = {
+	text = L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable version this?"],
+	hasEditBox = 1,
+	OnShow = function(self)
+		self.editBox:SetAutoFocus(false)
+		self.editBox.width = self.editBox:GetWidth()
+		self.editBox:SetWidth(220)
+		self.editBox:SetText("http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
+		self.editBox:HighlightText()
+		ChatEdit_FocusActiveWindow()
+	end,
+	OnHide = function(self)
+		self.editBox:SetWidth(self.editBox.width or 50)
+		self.editBox.width = nil
+	end,
+	hideOnEscape = 1,
+	button1 = DISABLE,
+	OnAccept = function()
+		DisableAddOn("GearScore")
+		DisableAddOn("BonusScanner")
+		ReloadUI()
+	end,
+	EditBoxOnEnterPressed = function(self)
+		ChatEdit_FocusActiveWindow()
+		self:GetParent():Hide()
+	end,
+	EditBoxOnEscapePressed = function(self)
+		ChatEdit_FocusActiveWindow()
+		self:GetParent():Hide()
+	end,
+	EditBoxOnTextChanged = function(self)
+		if self:GetText() ~= "http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105" then
+			self:SetText("http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
+		end
+		self:HighlightText()
+		self:ClearFocus()
+		ChatEdit_FocusActiveWindow()
+	end,
+	OnEditFocusGained = function(self)
+		self:HighlightText()
+	end,
+	showAlert = 1
+};
 
 function addon:Initialize()
 	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
@@ -31,9 +71,9 @@ function addon:Initialize()
 	end
 	E.db.general.showQuestLevel = nil
 
-	if IsAddOnLoaded("GearScore") then
+	if IsAddOnLoaded("GearScore") and IsAddOnLoaded("BonusScanner") then
 		if GetAddOnMetadata("GearScore", "Version") == "3.1.20b - Release" then
-			E:ScheduleRepeatingTimer("GearScoreSpam", 5)
+			E:StaticPopup_Show("GS_VERSION_INVALID")
 		end
 	end
 end
