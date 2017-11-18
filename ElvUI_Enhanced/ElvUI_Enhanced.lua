@@ -5,6 +5,10 @@ local addonName = ...
 
 local LEP = LibStub("LibElvUIPlugin-1.0")
 
+function E:GearScoreSpam()
+	E:Print("GearScore version '3.1.20b - Release' for not WotLK. Download 3.1.7")
+end
+
 function addon:Initialize()
 	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
 
@@ -26,6 +30,12 @@ function addon:Initialize()
 		E.db.enhanced.general.showQuestLevel = true
 	end
 	E.db.general.showQuestLevel = nil
+
+	if IsAddOnLoaded("GearScore") then
+		if GetAddOnMetadata("GearScore", "Version") == "3.1.20b - Release" then
+			E:ScheduleRepeatingTimer("GearScoreSpam", 5)
+		end
+	end
 end
 
 local function InitializeCallback()
