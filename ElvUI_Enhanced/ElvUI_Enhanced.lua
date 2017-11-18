@@ -6,7 +6,7 @@ local addonName = ...
 local LEP = LibStub("LibElvUIPlugin-1.0")
 
 E.PopupDialogs["GS_VERSION_INVALID"] = {
-	text = L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable version this?"],
+	text = L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"],
 	hasEditBox = 1,
 	OnShow = function(self)
 		self.editBox:SetAutoFocus(false)
