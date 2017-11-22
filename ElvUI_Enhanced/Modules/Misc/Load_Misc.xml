@@ -21,6 +21,37 @@
 
 	<Script file="characterFrame.lua"/>
 
+	<Frame name="CharacterStatFrameTemplate" virtual="true">
+		<Size x="187" y="15"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentLabel" justifyH="LEFT" inherits="GameFontNormalSmall">
+					<Size x="122" y="0"/>
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset x="7" y="0"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatText" justifyH="RIGHT" inherits="GameFontHighlightSmall">
+					<Anchors>
+						<Anchor point="RIGHT">
+							<Offset x="-3" y="0"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				PaperDollStatTooltip("player")
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide()
+			</OnLeave>
+		</Scripts>
+	</Frame>
+
 	<Frame name="StatGroupTemplate" virtual="true">
 		<Size x="169" y="0"/>
 		<Layers>
@@ -34,26 +65,14 @@
 		</Layers>
 		<Frames>
 			<Button name="$parentToolbar" parentKey="Toolbar">
+				<Size x="150" y="18"/>
 				<Anchors>
-					<Anchor point="TOPLEFT"/>
-					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="0" y="-20"/>
+					<Anchor point="TOP"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
 						self:RegisterForDrag("LeftButton");
 					</OnLoad>
-					<OnEnter>
-						if(MOVING_STAT_CATEGORY == nil) then
-							self.SortDownArrow:Show();
-							self.SortUpArrow:Show();
-						end
-					</OnEnter>
-					<OnLeave>
-						if(not self:IsMouseOver() and MOVING_STAT_CATEGORY ~= self:GetParent()) then
-							self.SortDownArrow:Hide();
-							self.SortUpArrow:Hide();
-						end
-					</OnLeave>
 					<OnClick>
 						if self:GetParent().collapsed then
 							PaperDollFrame_ExpandStatCategory(self:GetParent());
@@ -65,84 +84,13 @@
 					</OnClick>
 					<OnDragStart>
 						PaperDollStatCategory_OnDragStart(self:GetParent());
-						self.SortDownArrow:Show();
-						self.SortUpArrow:Show();
 					</OnDragStart>
 					<OnDragStop>
 						PaperDollStatCategory_OnDragStop(self:GetParent());
-						if(self:IsMouseOver()) then
-							self.SortDownArrow:Show();
-							self.SortUpArrow:Show();
-						else
-							self.SortDownArrow:Hide();
-							self.SortUpArrow:Hide();
-						end
 					</OnDragStop>
 				</Scripts>
-				<Frames>
-					<Button name="$parentSortUpArrow" parentKey="SortUpArrow" hidden="true">
-						<Size x="16" y="8"/>
-						<Anchors>
-							<Anchor point="TOPRIGHT" x="-1" y="-1"/>
-						</Anchors>
-						<Layers>
-							<Layer level="BACKGROUND">
-								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Enhanced\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
-									<TexCoords left="0" right="1" top="0" bottom="0.5"/>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								self:Show();
-								self.Arrow:SetAlpha(0.6);
-								self:GetParent().SortDownArrow:Show();
-							</OnEnter>
-							<OnLeave>
-								self.Arrow:SetAlpha(0.4);
-								if(not self:GetParent():IsMouseOver()) then
-									self:Hide();
-									self:GetParent().SortDownArrow:Hide();
-								end
-							</OnLeave>
-							<OnClick>
-								PaperDoll_MoveCategoryUp(self:GetParent():GetParent());
-							</OnClick>
-						</Scripts>
-					</Button>
-					<Button name="$parentSortDownArrow" parentKey="SortDownArrow" hidden="true">
-						<Size x="16" y="8"/>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentSortUpArrow" relativePoint="BOTTOMLEFT"/>
-						</Anchors>
-						<Layers>
-							<Layer level="BACKGROUND">
-								<Texture name="$parentArrow" file="Interface\AddOns\ElvUI_Enhanced\media\textures\StatSortArrows" parentKey="Arrow" alpha="0.4" setAllPoints="true">
-									<TexCoords left="0" right="1" top="0.5" bottom="1"/>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								self:Show();
-								self.Arrow:SetAlpha(0.6);
-								self:GetParent().SortUpArrow:Show();
-							</OnEnter>
-							<OnLeave>
-								self.Arrow:SetAlpha(0.4);
-								if(not self:GetParent():IsMouseOver()) then
-									self:Hide();
-									self:GetParent().SortUpArrow:Hide();
-								end
-							</OnLeave>
-							<OnClick>
-								PaperDoll_MoveCategoryDown(self:GetParent():GetParent());
-							</OnClick>
-						</Scripts>
-					</Button>
-				</Frames>
 			</Button>
-			<Frame name="$parentStat1" inherits="StatFrameTemplate">
+			<Frame name="$parentStat1" inherits="CharacterStatFrameTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-23"/>
 					<Anchor point="RIGHT" x="-4"/>

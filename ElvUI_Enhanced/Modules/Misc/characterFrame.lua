@@ -106,6 +106,10 @@ PAPERDOLL_SIDEBARS = {
 }
 
 PAPERDOLL_STATINFO = {
+	["ITEM_LEVEL"] = {
+		updateFunc = function(statFrame, unit) module:ItemLevel(statFrame, unit) end
+	},
+
 	["STRENGTH"] = {
 		updateFunc = function(statFrame, unit) module:SetStat(statFrame, unit, 1) end
 	},
@@ -220,8 +224,14 @@ PAPERDOLL_STATINFO = {
 }
 
 PAPERDOLL_STATCATEGORIES = {
-	["BASE_STATS"] = {
+	["ITEM_LEVEL"] = {
 		id = 1,
+		stats = {
+			"ITEM_LEVEL"
+		}
+	},
+	["BASE_STATS"] = {
+		id = 2,
 		stats = {
 			"STRENGTH",
 			"AGILITY",
@@ -231,7 +241,7 @@ PAPERDOLL_STATCATEGORIES = {
 		}
 	},
 	["MELEE_COMBAT"] = {
-		id = 2,
+		id = 3,
 		stats = {
 			"MELEE_DAMAGE",
 			"MELEE_DPS",
@@ -243,7 +253,7 @@ PAPERDOLL_STATCATEGORIES = {
 		}
 	},
 	["RANGED_COMBAT"] = {
-		id = 3,
+		id = 4,
 		stats = {
 			"RANGED_COMBAT1",
 			"RANGED_COMBAT2",
@@ -253,7 +263,7 @@ PAPERDOLL_STATCATEGORIES = {
 		}
 	},
 	["SPELL_COMBAT"] = {
-		id = 4,
+		id = 5,
 		stats = {
 			"SPELL_COMBAT1",
 			"SPELL_COMBAT2",
@@ -264,7 +274,7 @@ PAPERDOLL_STATCATEGORIES = {
 		}
 	},
 	["DEFENSES"] = {
-		id = 5,
+		id = 6,
 		stats = {
 			"DEFENSES1",
 			"DEFENSES2",
@@ -275,7 +285,7 @@ PAPERDOLL_STATCATEGORIES = {
 		}
 	},
 	["RESISTANCE"] = {
-		id = 6,
+		id = 7,
 		stats = {
 			"ARCANE",
 			"FIRE",
@@ -287,6 +297,7 @@ PAPERDOLL_STATCATEGORIES = {
 }
 
 PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
+	"ITEM_LEVEL",
 	"BASE_STATS",
 	"MELEE_COMBAT",
 	"RANGED_COMBAT",
@@ -414,8 +425,133 @@ function module:CharacterFrame_Expand()
 		UpdateUIPanelPositions(CharacterFrame)
 	end
 end
+
 local StatCategoryFrames = {}
 
+local slots = {
+	["HeadSlot"] = "INVTYPE_HEAD",
+	["NeckSlot"] = "INVTYPE_NECK",
+	["ShoulderSlot"] = "INVTYPE_SHOULDER",
+	["BackSlot"] = "INVTYPE_CLOAK",
+	["ChestSlot"] = "INVTYPE_ROBE",
+	["WristSlot"] = "INVTYPE_WRIST",
+	["HandsSlot"] = "INVTYPE_HAND",
+	["WaistSlot"] = "INVTYPE_WAIST",
+	["LegsSlot"] = "INVTYPE_LEGS",
+	["FeetSlot"] = "INVTYPE_FEET",
+	["Finger0Slot"] = "INVTYPE_FINGER",
+	["Finger1Slot"] = "INVTYPE_FINGER",
+	["Trinket0Slot"] = "INVTYPE_TRINKET",
+	["Trinket1Slot"] = "INVTYPE_TRINKET",
+	["MainHandSlot"] = "INVTYPE_WEAPONMAINHAND",
+	["SecondaryHandSlot"] = "INVTYPE_HOLDABLE",
+	["RangedSlot"] = "INVTYPE_RANGEDRIGHT",
+}
+
+local bagsTable = {}
+local function GetAverageItemLevel()
+	local itemLink, itemLevel, itemEquipLoc
+	local total, totalBag, item, bagItem, isBagItemLevel = 0, 0, 0, 0
+
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) do
+			itemLink = GetContainerItemLink(bag, slot)
+			if itemLink then
+				_, _, _, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
+				if itemEquipLoc and itemEquipLoc ~= "" then
+					if not bagsTable[itemEquipLoc] then
+						bagsTable[itemEquipLoc] = itemLevel
+					else
+						if itemLevel > bagsTable[itemEquipLoc] then
+							bagsTable[itemEquipLoc] = itemLevel
+						end
+					end
+				end
+			end
+		end
+	end
+
+	for slotName, itemLoc in pairs(slots) do
+		itemLink = GetInventoryItemLink("player", GetInventorySlotInfo(slotName))
+		if itemLink then
+			_, _, _, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
+			if itemLevel and itemLevel > 0 then
+				item = item + 1
+				bagItem = bagItem + 1
+
+				isBagItemLevel = bagsTable[itemEquipLoc]
+				if isBagItemLevel and isBagItemLevel > itemLevel then
+					totalBag = totalBag + isBagItemLevel
+				else
+					totalBag = totalBag + itemLevel
+				end
+
+				total = total + itemLevel
+			end
+		else
+			isBagItemLevel = bagsTable[itemLoc]
+			if isBagItemLevel then
+				bagItem = bagItem + 1
+				totalBag = totalBag + isBagItemLevel
+			end
+		end
+	end
+
+	wipe(bagsTable)
+
+	if total < 1 then
+		return 0, 0
+	end
+
+	return (totalBag / bagItem), (total / item)
+end
+
+local function GetItemLevelColor(unit)
+	if not unit then unit = "player" end
+
+	local i = 0
+	local sumR, sumG, sumB = 0, 0, 0
+	for slotName, _ in pairs(slots) do
+		local slotID = GetInventorySlotInfo(slotName)
+		if GetInventoryItemTexture(unit, slotID) then
+			local itemLink = GetInventoryItemLink(unit, slotID)
+			if itemLink then
+				local quality = select(3, GetItemInfo(itemLink))
+				if quality then
+					i = i + 1
+					local r, g, b = GetItemQualityColor(quality)
+					sumR = sumR + r
+					sumG = sumG + g
+					sumB = sumB + b
+				end
+			end
+		end
+	end
+
+	if i > 0 then
+		return (sumR / i), (sumG / i), (sumB / i)
+	else
+		return 1, 1, 1
+	end
+end
+
+function module:ItemLevel(statFrame, unit)
+	local label = _G[statFrame:GetName().."Label"]
+	if PersonalGearScore then
+		local myGearScore = GearScore_GetScore(UnitName("player"), "player")
+		label:SetText(myGearScore)
+		local r, b, g = GearScore_GetQuality(myGearScore)
+		label:SetTextColor(r, g, b)
+	else
+		local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
+		if avgItemLevelEquipped == avgItemLevel then
+			label:SetFormattedText("%.2f", avgItemLevelEquipped)
+		else
+			label:SetFormattedText("%.2f / %.2f", avgItemLevelEquipped, avgItemLevel)
+		end
+		label:SetTextColor(GetItemLevelColor())
+	end
+end
 
 function module:SetStat(statFrame, unit, statIndex)
 	local label = _G[statFrame:GetName().."Label"]
@@ -716,9 +852,7 @@ end
 function PaperDollFrame_CollapseStatCategory(categoryFrame)
 	if not categoryFrame.collapsed then
 		categoryFrame.collapsed = true
-		if E.db.enhanced.character.style == "Legion" then
-			_G[categoryFrame:GetName().."Toolbar"]:SetTemplate("NoBackdrop")
-		end
+		_G[categoryFrame:GetName().."Toolbar"]:SetTemplate("NoBackdrop")
 		local index = 1
 		while _G[categoryFrame:GetName().."Stat"..index] do
 			_G[categoryFrame:GetName().."Stat"..index]:Hide()
@@ -732,9 +866,7 @@ end
 function PaperDollFrame_ExpandStatCategory(categoryFrame)
 	if categoryFrame.collapsed then
 		categoryFrame.collapsed = false
-		if E.db.enhanced.character.style == "Legion" then
-			_G[categoryFrame:GetName().."Toolbar"]:SetTemplate("Default", true)
-		end
+		_G[categoryFrame:GetName().."Toolbar"]:SetTemplate("Default", true)
 		module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 		module:PaperDollFrame_UpdateStatScrollChildHeight()
 	end
@@ -746,6 +878,12 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	local categoryInfo = PAPERDOLL_STATCATEGORIES[categoryFrame.Category]
 	if categoryInfo == PAPERDOLL_STATCATEGORIES["RESISTANCE"] then
 		categoryFrame.NameText:SetText(L["Resistance"])
+	elseif categoryInfo == PAPERDOLL_STATCATEGORIES["ITEM_LEVEL"] then
+		if PersonalGearScore then
+			categoryFrame.NameText:SetText("Gear Score")
+		else
+			categoryFrame.NameText:SetText(L["Item Level"])
+		end
 	else
 		categoryFrame.NameText:SetText(_G["PLAYERSTAT_"..categoryFrame.Category])
 	end
@@ -761,13 +899,45 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 			if statInfo then
 				local statFrame = _G[categoryFrame:GetName().."Stat"..numVisible + 1]
 				if not statFrame then
-					statFrame = CreateFrame("FRAME", categoryFrame:GetName() .."Stat"..numVisible + 1, categoryFrame, "StatFrameTemplate")
+					statFrame = CreateFrame("FRAME", categoryFrame:GetName() .."Stat"..numVisible + 1, categoryFrame, "CharacterStatFrameTemplate")
 					if prevStatFrame then
 						statFrame:SetPoint("TOPLEFT", prevStatFrame, "BOTTOMLEFT", 0, 0)
 						statFrame:SetPoint("TOPRIGHT", prevStatFrame, "BOTTOMRIGHT", 0, 0)
 					end
 				end
 				statFrame:Show()
+
+				if stat == "ITEM_LEVEL" then
+					statFrame:SetHeight(30)
+					local label = _G[statFrame:GetName().."Label"]
+					label:ClearAllPoints()
+					label:SetPoint("CENTER")
+					label:SetSize(187, 30)
+					label:FontTemplate(nil, 20)
+					label:SetJustifyH("CENTER")
+					_G[statFrame:GetName().."StatText"]:SetText("")
+
+					if statFrame.leftGrad then
+						statFrame.leftGrad:Show()
+						statFrame.rightGrad:Show()
+					end
+				else
+					if statFrame:GetHeight() > 22 then
+						statFrame:SetHeight(15)
+						local label = _G[statFrame:GetName().."Label"]
+						label:ClearAllPoints()
+						label:SetPoint("LEFT", 7, 0)
+						label:SetSize(122, 15)
+						label:FontTemplate()
+						label:SetJustifyH("LEFT")
+						label:SetTextColor(1, 0.82, 0)
+
+						if statFrame.leftGrad then
+							statFrame.leftGrad:Hide()
+							statFrame.rightGrad:Hide()
+						end
+					end
+				end
 
 				if statInfo.updateFunc2 then
 					statFrame:SetScript("OnEnter", PaperDollStatTooltip)
@@ -794,34 +964,22 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	end
 
 	for index = 1, numVisible do
-		if index%2 == 0 or (E.db.enhanced.character.style == "Legion" and categoryInfo == PAPERDOLL_STATCATEGORIES["ITEM_LEVEL"]) then
+		if index%2 == 0 or categoryInfo == PAPERDOLL_STATCATEGORIES["ITEM_LEVEL"] then
 			local statFrame = _G[categoryFrame:GetName().."Stat"..index]
-			if E.db.enhanced.character.style == "Legion" then
-				if not statFrame.leftGrad then
-					statFrame.leftGrad = statFrame:CreateTexture(nil, "BACKGROUND")
-					statFrame.leftGrad:SetWidth(80)
-					statFrame.leftGrad:SetHeight(statFrame:GetHeight())
-					statFrame.leftGrad:SetPoint("LEFT", statFrame, "CENTER")
-					statFrame.leftGrad:SetTexture(E.media.blankTex)
-					statFrame.leftGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0.35, 0.8,0.8,0.8,0)
+			if not statFrame.leftGrad then
+				statFrame.leftGrad = statFrame:CreateTexture(nil, "BACKGROUND")
+				statFrame.leftGrad:SetWidth(80)
+				statFrame.leftGrad:SetHeight(statFrame:GetHeight())
+				statFrame.leftGrad:SetPoint("LEFT", statFrame, "CENTER")
+				statFrame.leftGrad:SetTexture(E.media.blankTex)
+				statFrame.leftGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0.35, 0.8,0.8,0.8,0)
 
-					statFrame.rightGrad = statFrame:CreateTexture(nil, "BACKGROUND")
-					statFrame.rightGrad:SetWidth(80)
-					statFrame.rightGrad:SetHeight(statFrame:GetHeight())
-					statFrame.rightGrad:SetPoint("RIGHT", statFrame, "CENTER")
-					statFrame.rightGrad:SetTexture(E.media.blankTex)
-					statFrame.rightGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0, 0.8,0.8,0.8,0.35)
-				end
-			else
-				if not statFrame.Bg then
-					statFrame.Bg = statFrame:CreateTexture(statFrame:GetName().."Bg", "BACKGROUND")
-					statFrame.Bg:SetPoint("LEFT", categoryFrame, "LEFT", 1, 0)
-					statFrame.Bg:SetPoint("RIGHT", categoryFrame, "RIGHT", 0, 0)
-					statFrame.Bg:SetPoint("TOP")
-					statFrame.Bg:SetPoint("BOTTOM")
-					statFrame.Bg:SetTexture(0.9, 0.9, 1)
-					statFrame.Bg:SetAlpha(0.1)
-				end
+				statFrame.rightGrad = statFrame:CreateTexture(nil, "BACKGROUND")
+				statFrame.rightGrad:SetWidth(80)
+				statFrame.rightGrad:SetHeight(statFrame:GetHeight())
+				statFrame.rightGrad:SetPoint("RIGHT", statFrame, "CENTER")
+				statFrame.rightGrad:SetTexture(E.media.blankTex)
+				statFrame.rightGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0, 0.8,0.8,0.8,0.35)
 			end
 		end
 	end
@@ -1425,14 +1583,10 @@ function module:Initialize()
 	if not E.private.enhanced.character.enable then return end
 
 	if PersonalGearScore then
-		PersonalGearScore:ClearAllPoints()
-		PersonalGearScore:SetPoint("BOTTOMLEFT", PaperDollFrame, "TOPLEFT", 72, -363)
-		PersonalGearScore:SetParent(CharacterModelFrame)
+		PersonalGearScore:Hide()
 	end
 	if GearScore2 then
-		GearScore2:ClearAllPoints()
-		GearScore2:SetPoint("BOTTOMLEFT", PaperDollFrame, "TOPLEFT", 72, -375)
-		GearScore2:SetParent(CharacterModelFrame)
+		GearScore2:Hide()
 	end
 
 	local function FixHybridScrollBarSize(frame, w1, w2, h1, h2)
@@ -1608,18 +1762,10 @@ function module:Initialize()
 
 	for i = 1, 8 do
 		local button = CreateFrame("Frame", "CharacterStatsPaneCategory"..i, statsPaneScrollChild, "StatGroupTemplate")
-		if E.db.enhanced.character.style == "Legion" then
-			button.Toolbar:Size(150, 18)
-			button.Toolbar:ClearAllPoints()
-			button.Toolbar:Point("TOP")
-			button.Toolbar:SetTemplate("Default", true)
-
-			button.Toolbar.SortUpArrow.Arrow:SetTexture("")
-			button.Toolbar.SortDownArrow.Arrow:SetTexture("")
-			button.NameText:SetParent(button.Toolbar)
-			button.NameText:ClearAllPoints()
-			button.NameText:SetPoint("CENTER", button.Toolbar)
-		end
+		button.Toolbar:SetTemplate("Default", true)
+		button.NameText:SetParent(button.Toolbar)
+		button.NameText:ClearAllPoints()
+		button.NameText:SetPoint("CENTER", button.Toolbar)
 		statsPane.buttons[i] = button
 	end
 
@@ -1630,9 +1776,7 @@ function module:Initialize()
 		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
 		for _, button in next, statsPane.buttons do
 			button:Width(169)
-			if E.db.enhanced.character.style == "Legion" then
-				button.Toolbar:Width(132)
-			end
+			button.Toolbar:Width(132)
 		end
 		getmetatable(self).__index.Show(self)
 	end
@@ -1642,9 +1786,7 @@ function module:Initialize()
 		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
 		for _, button in next, statsPane.buttons do
 			button:Width(187)
-			if E.db.enhanced.character.style == "Legion" then
-				button.Toolbar:Width(150)
-			end
+			button.Toolbar:Width(150)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
