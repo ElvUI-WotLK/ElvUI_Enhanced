@@ -5,7 +5,7 @@ local select = select
 local format, join = string.format, string.join
 
 local AGILITY_COLON = AGILITY_COLON
-local ITEM_MOD_AGILITY_SHORT = ITEM_MOD_AGILITY_SHORT
+local SPELL_STAT2_NAME = SPELL_STAT2_NAME
 
 local displayNumberString = ""
 local lastPanel
@@ -28,4 +28,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Agility", {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil, ColorizeSettingName(ITEM_MOD_AGILITY_SHORT))
+DT:RegisterDatatext("Agility", {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil, ColorizeSettingName(SPELL_STAT2_NAME))

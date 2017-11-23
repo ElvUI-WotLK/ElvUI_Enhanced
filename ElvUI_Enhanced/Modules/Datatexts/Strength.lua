@@ -5,7 +5,7 @@ local select = select
 local format, join = string.format, string.join
 
 local STRENGTH_COLON = STRENGTH_COLON
-local ITEM_MOD_STRENGTH_SHORT = ITEM_MOD_STRENGTH_SHORT
+local SPELL_STAT1_NAME = SPELL_STAT1_NAME
 
 local displayNumberString = ""
 local lastPanel
@@ -28,4 +28,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Strength", {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil, ColorizeSettingName(ITEM_MOD_STRENGTH_SHORT))
+DT:RegisterDatatext("Strength", {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil, ColorizeSettingName(SPELL_STAT1_NAME))
