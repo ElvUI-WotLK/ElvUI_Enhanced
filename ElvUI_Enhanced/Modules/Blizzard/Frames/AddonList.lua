@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
-local AL = E:NewModule("AddOnList", "AceHook-3.0")
+local mod = E:GetModule("Enhanced_Blizzard")
 
 local floor = math.floor
 
 local CreateFrame = CreateFrame
 local DisableAddOn = DisableAddOn
 local EnableAddOn = EnableAddOn
+local GameTooltip_Hide = GameTooltip_Hide
 local GetAddOnDependencies = GetAddOnDependencies
 local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
@@ -13,7 +14,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
 
-function AL:HasAnyChanged()
+local function AddonList_HasAnyChanged()
 	for i = 1, GetNumAddOns() do
 		local _, _, _, enabled, _, reason = GetAddOnInfo(i)
 		if enabled ~= ElvUI_AddonList.startStatus[i] and reason ~= "DEP_DISABLED" then
@@ -24,7 +25,19 @@ function AL:HasAnyChanged()
 	return false
 end
 
-function AL:SetStatus(entry, load, status, reload)
+local function AddonList_IsAddOnLoadOnDemand(index)
+	local lod = false
+
+	if IsAddOnLoadOnDemand(index) then
+		if not IsAddOnLoaded(index) then
+			lod = true
+		end
+	end
+
+	return lod
+end
+
+local function AddonList_SetStatus(entry, load, status, reload)
 	if load then
 		entry.LoadButton:Show()
 	else
@@ -44,7 +57,7 @@ function AL:SetStatus(entry, load, status, reload)
 	end
 end
 
-function AL:Update()
+local function AddonList_Update()
 	local numEntries = GetNumAddOns()
 	local addonIndex, entry, checkbox, status
 
@@ -85,16 +98,16 @@ function AL:Update()
 
 			if enabled ~= ElvUI_AddonList.startStatus[addonIndex] and reason ~= "DEP_DISABLED" then
 				if enabled then
-					if self:IsAddOnLoadOnDemand(addonIndex) then
-						self:SetStatus(entry, true, false, false)
+					if AddonList_IsAddOnLoadOnDemand(addonIndex) then
+						AddonList_SetStatus(entry, true, false, false)
 					else
-						self:SetStatus(entry, false, false, true)
+						AddonList_SetStatus(entry, false, false, true)
 					end
 				else
-					self:SetStatus(entry, false, false, true)
+					AddonList_SetStatus(entry, false, false, true)
 				end
 			else
-				self:SetStatus(entry, false, true, false)
+				AddonList_SetStatus(entry, false, true, false)
 			end
 
 			entry:SetID(addonIndex)
@@ -104,7 +117,7 @@ function AL:Update()
 
 	FauxScrollFrame_Update(ElvUI_AddonListScrollFrame, numEntries, 20, 16)
 
-	if self:HasAnyChanged() then
+	if AddonList_HasAnyChanged() then
 		ElvUI_AddonListOkayButton:SetText(L["Reload UI"])
 		ElvUI_AddonList.shouldReload = true
 	else
@@ -113,30 +126,18 @@ function AL:Update()
 	end
 end
 
-function AL:IsAddOnLoadOnDemand(index)
-	local lod = false
-
-	if IsAddOnLoadOnDemand(index) then
-		if not IsAddOnLoaded(index) then
-			lod = true
-		end
-	end
-
-	return lod
-end
-
-function AL:Enable(index, enabled)
+local function AddonList_Enable(index, enabled)
 	if enabled then
 		EnableAddOn(index)
 	else
 		DisableAddOn(index)
 	end
 
-	self:Update()
+	AddonList_Update()
 end
 
-function AL:LoadAddOn(index)
-	if not self:IsAddOnLoadOnDemand(index) then return end
+local function AddonList_LoadAddOn(index)
+	if not AddonList_IsAddOnLoadOnDemand(index) then return end
 
 	LoadAddOn(index)
 
@@ -144,10 +145,10 @@ function AL:LoadAddOn(index)
 		ElvUI_AddonList.startStatus[index] = 1
 	end
 
-	self:Update()
+	AddonList_Update()
 end
 
-function AL:TooltipBuildDeps(...)
+local function AddonList_TooltipBuildDeps(...)
 	local deps = ""
 
 	for i = 1, select("#", ...) do
@@ -161,8 +162,8 @@ function AL:TooltipBuildDeps(...)
 	return deps
 end
 
-function AL:TooltipUpdate(owner)
-	local id = owner:GetID()
+local function AddonList_TooltipUpdate(self)
+	local id = self:GetID()
 	if id == 0 then return end
 
 	local name, title, notes, _, _, security = GetAddOnInfo(id)
@@ -180,13 +181,13 @@ function AL:TooltipUpdate(owner)
 		end
 
 		GameTooltip:AddLine(notes, 1.0, 1.0, 1.0)
-		GameTooltip:AddLine(self:TooltipBuildDeps(GetAddOnDependencies(id)))
+		GameTooltip:AddLine(AddonList_TooltipBuildDeps(GetAddOnDependencies(id)))
 	end
 
 	GameTooltip:Show()
 end
 
-function AL:Initialize()
+function mod:AddonList()
 	if IsAddOnLoaded("ACP") then return end
 
 	local S = E:GetModule("Skins")
@@ -219,35 +220,44 @@ function AL:Initialize()
 	cancelButton:Point("BOTTOMRIGHT", -SPACING, SPACING)
 	cancelButton:SetText(CANCEL)
 	S:HandleButton(cancelButton)
+	cancelButton:SetScript("OnClick", function() ElvUI_AddonList:Hide() end)
 
 	local closeButton = CreateFrame("Button", "$parentCloseButton", addonList, "UIPanelCloseButton")
 	closeButton:Size(32)
 	closeButton:Point("TOPRIGHT", -2, 2)
 	S:HandleCloseButton(closeButton)
+	closeButton:SetScript("OnClick", function() ElvUI_AddonList:Hide() end)
 
 	local okayButton = CreateFrame("Button", "$parentOkayButton", addonList, "UIPanelButtonTemplate")
 	okayButton:Size(80, 22)
 	okayButton:Point("TOPRIGHT", cancelButton, "TOPLEFT", -SPACING, 0)
 	okayButton:SetText(OKAY)
 	S:HandleButton(okayButton)
+	okayButton:SetScript("OnClick", function()
+		ElvUI_AddonList:Hide()
+		if ElvUI_AddonList.shouldReload then
+			ReloadUI()
+		end
+	end)
 
 	local enableAllButton = CreateFrame("Button", "$parentEnableAllButton", addonList, "UIPanelButtonTemplate")
 	enableAllButton:Size(120, 22)
 	enableAllButton:Point("BOTTOMLEFT", SPACING, SPACING)
 	enableAllButton:SetText(L["Enable All"])
 	S:HandleButton(enableAllButton)
+	enableAllButton:SetScript("OnClick", function() EnableAllAddOns(); AddonList_Update() end)
 
 	local disableAllButton = CreateFrame("Button", "$parentDisableAllButton", addonList, "UIPanelButtonTemplate")
 	disableAllButton:Size(120, 22)
 	disableAllButton:Point("TOPLEFT", enableAllButton, "TOPRIGHT", SPACING, 0)
 	disableAllButton:SetText(L["Disable All"])
 	S:HandleButton(disableAllButton)
+	disableAllButton:SetScript("OnClick", function() DisableAllAddOns(); AddonList_Update() end)
 
 	addonList:SetScript("OnShow", function()
-		self:Update()
+		AddonList_Update()
 		PlaySound("igMainMenuOption")
 	end)
-
 	addonList:SetScript("OnHide", function()
 		PlaySound("igMainMenuOptionCheckBoxOn")
 	end)
@@ -262,11 +272,9 @@ function AL:Initialize()
 			self:StartMoving()
 		end
 	end)
-
 	addonList:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
 	end)
-
 	addonList:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, 4)
 		GameTooltip:ClearLines()
@@ -274,32 +282,7 @@ function AL:Initialize()
 
 		GameTooltip:Show()
 	end)
-	addonList:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
-
-	cancelButton:SetScript("OnClick", function()
-		ElvUI_AddonList:Hide()
-	end)
-
-	closeButton:SetScript("OnClick", function()
-		ElvUI_AddonList:Hide()
-	end)
-
-	okayButton:SetScript("OnClick", function()
-		ElvUI_AddonList:Hide()
-		if ElvUI_AddonList.shouldReload then
-			ReloadUI()
-		end
-	end)
-
-	enableAllButton:SetScript("OnClick", function()
-		EnableAllAddOns()
-		AL:Update()
-	end)
-
-	disableAllButton:SetScript("OnClick", function()
-		DisableAllAddOns()
-		AL:Update()
-	end)
+	addonList:SetScript("OnLeave", GameTooltip_Hide)
 
 	local scrollFrame = CreateFrame("ScrollFrame", "$parentScrollFrame", addonList, "FauxScrollFrameTemplate")
 	scrollFrame:SetTemplate("Transparent")
@@ -311,9 +294,9 @@ function AL:Initialize()
 		local scrollbar = _G[self:GetName().."ScrollBar"]
 		scrollbar:SetValue(offset)
 		addonList.offset = floor((offset / 16) + 0.5)
-		AL:Update()
+		AddonList_Update()
 		if GameTooltip:IsShown() then
-			AL:TooltipUpdate(GameTooltip:GetOwner())
+			AddonList_TooltipUpdate(GameTooltip:GetOwner())
 			GameTooltip:Show()
 		end
 	end)
@@ -362,32 +345,27 @@ function AL:Initialize()
 
 		addonListEntry[i]:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT", -270, 0)
-			AL:TooltipUpdate(self)
+			AddonList_TooltipUpdate(self)
 		end)
-
-		addonListEntry[i]:SetScript("OnLeave", function()
-			GameTooltip:Hide()
-		end)
+		addonListEntry[i]:SetScript("OnLeave", GameTooltip_Hide)
 
 		enabled:SetScript("OnClick", function(self)
-			AL:Enable(self:GetParent():GetID(), self:GetChecked())
+			AddonList_Enable(self:GetParent():GetID(), self:GetChecked())
 			PlaySound("igMainMenuOptionCheckBoxOn")
 		end)
-
 		enabled:SetScript("OnEnter", function(self)
 			if self.tooltip then
 				GameTooltip:SetOwner(self, "ANCHOR_RIGHT", -270, 0)
-				AL:TooltipUpdate(self)
+				AddonList_TooltipUpdate(self)
 				GameTooltip:Show()
 			end
 		end)
-
 		enabled:SetScript("OnLeave", function()
 			GameTooltip:Hide()
 		end)
 
 		load:SetScript("OnClick", function(self)
-			AL:LoadAddOn(self:GetParent():GetID())
+			AddonList_LoadAddOn(self:GetParent():GetID())
 		end)
 	end
 
@@ -395,10 +373,9 @@ function AL:Initialize()
 	buttonAddons:Point("TOP", GameMenuButtonMacros, "BOTTOM", 0, -1)
 	buttonAddons:SetText(ADDONS)
 	S:HandleButton(buttonAddons)
-
 	buttonAddons:SetScript("OnClick", function()
 		HideUIPanel(GameMenuFrame)
-		ShowUIPanel(ElvUI_AddonList)
+		ElvUI_AddonList:Show()
 	end)
 
 	self:HookScript(GameMenuButtonRatings, "OnShow", function(self)
@@ -433,9 +410,3 @@ function AL:Initialize()
 		end
 	end
 end
-
-local function InitializeCallback()
-	AL:Initialize()
-end
-
-E:RegisterModule(AL:GetName(), InitializeCallback)

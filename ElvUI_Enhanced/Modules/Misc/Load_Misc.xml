@@ -3,7 +3,6 @@
 	<Script file="faction.lua"/>
 	<Script file="paperdoll.lua"/>
 	<Script file="movers.lua"/>
-	<Script file="addonList.lua"/>
 	<Script file="questLevel.lua"/>
 	<Script file="questReward.lua"/>
 	<Script file="loseControl.lua"/>
