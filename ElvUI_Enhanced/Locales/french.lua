@@ -175,3 +175,27 @@ L["PvP"] = "PvP"
 L["Arena"] = "Arêne"
 L["Party"] = "Groupe"
 L["Raid"] = "Raid"
+
+--
+L["Drag"] = true
+L["Left-click on character and drag to rotate."] = true
+L["Reset Position"] = true
+L["Right-click on character and drag to move it within the window."] = true
+L["Rotate Left"] = true
+L["Rotate Right"] = true
+
+--
+L["Change Name/Icon"] = true
+L["Character Stats"] = true
+L["Damage Per Second"] = "DPS"
+L["Equipment Manager"] = true
+L["Hide Character Information"] = true
+L["Hide Pet Information"] = true
+L["Item Level"] = true
+L["New Set"] = true
+L["Resistance"] = true
+L["Show Character Information"] = true
+L["Show Pet Information"] = true
+L["Titles"] = true
+L["Total Companions"] = true
+L["Total Mounts"] = true

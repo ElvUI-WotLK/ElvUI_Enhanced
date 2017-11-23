@@ -4,7 +4,6 @@
 	<Script file="paperdoll.lua"/>
 	<Script file="movers.lua"/>
 	<Script file="addonList.lua"/>
-	<Script file="deathRecap.lua"/>
 	<Script file="questLevel.lua"/>
 	<Script file="questReward.lua"/>
 	<Script file="loseControl.lua"/>
@@ -19,13 +18,11 @@
 	<Script file="worldMapFrame.lua"/>
 	<Include file="timerTracker.xml"/>
 
-	<Script file="characterFrame.lua"/>
-
 	<Frame name="CharacterStatFrameTemplate" virtual="true">
 		<Size x="187" y="15"/>
 		<Layers>
 			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" justifyH="LEFT" inherits="GameFontNormalSmall">
+				<FontString name="$parentLabel" justifyH="LEFT" inherits="GameFontNormalSmall" parentKey="Label">
 					<Size x="122" y="0"/>
 					<Anchors>
 						<Anchor point="LEFT">
@@ -33,7 +30,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentStatText" justifyH="RIGHT" inherits="GameFontHighlightSmall">
+				<FontString name="$parentStatText" justifyH="RIGHT" inherits="GameFontHighlightSmall" parentKey="Value">
 					<Anchors>
 						<Anchor point="RIGHT">
 							<Offset x="-3" y="0"/>
@@ -52,52 +49,7 @@
 		</Scripts>
 	</Frame>
 
-	<Frame name="StatGroupTemplate" virtual="true">
-		<Size x="169" y="0"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<FontString name="$parentNameText" inherits="GameFontHighlight" justifyH="LEFT" parentKey="NameText">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="0" y="-3"/>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="$parentToolbar" parentKey="Toolbar">
-				<Size x="150" y="18"/>
-				<Anchors>
-					<Anchor point="TOP"/>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForDrag("LeftButton");
-					</OnLoad>
-					<OnClick>
-						if self:GetParent().collapsed then
-							PaperDollFrame_ExpandStatCategory(self:GetParent());
-							CharacterStatsPane.collapsedData[self:GetParent().Category] = false
-						else
-							PaperDollFrame_CollapseStatCategory(self:GetParent());
-							CharacterStatsPane.collapsedData[self:GetParent().Category] = true
-						end
-					</OnClick>
-					<OnDragStart>
-						PaperDollStatCategory_OnDragStart(self:GetParent());
-					</OnDragStart>
-					<OnDragStop>
-						PaperDollStatCategory_OnDragStop(self:GetParent());
-					</OnDragStop>
-				</Scripts>
-			</Button>
-			<Frame name="$parentStat1" inherits="CharacterStatFrameTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-23"/>
-					<Anchor point="RIGHT" x="-4"/>
-				</Anchors>
-			</Frame>
-		</Frames>
-	</Frame>
+	<Script file="characterFrame.lua"/>
 
 	<Button name="PlayerTitleButtonTemplate2" virtual="true">
 		<Size x="169" y="22"/>

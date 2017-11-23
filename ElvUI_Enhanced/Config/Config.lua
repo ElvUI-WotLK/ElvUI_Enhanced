@@ -209,6 +209,47 @@ local function ActionbarOptions()
 	return config
 end
 
+-- Blizzard
+local function BlizzardOptions()
+	local B = E:GetModule("Enhanced_Blizzard")
+
+	local config = {
+		order = 2,
+		type = "group",
+		name = L["Blizzard"],
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = ColorizeSettingName(L["Blizzard"])
+			},
+			blizzard = {
+				order = 2,
+				type = "group",
+				name = L["Dressing Room"],
+				guiInline = true,
+				get = function(info) return E.db.enhanced.blizzard.dressUpFrame[ info[#info] ] end,
+				set = function(info, value) E.db.enhanced.blizzard.dressUpFrame[ info[#info] ] = value; B:UpdateDressUpFrame() end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"]
+					},
+					multiplier = {
+						order = 2,
+						type = "range",
+						isPercent = true,
+						name = L["Scale"],
+						min = 1, max = 2, step = 0.01
+					}
+				}
+			}
+		}
+	}
+	return config
+end
+
 -- Chat
 local function ChatOptions()
 	local config = {
@@ -1318,6 +1359,7 @@ function addon:GetOptions()
 		args = {
 			generalGroup = GeneralOptions(),
 			actionbarGroup = ActionbarOptions(),
+			blizzardGroup = BlizzardOptions(),
 			chatGroup = ChatOptions(),
 			characterFrameGroup = CharacterFrameOptions(),
 			datatextsGroup = DataTextsOptions(),
