@@ -547,10 +547,8 @@ end
 
 function module:ItemLevel(statFrame, unit)
 	if PersonalGearScore then
-		local myGearScore = GearScore_GetScore(UnitName("player"), "player")
-		statFrame.Label:SetText(myGearScore)
-		local r, b, g = GearScore_GetQuality(myGearScore)
-		statFrame.Label:SetTextColor(r, g, b)
+		statFrame.Label:SetText(PersonalGearScore:GetText())
+		statFrame.Label:SetTextColor(PersonalGearScore:GetTextColor())
 	else
 		local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
 		if avgItemLevelEquipped == avgItemLevel then
