@@ -473,7 +473,11 @@ local function GetAverageItemLevel()
 	end
 
 	for slotName, itemLoc in pairs(slots) do
-		itemLink = GetInventoryItemLink("player", GetInventorySlotInfo(slotName))
+		local slotID = GetInventorySlotInfo(slotName)
+		if slotID then
+			itemLink = GetInventoryItemLink("player", slotID)
+		end
+
 		if itemLink then
 			_, _, _, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 			if itemLevel and itemLevel > 0 then
