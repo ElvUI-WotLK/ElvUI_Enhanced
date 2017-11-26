@@ -9,6 +9,31 @@ L["DURABILITY_DESC"] = "Adjust the settings for the durability information on th
 L["ITEMLEVEL_DESC"] = "Adjust the settings for the item level information on the character screen."
 L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
 
+-- ???
+L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
+
+-- ???
+L["Train All Button"] = true
+L["Undress Button"] = true
+L["Change color of item icons which already known."] = true
+L["Blizzard"] = true
+L["Enhanced Character Frame"] = true
+L["Paperdoll Backgrounds"] = true
+L["Character Background"] = true
+L["Pet Background"] = true
+L["Inspect Background"] = true
+L["Model Frames"] = true
+L["Ulduar"] = true
+L["Portrait HD Fix"] = true
+L["Debug"] = true
+L["Print to chat model names of units with enabled 3D portraits."] = true
+L["Models to fix"] = true
+L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
+L["Player"] = true
+L["Interrupt Tracker"] = true
+L["Timer Tracker"] = true
+L["Hook DBM"] = true
+
 -- Actionbars
 L["Equipped Item Border"] = true
 L["Sets actionbars' backgrounds to transparent template."] = true
@@ -179,10 +204,14 @@ L["Raid"] = true
 --
 L["Drag"] = true
 L["Left-click on character and drag to rotate."] = true
+L["Mouse Wheel Down"] = true
+L["Mouse Wheel Up"] = true
 L["Reset Position"] = true
 L["Right-click on character and drag to move it within the window."] = true
 L["Rotate Left"] = true
 L["Rotate Right"] = true
+L["Zoom In"] = true
+L["Zoom Out"] = true
 
 --
 L["Change Name/Icon"] = true

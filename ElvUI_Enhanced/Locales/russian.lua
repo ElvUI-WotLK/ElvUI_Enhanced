@@ -9,6 +9,31 @@ L["DURABILITY_DESC"] = "Настройка параметров информац
 L["ITEMLEVEL_DESC"] = "Настройка параметров информации об уровне предмета в окне персонажа."
 L["WATCHFRAME_DESC"] = "Настройте отображение списка заданий (квест лог) исходя из ваших личных предпочтений."
 
+-- ???
+L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = "GearScore '3.1.20b - Release' не для WotLK. Загрузите 3.1.7. Отключить эту версию?"
+
+-- ???
+L["Train All Button"] = true
+L["Undress Button"] = true
+L["Change color of item icons which already known."] = true
+L["Blizzard"] = true
+L["Enhanced Character Frame"] = true
+L["Paperdoll Backgrounds"] = true
+L["Character Background"] = true
+L["Pet Background"] = true
+L["Inspect Background"] = true
+L["Model Frames"] = true
+L["Ulduar"] = true
+L["Portrait HD Fix"] = true
+L["Debug"] = true
+L["Print to chat model names of units with enabled 3D portraits."] = true
+L["Models to fix"] = true
+L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
+L["Player"] = true
+L["Interrupt Tracker"] = true
+L["Timer Tracker"] = true
+L["Hook DBM"] = true
+
 -- Actionbars
 L["Equipped Item Border"] = true
 L["Sets actionbars' backgrounds to transparent template."] = "Делает фон панелей команд прозрачным."
@@ -179,10 +204,14 @@ L["Raid"] = "Рейд"
 --
 L["Drag"] = "Перетащить"
 L["Left-click on character and drag to rotate."] = "Зажмите левую кнопку мыши и тащите курсор, чтобы вращать изображение."
+L["Mouse Wheel Down"] = "Прокрутка вниз"
+L["Mouse Wheel Up"] = "Прокрутка вверх"
 L["Reset Position"] = "Сброс позиции"
 L["Right-click on character and drag to move it within the window."] = "Зажмите правую кнопку мыши и тащите курсор, чтобы переместить персонажа."
 L["Rotate Left"] = "Вращение влево"
 L["Rotate Right"] = "Вращение вправо"
+L["Zoom In"] = "Приблизить"
+L["Zoom Out"] = "Отдалить"
 
 --
 L["Change Name/Icon"] = "Изменить название/значок"
