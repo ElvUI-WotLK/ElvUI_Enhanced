@@ -61,7 +61,6 @@ L["Replaces long reports from damage meters with a clickable hyperlink to reduce
 
 -- Datatext
 L["Combat Indicator"] = "Kampfanzeige"
-L["Datatext Disabled"] = "Infotext deaktiviert"
 L["Distance"] = "Entfernung"
 L["Enhanced Time Color"] = "Erweiterte Zeit-Färbung"
 L["Equipped"] = "Angelegt"
