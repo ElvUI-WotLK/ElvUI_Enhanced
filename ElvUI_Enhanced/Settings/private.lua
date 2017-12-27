@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-V.general.selectQuestReward = true
+V.general.selectQuestReward = false
 
 V.equipment = {
 	["durability"] = {
@@ -14,16 +14,16 @@ V.equipment = {
 
 V.enhanced = {
 	character = {
-		enable = true,
+		enable = false,
 		model = {
-			enable = true
+			enable = false
 		}
 	},
 	timerTracker = {
-		enable = true
+		enable = false
 	},
 	loseControl = {
-		enable = true
+		enable = false
 	},
 	interruptTracker = {
 		enable = false
