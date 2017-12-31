@@ -12,23 +12,10 @@ local models = {
 function module:ModelControlButton(model)
 	model:SetSize(18, 18)
 
-	model.bg = model:CreateTexture("$parentBg", "BACKGROUND")
-	model.bg:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.bg:SetSize(16, 16)
-	model.bg:SetPoint("CENTER")
-	model.bg:SetTexCoord(0.29687500, 0.54687500, 0.14843750, 0.27343750)
-
 	model.icon = model:CreateTexture("$parentIcon", "ARTWORK")
+	model.icon:SetInside()
 	model.icon:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.icon:SetSize(16, 16)
-	model.icon:SetPoint("CENTER")
 	model.icon:SetTexCoord(0.01562500, 0.26562500, 0.00781250, 0.13281250)
-
-	model.highlight = model:CreateTexture("$parentHighlight", "HIGHLIGHT")
-	model.highlight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.highlight:SetSize(16, 16)
-	model.highlight:SetPoint("CENTER")
-	model.highlight:SetTexCoord(0.57812500, 0.82812500, 0.00781250, 0.13281250)
 
 	model:SetScript("OnMouseDown", function(self) module:ModelControlButton_OnMouseDown(self) end)
 	model:SetScript("OnMouseUp", function(self) module:ModelControlButton_OnMouseUp(self) end)
@@ -47,10 +34,6 @@ function module:ModelControlButton(model)
 		UIFrameFadeOut(self:GetParent(), 0.2, self:GetParent():GetAlpha(), 0.5)
 		GameTooltip:Hide()
 	end)
-
-	if E.private.skins.blizzard.enable then
-		model.bg:Hide()
-	end
 end
 
 function module:ModelWithControls(model)
@@ -58,25 +41,6 @@ function module:ModelWithControls(model)
 	model.controlFrame:SetPoint("TOP", 0, -2)
 	model.controlFrame:SetAlpha(0.5)
 	model.controlFrame:Hide()
-
-	model.controlFrame.right = model.controlFrame:CreateTexture("$parentRight", "BACKGROUND")
-	model.controlFrame.right:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.controlFrame.right:SetSize(23, 23)
-	model.controlFrame.right:SetPoint("RIGHT", 0, 0)
-	model.controlFrame.right:SetTexCoord(0.01562500, 0.37500000, 0.42968750, 0.60937500)
-
-	model.controlFrame.left = model.controlFrame:CreateTexture("$parentLeft", "BACKGROUND")
-	model.controlFrame.left:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.controlFrame.left:SetSize(23, 23)
-	model.controlFrame.left:SetPoint("LEFT", 0, 0)
-	model.controlFrame.left:SetTexCoord(0.40625000, 0.76562500, 0.42968750, 0.60937500)
-
-	model.controlFrame.middle = model.controlFrame:CreateTexture("$parentMiddle", "BACKGROUND")
-	model.controlFrame.middle:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
-	model.controlFrame.middle:SetSize(32, 23)
-	model.controlFrame.middle:SetPoint("LEFT", "$parentLeft", "RIGHT", 0, 0)
-	model.controlFrame.middle:SetPoint("RIGHT", "$parentRight", "LEFT", 0, 0)
-	model.controlFrame.middle:SetTexCoord(0, 1, 0.62500000, 0.80468750)
 
 	local zoomInButton = CreateFrame("Button", "$parentZoomInButton", model.controlFrame)
 	self:ModelControlButton(zoomInButton)
@@ -143,8 +107,7 @@ function module:ModelWithControls(model)
 	end)
 
 	if E.private.skins.blizzard.enable then
-		model.controlFrame:StripTextures()
-		model.controlFrame:SetSize(123, 23)
+		model.controlFrame:SetSize(122, 18)
 
 		S:HandleButton(zoomInButton)
 
@@ -199,7 +162,7 @@ function module:ModelWithControls(model)
 		self.controlFrame:Show()
 	end)
 	model:SetScript("OnLeave", function(self)
-		if not MouseIsOver(self.controlFrame) and not ModelPanningFrame:IsShown() then
+		if not self.controlFrame:IsMouseOver() and not ModelPanningFrame:IsShown() then
 			self.controlFrame:Hide()
 		end
 	end)
@@ -382,13 +345,11 @@ function module:Model_StopPanning(model)
 end
 
 function module:ModelControlButton_OnMouseDown(model)
-	model.bg:SetTexCoord(0.01562500, 0.26562500, 0.14843750, 0.27343750)
 	model.icon:SetPoint("CENTER", 1, -1)
 	model:GetParent().buttonDown = model
 end
 
 function module:ModelControlButton_OnMouseUp(model)
-	model.bg:SetTexCoord(0.29687500, 0.54687500, 0.14843750, 0.27343750)
 	model.icon:SetPoint("CENTER", 0, 0)
 	model:GetParent().buttonDown = nil
 end
@@ -449,8 +410,8 @@ function module:Initialize()
 			if controlFrame.buttonDown then
 				module:ModelControlButton_OnMouseUp(controlFrame.buttonDown)
 			end
-			if not MouseIsOver(controlFrame) then
-			--	controlFrame:Hide()
+			if not controlFrame:IsMouseOver() then
+				controlFrame:Hide()
 			end
 		end
 	end)
