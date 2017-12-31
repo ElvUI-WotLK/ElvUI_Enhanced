@@ -329,21 +329,12 @@ locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
 "Level %s %s%s %s|r"
 
 function module:PaperDollFrame_SetLevel()
-	local talentTree = E:GetTalentSpecInfo()
+	local _, specName = E:GetTalentSpecInfo()
 	local classDisplayName, class = UnitClass("player")
 	local classColor = RAID_CLASS_COLORS[class]
 	local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
-	local specName
 
-	if talentTree then
-		specName = GetTalentTabInfo(talentTree)
-	end
-
-	if specName and specName ~= "" then
-		CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
-	else
-		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
-	end
+	CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
 
 	if CharacterLevelText:GetWidth() > 210 then
 		if PaperDollSidebarTab1:IsVisible() then
