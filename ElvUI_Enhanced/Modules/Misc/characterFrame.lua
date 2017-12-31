@@ -3,7 +3,7 @@ local module = E:NewModule("Enhanced_CharacterFrame", "AceHook-3.0", "AceEvent-3
 local S = E:GetModule("Skins")
 
 local _G = _G
-local next, pairs, tonumber, assert, getmetatable = next, pairs, tonumber, assert, getmetatable
+local select, next, pairs, tonumber, assert, getmetatable = select, next, pairs, tonumber, assert, getmetatable
 
 local lower = string.lower
 local find, format, sub, gsub, gmatch, trim = string.find, string.format, string.sub, string.gsub, string.gmatch, string.trim
@@ -1557,6 +1557,65 @@ function module:UpdatePetModelFrame()
 	end
 end
 
+local function UpdateAcceleration(self)
+	if floor(self.scrollBar:GetValue()) >= floor(self.range) then
+		self.times = 0
+	elseif floor(self.scrollBar:GetValue()) <= 0 then
+		self.times = 0
+	end
+end
+
+local function Animation_OnMouseWheel(self, delta, stepSize)
+	if not self.scrollBar:IsVisible() then return end
+
+	UpdateAcceleration(self)
+	self.times = self.times + 1
+
+	if self.direction ~= delta then
+		self.direction = delta
+		self.times = 1
+	end
+
+	local minVal, maxVal = 0, self.range
+	stepSize = stepSize or self.stepSize or self.buttonHeight or self.scrollBar.scrollStep
+
+	if self.scrollBar.anim.progress:IsPlaying() then
+		self.scrollBar.anim:Stop()
+	end
+
+	if delta == 1 then
+		self.scrollBar.anim.progress:SetChange(max(minVal, self.scrollBar:GetValue() - (stepSize * self.times)))
+	else
+		self.scrollBar.anim.progress:SetChange(min(maxVal, self.scrollBar:GetValue() + (stepSize * self.times)))
+	end
+
+	self.scrollBar.anim:Play()
+end
+
+local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
+	local scrollFrame = scrollBar:GetParent()
+	scrollFrame.times = 0
+	scrollFrame.direction = -1
+
+	scrollBar.anim = CreateAnimationGroup(scrollBar)
+	scrollBar.anim.progress = scrollBar.anim:CreateAnimation("Progress")
+	scrollBar.anim.progress:SetSmoothing("Out")
+	scrollBar.anim.progress:SetDuration(0.5)
+
+	scrollBar.anim.progress:SetScript("OnFinished", function(self)
+		UpdateAcceleration(self.Parent:GetParent())
+		self.Parent:GetParent().times = 0
+	end)
+
+	scrollFrame:SetScript("OnMouseWheel", Animation_OnMouseWheel)
+
+	if not hybridScroll then
+		scrollFrame:HookScript("OnScrollRangeChanged", function(self)
+			self.range = select(2, self.scrollBar:GetMinMaxValues())
+		end)
+	end
+end
+
 function module:ADDON_LOADED(_, addon)
 	if addon ~= "Blizzard_InspectUI" then return end
 	self:UnregisterEvent("ADDON_LOADED")
@@ -1710,6 +1769,8 @@ function module:Initialize()
 	S:HandleScrollBar(titlePane.scrollBar)
 	FixHybridScrollBarSize(titlePane.scrollBar, 1, -1, -5, 5)
 
+	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
+
 	titlePane.scrollBar.Show = function(self)
 		titlePane:Width(169)
 		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
@@ -1740,6 +1801,7 @@ function module:Initialize()
 	statsPane:SetPoint("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
 	statsPane.Categories = {}
 
+	statsPane.scrollBar = CharacterStatsPaneScrollBar
 	CharacterStatsPaneScrollBar:ClearAllPoints()
 	CharacterStatsPaneScrollBar:SetPoint("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 3, -16)
 	CharacterStatsPaneScrollBar:SetPoint("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 3, 16)
@@ -1749,6 +1811,7 @@ function module:Initialize()
 	CharacterStatsPane.scrollBarHideable = 1
 	ScrollFrame_OnLoad(statsPane)
 	ScrollFrame_OnScrollRangeChanged(statsPane)
+	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
 	statsPaneScrollChild:SetSize(170, 0)
@@ -1857,6 +1920,8 @@ function module:Initialize()
 	equipmentManagerPane.scrollBar:SetPoint("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 1, 14)
 	S:HandleScrollBar(equipmentManagerPane.scrollBar)
 	FixHybridScrollBarSize(equipmentManagerPane.scrollBar, 1, -1, -5, 5)
+
+	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
 	equipmentManagerPane.scrollBar.Show = function(self)
 		equipmentManagerPane:Width(169)
@@ -2097,6 +2162,8 @@ function module:Initialize()
 	companionPane.scrollBar:SetPoint("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 1, 14)
 	S:HandleScrollBar(companionPane.scrollBar)
 	FixHybridScrollBarSize(companionPane.scrollBar, 1, -1, -5, 5)
+
+	CreateSmoothScrollAnimation(companionPane.scrollBar, true)
 
 	companionPane.scrollBar.Show = function(self)
 		companionPane:Width(169)
