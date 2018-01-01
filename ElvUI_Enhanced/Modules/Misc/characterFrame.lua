@@ -1557,18 +1557,17 @@ function module:UpdatePetModelFrame()
 	end
 end
 
-local function UpdateAcceleration(self)
-	if floor(self.scrollBar:GetValue()) >= floor(self.range) then
-		self.times = 0
-	elseif floor(self.scrollBar:GetValue()) <= 0 then
-		self.times = 0
+local function SetScrollValue(self, value)
+	if self.scrollBar.anim:IsPlaying() then
+		self.scrollBar.anim:Stop()
 	end
+	self.scrollBar.anim.progress:SetChange(value)
+	self.scrollBar.anim:Play()
 end
 
 local function Animation_OnMouseWheel(self, delta, stepSize)
 	if not self.scrollBar:IsVisible() then return end
 
-	UpdateAcceleration(self)
 	self.times = self.times + 1
 
 	if self.direction ~= delta then
@@ -1579,17 +1578,11 @@ local function Animation_OnMouseWheel(self, delta, stepSize)
 	local minVal, maxVal = 0, self.range
 	stepSize = stepSize or self.stepSize or self.buttonHeight or self.scrollBar.scrollStep
 
-	if self.scrollBar.anim.progress:IsPlaying() then
-		self.scrollBar.anim:Stop()
-	end
-
 	if delta == 1 then
-		self.scrollBar.anim.progress:SetChange(max(minVal, self.scrollBar:GetValue() - (stepSize * self.times)))
+		SetScrollValue(self, max(minVal, self.scrollBar:GetValue() - (stepSize * self.times)))
 	else
-		self.scrollBar.anim.progress:SetChange(min(maxVal, self.scrollBar:GetValue() + (stepSize * self.times)))
+		SetScrollValue(self, min(maxVal, self.scrollBar:GetValue() + (stepSize * self.times)))
 	end
-
-	self.scrollBar.anim:Play()
 end
 
 local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
@@ -1599,11 +1592,18 @@ local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
 
 	scrollBar.anim = CreateAnimationGroup(scrollBar)
 	scrollBar.anim.progress = scrollBar.anim:CreateAnimation("Progress")
-	scrollBar.anim.progress:SetSmoothing("Out")
 	scrollBar.anim.progress:SetDuration(0.5)
 
+	scrollBar.anim.progress:SetScript("OnPlay", function(self)
+		if (self:GetChange() >= self.Parent:GetParent().range) or (self:GetChange() <= 0) then
+			self.Parent:GetParent().times = self.Parent:GetParent().times - 1
+			self:SetSmoothing("out")
+		elseif self:GetSmoothing() ~= "none" then
+			self:SetSmoothing("none")
+		end
+	end)
+
 	scrollBar.anim.progress:SetScript("OnFinished", function(self)
-		UpdateAcceleration(self.Parent:GetParent())
 		self.Parent:GetParent().times = 0
 	end)
 
