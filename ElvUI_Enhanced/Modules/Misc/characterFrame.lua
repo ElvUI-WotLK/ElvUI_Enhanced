@@ -1592,14 +1592,12 @@ local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
 
 	scrollBar.anim = CreateAnimationGroup(scrollBar)
 	scrollBar.anim.progress = scrollBar.anim:CreateAnimation("Progress")
+	scrollBar.anim.progress:SetSmoothing("Out")
 	scrollBar.anim.progress:SetDuration(0.5)
 
 	scrollBar.anim.progress:SetScript("OnPlay", function(self)
 		if (self:GetChange() >= self.Parent:GetParent().range) or (self:GetChange() <= 0) then
 			self.Parent:GetParent().times = self.Parent:GetParent().times - 1
-			self:SetSmoothing("out")
-		elseif self:GetSmoothing() ~= "none" then
-			self:SetSmoothing("none")
 		end
 	end)
 
