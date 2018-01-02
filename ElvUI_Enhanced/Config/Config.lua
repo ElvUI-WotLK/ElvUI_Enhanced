@@ -300,7 +300,7 @@ local function CharacterFrameOptions()
 						type = "toggle",
 						name = L["Enable"],
 						get = function(info) return E.private.enhanced.character.enable end,
-						set = function(info, value) E.private.enhanced.character.enable = value E:StaticPopup_Show("PRIVATE_RL") end
+						set = function(info, value) E.private.enhanced.character.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 					},
 					paperdollBackgrounds = {
 						order = 2,
@@ -313,7 +313,7 @@ local function CharacterFrameOptions()
 								type = "toggle",
 								name = L["Character Background"],
 								get = function(info) return E.db.enhanced.character.background end,
-								set = function(info, value) E.db.enhanced.character.background = value E:GetModule("Enhanced_CharacterFrame"):UpdateCharacterModelFrame() end,
+								set = function(info, value) E.db.enhanced.character.background = value; E:GetModule("Enhanced_CharacterFrame"):UpdateCharacterModelFrame() end,
 								disabled = function() return not E.private.enhanced.character.enable end
 							},
 							petBackground = {
@@ -321,7 +321,7 @@ local function CharacterFrameOptions()
 								type = "toggle",
 								name = L["Pet Background"],
 								get = function(info) return E.db.enhanced.character.petBackground end,
-								set = function(info, value) E.db.enhanced.character.petBackground = value E:GetModule("Enhanced_CharacterFrame"):UpdatePetModelFrame() end,
+								set = function(info, value) E.db.enhanced.character.petBackground = value; E:GetModule("Enhanced_CharacterFrame"):UpdatePetModelFrame() end,
 								disabled = function() return not E.private.enhanced.character.enable end
 							},
 							inspectBackground = {
@@ -329,7 +329,7 @@ local function CharacterFrameOptions()
 								type = "toggle",
 								name = L["Inspect Background"],
 								get = function(info) return E.db.enhanced.character.inspectBackground end,
-								set = function(info, value) E.db.enhanced.character.inspectBackground = value end,
+								set = function(info, value) E.db.enhanced.character.inspectBackground = value; end,
 								disabled = function() return not E.private.enhanced.character.enable end
 							}
 						}
@@ -345,7 +345,7 @@ local function CharacterFrameOptions()
 								type = "toggle",
 								name = L["Enable"],
 								get = function(info) return E.private.enhanced.character.model.enable end,
-								set = function(info, value) E.private.enhanced.character.model.enable = value E:StaticPopup_Show("PRIVATE_RL") end
+								set = function(info, value) E.private.enhanced.character.model.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 							}
 						}
 					}
@@ -355,13 +355,22 @@ local function CharacterFrameOptions()
 				order = 2,
 				type = "group",
 				name = L["Equipment"],
-				get = function(info) return E.db.enhanced.equipment[info[#info]] end,
-				set = function(info, value) E.db.enhanced.equipment[info[#info]] = value end,
 				args = {
 					header = {
-						order = 1,
+						order = 0,
 						type = "header",
 						name = ColorizeSettingName(L["Equipment"])
+					},
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						get = function(info) return E.db.enhanced.equipment[info[#info]] end,
+						set = function(info, value)
+							E.db.enhanced.equipment[info[#info]] = value
+							LoadAddOn("Blizzard_InspectUI")
+							PD:ToggleState()
+						end,
 					},
 					durability = {
 						order = 2,
@@ -369,7 +378,12 @@ local function CharacterFrameOptions()
 						name = DURABILITY,
 						guiInline = true,
 						get = function(info) return E.db.enhanced.equipment.durability[info[#info]] end,
-						set = function(info, value) E.db.enhanced.equipment.durability[info[#info]] = value PD:UpdatePaperDoll() PD:UpdatePaperDoll("player") PD:UpdateInfoText("Character") PD:UpdateInfoText("Inspect") end,
+						set = function(info, value)
+							E.db.enhanced.equipment.durability[info[#info]] = value
+							LoadAddOn("Blizzard_InspectUI")
+							PD:ToggleState()
+							PD:UpdateInfoText("Character")
+						end,
 						args = {
 							info = {
 								order = 1,
@@ -430,7 +444,12 @@ local function CharacterFrameOptions()
 						name = L["Item Level"],
 						guiInline = true,
 						get = function(info) return E.db.enhanced.equipment.itemlevel[info[#info]] end,
-						set = function(info, value) E.db.enhanced.equipment.itemlevel[info[#info]] = value PD:UpdatePaperDoll() PD:UpdatePaperDoll("player") PD:UpdateInfoText("Character") PD:UpdateInfoText("Inspect") end,
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							LoadAddOn("Blizzard_InspectUI")
+							PD:ToggleState()
+							PD:UpdateInfoText("Character")
+						end,
 						args = {
 							info = {
 		 						order = 1,
@@ -490,7 +509,12 @@ local function CharacterFrameOptions()
 						name = L["Font"],
 						guiInline = true,
 						get = function(info) return E.db.enhanced.equipment[info[#info]] end,
-						set = function(info, value) E.db.enhanced.equipment[info[#info]] = value PD:UpdateInfoText("Character") PD:UpdateInfoText("Inspect") end,
+						set = function(info, value)
+							E.db.enhanced.equipment[info[#info]] = value
+							LoadAddOn("Blizzard_InspectUI")
+							PD:ToggleState()
+							PD:UpdateInfoText("Character")
+						end,
 						args = {
 							font = {
 								order = 1,
