@@ -4,6 +4,7 @@ local S = E:GetModule("Skins")
 
 local models = {
 	"CharacterModelFrame",
+	"CompanionModelFrame",
 	"DressUpModel",
 	"PetModelFrame",
 	"PetStableModel"
