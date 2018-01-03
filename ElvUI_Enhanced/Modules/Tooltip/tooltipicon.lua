@@ -44,16 +44,10 @@ local function SpellIcon(self)
 end
 
 local function AchievementIcon(self, link)
-	local state = E.db.enhanced.tooltip.tooltipIcon.tooltipIconAchievements and E.db.enhanced.tooltip.tooltipIcon.enable
-
-	if state then
-		if type(link) ~= "string" then return end
-		local linkType, id = strmatch(link, "^([^:]+):(%d+)")
-		if linkType == "achievement" then
-			AddIcon(self, select(10, GetAchievementInfo(id)))
-		end
-	else
-		return
+	if type(link) ~= "string" then return end
+	local linkType, id = strmatch(link, "^([^:]+):(%d+)")
+	if linkType == "achievement" then
+		AddIcon(self, select(10, GetAchievementInfo(id)))
 	end
 end
 
@@ -87,14 +81,13 @@ end
 
 function TI:ToggleAchievementsState()
 	local state = E.db.enhanced.tooltip.tooltipIcon.tooltipIconAchievements and E.db.enhanced.tooltip.tooltipIcon.enable
-	local isHooked
 
 	if state then
-		if not isHooked then
-			hooksecurefunc(GameTooltip, "SetHyperlink", AchievementIcon)
-
-			isHooked = true
+		if not self:IsHooked(GameTooltip, "SetHyperlink", AchievementIcon) then
+			self:SecureHook(GameTooltip, "SetHyperlink", AchievementIcon)
 		end
+	else
+		self:Unhook(GameTooltip, "SetHyperlink")
 	end
 end
 
