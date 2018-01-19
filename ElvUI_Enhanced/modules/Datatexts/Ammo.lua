@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
 
-local pairs = pairs
+local select, pairs = select, pairs
 local format, join = string.format, string.join
 
 local GetItemInfo = GetItemInfo
 local GetItemCount = GetItemCount
+local GetAuctionItemSubClasses = GetAuctionItemSubClasses
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventorySlotInfo = GetInventorySlotInfo
@@ -20,7 +21,7 @@ local quiver = select(1, GetAuctionItemSubClasses(8))
 local pouch = select(2, GetAuctionItemSubClasses(8))
 local soulBag = select(2, GetAuctionItemSubClasses(3))
 
-local iconString = "|T%s:%d:%d:0:0:64:64:4:60:4:60|t"
+local iconString = "|T%s:16:16:0:0:64:64:4:55:4:55|t"
 local displayString = ""
 
 local lastPanel
@@ -130,7 +131,7 @@ local function OnEnter(self)
 		end
 
 		if name and (count > 0) then
-			DT.tooltip:AddDoubleLine(join("", format(iconString, texture, 16, 16), " ", name), count, r, g, b)
+			DT.tooltip:AddDoubleLine(join("", format(iconString, texture), " ", name), count, r, g, b)
 		end
 	end
 
@@ -150,7 +151,7 @@ local function OnEnter(self)
 			if subclass == quiver or subclass == pouch or subclass == soulBag then
 				DT.tooltip:AddLine(" ")
 				DT.tooltip:AddLine(subclass)
-				DT.tooltip:AddDoubleLine(join("", format(iconString, texture, 16, 16), "  ", name), format("%d / %d", used, total), r, g, b)
+				DT.tooltip:AddDoubleLine(join("", format(iconString, texture), "  ", name), format("%d / %d", used, total), r, g, b)
 			end
 		end
 	end
