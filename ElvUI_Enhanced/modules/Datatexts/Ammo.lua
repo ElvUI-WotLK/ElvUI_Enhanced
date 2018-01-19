@@ -15,6 +15,7 @@ local GetContainerNumSlots = GetContainerNumSlots
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetItemQualityColor = GetItemQualityColor
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local INVTYPE_AMMO = INVTYPE_AMMO
 
 local quiver = select(1, GetAuctionItemSubClasses(8))
