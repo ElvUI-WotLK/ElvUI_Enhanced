@@ -61,8 +61,9 @@ local function OnEnter(self)
 	local r, g, b
 	local item, link, count
 	local _, name, quality, subclass, equipLoc, texture
+	local free, total, used
 
-	for i = 0, 4 do
+	for i = 0, NUM_BAG_FRAMES do
 		for j = 1, GetContainerNumSlots(i) do
 			item = GetContainerItemID(i, j)
 			if item then
@@ -80,7 +81,6 @@ local function OnEnter(self)
 
 	DT.tooltip:AddLine(" ")
 
-	local free, total, used = 0, 0, 0
 	for i = 1, NUM_BAG_SLOTS do
 		link = GetInventoryItemLink("player", ContainerIDToInventoryID(i))
 		if link then
@@ -89,7 +89,8 @@ local function OnEnter(self)
 			if subclass == quiver or subclass == pouch or subclass == soulBag then
 				r, g, b = GetItemQualityColor(quality)
 
-				free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
+				free, total, used = 0, 0, 0
+				free, total = GetContainerNumFreeSlots(i), GetContainerNumSlots(i)
 				used = total - free
 
 				DT.tooltip:AddLine(subclass)
