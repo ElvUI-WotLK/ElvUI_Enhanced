@@ -1,7 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
 
+local HasNewMail = HasNewMail
+local GetInboxNumItems = GetInboxNumItems
+local GetLatestThreeSenders = GetLatestThreeSenders
+local AddLine = AddLine
 local MAIL_LABEL = MAIL_LABEL
+local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 
 local Mail_Icon = "|TInterface\\MINIMAP\\TRACKING\\Mailbox.blp:14:14|t"
 local Read
@@ -16,6 +21,7 @@ local function MakeIconString()
 	return str
 end
 
+local unreadMail
 local function OnEvent(self, event, ...)
 	local newMail = false
 	if event == "UPDATE_PENDING_MAIL" or event == "PLAYER_ENTERING_WORLD" or event =="PLAYER_LOGIN" then
@@ -47,19 +53,22 @@ local function OnEvent(self, event, ...)
 	end
 end
 
+local function OnUpdate(self)
+	OnEvent(self, "UPDATE_PENDING_MAIL")
+	self:SetScript("OnUpdate", nil)
+end
+
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	local sender1, sender2, sender3 = GetLatestThreeSenders()
 	if not Read then
-		if sender1 then
 		DT.tooltip:AddLine(HAVE_MAIL_FROM)
-		DT.tooltip:AddLine("    "..sender1)
+		if sender1 then DT.tooltip:AddLine("    "..sender1) end
 		if sender2 then DT.tooltip:AddLine("    "..sender2) end
 		if sender3 then DT.tooltip:AddLine("    "..sender3) end
-		end
 	end
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext("Mail", {"PLAYER_ENTERING_WORLD", "MAIL_INBOX_UPDATE", "UPDATE_PENDING_MAIL", "MAIL_CLOSED", "PLAYER_LOGIN", "MAIL_SHOW"}, OnEvent, nil, nil, OnEnter, nil, ColorizeSettingName(MAIL_LABEL))
+DT:RegisterDatatext("Mail", {"PLAYER_ENTERING_WORLD", "MAIL_INBOX_UPDATE", "UPDATE_PENDING_MAIL", "MAIL_CLOSED", "PLAYER_LOGIN", "MAIL_SHOW"}, OnEvent, OnUpdate, nil, OnEnter, nil, ColorizeSettingName(MAIL_LABEL))
