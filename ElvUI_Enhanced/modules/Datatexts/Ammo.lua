@@ -57,9 +57,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	if E.myclass == "WARLOCK" then
-		DT.tooltip:AddLine(GetItemInfo(6265))
-	else
+	if not E.myclass == "WARLOCK" then
 		DT.tooltip:AddLine(INVTYPE_AMMO)
 	end
 
@@ -72,7 +70,7 @@ local function OnEnter(self)
 			item = GetContainerItemID(i, j)
 			if item then
 				link = GetContainerItemLink(i, j)
-				name, _, quality, _, _, _, subclass, _, equipLoc, texture = GetItemInfo(link)
+				name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(link)
 				count = GetItemCount(link)
 
 				if quality then
@@ -102,7 +100,9 @@ local function OnEnter(self)
 			used = total - free
 
 			if subclass == quiver or subclass == pouch or subclass == soulBag then
-				DT.tooltip:AddLine(" ")
+				if not E.myclass == "WARLOCK" then
+					DT.tooltip:AddLine(" ")
+				end
 				DT.tooltip:AddLine(subclass)
 				DT.tooltip:AddDoubleLine(join("", format(iconString, texture), "  ", name), format("%d / %d", used, total), r, g, b)
 			end
