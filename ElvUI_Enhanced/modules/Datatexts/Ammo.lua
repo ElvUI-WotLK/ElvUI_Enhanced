@@ -56,10 +56,7 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-
-	if not E.myclass == "WARLOCK" then
-		DT.tooltip:AddLine(INVTYPE_AMMO)
-	end
+	DT.tooltip:AddLine(INVTYPE_AMMO)
 
 	local r, g, b
 	local item, link, count
@@ -73,36 +70,28 @@ local function OnEnter(self)
 				name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(link)
 				count = GetItemCount(link)
 
-				if quality then
-					r, g, b = GetItemQualityColor(quality)
-				else
-					r, g, b = 1, 1, 1
-				end
-
 				if equipLoc == "INVTYPE_AMMO" then
+					r, g, b = GetItemQualityColor(quality)
 					DT.tooltip:AddDoubleLine(join("", format(iconString, texture), " ", name), count, r, g, b)
 				end
 			end
 		end
 	end
 
+	DT.tooltip:AddLine(" ")
+
 	local free, total, used = 0, 0, 0
 	for i = 1, NUM_BAG_SLOTS do
 		link = GetInventoryItemLink("player", ContainerIDToInventoryID(i))
 		if link then
 			name, _, quality, _, _, _, subclass, _, _, texture = GetItemInfo(link)
-			if quality then
-				r, g, b = GetItemQualityColor(quality)
-			else
-				r, g, b = 1, 1, 1
-			end
-			free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
-			used = total - free
 
 			if subclass == quiver or subclass == pouch or subclass == soulBag then
-				if not E.myclass == "WARLOCK" then
-					DT.tooltip:AddLine(" ")
-				end
+				r, g, b = GetItemQualityColor(quality)
+
+				free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
+				used = total - free
+
 				DT.tooltip:AddLine(subclass)
 				DT.tooltip:AddDoubleLine(join("", format(iconString, texture), "  ", name), format("%d / %d", used, total), r, g, b)
 			end
