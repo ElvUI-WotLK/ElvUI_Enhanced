@@ -108,7 +108,7 @@ function module:ModelWithControls(model)
 	end)
 
 	if E.private.skins.blizzard.enable then
-		model.controlFrame:SetSize(122, 18)
+		model.controlFrame:SetSize(123, 23)
 
 		S:HandleButton(zoomInButton)
 
