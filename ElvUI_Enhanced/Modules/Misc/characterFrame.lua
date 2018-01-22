@@ -372,7 +372,7 @@ function module:PaperDollSidebarTab(button)
 
 	button:SetScript("OnClick", function(self)
 		module:PaperDollFrame_SetSidebar(self, self:GetID())
-		PlaySound("igCharacterInfoTab")
+		PlaySound("igMainMenuOption")
 	end)
 
 	button:SetScript("OnEnter", function(self)
