@@ -105,4 +105,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, OnClick, OnEnter, nil, ColorizeSettingName(L["Item Level"]))
+DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter, nil, ColorizeSettingName(L["Item Level"]))

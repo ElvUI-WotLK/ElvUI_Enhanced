@@ -51,7 +51,8 @@ function PD:UpdatePaperDoll(unit)
 
 	local baseName = unit == "player" and "Character" or "Inspect"
 	local frame, slotID, hasItem
-	local itemLink, itemLevel
+	local itemLink
+	local _, rarity, itemLevel
 	local current, maximum, r, g, b
 
 	for slotName, durability in pairs(slots) do
@@ -64,13 +65,12 @@ function PD:UpdatePaperDoll(unit)
 			itemLink = GetInventoryItemLink(unit, slotID)
 
 			if itemLink then
-				rarity, itemLevel = select(3, GetItemInfo(itemLink))
+				_, _, rarity, itemLevel = GetItemInfo(itemLink)
 				if itemLevel then
 					frame.ItemLevel:SetText(itemLevel)
 
 					if E.db.enhanced.equipment.itemlevel.qualityColor then
 						frame.ItemLevel:SetTextColor()
-						--local rarity = GetInventoryItemQuality(unit, slotId)
 						if rarity and rarity > 1 then
 							frame.ItemLevel:SetTextColor(GetItemQualityColor(rarity))
 						else
