@@ -1118,57 +1118,61 @@ local function UnitFrameOptions()
 		childGroups = "tab",
 		args = {
 			header = {
-				order = 0,
+				order = 1,
 				type = "header",
 				name = ColorizeSettingName(L["UnitFrames"])
 			},
 			general = {
-				order = 1,
+				order = 2,
 				type = "group",
 				name = L["General"],
-				guiInline = true,
 				args = {
-					hideRoleInCombat = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["General"]
+					},
+					hideRoleInCombat = {
+						order = 2,
 						type = "toggle",
 						name = L["Hide Role Icon in combat"],
 						desc = L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."],
 						get = function(info) return E.db.enhanced.unitframe.hideRoleInCombat end,
 						set = function(info, value) E.db.enhanced.unitframe.hideRoleInCombat = value E:StaticPopup_Show("PRIVATE_RL") end
-					}
-				}
-			},
-			portraitHDModelFix = {
-				order = 2,
-				type = "group",
-				guiInline = true,
-				name = L["Portrait HD Fix"],
-				get = function(info) return E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] end,
-				set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] = value end,
-				args = {
-					enable = {
-						order = 1,
-						type = "toggle",
-						name = L["Enable"],
-						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.enable = value E:GetModule("Enhanced_PortraitHDModelFix"):ToggleState() end
 					},
-					debug = {
-						order = 2,
-						type = "toggle",
-						name = L["Debug"],
-						desc = L["Print to chat model names of units with enabled 3D portraits."],
-						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.debug = value end,
-						disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end
-					},
-					modelsToFix = {
+					portraitHDModelFix = {
 						order = 3,
-						type = "input",
-						name = L["Models to fix"],
-						desc = L["List of models with broken portrait camera. Separete each model name with \"\" simbol"],
-						width = "full",
-						multiline = true,
-						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix = value E:GetModule("Enhanced_PortraitHDModelFix"):UpdatePortraits() end,
-						disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end
+						type = "group",
+						guiInline = true,
+						name = L["Portrait HD Fix"],
+						get = function(info) return E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] end,
+						set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] = value end,
+						args = {
+							enable = {
+								order = 1,
+								type = "toggle",
+								name = L["Enable"],
+								set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.enable = value E:GetModule("Enhanced_PortraitHDModelFix"):ToggleState() end
+							},
+							debug = {
+								order = 2,
+								type = "toggle",
+								name = L["Debug"],
+								desc = L["Print to chat model names of units with enabled 3D portraits."],
+								set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.debug = value end,
+								disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end
+							},
+							modelsToFix = {
+								order = 3,
+								type = "input",
+								name = L["Models to fix"],
+								desc = L["List of models with broken portrait camera. Separete each model name with \"\" simbol"],
+								width = "full",
+								multiline = true,
+								set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix = value E:GetModule("Enhanced_PortraitHDModelFix"):UpdatePortraits() end,
+								disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end
+							}
+						}
 					}
 				}
 			},
@@ -1177,8 +1181,13 @@ local function UnitFrameOptions()
 				type = "group",
 				name = L["Player"],
 				args = {
-					animatedLoss = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Player"]
+					},
+					animatedLoss = {
+						order = 2,
 						type = "group",
 						name = L["Animated Loss"],
 						get = function(info) return E.db.unitframe.units["player"]["animatedLoss"][ info[#info] ] end,
@@ -1230,7 +1239,7 @@ local function UnitFrameOptions()
 						}
 					},
 					detachPortrait = {
-						order = 2,
+						order = 3,
 						type = "group",
 						name = L["Portrait"],
 						get = function(info) return E.db.unitframe.units["player"]["portrait"][ info[#info] ] end,
@@ -1275,8 +1284,13 @@ local function UnitFrameOptions()
 				type = "group",
 				name = L["Target"],
 				args = {
-					classIcon = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Target"]
+					},
+					classIcon = {
+						order = 2,
 						type = "group",
 						name = L["Class Icons"],
 						args = {
@@ -1329,7 +1343,7 @@ local function UnitFrameOptions()
 						}
 					},
 					detachPortrait = {
-						order = 2,
+						order = 3,
 						type = "group",
 						name = L["Portrait"],
 						get = function(info) return E.db.unitframe.units["target"]["portrait"][ info[#info] ] end,
