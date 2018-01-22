@@ -6,10 +6,15 @@ local join = string.join
 
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 
 local displayString = ""
 local lastPanel
+
+local function ColorizeSettingName(settingName)
+	return format("|cffff8000%s|r", settingName)
+end
 
 local slots = {
 	{"HeadSlot", HEADSLOT},
@@ -66,19 +71,24 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	DT.tooltip:AddDoubleLine(L["Item Level"], avgEquipItemLevel, 1, 1, 1, 0, 1, 0)
+	local avgEquipItemLevel = GetItemLvL()
+
+	DT.tooltip:AddDoubleLine(L["Item Level"], avgEquipItemLevel, nil, nil, nil, 0, 1, 0)
 	DT.tooltip:AddLine(" ")
 
-	local avgEquipItemLevel = GetItemLvL()
-	local color, itemLink, itemLevel
+	local _, quality, itemLevel
+	local color, itemLink
+	local r, g, b
 
 	for i = 1, #slots do
 		itemLink = GetInventoryItemLink("player", GetInventorySlotInfo(slots[i][1]))
-		if(itemLink) then
-			itemLevel = select(4, GetItemInfo(itemLink))
-			if(itemLevel and avgEquipItemLevel) then
+		if itemLink then
+			_, _, quality, itemLevel = GetItemInfo(itemLink)
+			r, g, b = GetItemQualityColor(quality)
+
+			if itemLevel and avgEquipItemLevel then
 				color = levelColors[(itemLevel < avgEquipItemLevel - 5 and 0 or (itemLevel > avgEquipItemLevel + 5 and 1 or 2))]
-				DT.tooltip:AddDoubleLine(slots[i][2], itemLevel, 1, 1, 1, color[1], color[2], color[3])
+				DT.tooltip:AddDoubleLine(slots[i][2], itemLevel, r, g, b, color[1], color[2], color[3])
 			end
 		end
 	end
@@ -95,4 +105,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED"}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, OnClick, OnEnter, nil, ColorizeSettingName(L["Item Level"]))
