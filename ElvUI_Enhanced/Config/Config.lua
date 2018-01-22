@@ -291,16 +291,9 @@ local function CharacterFrameOptions()
 				name = L["Enhanced Character Frame"],
 				args = {
 					header = {
-						order = 0,
+						order = 1,
 						type = "header",
 						name = ColorizeSettingName(L["Enhanced Character Frame"])
-					},
-					enable = {
-						order = 1,
-						type = "toggle",
-						name = L["Enable"],
-						get = function(info) return E.private.enhanced.character.enable end,
-						set = function(info, value) E.private.enhanced.character.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 					},
 					paperdollBackgrounds = {
 						order = 2,
@@ -308,8 +301,16 @@ local function CharacterFrameOptions()
 						name = L["Paperdoll Backgrounds"],
 						guiInline = true,
 						args = {
-							background = {
+							enable = {
 								order = 1,
+								type = "toggle",
+								name = L["Enable"],
+								width = "full",
+								get = function(info) return E.private.enhanced.character.enable end,
+								set = function(info, value) E.private.enhanced.character.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
+							},
+							background = {
+								order = 2,
 								type = "toggle",
 								name = L["Character Background"],
 								get = function(info) return E.db.enhanced.character.background end,
@@ -317,7 +318,7 @@ local function CharacterFrameOptions()
 								disabled = function() return not E.private.enhanced.character.enable end
 							},
 							petBackground = {
-								order = 2,
+								order = 3,
 								type = "toggle",
 								name = L["Pet Background"],
 								get = function(info) return E.db.enhanced.character.petBackground end,
@@ -325,7 +326,7 @@ local function CharacterFrameOptions()
 								disabled = function() return not E.private.enhanced.character.enable end
 							},
 							inspectBackground = {
-								order = 3,
+								order = 4,
 								type = "toggle",
 								name = L["Inspect Background"],
 								get = function(info) return E.db.enhanced.character.inspectBackground end,
@@ -606,7 +607,8 @@ local function MinimapOptions()
 				set = function(info, value)
 					E.db.enhanced.minimap.showlocationdigits = value
 					E:GetModule("Enhanced_MinimapLocation"):UpdateSettings()
-				end
+				end,
+				disabled = function() return not (E.db.enhanced.minimap.location and E.db.general.minimap.locationText == "ABOVE") end
 			},
 			locationdigits = {
 				order = 3,
@@ -616,19 +618,27 @@ local function MinimapOptions()
 				min = 0, max = 2, step = 1,
 				disabled = function() return not (E.db.enhanced.minimap.location and E.db.general.minimap.locationText == "ABOVE" and E.db.enhanced.minimap.showlocationdigits) end
 			},
-			hideincombat = {
+			combatHide = {
 				order = 4,
-				type = "toggle",
+				type = "group",
 				name = L["Combat Hide"],
-				desc = L["Hide minimap while in combat."],
-			},
-			fadeindelay = {
-				order = 5,
-				type = "range",
-				name = L["FadeIn Delay"],
-				desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
-				min = 0, max = 20, step = 1,
-				disabled = function() return not E.db.enhanced.minimap.hideincombat end
+				guiInline = true,
+				args = {
+					hideincombat = {
+						order = 5,
+						type = "toggle",
+						name = L["Enable"],
+						desc = L["Hide minimap while in combat."],
+					},
+					fadeindelay = {
+						order = 6,
+						type = "range",
+						name = L["FadeIn Delay"],
+						desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
+						min = 0, max = 20, step = 1,
+						disabled = function() return not E.db.enhanced.minimap.hideincombat end
+					}
+				}
 			}
 		}
 	}
