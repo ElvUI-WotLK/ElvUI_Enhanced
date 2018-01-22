@@ -108,7 +108,8 @@ function S:HandleCloseButton(f, point, text)
 					end
 				end
 
-				if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner" then
+				if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner"
+				or region:GetTexture() == "Interface\\AuctionFrame\\AuctionHouseDressUpFrame-Corner" then
 					region:Kill()
 				end
 			end
