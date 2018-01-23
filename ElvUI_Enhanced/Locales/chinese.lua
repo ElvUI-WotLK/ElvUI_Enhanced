@@ -78,23 +78,13 @@ L["Paperdoll Backgrounds"] = true
 L["Pet Background"] = true
 
 -- Equipment
-L["Choose the equipment set to use for your primary specialization."] = "选择当你使用主专精时的装备模组."
-L["Choose the equipment set to use for your secondary specialization."] = "选择当你使用副专精时的装备模组."
-L["Choose the equipment set to use when you enter a battleground or arena."] = "选择当你进入战场时的装备模组."
 L["Damaged Only"] = "受损显示"
 L["Enable/Disable the battleground switch."] = "开启/关闭 战场切换"
 L["Enable/Disable the display of durability information on the character screen."] = "开启/关闭 人物窗口装备耐久度显示."
 L["Enable/Disable the display of item levels on the character screen."] = true
-L["Enable/Disable the specialization switch."] = "开启/关闭 专精切换"
-L["Equipment Set Overlay"] = true
-L["Equipment Set"] = "装备模组"
 L["Equipment"] = "自动换装"
-L["No Change"] = "不改变"
 L["Only show durabitlity information for items that are damaged."] = "只在装备受损时显示耐久度."
 L["Quality Color"] = true
-L["Show the associated equipment sets for the items in your bags (or bank)."] = true
-L["Specialization"] = "专精"
-L["You have equipped equipment set: "] = "你已装备此模组: "
 
 -- General
 L["Add button to Dressing Room frame with ability to undress model."] = true
