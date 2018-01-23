@@ -24,6 +24,18 @@ local function ColorizeSettingName(settingName)
 	return format("|cffff8000%s|r", settingName)
 end
 
+local function OnUpdate(self)
+	local isKnown = IsSpellKnown(20608, false)
+	if not isKnown then return end
+
+	local start, duration = GetSpellCooldown(20608)
+	if start > 0 and duration > 0 then 
+		self.text:SetFormattedText(displayString, format(iconString, tex), format("%d:%02d", floor((duration - (GetTime() - start)) / 60), floor((duration - (GetTime() - start)) % 60)))
+	else
+		self.text:SetFormattedText(displayString, format(iconString, tex), READY.."!")
+	end
+end
+
 local function OnEvent(self, event)
 	local isKnown = IsSpellKnown(20608, false)
 
@@ -45,21 +57,6 @@ local function OnEvent(self, event)
 	lastPanel = self
 end
 
-local function OnUpdate(self)
-	local isKnown = IsSpellKnown(20608, false)
-
-	if not isKnown then
-		self.text:SetFormattedText(displayString, format(iconString, tex), SPELL_FAILED_NOT_KNOWN)
-	else
-		local start, duration = GetSpellCooldown(20608)
-		if start > 0 and duration > 0 then 
-			self.text:SetFormattedText(displayString, format(iconString, tex), format("%d:%02d", floor((duration - (GetTime() - start)) / 60), floor((duration - (GetTime() - start)) % 60)))
-		else
-			self.text:SetFormattedText(displayString, format(iconString, tex), READY.."!")
-		end
-	end
-end
-
 local function OnClick(self)
 	local isKnown = IsSpellKnown(20608, false)
 	if not isKnown then return end
@@ -69,7 +66,7 @@ local function OnClick(self)
 	local message = L["Reincarnation"].." - "..TIME_REMAINING.." "..format("%d:%02d", floor((duration - (GetTime() - start)) / 60), floor((duration - (GetTime() - start)) % 60))
 	local message2 = L["Reincarnation"].." - "..READY.."!"
 
-	if start > 0 and duration > 0 then 
+	if start > 0 and duration > 0 then
 		if instanceType == "raid" then
 			SendChatMessage(message , "RAID", nil, nil)
 		elseif instanceType == "party" then
@@ -93,7 +90,9 @@ local function OnEnter(self)
 	local name, _, _, _, _, _, _, _, _, texture = GetItemInfo(17030)
 	local count = GetItemCount(17030)
 
-	DT.tooltip:AddDoubleLine(join("", format(iconString, texture), " ", name), count, 1, 1, 1)
+	if name then
+		DT.tooltip:AddDoubleLine(join("", format(iconString, texture), " ", name), count, 1, 1, 1)
+	end
 
 	DT.tooltip:Show()
 end

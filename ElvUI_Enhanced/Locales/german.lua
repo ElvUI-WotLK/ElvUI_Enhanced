@@ -60,6 +60,7 @@ L["Filter DPS meters Spam"] = true
 L["Replaces long reports from damage meters with a clickable hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"] = true
 
 -- Datatext
+L["Ammo/Shard Counter"] = true
 L["Combat Indicator"] = "Kampfanzeige"
 L["Distance"] = "Entfernung"
 L["Enhanced Time Color"] = "Erweiterte Zeit-Färbung"
