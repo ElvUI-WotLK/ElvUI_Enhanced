@@ -191,7 +191,7 @@ local function ChatOptions()
 	return config
 end
 
--- Character Frame
+-- Equipment
 local function CharacterFrameOptions()
 	local PD = E:GetModule("Enhanced_PaperDoll")
 
@@ -583,7 +583,6 @@ local function SkinsOptions()
 						order = 2,
 						type = "toggle",
 						name = L["Enhanced Character Frame"],
-						width = "full",
 						get = function(info) return E.private.enhanced.character.enable end,
 						set = function(info, value) E.private.enhanced.character.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 					},
