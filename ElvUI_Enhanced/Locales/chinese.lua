@@ -4,35 +4,12 @@ if not L then return end
 
 -- DESC locales
 L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
-L["EQUIPMENT_DESC"] = "当你切换专精或进入战场时自动更换装备, 你可以在选项中选择相关的装备模组."
 L["DURABILITY_DESC"] = "调整设置人物窗口装备耐久度显示."
 L["ITEMLEVEL_DESC"] = "Adjust the settings for the item level information on the character screen."
 L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
 
--- ???
+-- Incompatibility
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
-
--- ???
-L["Train All Button"] = true
-L["Undress Button"] = true
-L["Change color of item icons which already known."] = true
-L["Blizzard"] = true
-L["Enhanced Character Frame"] = true
-L["Paperdoll Backgrounds"] = true
-L["Character Background"] = true
-L["Pet Background"] = true
-L["Inspect Background"] = true
-L["Model Frames"] = true
-L["Ulduar"] = true
-L["Portrait HD Fix"] = true
-L["Debug"] = true
-L["Print to chat model names of units with enabled 3D portraits."] = true
-L["Models to fix"] = true
-L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
-L["Player"] = true
-L["Interrupt Tracker"] = true
-L["Timer Tracker"] = true
-L["Hook DBM"] = true
 
 -- Actionbars
 L["Equipped Item Border"] = true
@@ -72,7 +49,6 @@ L["Out of Combat"] = true
 L["Reincarnation"] = true
 L["Target Range"] = true
 L["Total"] = true
-L["You are not playing a |cff0070DEShaman|r, datatext disabled."] = true
 
 -- Death Recap
 L["%s %s"] = true
@@ -92,6 +68,14 @@ L["You died."] = true
 L["Auto decline all duels"] = "自动拒绝决斗请求"
 L["Decline Duel"] = true
 L["Declined duel request from "] = "已拒绝决斗请求自"
+
+-- Enhanced Character Frame / Paperdoll Backgrounds
+L["Character Background"] = true
+L["Enhanced Character Frame"] = true
+L["Inspect Background"] = true
+L["Model Frames"] = true
+L["Paperdoll Backgrounds"] = true
+L["Pet Background"] = true
 
 -- Equipment
 L["Choose the equipment set to use for your primary specialization."] = "选择当你使用主专精时的装备模组."
@@ -120,6 +104,7 @@ L["Already Known"] = true
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "当你获得某个阵营的声望时, 将自动追踪此阵营的声望至经验栏位."
 L["Automatically release body when killed inside a battleground."] = "在战场死亡后自动释放灵魂."
 L["Automatically select the quest reward with the highest vendor sell value."] = true
+L["Change color of item icons which already known."] = true
 L["Changes the transparency of all the movers."] = true
 L["Colorizes recipes, mounts & pets that are already known"] = true
 L["Display quest levels at Quest Log."] = true
@@ -132,8 +117,20 @@ L["Select Quest Reward"] = true
 L["Show Quest Level"] = true
 L["Skin Animations"] = true
 L["Track Reputation"] = "声望追踪"
+L["Train All Button"] = true
+L["Undress Button"] = true
 L["Undress"] = "无装备"
 L["Use blizzard close buttons, but desaturated"] = true
+
+-- HD Models Portrait Fix
+L["Debug"] = true
+L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
+L["Models to fix"] = true
+L["Portrait HD Fix"] = true
+L["Print to chat model names of units with enabled 3D portraits."] = true
+
+-- Interrupt Tracker
+L["Interrupt Tracker"] = true
 
 -- Nameplates
 L["Bars will transition smoothly."] = true
@@ -153,6 +150,10 @@ L["Number of digits for map location."] = true
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = true
 L["Toggle Location Panel."] = true
 
+-- Timer Tracker
+L["Timer Tracker"] = true
+L["Hook DBM"] = true
+
 -- Tooltip
 L["Check Player"] = true
 L["Colorize the tooltip border based on item quality."] = true
@@ -168,7 +169,7 @@ L["Show/Hides an Icon for Spells and Items on the Tooltip."] = true
 L["Tiers"] = true
 L["Tooltip Icon"] = true
 L["Trial of the Crusader"] = true
-L["Uldar"] = true
+L["Ulduar"] = true
 
 -- Movers
 L["Loss Control Icon"] = "失去控制图标"
@@ -189,6 +190,7 @@ L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go
 L["Class Icons"] = true
 L["Detached Height"] = true
 L["Hide Role Icon in combat"] = true
+L["Player"] = true
 L["Show class icon for units."] = true
 L["Target"] = true
 

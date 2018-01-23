@@ -216,12 +216,12 @@ local function BlizzardOptions()
 	local config = {
 		order = 2,
 		type = "group",
-		name = L["Blizzard"],
+		name = "Blizzard",
 		args = {
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Blizzard"])
+				name = ColorizeSettingName("Blizzard")
 			},
 			blizzard = {
 				order = 2,

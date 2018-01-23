@@ -4,35 +4,12 @@ if not L then return end
 
 -- DESC locales
 L["ENH_LOGIN_MSG"] = "Vous utilisez |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
-L["EQUIPMENT_DESC"] = "Ajustez les réglages pour passer d'un équipement à l'autre lorsque vous changez de spécialisation ou lorsque que vous effectuez un Champs de Bataille."
 L["DURABILITY_DESC"] = "Ajustez les réglages pour afficher la durabilité sur l'écran d'infos de personnage."
 L["ITEMLEVEL_DESC"] = "Réglez les paramètres pour afficher le niveau d'objet sur l'écran d'infos de personnage."
 L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
 
--- ???
+-- Incompatibility
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
-
--- ???
-L["Train All Button"] = true
-L["Undress Button"] = true
-L["Change color of item icons which already known."] = true
-L["Blizzard"] = true
-L["Enhanced Character Frame"] = true
-L["Paperdoll Backgrounds"] = true
-L["Character Background"] = true
-L["Pet Background"] = true
-L["Inspect Background"] = true
-L["Model Frames"] = true
-L["Ulduar"] = true
-L["Portrait HD Fix"] = true
-L["Debug"] = true
-L["Print to chat model names of units with enabled 3D portraits."] = true
-L["Models to fix"] = true
-L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
-L["Player"] = true
-L["Interrupt Tracker"] = true
-L["Timer Tracker"] = true
-L["Hook DBM"] = true
 
 -- Actionbars
 L["Equipped Item Border"] = true
@@ -72,7 +49,6 @@ L["Out of Combat"] = true
 L["Reincarnation"] = true
 L["Target Range"] = true
 L["Total"] = true
-L["You are not playing a |cff0070DEShaman|r, datatext disabled."] = true
 
 -- Death Recap
 L["%s %s"] = true
@@ -93,24 +69,21 @@ L["Auto decline all duels"] = true
 L["Decline Duel"] = true
 L["Declined duel request from "] = "Décliné les invites en duel de "
 
+-- Enhanced Character Frame / Paperdoll Backgrounds
+L["Character Background"] = true
+L["Enhanced Character Frame"] = true
+L["Inspect Background"] = true
+L["Model Frames"] = true
+L["Paperdoll Backgrounds"] = true
+L["Pet Background"] = true
+
 -- Equipment
-L["Choose the equipment set to use for your primary specialization."] = "Choisissez le set d'équipement à utiliser pour votre spécialisation principale."
-L["Choose the equipment set to use for your secondary specialization."] = "Choisissez le set d'équipement à utiliser pour votre spécialisation secondaire."
-L["Choose the equipment set to use when you enter a battleground or arena."] = "Choisissez le set d'équipement à utiliser quant vous entrez dans un Champs de Bataille ou une Arène."
 L["Damaged Only"] = "Dégâts seulement"
-L["Enable/Disable the battleground switch."] = "Activer / Désactiver la fonction du changement d'équipement lorsque vous entrez dans un Champs de Bataille ou une Arène."
 L["Enable/Disable the display of durability information on the character screen."] = "Activer / Désactiver l'affichage des informations de durabilité sur l'écran d'infos de personnage."
 L["Enable/Disable the display of item levels on the character screen."] = "Activer / Désactiver l'affichage des informations du niveau d'objet sur l'écran d'infos de personnage."
-L["Enable/Disable the specialization switch."] = "Activer / Désactiver la fonction du changement d'équipement lorsque vous changez de spécialisation."
-L["Equipment Set Overlay"] = "Nom du set d'équipement"
-L["Equipment Set"] = "Set d'équipement"
 L["Equipment"] = "Équipement"
-L["No Change"] = "Ne pas changer"
 L["Only show durabitlity information for items that are damaged."] = "Afficher la durabilité seulement quand l'équipement est endommagé."
 L["Quality Color"] = true
-L["Show the associated equipment sets for the items in your bags (or bank)."] = "Affiche le nom associés au set d'équipement sur vos objets dans vos sacs et votre banque."
-L["Specialization"] = "Spécialisation"
-L["You have equipped equipment set: "] = "Vous avez équipez le set d'équipement: "
 
 -- General
 L["Add button to Dressing Room frame with ability to undress model."] = true
@@ -121,6 +94,7 @@ L["Automatically change your watched faction on the reputation bar to the factio
 L["Automatically release body when killed inside a battleground."] = "Libère automatiquement votre corps quand vous êtes tué en Champs de Bataille."
 L["Automatically select the quest reward with the highest vendor sell value."] = "Sélectionne automatiquement la récompense de quête qui vaut la plus chère chez le vendeur."
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
+L["Change color of item icons which already known."] = true
 L["Colorizes recipes, mounts & pets that are already known"] = true
 L["Display quest levels at Quest Log."] = true
 L["Hide Zone Text"] = true
@@ -132,8 +106,20 @@ L["Select Quest Reward"] = "Sélection de la récompense de quête"
 L["Show Quest Level"] = true
 L["Skin Animations"] = true
 L["Track Reputation"] = "Suivre la Réputation"
+L["Train All Button"] = true
+L["Undress Button"] = true
 L["Undress"] = "Déshabillé"
 L["Use blizzard close buttons, but desaturated"] = true
+
+-- HD Models Portrait Fix
+L["Debug"] = true
+L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
+L["Models to fix"] = true
+L["Portrait HD Fix"] = true
+L["Print to chat model names of units with enabled 3D portraits."] = true
+
+-- Interrupt Tracker
+L["Interrupt Tracker"] = true
 
 -- Nameplates
 L["Bars will transition smoothly."] = true
@@ -153,6 +139,10 @@ L["Number of digits for map location."] = "Nombre de chiffres pour l'emplacement
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Le temps à attendre avant que la minicarte s'estompe avec que le combat ait commencé. (0 = désactié)"
 L["Toggle Location Panel."] = true
 
+-- Timer Tracker
+L["Timer Tracker"] = true
+L["Hook DBM"] = true
+
 -- Tooltip
 L["Check Player"] = true
 L["Colorize the tooltip border based on item quality."] = true
@@ -168,7 +158,7 @@ L["Show/Hides an Icon for Spells and Items on the Tooltip."] = true
 L["Tiers"] = true
 L["Tooltip Icon"] = true
 L["Trial of the Crusader"] = true
-L["Uldar"] = true
+L["Ulduar"] = true
 
 -- Movers
 L["Loss Control Icon"] = "Icône de la perte de contrôle"
@@ -189,6 +179,7 @@ L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go
 L["Class Icons"] = true
 L["Detached Height"] = true
 L["Hide Role Icon in combat"] = "Cachez les icônes de rôle en combat"
+L["Player"] = true
 L["Show class icon for units."] = true
 L["Target"] = true
 
