@@ -42,7 +42,7 @@ local function OnEvent(self, event)
 	if not isKnown then
 		self.text:SetFormattedText(displayString, format(iconString, tex), SPELL_FAILED_NOT_KNOWN)
 	else
-		if event == "UNIT_SPELLCAST_SENT" then
+		if event == "SPELL_UPDATE_COOLDOWN" then
 			self:SetScript("OnUpdate", OnUpdate)
 		elseif not self.text:GetText() then
 			local start, duration = GetSpellCooldown(20608)
@@ -106,4 +106,4 @@ local function ValueColorUpdate(hex)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Reincarnation", {"PLAYER_ENTERING_WORLD", "SPELL_UPDATE_COOLDOWN", "UNIT_SPELLCAST_SENT"}, OnEvent, OnUpdate, OnClick, OnEnter, nil, ColorizeSettingName(L["Reincarnation"]))
+DT:RegisterDatatext("Reincarnation", {"PLAYER_ENTERING_WORLD", "SPELL_UPDATE_COOLDOWN"}, OnEvent, OnUpdate, OnClick, OnEnter, nil, ColorizeSettingName(L["Reincarnation"]))
