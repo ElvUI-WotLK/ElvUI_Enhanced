@@ -102,9 +102,11 @@ function PD:UpdateInfoText(name)
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
 
-		frame.ItemLevel:ClearAllPoints()
-		frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
-		frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+		if frame.ItemLevel then
+			frame.ItemLevel:ClearAllPoints()
+			frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
+			frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+		end
 
 		if name == "Character" and durability then
 			frame.DurabilityInfo:ClearAllPoints()
@@ -187,8 +189,12 @@ function PD:ToggleState(init)
 		self:UnregisterAllEvents()
 
 		for slotName, durability in pairs(slots) do
-			_G["Character"..slotName].ItemLevel:SetText()
-			_G["Inspect"..slotName].ItemLevel:SetText()
+			if _G["Character"..slotName].ItemLevel then
+				_G["Character"..slotName].ItemLevel:SetText()
+			end
+			if _G["Inspect"..slotName].ItemLevel then
+				_G["Inspect"..slotName].ItemLevel:SetText()
+			end
 
 			if durability then
 				_G["Character"..slotName].DurabilityInfo:SetText()
