@@ -56,6 +56,7 @@ P.enhanced = {
 		background = false,
 		petBackground = false,
 		inspectBackground = false,
+		companionBackground = false,
 		collapsed = false,
 		style = "Cata",
 		player = {

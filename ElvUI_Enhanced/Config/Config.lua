@@ -622,6 +622,14 @@ local function SkinsOptions()
 								get = function(info) return E.db.enhanced.character.inspectBackground end,
 								set = function(info, value) E.db.enhanced.character.inspectBackground = value; end,
 								disabled = function() return not E.private.enhanced.character.enable end
+							},
+							companionBackground = {
+								order = 5,
+								type = "toggle",
+								name = L["Companion Background"],
+								get = function(info) return E.db.enhanced.character.companionBackground end,
+								set = function(info, value) E.db.enhanced.character.companionBackground = value; E:GetModule("Enhanced_CharacterFrame"):UpdateCompanionModelFrame() end,
+								disabled = function() return not E.private.enhanced.character.enable end
 							}
 						}
 					}

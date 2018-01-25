@@ -1456,6 +1456,7 @@ function module:PetPaperDollCompanionPane_Update()
 
 			button:Show()
 			button:SetID(index)
+			_G[button:GetName().."Cooldown"]:SetInside()
 
 			button.creatureID = creatureID
 			button.spellID = spellID
@@ -1614,6 +1615,18 @@ function module:UpdatePetModelFrame()
 		PetModelFrame.backdrop:Hide()
 		PetModelFrame.petPaperDollPetModelBg:Hide()
 		PetModelFrame.backgroundOverlay:Hide()
+	end
+end
+
+function module:UpdateCompanionModelFrame()
+	if E.db.enhanced.character.companionBackground then
+		CompanionModelFrame.backdrop:Show()
+		CompanionModelFrame.backgroundTex:Show()
+		CompanionModelFrame.backgroundOverlay:Show()
+	else
+		CompanionModelFrame.backdrop:Hide()
+		CompanionModelFrame.backgroundTex:Hide()
+		CompanionModelFrame.backgroundOverlay:Hide()
 	end
 end
 
@@ -2226,11 +2239,29 @@ function module:Initialize()
 
 	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.db.enhanced.character.pet.orderName, E.db.enhanced.character.pet.collapsedName, "pet")
 
-	CompanionPageNumber:Kill()
+	CompanionModelFrame:SetSize(325, 350)
+	CompanionModelFrame:Point("TOPLEFT", 18, -78)
+	CompanionModelFrame:CreateBackdrop("Default")
+
+	CompanionModelFrame.backgroundTex = CompanionModelFrame:CreateTexture("$parentBackgroundTex", "BACKGROUND")
+	CompanionModelFrame.backgroundTex:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\MountJournal-BG")
+	CompanionModelFrame.backgroundTex:SetInside(CompanionModelFrame.backdrop)
+	CompanionModelFrame.backgroundTex:SetTexCoord(0.00390625, 0.783203125, 0.00390625, 0.99609375)
+	CompanionModelFrame.backgroundTex:SetDesaturated(true)
+
+	CompanionModelFrame.backgroundOverlay = CompanionModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
+	CompanionModelFrame.backgroundOverlay:SetInside(CompanionModelFrame.backdrop)
+	CompanionModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
+	CompanionModelFrame.backgroundOverlay:SetAlpha(0.3)
+
 	CompanionSelectedName:ClearAllPoints()
-	CompanionSelectedName:SetPoint("BOTTOM", 0, 90)
-	CompanionModelFrame:SetSize(310, 350)
-	CompanionModelFrame:Point("TOPLEFT", 25, -78)
+	CompanionSelectedName:SetPoint("BOTTOM", CompanionModelFrame, "BOTTOM", 0, 10)
+	CompanionSelectedName:SetParent(CompanionModelFrame)
+	CompanionSelectedName:SetTextColor(1, 1, 1)
+
+	self:UpdateCompanionModelFrame()
+
+	CompanionPageNumber:Kill()
 	CompanionSummonButton:Kill()
 	for i = 1, 12 do
 		_G["CompanionButton"..i]:Kill()
