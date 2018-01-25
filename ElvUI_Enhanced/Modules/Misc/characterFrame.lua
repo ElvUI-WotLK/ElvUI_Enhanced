@@ -1247,14 +1247,12 @@ end
 function module:PaperDollFrame_UpdateSidebarTabs()
 	for i = 1, #PAPERDOLL_SIDEBARS do
 		local tab = _G["PaperDollSidebarTab"..i]
-		if tab then
-			if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
-				tab.Hider:Hide()
-				tab.Highlight:Hide()
-			else
-				tab.Hider:Show()
-				tab.Highlight:Show()
-			end
+		if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
+			tab.Hider:Hide()
+			tab.Highlight:Hide()
+		else
+			tab.Hider:Show()
+			tab.Highlight:Show()
 		end
 	end
 end
@@ -1262,11 +1260,24 @@ end
 function module:PaperDollFrame_SetSidebar(self, index)
 	if not _G[PAPERDOLL_SIDEBARS[index].frame]:IsShown() then
 		for i = 1, #PAPERDOLL_SIDEBARS do
-			_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
+			if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
+				UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
+
+				_G[PAPERDOLL_SIDEBARS[i].frame].fadeInfo.finishedFunc = function()
+					_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
+				end
+
+				_G["PaperDollSidebarTab"..i].Hider:Show()
+				_G["PaperDollSidebarTab"..i].Highlight:Show()
+			end
 		end
+
 		_G[PAPERDOLL_SIDEBARS[index].frame]:Show()
+		UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
 		PaperDollFrame.currentSideBar = _G[PAPERDOLL_SIDEBARS[index].frame]
-		module:PaperDollFrame_UpdateSidebarTabs()
+
+		_G["PaperDollSidebarTab"..index].Hider:Hide()
+		_G["PaperDollSidebarTab"..index].Highlight:Hide()
 	end
 end
 
