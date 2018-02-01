@@ -60,24 +60,26 @@ function PD:UpdatePaperDoll(unit)
 		slotID = GetInventorySlotInfo(slotName)
 		hasItem = GetInventoryItemTexture(unit, slotID)
 
-		frame.ItemLevel:SetText()
-		if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
-			itemLink = GetInventoryItemLink(unit, slotID)
+		if frame.ItemLevel then
+			frame.ItemLevel:SetText()
+			if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
+				itemLink = GetInventoryItemLink(unit, slotID)
 
-			if itemLink then
-				_, _, rarity, itemLevel = GetItemInfo(itemLink)
-				if itemLevel then
-					frame.ItemLevel:SetText(itemLevel)
+				if itemLink then
+					_, _, rarity, itemLevel = GetItemInfo(itemLink)
+					if itemLevel then
+						frame.ItemLevel:SetText(itemLevel)
 
-					if E.db.enhanced.equipment.itemlevel.qualityColor then
-						frame.ItemLevel:SetTextColor()
-						if rarity and rarity > 1 then
-							frame.ItemLevel:SetTextColor(GetItemQualityColor(rarity))
+						if E.db.enhanced.equipment.itemlevel.qualityColor then
+							frame.ItemLevel:SetTextColor()
+							if rarity and rarity > 1 then
+								frame.ItemLevel:SetTextColor(GetItemQualityColor(rarity))
+							else
+								frame.ItemLevel:SetTextColor(1, 1, 1)
+							end
 						else
 							frame.ItemLevel:SetTextColor(1, 1, 1)
 						end
-					else
-						frame.ItemLevel:SetTextColor(1, 1, 1)
 					end
 				end
 			end
