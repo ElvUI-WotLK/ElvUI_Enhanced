@@ -38,8 +38,16 @@ local function GeneralOptions()
 				get = function(info) return E.db.enhanced.general.autoRepChange end,
 				set = function(info, value) E.db.enhanced.general.autoRepChange = value M:WatchedFaction() end
 			},
-			declineduel = {
+			selectQuestReward = {
 				order = 4,
+				type = "toggle",
+				name = L["Select Quest Reward"],
+				desc = L["Automatically select the quest reward with the highest vendor sell value."],
+				get = function(info) return E.private.general.selectQuestReward end,
+				set = function(info, value) E.private.general.selectQuestReward = value; end
+			},
+			declineduel = {
+				order = 5,
 				type = "toggle",
 				name = L["Decline Duel"],
 				desc = L["Auto decline all duels"],
@@ -47,14 +55,14 @@ local function GeneralOptions()
 				set = function(info, value) E.db.enhanced.general.declineduel = value M:DeclineDuel() end
 			},
 			hideZoneText = {
-				order = 5,
+				order = 6,
 				type = "toggle",
 				name = L["Hide Zone Text"],
 				get = function(info) return E.db.enhanced.general.hideZoneText end,
 				set = function(info, value) E.db.enhanced.general.hideZoneText = value M:HideZone() end
 			},
 			alreadyKnown = {
-				order = 6,
+				order = 7,
 				type = "toggle",
 				name = L["Already Known"],
 				desc = L["Change color of item icons which already known."],
@@ -65,7 +73,7 @@ local function GeneralOptions()
 				end
 			},
 			altBuyMaxStack = {
-				order = 7,
+				order = 8,
 				type = "toggle",
 				name = L["Alt-Click Merchant"],
 				desc = L["Holding Alt key while buying something from vendor will now buy an entire stack."],
@@ -76,7 +84,7 @@ local function GeneralOptions()
 				end
 			},
 			moverTransparancy = {
-				order = 8,
+				order = 9,
 				type = "range",
 				isPercent = true,
 				name = L["Mover Transparency"],
