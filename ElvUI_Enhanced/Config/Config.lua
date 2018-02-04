@@ -733,28 +733,6 @@ local function SkinsOptions()
 						end
 					}
 				}
-			},
-			misc = {
-				order = 6,
-				type = "group",
-				name = MISCELLANEOUS,
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = MISCELLANEOUS
-					},
-					originalCloseButton = {
-						order = 2,
-						type = "toggle",
-						name = L["Original Close Button"],
-						get = function(info) return E.db.enhanced.general.originalCloseButton end,
-						set = function(info, value)
-							E.db.enhanced.general.originalCloseButton = value
-							M:UpdateCloseButtons()
-						end
-					}
-				}
 			}
 		}
 	}

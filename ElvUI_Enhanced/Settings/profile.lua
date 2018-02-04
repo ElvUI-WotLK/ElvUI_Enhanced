@@ -30,7 +30,6 @@ P.enhanced = {
 		showQuestLevel = false,
 		declineduel = false,
 		hideZoneText = false,
-		originalCloseButton = false,
 		trainAllButton = false,
 		undressButton = false,
 		alreadyKnown = false,

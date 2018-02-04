@@ -101,7 +101,6 @@ L["Display quest levels at Quest Log."] = "Questlevel im Questlog anzeigen."
 L["Hide Zone Text"] = "Zonentext verstecken"
 L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true
 L["Mover Transparency"] = "Transparenz Ankerpunkte"
-L["Original Close Button"] = true
 L["PvP Autorelease"] = "Automatische Freigabe im PvP"
 L["Select Quest Reward"] = "Wähle Questbelohnung"
 L["Show Quest Level"] = "Zeige Questlevel"

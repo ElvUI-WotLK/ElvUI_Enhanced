@@ -102,7 +102,6 @@ L["Display quest levels at Quest Log."] = true
 L["Hide Zone Text"] = true
 L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true
 L["Mover Transparency"] = true
-L["Original Close Button"] = true
 L["PvP Autorelease"] = "PVP自动释放灵魂"
 L["Select Quest Reward"] = true
 L["Show Quest Level"] = true
