@@ -46,7 +46,7 @@ end
 local function AchievementIcon(self, link)
 	if type(link) ~= "string" then return end
 	local linkType, id = strmatch(link, "^([^:]+):(%d+)")
-	if linkType == "achievement" then
+	if id and (linkType == "achievement") then
 		AddIcon(self, select(10, GetAchievementInfo(id)))
 	end
 end
