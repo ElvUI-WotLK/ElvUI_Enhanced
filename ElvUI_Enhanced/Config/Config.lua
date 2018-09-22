@@ -1332,7 +1332,20 @@ local function UnitFrameOptions()
 								name = L["Detached Height"],
 								min = 10, max = 600, step = 1,
 								disabled = function() return not E.db.unitframe.units.player.portrait.enable end
-							}
+							},
+							higherPortrait = {
+								order = 6,
+								type = "toggle",
+								name = L["Higher Overlay Portrait"],
+								desc = L["Makes frame portrait visible regardless of health level when overlay portrait is set."],
+							},
+							portraitAlpha = {
+								order = 7,
+								type = "range",
+								name = L["Overlay Portrait Alpha"],
+								isPercent = true,
+								 min = 0, max = 1, step = 0.01,
+							},
 						}
 					}
 				}
@@ -1436,7 +1449,20 @@ local function UnitFrameOptions()
 								name = L["Detached Height"],
 								min = 10, max = 600, step = 1,
 								disabled = function() return not E.db.unitframe.units.target.portrait.enable end
-							}
+							},
+							higherPortrait = {
+								order = 6,
+								type = "toggle",
+								name = L["Higher Overlay Portrait"],
+								desc = L["Makes frame portrait visible regardless of health level when overlay portrait is set."],
+							},
+							portraitAlpha = {
+								order = 7,
+								type = "range",
+								name = L["Overlay Portrait Alpha"],
+								isPercent = true,
+								 min = 0, max = 1, step = 0.01,
+							},
 						}
 					}
 				}

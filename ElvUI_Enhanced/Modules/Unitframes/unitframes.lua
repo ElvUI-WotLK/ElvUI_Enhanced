@@ -76,8 +76,33 @@ hooksecurefunc(UF, "Configure_Portrait", function(self, frame)
 				end
 			end
 
+			hooksecurefunc(portrait, "PostUpdate", PortraitUpdate)
+
 			self:Configure_HealthBar(frame)
 			self:Configure_Power(frame)
 		end
 	end
 end)
+
+function PortraitUpdate(self, unit, ...)
+	local frame = self:GetParent()
+	local db = frame.db
+	if not db then return end
+	local portrait = db.portrait
+	if portrait.portraitAlpha ~= nil and portrait.enable and frame.USE_PORTRAIT_OVERLAY then
+		self:SetAlpha(0)
+		self:SetAlpha(portrait.portraitAlpha)	
+	end
+	if portrait.higherPortrait and frame.USE_PORTRAIT_OVERLAY then
+		if not frame.Health.HigherPortrait then
+			frame.Health.HigherPortrait = CreateFrame("Frame", frame:GetName().."HigherPortrait", frame)
+			frame.Health.HigherPortrait:SetFrameLevel(frame.Health:GetFrameLevel() + 4)
+			frame.Health.HigherPortrait:SetPoint("TOPLEFT", frame.Health, "TOPLEFT")
+			frame.Health.HigherPortrait:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", 0, 0.5)
+		end
+		self:ClearAllPoints()
+		if frame.db.portrait.style == '3D' then self:SetFrameLevel(frame.Health.HigherPortrait:GetFrameLevel()) end
+		self:SetAllPoints(frame.Health.HigherPortrait)
+		frame.Health.bg:SetParent(frame.Health)
+	end
+end
