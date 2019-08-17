@@ -390,7 +390,10 @@ function module:CharacterFrame_Collapse()
 
 	CharacterFrame.Expanded = false
 
-	S:SquareButton_SetIcon(CharacterFrameExpandButton, "RIGHT")
+	local Normal, Disabled, Pushed = CharacterFrameExpandButton:GetNormalTexture(), CharacterFrameExpandButton:GetDisabledTexture(), CharacterFrameExpandButton:GetPushedTexture()
+	Normal:SetRotation(S.ArrowRotation.right)
+	Pushed:SetRotation(S.ArrowRotation.right)
+	Disabled:SetRotation(S.ArrowRotation.right)
 	for i = 1, #PAPERDOLL_SIDEBARS do
 		_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
 	end
@@ -406,7 +409,10 @@ function module:CharacterFrame_Expand()
 	CharacterFrame.backdrop:Width(341 + 192)
 	CharacterFrame.Expanded = true
 
-	S:SquareButton_SetIcon(CharacterFrameExpandButton, "LEFT")
+	local Normal, Disabled, Pushed = CharacterFrameExpandButton:GetNormalTexture(), CharacterFrameExpandButton:GetDisabledTexture(), CharacterFrameExpandButton:GetPushedTexture()
+	Normal:SetRotation(S.ArrowRotation.left)
+	Pushed:SetRotation(S.ArrowRotation.left)
+	Disabled:SetRotation(S.ArrowRotation.left)
 	if PaperDollFrame:IsShown() and PaperDollFrame.currentSideBar then
 		CharacterStatsPane:Hide()
 		PaperDollFrame.currentSideBar:Show()
