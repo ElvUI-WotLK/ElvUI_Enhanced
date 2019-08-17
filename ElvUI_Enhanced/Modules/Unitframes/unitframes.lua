@@ -1,40 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule("UnitFrames")
 
-ElvUF_Player.AnimatedLoss = CreateFrame("StatusBar", nil, ElvUF_Player)
-UF["statusbars"][ElvUF_Player.AnimatedLoss] = true
-ElvUF_Player.AnimatedLoss:Hide()
-
-hooksecurefunc(UF, "Configure_HealthBar", function(self, frame)
-	if(frame.unitframeType == "player") then
-		if(frame.db.animatedLoss and frame.db.animatedLoss.enable) then
-			if(not frame:IsElementEnabled("AnimatedLoss")) then
-				frame:EnableElement("AnimatedLoss")
-			end
-
-			local animatedLoss = frame.AnimatedLoss
-			animatedLoss:SetParent(frame.Health)
-
-			animatedLoss.duration = frame.db.animatedLoss.duration
-			animatedLoss.startDelay = frame.db.animatedLoss.startDelay
-			animatedLoss.pauseDelay = frame.db.animatedLoss.pauseDelay
-			animatedLoss.postponeDelay = frame.db.animatedLoss.postponeDelay
-
-			animatedLoss.PostUpdate = function(self)
-				self:SetPoint("TOPLEFT", frame.Health:GetStatusBarTexture(), "TOPRIGHT")
-				self:SetPoint("BOTTOMLEFT", frame.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
-
-				local totalWidth = frame.Health:GetSize()
-				self:SetWidth(totalWidth)
-			end
-		else
-			if(frame:IsElementEnabled("AnimatedLoss")) then
-				frame:DisableElement("AnimatedLoss")
-			end
-		end
-	end
-end)
-
 hooksecurefunc(UF, "Configure_Portrait", function(self, frame)
 	if(frame.unitframeType == "player" or frame.unitframeType == "target") then
 		frame.PORTRAIT_DETACHED = frame.USE_PORTRAIT and frame.db.portrait.detachFromFrame and not frame.USE_PORTRAIT_OVERLAY

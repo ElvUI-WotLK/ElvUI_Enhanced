@@ -100,7 +100,6 @@ end
 
 -- Actionbars
 local function ActionbarOptions()
-	local EAB = E:GetModule("Enhanced_ActionBars")
 	local ETAB = E:GetModule("Enhanced_TransparentActionbars")
 
 	local config = {
@@ -113,39 +112,8 @@ local function ActionbarOptions()
 				type = "header",
 				name = ColorizeSettingName(L["ActionBars"])
 			},
-			equipped = {
-				order = 1,
-				type = "group",
-				name = L["Equipped Item Border"],
-				guiInline = true,
-				args = {
-					equipped = {
-						order = 1,
-						type = "toggle",
-						name = L["Enable"],
-						get = function(info) return E.db.enhanced.actionbars[ info[#info] ] end,
-						set = function(info, value) E.db.enhanced.actionbars[ info[#info] ] = value EAB:UpdateCallback() E:GetModule("ActionBars"):UpdateButtonSettings() end
-					},
-					equippedColor = {
-						order = 2,
-						type = "color",
-						name = L["Border Color"],
-						get = function(info)
-							local t = E.db.enhanced.actionbars[ info[#info] ]
-							local d = P.enhanced.actionbars[ info[#info] ]
-							return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-						end,
-						set = function(info, r, g, b)
-							local t = E.db.enhanced.actionbars[ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							E:GetModule("ActionBars"):UpdateButtonSettings()
-						end,
-						disabled = function() return not E.db.enhanced.actionbars.equipped end
-					}
-				}
-			},
 			transparentActionbars = {
-				order = 2,
+				order = 1,
 				type = "group",
 				name = L["Transparent ActionBars"],
 				guiInline = true,
@@ -1243,58 +1211,6 @@ local function UnitFrameOptions()
 						order = 1,
 						type = "header",
 						name = L["Player"]
-					},
-					animatedLoss = {
-						order = 2,
-						type = "group",
-						name = L["Animated Loss"],
-						get = function(info) return E.db.unitframe.units["player"]["animatedLoss"][ info[#info] ] end,
-						set = function(info, value) E.db.unitframe.units["player"]["animatedLoss"][ info[#info] ] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("player") end,
-						args = {
-							header = {
-								order = 1,
-								type = "header",
-								name = L["Animated Loss"]
-							},
-							enable = {
-								order = 2,
-								type = "toggle",
-								name = L["Enable"]
-							},
-							spacer = {
-								order = 3,
-								type = "description",
-								name = " "
-							},
-							duration = {
-								order = 4,
-								type = "range",
-								name = L["Duration"],
-								min = 0.01, max = 1.50, step = 0.01,
-								disabled = function() return not E.db.unitframe.units.player.animatedLoss.enable end
-							},
-							startDelay = {
-								order = 5,
-								type = "range",
-								name = L["Start Delay"],
-								min = 0.01, max = 1.00, step = 0.01,
-								disabled = function() return not E.db.unitframe.units.player.animatedLoss.enable end
-							},
-							pauseDelay = {
-								order = 6,
-								type = "range",
-								name = L["Pause Delay"],
-								min = 0.01, max = 0.30, step = 0.01,
-								disabled = function() return not E.db.unitframe.units.player.animatedLoss.enable end
-							},
-							postponeDelay = {
-								order = 7,
-								type = "range",
-								name = L["Postpone Delay"],
-								min = 0.01, max = 0.30, step = 0.01,
-								disabled = function() return not E.db.unitframe.units.player.animatedLoss.enable end
-							}
-						}
 					},
 					detachPortrait = {
 						order = 3,

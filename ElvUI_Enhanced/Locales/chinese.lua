@@ -1,6 +1,5 @@
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhCN")
-if not L then return end
+local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 -- DESC locales
 L["ENH_LOGIN_MSG"] = "您正在使用 |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r version %s%s|r."
@@ -12,7 +11,6 @@ L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
 
 -- Actionbars
-L["Equipped Item Border"] = true
 L["Sets actionbars' backgrounds to transparent template."] = true
 L["Sets actionbars buttons' backgrounds to transparent template."] = true
 L["Transparent ActionBars"] = true

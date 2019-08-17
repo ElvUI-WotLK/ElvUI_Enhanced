@@ -12,14 +12,6 @@ P.unitframe.units.target.portrait.detachFromFrame = false
 P.unitframe.units.target.portrait.detachedWidth = 54
 P.unitframe.units.target.portrait.detachedHeight = 54
 
-P.unitframe.units.player.animatedLoss = {
-	enable = false,
-	duration = .75,
-	startDelay = .2,
-	pauseDelay = .05,
-	postponeDelay = .05
-}
-
 -- Enhanced
 P.enhanced = {
 	general = {
@@ -35,8 +27,6 @@ P.enhanced = {
 		alreadyKnown = false,
 	},
 	actionbars = {
-		equipped = false,
-		equippedColor = {r = 0, g = 1.0, b = 0},
 		transparentActionbars = {
 			transparentBackdrops = false,
 			transparentButtons = false
@@ -44,7 +34,7 @@ P.enhanced = {
 	},
 	blizzard = {
 		dressUpFrame = {
-			enable = true,
+			enable = false,
 			multiplier = 1.25
 		},
 	},

@@ -1,6 +1,5 @@
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "ruRU")
-if not L then return end
+local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
 -- DESC locales
 L["ENH_LOGIN_MSG"] = "Вы используете |cff1784d1ElvUI|r |cff1784d1Enhanced|r |cffff8000(WotLK)|r версии %s%s|r."
@@ -12,7 +11,6 @@ L["WATCHFRAME_DESC"] = "Настройте отображение списка �
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = "GearScore '3.1.20b - Release' не для WotLK. Загрузите 3.1.7. Отключить эту версию?"
 
 -- Actionbars
-L["Equipped Item Border"] = true
 L["Sets actionbars' backgrounds to transparent template."] = "Делает фон панелей команд прозрачным."
 L["Sets actionbars buttons' backgrounds to transparent template."] = "Делает кнопки панелей команд прозрачными"
 L["Transparent ActionBars"] = true
