@@ -13,6 +13,9 @@ V.equipment = {
 }
 
 V.enhanced = {
+	blizzard = {
+		deathRecap = false
+	},
 	character = {
 		enable = false,
 		model = {

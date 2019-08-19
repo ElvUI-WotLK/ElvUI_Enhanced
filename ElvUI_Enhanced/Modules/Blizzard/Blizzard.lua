@@ -2,7 +2,9 @@
 local mod = E:NewModule("Enhanced_Blizzard", "AceHook-3.0", "AceEvent-3.0")
 
 function mod:Initialize()
-	self:DeathRecap()
+	if E.private.enhanced.blizzard.deathRecap then
+		self:DeathRecap()
+	end
 
 	self:AddonList()
 	self:DressUpFrame()

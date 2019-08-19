@@ -10,6 +10,8 @@ L["WATCHFRAME_DESC"] = "Passen Sie die Einstellungen des Watchframe (Questlog) n
 -- Incompatibility
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
 
+L["Blizzard"] = true
+
 -- Actionbars
 L["Sets actionbars' backgrounds to transparent template."] = "Setzt den Aktionsleisten Hintergrund transparent."
 L["Sets actionbars buttons' backgrounds to transparent template."] = "Setzt die Aktionsleisten Tasten transparent."
@@ -23,12 +25,6 @@ L["Dependencies: "] = "Abhängigkeiten"
 L["Disable All"] = "Alle deaktivieren"
 L["Load AddOn"] = "Lade AddOn"
 L["Requires Reload"] = "Benötigt Reload"
-
--- Animated Loss
-L["Animated Loss"] = true
-L["Pause Delay"] = true
-L["Start Delay"] = true
-L["Postpone Delay"] = true
 
 -- Chat
 L["Filter DPS meters Spam"] = "Spam von DPS-Metern filtern"
@@ -49,6 +45,7 @@ L["Target Range"] = "Zielreichweite"
 L["Total"] = "Gesamt"
 
 -- Death Recap
+L["Death Recap Frame"] = true
 L["%s %s"] = true
 L["%s by %s"] = "%s durch %s"
 L["%s sec before death at %s%% health."] = "%s Sekunden vor Tod bei %s%% Gesundheit."

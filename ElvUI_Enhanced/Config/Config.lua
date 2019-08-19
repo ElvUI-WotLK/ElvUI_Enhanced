@@ -142,10 +142,34 @@ local function ActionbarOptions()
 	return config
 end
 
+-- Blizzard
+local function BlizzardOptions()
+	local config = {
+		order = 3,
+		type = "group",
+		name = L["Blizzard"],
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = ColorizeSettingName(L["Blizzard"])
+			},
+			deathRecap = {
+				order = 1,
+				type = "toggle",
+				name = L["Death Recap Frame"],
+				get = function(info) return E.private.enhanced.blizzard.deathRecap end,
+				set = function(info, value) E.private.enhanced.blizzard.deathRecap = value; E:StaticPopup_Show("PRIVATE_RL") end
+			}
+		}
+	}
+	return config
+end
+
 -- Chat
 local function ChatOptions()
 	local config = {
-		order = 3,
+		order = 4,
 		type = "group",
 		name = L["Chat"],
 		args = {
@@ -172,7 +196,7 @@ local function CharacterFrameOptions()
 	local PD = E:GetModule("Enhanced_PaperDoll")
 
 	local config = {
-		order = 4,
+		order = 5,
 		type = "group",
 		name = L["Equipment"],
 		args = {
@@ -370,7 +394,7 @@ end
 -- Datatext
 local function DataTextsOptions()
 	local config = {
-		order = 5,
+		order = 6,
 		type = "group",
 		name = L["DataTexts"],
 		args = {
@@ -394,7 +418,7 @@ end
 -- Minimap
 local function MinimapOptions()
 	local config = {
-		order = 6,
+		order = 7,
 		type = "group",
 		name = L["Minimap"],
 		get = function(info) return E.db.enhanced.minimap[info[#info]] end,
@@ -472,7 +496,7 @@ end
 -- Nameplates
 local function NamePlatesOptions()
 	local config = {
-		order = 7,
+		order = 8,
 		type = "group",
 		name = L["NamePlates"],
 		get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
@@ -515,7 +539,7 @@ local function SkinsOptions()
 	local M = E:GetModule("Enhanced_Misc")
 
 	local config = {
-		order = 8,
+		order = 9,
 		type = "group",
 		name = L["Skins"],
 		args = {
@@ -711,7 +735,7 @@ end
 -- Tooltip
 local function TooltipOptions()
 	local config = {
-		order = 9,
+		order = 10,
 		type = "group",
 		name = L["Tooltip"],
 		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
@@ -873,7 +897,7 @@ local function WatchFrameOptions()
 	}
 
 	local config = {
-		order = 10,
+		order = 11,
 		type = "group",
 		name = L["Watch Frame"],
 		get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
@@ -943,7 +967,7 @@ end
 -- Lose Control
 local function LoseControlOptions()
 	local config = {
-		order = 11,
+		order = 12,
 		type = "group",
 		name = L["Lose Control"],
 		get = function(info) return E.db.enhanced.tooltip[info[#info]] end,
@@ -1003,7 +1027,7 @@ end
 -- Interrupt Tracker
 local function InterruptTrackerOptions()
 	local config = {
-		order = 12,
+		order = 13,
 		type = "group",
 		name = L["Interrupt Tracker"],
 		get = function(info) return E.db.enhanced.interruptTracker[ info[#info] ] end,
@@ -1102,7 +1126,7 @@ end
 -- Timer Tracker
 local function TimerTrackerOptions()
 	local config = {
-		order = 13,
+		order = 14,
 		type = "group",
 		name = L["Timer Tracker"],
 		get = function(info) return E.db.enhanced.timerTracker[ info[#info] ] end,
@@ -1138,7 +1162,7 @@ local function UnitFrameOptions()
 	local TC = E:GetModule("Enhanced_TargetClass")
 
 	local config = {
-		order = 14,
+		order = 15,
 		type = "group",
 		name = L["UnitFrames"],
 		childGroups = "tab",
@@ -1371,6 +1395,7 @@ function addon:GetOptions()
 		args = {
 			generalGroup = GeneralOptions(),
 			actionbarGroup = ActionbarOptions(),
+			blizzardGroup = BlizzardOptions(),
 			chatGroup = ChatOptions(),
 			characterFrameGroup = CharacterFrameOptions(),
 			datatextsGroup = DataTextsOptions(),

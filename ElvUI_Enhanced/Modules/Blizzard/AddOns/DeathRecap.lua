@@ -142,7 +142,7 @@ local function GetTableInfo(data)
 end
 
 local function OpenRecap(recapID)
-	local self = DeathRecapFrame
+	local self = ElvUI_DeathRecapFrame
 
 	if self:IsShown() and self.recapID == recapID then
 		self:Hide()
@@ -223,9 +223,9 @@ local function OpenRecap(recapID)
 
 		if evtData.school and evtData.school > 1 then
 			local colorArray = CombatLog_Color_ColorArrayBySchool(evtData.school)
-			entry.SpellInfo.FrameIcom:SetBackdropBorderColor(colorArray.r, colorArray.g, colorArray.b)
+			entry.SpellInfo.FrameIcon:SetBackdropBorderColor(colorArray.r, colorArray.g, colorArray.b)
 		else
-			entry.SpellInfo.FrameIcom:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			entry.SpellInfo.FrameIcon:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 
 		dmgInfo.school = evtData.school
@@ -346,7 +346,7 @@ end
 function mod:DeathRecap()
 	local S = E:GetModule("Skins")
 
-	local frame = CreateFrame("Frame", "DeathRecapFrame", UIParent)
+	local frame = CreateFrame("Frame", "ElvUI_DeathRecapFrame", UIParent)
 	frame:Size(340, 326)
 	frame:Point("CENTER")
 	frame:SetTemplate("Transparent")
@@ -408,13 +408,13 @@ function mod:DeathRecap()
 		button.SpellInfo:SetScript("OnEnter", Spell_OnEnter)
 		button.SpellInfo:SetScript("OnLeave", GameTooltip_Hide)
 
-		button.SpellInfo.FrameIcom = CreateFrame("Button", nil, button.SpellInfo)
-		button.SpellInfo.FrameIcom:Size(34, 34)
-		button.SpellInfo.FrameIcom:Point("LEFT", 0, 0)
-		button.SpellInfo.FrameIcom:SetTemplate("Default")
+		button.SpellInfo.FrameIcon = CreateFrame("Button", nil, button.SpellInfo)
+		button.SpellInfo.FrameIcon:Size(34, 34)
+		button.SpellInfo.FrameIcon:Point("LEFT", 0, 0)
+		button.SpellInfo.FrameIcon:SetTemplate("Default")
 
 		button.SpellInfo.Icon = button.SpellInfo:CreateTexture("ARTWORK")
-		button.SpellInfo.Icon:SetParent(button.SpellInfo.FrameIcom)
+		button.SpellInfo.Icon:SetParent(button.SpellInfo.FrameIcon)
 		button.SpellInfo.Icon:SetTexCoord(unpack(E.TexCoords))
 		button.SpellInfo.Icon:SetInside()
 
@@ -447,7 +447,7 @@ function mod:DeathRecap()
 	frame.CloseButton:Size(144, 21)
 	frame.CloseButton:Point("BOTTOM", 0, 15)
 	frame.CloseButton:SetText(CLOSE)
-	frame.CloseButton:SetScript("OnClick", function(self) HideUIPanel(DeathRecapFrame) end)
+	frame.CloseButton:SetScript("OnClick", function(self) HideUIPanel(ElvUI_DeathRecapFrame) end)
 	S:HandleButton(frame.CloseButton)
 
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -493,7 +493,7 @@ function mod:DeathRecap()
 		OnHide = function(self)
 			self.button3:SetScript("OnEnter", nil)
 			self.button3:SetScript("OnLeave", nil)
-			DeathRecapFrame:Hide()
+			ElvUI_DeathRecapFrame:Hide()
 		end,
 		OnAccept = function(self)
 			if IsActiveBattlefieldArena() then

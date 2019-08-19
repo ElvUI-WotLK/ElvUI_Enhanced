@@ -10,6 +10,8 @@ L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe
 -- Incompatibility
 L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
 
+L["Blizzard"] = true
+
 -- Actionbars
 L["Sets actionbars' backgrounds to transparent template."] = true
 L["Sets actionbars buttons' backgrounds to transparent template."] = true
@@ -23,12 +25,6 @@ L["Dependencies: "] = true
 L["Disable All"] = true
 L["Load AddOn"] = true
 L["Requires Reload"] = true
-
--- Animated Loss
-L["Animated Loss"] = true
-L["Pause Delay"] = true
-L["Start Delay"] = true
-L["Postpone Delay"] = true
 
 -- Chat
 L["Filter DPS meters Spam"] = true
@@ -49,6 +45,7 @@ L["Target Range"] = true
 L["Total"] = true
 
 -- Death Recap
+L["Death Recap Frame"] = true
 L["%s %s"] = true
 L["%s by %s"] = true
 L["%s sec before death at %s%% health."] = true
