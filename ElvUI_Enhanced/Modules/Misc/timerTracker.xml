@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="timerTracker.lua"/>
-	<Frame name="StartTimerBar" virtual="true" hidden="true">
+	<Frame name="ElvUI_StartTimerBar" virtual="true" hidden="true">
 		<Size x="206" y="26"/>
 		<Layers>
 			<Layer level="OVERLAY">

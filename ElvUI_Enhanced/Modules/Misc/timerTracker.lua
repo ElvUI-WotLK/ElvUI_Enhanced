@@ -190,7 +190,7 @@ function module:CreateTimer(...)
 		end
 
 		if not timer then
-			timer = CreateFrame("FRAME", "ElvUI_Timer"..(#self.timerList+1), UIParent, "StartTimerBar")
+			timer = CreateFrame("FRAME", "ElvUI_Timer"..(#self.timerList+1), UIParent, "ElvUI_StartTimerBar")
 			self:StartTimerBar(timer)
 			self.timerList[#self.timerList+1] = timer
 		end
