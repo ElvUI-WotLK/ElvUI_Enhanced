@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local addon = E:GetModule("ElvUI_Enhanced")
 
 local format = string.format
-local tsort = table.sort
 
 local function ColorizeSettingName(settingName)
 	return format("|cffff8000%s|r", settingName)
@@ -117,22 +116,22 @@ local function ActionbarOptions()
 				type = "group",
 				name = L["Transparent ActionBars"],
 				guiInline = true,
-				get = function(info) return E.db.enhanced.actionbars.transparentActionbars[ info[#info] ] end,
-				set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[ info[#info] ] = value end,
+				get = function(info) return E.db.enhanced.actionbars.transparentActionbars[info[#info]] end,
+				set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value end,
 				args = {
 					transparentBackdrops = {
 						order = 1,
 						type = "toggle",
 						name = L["Transparent Backdrop"],
 						desc = L["Sets actionbars' backgrounds to transparent template."],
-						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[ info[#info] ] = value ETAB:StyleBackdrops() end
+						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value ETAB:StyleBackdrops() end
 					},
 					transparentButtons = {
 						order = 2,
 						type = "toggle",
 						name = L["Transparent Buttons"],
 						desc = L["Sets actionbars buttons' backgrounds to transparent template."],
-						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[ info[#info] ] = value ETAB:StyleBackdrops() end
+						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value ETAB:StyleBackdrops() end
 					}
 				},
 				disabled = function() return not E.private.actionbar.enable end
@@ -296,7 +295,7 @@ local function CharacterFrameOptions()
 				end,
 				args = {
 					info = {
- 						order = 1,
+						order = 1,
 						type = "description",
 						name = L["ITEMLEVEL_DESC"]
 					},
@@ -307,7 +306,7 @@ local function CharacterFrameOptions()
 						desc = L["Enable/Disable the display of item levels on the character screen."]
 					},
 					qualityColor = {
- 						order = 3,
+						order = 3,
 						type = "toggle",
 						name = L["Quality Color"],
 						disabled = function() return not E.db.enhanced.equipment.itemlevel.enable end
@@ -997,8 +996,8 @@ local function LoseControlOptions()
 				type = "group",
 				name = TYPE,
 				guiInline = true,
-				get = function(info) return E.db.enhanced.loseControl[ info[#info] ] end,
-				set = function(info, value) E.db.enhanced.loseControl[ info[#info] ] = value end,
+				get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+				set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
 				disabled = function() return not E.db.enhanced.loseControl.enable end,
 				args = {
 					CC = {
@@ -1038,8 +1037,8 @@ local function InterruptTrackerOptions()
 		order = 13,
 		type = "group",
 		name = L["Interrupt Tracker"],
-		get = function(info) return E.db.enhanced.interruptTracker[ info[#info] ] end,
-		set = function(info, value) E.db.enhanced.interruptTracker[ info[#info] ] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
+		get = function(info) return E.db.enhanced.interruptTracker[info[#info]] end,
+		set = function(info, value) E.db.enhanced.interruptTracker[info[#info]] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
 		args = {
 			header = {
 				order = 0,
@@ -1065,15 +1064,15 @@ local function InterruptTrackerOptions()
 				type = "group",
 				name = L["Text"],
 				guiInline = true,
-				get = function(info) return E.db.enhanced.interruptTracker.text[ info[#info] ] end,
-				set = function(info, value) E.db.enhanced.interruptTracker.text[ info[#info] ] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
+				get = function(info) return E.db.enhanced.interruptTracker.text[info[#info]] end,
+				set = function(info, value) E.db.enhanced.interruptTracker.text[info[#info]] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
 				disabled = function() return not E.db.enhanced.interruptTracker.enable end,
 				args = {
 					position = {
 						type = "select",
 						order = 2,
 						name = L["Text Position"],
-						values =  {
+						values = {
 							TOPLEFT = "TOPLEFT",
 							LEFT = "LEFT",
 							BOTTOMLEFT = "BOTTOMLEFT",
@@ -1248,8 +1247,8 @@ local function UnitFrameOptions()
 						order = 3,
 						type = "group",
 						name = L["Portrait"],
-						get = function(info) return E.db.unitframe.units["player"]["portrait"][ info[#info] ] end,
-						set = function(info, value) E.db.unitframe.units["player"]["portrait"][ info[#info] ] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("player") end,
+						get = function(info) return E.db.unitframe.units["player"]["portrait"][info[#info]] end,
+						set = function(info, value) E.db.unitframe.units["player"]["portrait"][info[#info]] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("player") end,
 						args = {
 							header = {
 								order = 1,
@@ -1352,8 +1351,8 @@ local function UnitFrameOptions()
 						order = 3,
 						type = "group",
 						name = L["Portrait"],
-						get = function(info) return E.db.unitframe.units["target"]["portrait"][ info[#info] ] end,
-						set = function(info, value) E.db.unitframe.units["target"]["portrait"][ info[#info] ] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("target") end,
+						get = function(info) return E.db.unitframe.units["target"]["portrait"][info[#info]] end,
+						set = function(info, value) E.db.unitframe.units["target"]["portrait"][info[#info]] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("target") end,
 						args = {
 							header = {
 								order = 1,

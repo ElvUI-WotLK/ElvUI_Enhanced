@@ -168,9 +168,9 @@ local function SetProgressionInfo(guid, tt)
 
 		if updated == 1 then return end
 
-		for tier, _ in pairs(tiers) do
+		for tier in pairs(tiers) do
 			if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
-				for i, difficulty in ipairs(difficulties) do
+				for i = 1, #difficulties do
 					if GetEntryCount(tiers[tier][i]) > 0 then
 						tt:AddDoubleLine(progressCache[guid].header[tier][i], progressCache[guid].info[tier][i], nil, nil, nil, 1, 1, 1)
 					end

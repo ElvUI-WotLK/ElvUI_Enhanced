@@ -56,13 +56,8 @@ function addon:Initialize()
 		print(format(L["ENH_LOGIN_MSG"], E["media"].hexvaluecolor, addon.version))
 	end
 
-	-- DBConversions
-	if E.db.enhanced.tooltip.progressInfo.tiers.TotC then
-		E.db.enhanced.tooltip.progressInfo.tiers.ToC = true
-	end
-	if E.db.enhanced.tooltip.progressInfo.tiers.TotC ~= nil then
-		E.db.enhanced.tooltip.progressInfo.tiers.TotC = nil
-	end
+	LEP:RegisterPlugin(addonName, self.GetOptions)
+
 	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then
 		E.db.enhanced.nameplates.classCache = true
 	end
@@ -78,13 +73,6 @@ function addon:Initialize()
 			end
 		end
 	end
-
-	LEP:RegisterPlugin(addonName, self.GetOptions)
-
-	if E.db.general.showQuestLevel then
-		E.db.enhanced.general.showQuestLevel = true
-	end
-	E.db.general.showQuestLevel = nil
 
 	if IsAddOnLoaded("GearScore") and IsAddOnLoaded("BonusScanner") then
 		if GetAddOnMetadata("GearScore", "Version") == "3.1.20b - Release" then

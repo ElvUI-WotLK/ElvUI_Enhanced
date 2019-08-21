@@ -1,6 +1,5 @@
 ﻿local E, L, V, P, G, _ = unpack(ElvUI)
 local LOS = E:NewModule("Enhanced_LoseControl", "AceEvent-3.0")
-local LSM = LibStub("LibSharedMedia-3.0")
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)

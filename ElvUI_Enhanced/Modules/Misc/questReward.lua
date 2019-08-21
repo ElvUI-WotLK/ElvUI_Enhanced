@@ -2,16 +2,15 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
 local _G = _G
-local format = string.format
 
 local function SelectQuestReward(index)
-	local btn = _G[("QuestInfoItem%d"):format(index)]
-	if(btn.type == "choice") then
+	local button = _G["QuestInfoItem"..index]
+	if button.type == "choice" then
 		QuestInfoItemHighlight:ClearAllPoints()
-		QuestInfoItemHighlight:SetAllPoints(btn)
+		QuestInfoItemHighlight:SetAllPoints(button)
 		QuestInfoItemHighlight:Show()
 
-		QuestInfoFrame.itemChoice = btn:GetID()
+		QuestInfoFrame.itemChoice = button:GetID()
 	end
 end
 
@@ -27,7 +26,7 @@ function M:QUEST_COMPLETE()
 
 	for index = 1, num do
 		local link = GetQuestItemLink("choice", index)
-		if (link) then
+		if link then
 			local vsp = select(11, GetItemInfo(link))
 			if vsp and vsp > price then
 				price = vsp

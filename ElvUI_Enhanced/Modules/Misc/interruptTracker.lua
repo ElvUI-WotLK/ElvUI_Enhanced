@@ -37,11 +37,11 @@ function IT:RepositionIcons()
 	end
 end
 
-function IT:StopIconTimer(self)
-	self:Hide()
-	self.expirationTime = nil
-	self:SetScript("OnUpdate", nil)
-	IT:RepositionIcons()
+function IT:StopIconTimer(icon)
+	icon:Hide()
+	icon.expirationTime = nil
+	icon:SetScript("OnUpdate", nil)
+	self:RepositionIcons()
 end
 
 function IT:UpdateIconTimer(elapsed)
@@ -58,10 +58,10 @@ function IT:UpdateIconTimer(elapsed)
 	end
 end
 
-function IT:StartIconTimer(self, cooldown)
-	self:Show()
-	self.expirationTime = cooldown
-	self:SetScript("OnUpdate", IT.UpdateIconTimer)
+function IT:StartIconTimer(icon, cooldown)
+	icon:Show()
+	icon.expirationTime = cooldown
+	icon:SetScript("OnUpdate", self.UpdateIconTimer)
 end
 
 function IT:UpdateIcon(i, c, t)

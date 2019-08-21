@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local PD = E:NewModule("Enhanced_PaperDoll", "AceHook-3.0", "AceEvent-3.0")
 
 local format = string.format
-local pairs, select = pairs, select
+local pairs = pairs
 
 local CanInspect = CanInspect
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemQualityColor = GetItemQualityColor

@@ -4,7 +4,6 @@ local DT = E:GetModule("DataTexts")
 local HasNewMail = HasNewMail
 local GetInboxNumItems = GetInboxNumItems
 local GetLatestThreeSenders = GetLatestThreeSenders
-local AddLine = AddLine
 local MAIL_LABEL = MAIL_LABEL
 local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 
@@ -25,7 +24,7 @@ local unreadMail
 local function OnEvent(self, event, ...)
 	local newMail = false
 	if event == "UPDATE_PENDING_MAIL" or event == "PLAYER_ENTERING_WORLD" or event =="PLAYER_LOGIN" then
-		newMail = HasNewMail() 
+		newMail = HasNewMail()
 		if unreadMail ~= newMail then
 			unreadMail = newMail
 		end

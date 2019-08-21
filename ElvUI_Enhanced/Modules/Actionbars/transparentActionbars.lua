@@ -30,9 +30,9 @@ function ETAB:StyleBackdrops()
 		end
 	end
 
-	for _, frame in pairs({ElvUI_BarPet, ElvUI_StanceBar}) do
-		if frame.backdrop then
-			frame.backdrop:SetTemplate(styleBackdrop)
+	for _, frame2 in pairs({ElvUI_BarPet, ElvUI_StanceBar}) do
+		if frame2.backdrop then
+			frame2.backdrop:SetTemplate(styleBackdrop)
 		end
 	end
 

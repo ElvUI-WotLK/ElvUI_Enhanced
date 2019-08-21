@@ -29,7 +29,7 @@ local function OnUpdate(self)
 	if not isKnown then return end
 
 	local start, duration = GetSpellCooldown(20608)
-	if start > 0 and duration > 0 then 
+	if start > 0 and duration > 0 then
 		self.text:SetFormattedText(displayString, format(iconString, tex), format("%d:%02d", floor((duration - (GetTime() - start)) / 60), floor((duration - (GetTime() - start)) % 60)))
 	else
 		self.text:SetFormattedText(displayString, format(iconString, tex), READY.."!")
@@ -46,7 +46,7 @@ local function OnEvent(self, event)
 			self:SetScript("OnUpdate", OnUpdate)
 		elseif not self.text:GetText() then
 			local start, duration = GetSpellCooldown(20608)
-			if start > 0 and duration > 0 then 
+			if start > 0 and duration > 0 then
 				self.text:SetFormattedText(displayString, format(iconString, tex), format("%d:%02d", floor((duration - (GetTime() - start)) / 60), floor((duration - (GetTime() - start)) % 60)))
 			else
 				self.text:SetFormattedText(displayString, format(iconString, tex), READY.."!")

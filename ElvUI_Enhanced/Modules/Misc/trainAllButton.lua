@@ -33,7 +33,7 @@ function TA:ButtonCreate()
 		for i = 1, GetNumTrainerServices() do
 			if select(3, GetTrainerServiceInfo(i)) == "available" then
 				cost = cost + GetTrainerServiceCost(i)
- 			end
+			end
 		end
 
 		GameTooltip:SetOwner(self.button,"ANCHOR_TOPRIGHT", 0, 4)
@@ -76,7 +76,7 @@ function TA:ToggleState()
 			self.button:Show()
 			if not self:IsHooked("ClassTrainerFrame_Update") then
 				self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
- 			end
+			end
 		end
 	else
 		if not self.button then
@@ -85,7 +85,7 @@ function TA:ToggleState()
 			self.button:Hide()
 			self:UnhookAll()
 		end
- 	end
+	end
 end
 
 function TA:Initialize()
@@ -98,4 +98,4 @@ local function InitializeCallback()
 	TA:Initialize()
 end
 
-E:RegisterModule(TA:GetName(), InitializeCallback) 
+E:RegisterModule(TA:GetName(), InitializeCallback)

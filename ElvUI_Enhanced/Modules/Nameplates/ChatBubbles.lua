@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local ENP = E:GetModule("Enhanced_NamePlates")
 local mod = E:GetModule("NamePlates")
 local M = E:GetModule("Misc")
-local CH = E:GetModule("Chat")
 
 local ipairs = ipairs
 local next = next
@@ -23,12 +22,10 @@ local events = {
 	"CHAT_MSG_YELL",
 }
 
-local visibleBubbles = {}
 local inactiveBubbles = {}
 
 local function ReleaseBubble(frame)
 	inactiveBubbles[#inactiveBubbles + 1] = frame
-	visibleBubbles[frame] = nil
 	frame:GetParent().bubbleFrame = nil
 	frame:Hide()
 end
@@ -75,14 +72,11 @@ local function AcquireBubble()
 	local numInactiveObjects = #inactiveBubbles
 	if numInactiveObjects > 0 then
 		local frame = inactiveBubbles[numInactiveObjects]
-		visibleBubbles[frame] = true
 		inactiveBubbles[numInactiveObjects] = nil
 		return frame
 	end
 
-	local newFrame = CreateBubble()
-	visibleBubbles[newFrame] = true
-	return newFrame
+	return CreateBubble()
 end
 
 function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID)

@@ -105,7 +105,7 @@ local function LoadSkin()
 
 	hooksecurefunc("AchievementObjectives_DisplayCriteria", function(objectivesFrame, id)
 		local numCriteria = GetAchievementNumCriteria(id)
-		local textStrings, metas, progressBars = 0, 0, 0
+		local progressBars = 0
 		for i = 1, numCriteria do
 			local _, _, _, quantity, reqQuantity, _, flags = GetAchievementCriteriaInfo(id, i)
 			if E.private.skins.animations and band(flags, ACHIEVEMENT_CRITERIA_PROGRESS_BAR) == ACHIEVEMENT_CRITERIA_PROGRESS_BAR then

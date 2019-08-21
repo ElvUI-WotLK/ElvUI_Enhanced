@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
 
-local select, pairs = select, pairs
+local select = select
 local format, join = string.format, string.join
 
 local GetItemInfo = GetItemInfo
@@ -90,7 +90,6 @@ local function OnEnter(self)
 			if subclass == quiver or subclass == pouch or subclass == soulBag then
 				r, g, b = GetItemQualityColor(quality)
 
-				free, total, used = 0, 0, 0
 				free, total = GetContainerNumFreeSlots(i), GetContainerNumSlots(i)
 				used = total - free
 

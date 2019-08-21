@@ -6,12 +6,12 @@ local GetItemInfo = GetItemInfo
 local GetMerchantItemLink = GetMerchantItemLink
 local GetMerchantItemMaxStack = GetMerchantItemMaxStack
 
-function M:MerchantItemButton_OnModifiedClick(self)
+function M:MerchantItemButton_OnModifiedClick(button)
 	if IsAltKeyDown() then
-		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(self:GetID())))
+		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(button:GetID())))
 
 		if maxStack and maxStack > 1 then
-			BuyMerchantItem(self:GetID(), GetMerchantItemMaxStack(self:GetID()))
+			BuyMerchantItem(button:GetID(), GetMerchantItemMaxStack(button:GetID()))
 		end
 	end
 end

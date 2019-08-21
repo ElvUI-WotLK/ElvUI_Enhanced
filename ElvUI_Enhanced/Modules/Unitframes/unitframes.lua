@@ -5,7 +5,7 @@ hooksecurefunc(UF, "Configure_Portrait", function(self, frame)
 	if(frame.unitframeType == "player" or frame.unitframeType == "target") then
 		frame.PORTRAIT_DETACHED = frame.USE_PORTRAIT and frame.db.portrait.detachFromFrame and not frame.USE_PORTRAIT_OVERLAY
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or frame.PORTRAIT_DETACHED or not frame.USE_PORTRAIT) and 0 or frame.db.portrait.width
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH - frame.POWERBAR_OFFSET
 
 		if(frame.USE_PORTRAIT) then
 			local portrait = frame.Portrait

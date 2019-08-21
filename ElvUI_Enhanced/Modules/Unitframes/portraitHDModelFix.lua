@@ -28,7 +28,7 @@ local function PortraitHDModelFix(self)
 		end
 
 		for _, modelName in ipairs(UFPM.modelsToFix) do
-			if model:find(modelName) then
+			if find(model, modelName) then
 				self:SetCamera(1)
 				break
 			end
@@ -85,8 +85,8 @@ function UFPM:ToggleState()
 
 	for i = 1, 3 do
 		for _, unit in ipairs(frames[i]) do
-			local frameName = E:StringTitle(unit)
-			local frame = _G["ElvUF_"..frameName]
+			frameName = E:StringTitle(unit)
+			frame = _G["ElvUF_"..frameName]
 
 			if frame and frame.Portrait3D and frame.Portrait3D.PostUpdate then
 				if self.db.enable then
