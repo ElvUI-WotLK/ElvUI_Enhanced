@@ -105,7 +105,7 @@ P.enhanced = {
 	},
 	nameplates = {
 		cacheUnitClass = false,
-		chatBubbles = true,
+		chatBubbles = false,
 	},
 	tooltip = {
 		itemQualityBorderColor = false,
