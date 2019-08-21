@@ -20,6 +20,7 @@ function mod:UpdateDressUpFrame()
 	UpdateUIPanelPositions(DressUpFrame)
 end
 
+--[[
 local function DressUpSources(appearanceSources, mainHandEnchant, offHandEnchant)
 	if not appearanceSources then return true end
 
@@ -37,7 +38,6 @@ local function DressUpSources(appearanceSources, mainHandEnchant, offHandEnchant
 	DressUpModel:TryOn(appearanceSources[secondaryHandSlotID], "SECONDARYHANDSLOT", offHandEnchant)
 end
 
---[[
 function mod:SelectOutfit(outfitID, loadOutfit)
 	local name
 	if outfitID then

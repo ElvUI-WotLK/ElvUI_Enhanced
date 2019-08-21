@@ -1186,32 +1186,6 @@ function module:PaperDoll_UpdateCategoryPositions()
 	end
 end
 
-function PaperDoll_MoveCategoryUp(self)
-	for index = 2, #StatCategoryFrames do
-		if StatCategoryFrames[index] == self then
-			tremove(StatCategoryFrames, index)
-			tinsert(StatCategoryFrames, index - 1, self)
-			break
-		end
-	end
-
-	module:PaperDoll_UpdateCategoryPositions()
-	PaperDoll_SaveStatCategoryOrder()
-end
-
-function PaperDoll_MoveCategoryDown(self)
-	for index = 1, #StatCategoryFrames - 1 do
-		if StatCategoryFrames[index] == self then
-			tremove(StatCategoryFrames, index)
-			tinsert(StatCategoryFrames, index + 1, self)
-			break
-		end
-	end
-
-	module:PaperDoll_UpdateCategoryPositions()
-	PaperDoll_SaveStatCategoryOrder()
-end
-
 local function StatCategory_OnDragUpdate(self)
 	local _, cursorY = GetCursorPosition()
 	cursorY = cursorY * GetScreenHeightScale()
