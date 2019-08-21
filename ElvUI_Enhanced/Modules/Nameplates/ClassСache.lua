@@ -5,31 +5,6 @@ local NP = E:GetModule("NamePlates")
 local pairs = pairs
 
 local UnitClass = UnitClass
-local UnitIsPlayer = UnitIsPlayer
-local UnitName = UnitName
-local UnitReaction = UnitReaction
-
-EnhancedDB = EnhancedDB or {}
-EnhancedDB.UnitClass = EnhancedDB.UnitClass or {}
-
-local classMap = {}
-for i, class in ipairs(CLASS_SORT_ORDER) do
-	classMap[class] = i
-end
-
-function ENP:UPDATE_MOUSEOVER_UNIT()
-	if UnitIsPlayer("mouseover") and UnitReaction("mouseover", "player") ~= 2 then
-		local name, realm = UnitName("mouseover")
-		if realm then return end
-
-		local _, class = UnitClass("mouseover")
-		class = classMap[class]
-
-		if EnhancedDB.UnitClass[name] ~= class then
-			EnhancedDB.UnitClass[name] = class
-		end
-	end
-end
 
 local function UnitClassHook(self, frame, unitType)
 	if unitType == "FRIENDLY_PLAYER" then
@@ -57,14 +32,10 @@ end
 
 function ENP:ClassCache()
 	if E.db.enhanced.nameplates.classCache then
-		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-
 		if not self:IsHooked(NP, "UnitClass") then
 			self:RawHook(NP, "UnitClass", UnitClassHook)
 		end
 	else
-		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
-
 		if self:IsHooked(NP, "UnitClass") then
 			self:Unhook(NP, "UnitClass")
 		end

@@ -2,4 +2,5 @@
 	<Script file="nameplates.lua"/>
 	<Script file="ClassСache.lua"/>
 	<Script file="ChatBubbles.lua"/>
+	<Script file="TitleCache.lua"/>
 </Ui>

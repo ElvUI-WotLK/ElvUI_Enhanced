@@ -516,8 +516,18 @@ local function NamePlatesOptions()
 					E:GetModule("NamePlates"):ConfigureAll()
 				end,
 			},
+			titleCache = {
+				order = 2,
+				type = "toggle",
+				name = L["Cache Unit Guilds / NPC Titles"],
+				set = function(info, value)
+					E.db.enhanced.nameplates[info[#info]] = value
+					E:GetModule("Enhanced_NamePlates"):TitleCache()
+					E:GetModule("NamePlates"):ConfigureAll()
+				end,
+			},
 			chatBubbles = {
-				order = 1,
+				order = 3,
 				type = "toggle",
 				name = L["Chat Bubbles"],
 				set = function(info, value)
