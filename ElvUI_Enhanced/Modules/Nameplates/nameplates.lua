@@ -3,7 +3,7 @@ local ENP = E:NewModule("Enhanced_NamePlates", "AceHook-3.0", "AceEvent-3.0")
 
 function ENP:Initialize()
 	self:CacheUnitClass()
-	self:Smooth()
+	self:ChatBubbles()
 end
 
 local function InitializeCallback()

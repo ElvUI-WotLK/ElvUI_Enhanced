@@ -116,9 +116,7 @@ L["Print to chat model names of units with enabled 3D portraits."] = true
 L["Interrupt Tracker"] = true
 
 -- Nameplates
-L["Bars will transition smoothly."] = "Balken werden sanft übergehen"
 L["Cache Unit Class"] = true
-L["Smooth Bars"] = "Sanfte Balken"
 
 -- Minimap
 L["Above Minimap"] = "Oberhalb der Minimap"

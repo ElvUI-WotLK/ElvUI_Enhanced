@@ -512,21 +512,15 @@ local function NamePlatesOptions()
 				name = L["Cache Unit Class"],
 				set = function(info, value) E.db.enhanced.nameplates[info[#info]] = value E:GetModule("Enhanced_NamePlates"):CacheUnitClass() E:GetModule("NamePlates"):ConfigureAll() end,
 			},
-			smooth = {
+			chatBubbles = {
+				order = 1,
 				type = "toggle",
-				order = 2,
-				name = L["Smooth Bars"],
-				desc = L["Bars will transition smoothly."],
-				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value E:GetModule("NamePlates"):ConfigureAll() end
-			},
-			smoothSpeed = {
-				type = "range",
-				order = 3,
-				name = L["Animation Speed"],
-				desc = L["Speed in seconds"],
-				min = 0.1, max = 3, step = 0.01,
-				disabled = function() return not E.db.enhanced.nameplates.smooth end,
-				set = function(info, value) E.db.enhanced.nameplates[ info[#info] ] = value E:GetModule("NamePlates"):ConfigureAll() end
+				name = L["Chat Bubbles"],
+				set = function(info, value)
+					E.db.enhanced.nameplates[info[#info]] = value
+					E:GetModule("Enhanced_NamePlates"):ChatBubbles()
+					E:GetModule("NamePlates"):ConfigureAll()
+				end,
 			},
 		}
 	}
