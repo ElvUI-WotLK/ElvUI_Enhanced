@@ -1,5 +1,14 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Blizzard.lua"/>
-	<Include file="AddOns\Load_AddOns.xml"/>
-	<Include file="Frames\Load_Frames.xml"/>
+	<Script file="DeathRecap.lua"/>
+	<Script file="AddonList.lua"/>
+	<Script file="DressUpFrame.lua"/>
+
+	<Include file="TimerTracker.xml"/>
+	<Script file="TimerTracker.lua"/>
+
+	<Script file="Modelframes.lua"/>
+
+	<Include file="CharacterFrame.xml"/>
+	<Script file="CharacterFrame.lua"/>
 </Ui>
