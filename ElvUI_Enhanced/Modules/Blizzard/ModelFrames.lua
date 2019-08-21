@@ -1,8 +1,14 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
-local module = E:NewModule("HookModelFrames", "AceHook-3.0", "AceEvent-3.0")
+local MF = E:NewModule("Enhanced_ModelFrames", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
 
-local models = {
+local PI = PI
+
+local GetCVar = GetCVar
+local Model_RotateLeft = Model_RotateLeft
+local Model_RotateRight = Model_RotateRight
+
+local modelFrames = {
 	"CharacterModelFrame",
 	"CompanionModelFrame",
 	"DressUpModel",
@@ -10,16 +16,50 @@ local models = {
 	"PetStableModel"
 }
 
-function module:ModelControlButton(model)
-	model:SetSize(18, 18)
+local modelSettings = {
+	["HumanMale"] = {panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+	["HumanFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45},
+	["DwarfMale"] = {panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44},
+	["DwarfFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47},
+	["NightElfMale"] = {panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30},
+	["NightElfFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33},
+	["GnomeMale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52},
+	["GnomeFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60},
+	["DraeneiMale"] = {panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28},
+	["DraeneiFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31},
+
+	["OrcMale"] = {panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30},
+	["OrcFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37},
+	["ScourgeMale"] = {panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 35},
+	["ScourgeFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 36},
+	["TaurenMale"] = {panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31},
+	["TaurenFemale"] = {panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32},
+	["TrollMale"] = {panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27},
+	["TrollFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31},
+	["BloodElfMale"] = {panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36},
+	["BloodElfFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+}
+
+local playerRaceSex
+do
+	local _
+	_, playerRaceSex = UnitRace("player")
+	if UnitSex("player") == 2 then
+		playerRaceSex = playerRaceSex.."Male"
+	else
+		playerRaceSex = playerRaceSex.."Female"
+	end
+end
+function MF:ModelControlButton(model)
+	model:Size(18, 18)
 
 	model.icon = model:CreateTexture("$parentIcon", "ARTWORK")
 	model.icon:SetInside()
 	model.icon:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-ModelControlPanel")
 	model.icon:SetTexCoord(0.01562500, 0.26562500, 0.00781250, 0.13281250)
 
-	model:SetScript("OnMouseDown", function(self) module:ModelControlButton_OnMouseDown(self) end)
-	model:SetScript("OnMouseUp", function(self) module:ModelControlButton_OnMouseUp(self) end)
+	model:SetScript("OnMouseDown", function(self) MF:ModelControlButton_OnMouseDown(self) end)
+	model:SetScript("OnMouseUp", function(self) MF:ModelControlButton_OnMouseUp(self) end)
 	model:SetScript("OnEnter", function(self)
 		UIFrameFadeIn(self:GetParent(), 0.2, self:GetParent():GetAlpha(), 1)
 		if GetCVar("UberTooltips") == "1" then
@@ -37,44 +77,44 @@ function module:ModelControlButton(model)
 	end)
 end
 
-function module:ModelWithControls(model)
+function MF:ModelWithControls(model)
 	model.controlFrame = CreateFrame("Frame", "$parentControlFrame", model)
-	model.controlFrame:SetPoint("TOP", 0, -2)
+	model.controlFrame:Point("TOP", 0, -2)
 	model.controlFrame:SetAlpha(0.5)
 	model.controlFrame:Hide()
 
 	local zoomInButton = CreateFrame("Button", "$parentZoomInButton", model.controlFrame)
 	self:ModelControlButton(zoomInButton)
-	zoomInButton:SetPoint("LEFT", 2, 0)
+	zoomInButton:Point("LEFT", 2, 0)
 	zoomInButton:RegisterForClicks("AnyUp")
 	zoomInButton.icon:SetTexCoord(0.57812500, 0.82812500, 0.14843750, 0.27343750)
 	zoomInButton.tooltip = L["Zoom In"]
 	zoomInButton.tooltipText = L["Mouse Wheel Up"]
 	zoomInButton:SetScript("OnMouseDown", function(self)
-		module:Model_OnMouseWheel(self:GetParent():GetParent(), 1)
+		MF:Model_OnMouseWheel(self:GetParent():GetParent(), 1)
 	end)
 
 	local zoomOutButton = CreateFrame("Button", "$parentZoomOutButton", model.controlFrame)
 	self:ModelControlButton(zoomOutButton)
-	zoomOutButton:SetPoint("LEFT", 2, 0)
+	zoomOutButton:Point("LEFT", 2, 0)
 	zoomOutButton:RegisterForClicks("AnyUp")
 	zoomOutButton.icon:SetTexCoord(0.29687500, 0.54687500, 0.00781250, 0.13281250)
 	zoomOutButton.tooltip = L["Zoom Out"]
 	zoomOutButton.tooltipText = L["Mouse Wheel Down"]
 	zoomOutButton:SetScript("OnMouseDown", function(self)
-		module:Model_OnMouseWheel(self:GetParent():GetParent(), -1)
+		MF:Model_OnMouseWheel(self:GetParent():GetParent(), -1)
 	end)
 
 	local panButton = CreateFrame("Button", "$parentPanButton", model.controlFrame)
 	self:ModelControlButton(panButton)
-	panButton:SetPoint("LEFT", 2, 0)
+	panButton:Point("LEFT", 2, 0)
 	panButton:RegisterForClicks("AnyUp")
 	panButton.icon:SetTexCoord(0.29687500, 0.54687500, 0.28906250, 0.41406250)
 	panButton.tooltip = L["Drag"]
 	panButton.tooltipText = L["Right-click on character and drag to move it within the window."]
 	panButton:SetScript("OnMouseDown", function(self)
-		module:ModelControlButton_OnMouseDown(self)
-		module:Model_StartPanning(self:GetParent():GetParent(), true)
+		MF:ModelControlButton_OnMouseDown(self)
+		MF:Model_StartPanning(self:GetParent():GetParent(), true)
 	end)
 
 	local rotateLeftButton = CreateFrame("Button", "$parentRotateLeftButton", model.controlFrame)
@@ -104,59 +144,59 @@ function module:ModelWithControls(model)
 	rotateResetButton:RegisterForClicks("AnyUp")
 	rotateResetButton.tooltip = L["Reset Position"]
 	rotateResetButton:SetScript("OnClick", function(self)
-		module:Model_Reset(self:GetParent():GetParent())
+		MF:Model_Reset(self:GetParent():GetParent())
 	end)
 
 	if E.private.skins.blizzard.enable then
-		model.controlFrame:SetSize(123, 23)
+		model.controlFrame:Size(123, 23)
 
 		S:HandleButton(zoomInButton)
 
 		S:HandleButton(zoomOutButton)
-		zoomOutButton:SetPoint("LEFT", "$parentZoomInButton", "RIGHT", 2, 0)
+		zoomOutButton:Point("LEFT", "$parentZoomInButton", "RIGHT", 2, 0)
 
 		S:HandleButton(panButton)
-		panButton:SetPoint("LEFT", "$parentZoomOutButton", "RIGHT", 2, 0)
+		panButton:Point("LEFT", "$parentZoomOutButton", "RIGHT", 2, 0)
 
 		S:HandleButton(rotateLeftButton)
-		rotateLeftButton:SetPoint("LEFT", "$parentPanButton", "RIGHT", 2, 0)
+		rotateLeftButton:Point("LEFT", "$parentPanButton", "RIGHT", 2, 0)
 
 		S:HandleButton(rotateRightButton)
-		rotateRightButton:SetPoint("LEFT", "$parentRotateLeftButton", "RIGHT", 2, 0)
+		rotateRightButton:Point("LEFT", "$parentRotateLeftButton", "RIGHT", 2, 0)
 
 		S:HandleButton(rotateResetButton)
-		rotateResetButton:SetPoint("LEFT", "$parentRotateRightButton", "RIGHT", 2, 0)
+		rotateResetButton:Point("LEFT", "$parentRotateRightButton", "RIGHT", 2, 0)
 	else
-		model.controlFrame:SetSize(114, 23)
-		zoomOutButton:SetPoint("LEFT", "$parentZoomInButton", "RIGHT", 0, 0)
-		panButton:SetPoint("LEFT", "$parentZoomOutButton", "RIGHT", 0, 0)
-		rotateLeftButton:SetPoint("LEFT", "$parentPanButton", "RIGHT", 0, 0)
-		rotateRightButton:SetPoint("LEFT", "$parentRotateLeftButton", "RIGHT", 0, 0)
-		rotateResetButton:SetPoint("LEFT", "$parentRotateRightButton", "RIGHT", 0, 0)
+		model.controlFrame:Size(114, 23)
+		zoomOutButton:SetPoint("LEFT", "$parentZoomInButton", "RIGHT")
+		panButton:SetPoint("LEFT", "$parentZoomOutButton", "RIGHT")
+		rotateLeftButton:SetPoint("LEFT", "$parentPanButton", "RIGHT")
+		rotateRightButton:SetPoint("LEFT", "$parentRotateLeftButton", "RIGHT")
+		rotateResetButton:SetPoint("LEFT", "$parentRotateRightButton", "RIGHT")
 	end
 
 	model.controlFrame:SetScript("OnHide", function(self)
 		if self.buttonDown then
-			module:ModelControlButton_OnMouseUp(self.buttonDown)
+			MF:ModelControlButton_OnMouseUp(self.buttonDown)
 		end
 	end)
 
 	self:HookScript(model, "OnUpdate", "Model_OnUpdate")
 	model:SetScript("OnMouseWheel", function(self, delta)
-		module:Model_OnMouseWheel(self, delta)
+		MF:Model_OnMouseWheel(self, delta)
 	end)
 	model:SetScript("OnMouseUp", function(self, button)
 		if button == "RightButton" and self.panning then
-			module:Model_StopPanning(self)
+			MF:Model_StopPanning(self)
 		elseif self.mouseDown then
-			module:Model_OnMouseUp(self, button)
+			MF:Model_OnMouseUp(self, button)
 		end
 	end)
 	model:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" and not self.mouseDown then
-			module:Model_StartPanning(self)
+			MF:Model_StartPanning(self)
 		else
-			module:Model_OnMouseDown(self, button)
+			MF:Model_OnMouseDown(self, button)
 		end
 	end)
 	model:SetScript("OnEnter", function(self)
@@ -169,51 +209,15 @@ function module:ModelWithControls(model)
 	end)
 	model:SetScript("OnHide", function(self)
 		if self.panning then
-			module:Model_StopPanning(self)
+			MF:Model_StopPanning(self)
 		end
 		self.mouseDown = false
 		self.controlFrame:Hide()
-		module:Model_Reset(self)
+		MF:Model_Reset(self)
 	end)
 end
 
-local ModelSettings = {
-	["HumanMale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38 },
-	["HumanFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45 },
-	["OrcMale"] = { panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30 },
-	["OrcFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37 },
-	["DwarfMale"] = { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44 },
-	["DwarfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47 },
-	["NightElfMale"] = { panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30 },
-	["NightElfFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33 },
-	["ScourgeMale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 35 },
-	["ScourgeFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 36 },
-	["TaurenMale"] = { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31 },
-	["TaurenFemale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32 },
-	["GnomeMale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52 },
-	["GnomeFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60 },
-	["TrollMale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27 },
-	["TrollFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31 },
-	["GoblinMale"] = { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 0.7, panMaxBottom = -0.2, panValue = 43 },
-	["GoblinFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.7, panMaxBottom = -0.3, panValue = 43 },
-	["BloodElfMale"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36 },
-	["BloodElfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38 },
-	["DraeneiMale"] = { panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28 },
-	["DraeneiFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31 },
-}
-
-local playerRaceSex
-do
-	local _
-	_, playerRaceSex = UnitRace("player")
-	if UnitSex("player") == 2 then
-		playerRaceSex = playerRaceSex.."Male"
-	else
-		playerRaceSex = playerRaceSex.."Female"
-	end
-end
-
-function module:Model_OnMouseWheel(model, delta, maxZoom, minZoom)
+function MF:Model_OnMouseWheel(model, delta, maxZoom, minZoom)
 	maxZoom = maxZoom or 2.8
 	minZoom = minZoom or 0
 	local zoomLevel = model.zoomLevel or minZoom
@@ -225,137 +229,146 @@ function module:Model_OnMouseWheel(model, delta, maxZoom, minZoom)
 	model.zoomLevel = zoomLevel
 end
 
-function module:Model_OnMouseDown(model, button)
+function MF:Model_OnMouseDown(model, button)
 	if not button or button == "LeftButton" then
 		model.mouseDown = true
 		model.rotationCursorStart = GetCursorPosition()
 	end
 end
 
-function module:Model_OnMouseUp(model, button)
+function MF:Model_OnMouseUp(model, button)
 	if not button or button == "LeftButton" then
 		model.mouseDown = false
 	end
 end
 
-function module:Model_OnUpdate(self, elapsedTime, rotationsPerSecond)
+function MF:Model_OnUpdate(frame, elapsedTime, rotationsPerSecond)
 	if not rotationsPerSecond then
 		rotationsPerSecond = ROTATIONS_PER_SECOND
 	end
 
-	if self.mouseDown then
-		if self.rotationCursorStart then
+	if frame.mouseDown then
+		if frame.rotationCursorStart then
 			local x = GetCursorPosition()
-			local diff = (x - self.rotationCursorStart) * 0.010
+			local diff = (x - frame.rotationCursorStart) * 0.010
 
-			self.rotationCursorStart = GetCursorPosition()
-			self.rotation = self.rotation + diff
+			frame.rotationCursorStart = GetCursorPosition()
+			frame.rotation = frame.rotation + diff
 
-			if self.rotation < 0 then
-				self.rotation = self.rotation + (2 * PI)
+			if frame.rotation < 0 then
+				frame.rotation = frame.rotation + (2 * PI)
 			end
 
-			if self.rotation > (2 * PI) then
-				self.rotation = self.rotation - (2 * PI)
+			if frame.rotation > (2 * PI) then
+				frame.rotation = frame.rotation - (2 * PI)
 			end
 
-			self:SetRotation(self.rotation, false)
+			frame:SetRotation(frame.rotation, false)
 		end
-	elseif self.panning then
-		local modelScale = self:GetModelScale()
+	elseif frame.panning then
+		local modelScale = frame:GetModelScale()
 		local cursorX, cursorY = GetCursorPosition()
 		local scale = UIParent:GetEffectiveScale()
-		ModelPanningFrame:SetPoint("BOTTOMLEFT", cursorX / scale - 16, cursorY / scale - 16)	-- half the texture size to center it on the cursor
+		ModelPanningFrame:Point("BOTTOMLEFT", cursorX / scale - 16, cursorY / scale - 16)	-- half the texture size to center it on the cursor
 		-- settings
-		local settings = ModelSettings[playerRaceSex]
+		local settings = modelSettings[playerRaceSex]
 
-		local zoom = self.zoomLevel or 0
-		zoom = 1 + zoom - 0 -- want 1 at minimum zoom
+		local zoom = 1 + (frame.zoomLevel or 0)
 
 		-- Panning should require roughly the same mouse movement regardless of zoom level so the model moves at the same rate as the cursor
 		-- This formula more or less works for all zoom levels, found via trial and error
 		local transformationRatio = settings.panValue * 2 ^ (zoom * 1.25) * scale / modelScale
 
-		local dx = (cursorX - self.cursorX) / transformationRatio
-		local dy = (cursorY - self.cursorY) / transformationRatio
-		local cameraY = self.cameraY + dx
-		local cameraZ = self.cameraZ + dy
+		local dx = (cursorX - frame.cursorX) / transformationRatio
+		local dy = (cursorY - frame.cursorY) / transformationRatio
+		local cameraY = frame.cameraY + dx
+		local cameraZ = frame.cameraZ + dy
 		-- bounds
 		scale = scale * modelScale
-		local maxCameraY = (settings.panMaxRight * zoom) * scale
+
+		local maxCameraY = settings.panMaxRight * zoom * scale
 		cameraY = min(cameraY, maxCameraY)
-		local minCameraY = (settings.panMaxLeft * zoom) * scale
+
+		local minCameraY = settings.panMaxLeft * zoom * scale
 		cameraY = max(cameraY, minCameraY)
-		local maxCameraZ = (settings.panMaxTop * zoom) * scale
+
+		local maxCameraZ = settings.panMaxTop * zoom * scale
 		cameraZ = min(cameraZ, maxCameraZ)
-		local minCameraZ = (settings.panMaxBottom * zoom) * scale
+
+		local minCameraZ = settings.panMaxBottom * zoom * scale
 		cameraZ = max(cameraZ, minCameraZ)
 
-		self:SetPosition(self.cameraX, cameraY, cameraZ)
+		frame:SetPosition(frame.cameraX, cameraY, cameraZ)
 	end
 
 	local leftButton, rightButton
-	if self.controlFrame then
-		leftButton = self.controlFrame.rotateLeftButton
-		rightButton = self.controlFrame.rotateRightButton
+
+	if frame.controlFrame then
+		leftButton = frame.controlFrame.rotateLeftButton
+		rightButton = frame.controlFrame.rotateRightButton
 	else
-		leftButton = self:GetName() and _G[self:GetName().."RotateLeftButton"]
-		rightButton = self:GetName() and _G[self:GetName().."RotateRightButton"]
+		leftButton = frame:GetName() and _G[frame:GetName().."RotateLeftButton"]
+		rightButton = frame:GetName() and _G[frame:GetName().."RotateRightButton"]
 	end
 
 	if leftButton and leftButton:GetButtonState() == "PUSHED" then
-		self.rotation = self.rotation + (elapsedTime * 2 * PI * rotationsPerSecond)
-		if self.rotation < 0 then
-			self.rotation = self.rotation + (2 * PI)
+		frame.rotation = frame.rotation + (elapsedTime * 2 * PI * rotationsPerSecond)
+
+		if frame.rotation < 0 then
+			frame.rotation = frame.rotation + (2 * PI)
 		end
-		self:SetRotation(self.rotation)
 	elseif rightButton and rightButton:GetButtonState() == "PUSHED" then
-		self.rotation = self.rotation - (elapsedTime * 2 * PI * rotationsPerSecond)
-		if self.rotation > (2 * PI) then
-			self.rotation = self.rotation - (2 * PI)
+		frame.rotation = frame.rotation - (elapsedTime * 2 * PI * rotationsPerSecond)
+
+		if frame.rotation > (2 * PI) then
+			frame.rotation = frame.rotation - (2 * PI)
 		end
-		self:SetRotation(self.rotation)
 	end
+
+	frame:SetRotation(frame.rotation)
 end
 
-function module:Model_Reset(model)
+function MF:Model_Reset(model)
 	model.rotation = 0.61
 	model:SetRotation(model.rotation)
 	model.zoomLevel = 0
 	model:SetPosition(0, 0, 0)
 end
 
-function module:Model_StartPanning(model, usePanningFrame)
+function MF:Model_StartPanning(model, usePanningFrame)
 	if usePanningFrame then
 		ModelPanningFrame.model = model
 		ModelPanningFrame:Show()
 	end
+
 	model.panning = true
+
 	local cameraX, cameraY, cameraZ = model:GetPosition()
 	model.cameraX = cameraX
 	model.cameraY = cameraY
 	model.cameraZ = cameraZ
+
 	local cursorX, cursorY = GetCursorPosition()
 	model.cursorX = cursorX
 	model.cursorY = cursorY
 end
 
-function module:Model_StopPanning(model)
+function MF:Model_StopPanning(model)
 	model.panning = false
 	ModelPanningFrame:Hide()
 end
 
-function module:ModelControlButton_OnMouseDown(model)
-	model.icon:SetPoint("CENTER", 1, -1)
+function MF:ModelControlButton_OnMouseDown(model)
+	model.icon:Point("CENTER", 1, -1)
 	model:GetParent().buttonDown = model
 end
 
-function module:ModelControlButton_OnMouseUp(model)
-	model.icon:SetPoint("CENTER", 0, 0)
+function MF:ModelControlButton_OnMouseUp(model)
+	model.icon:SetPoint("CENTER")
 	model:GetParent().buttonDown = nil
 end
 
-function module:ADDON_LOADED(event, addon)
+function MF:ADDON_LOADED(event, addon)
 	if addon == "Blizzard_InspectUI" then
 		InspectModelFrame:EnableMouse(true)
 		InspectModelFrame:EnableMouseWheel(true)
@@ -375,29 +388,29 @@ function module:ADDON_LOADED(event, addon)
 	end
 end
 
-function module:Initialize()
+function MF:Initialize()
 	if not E.private.enhanced.character.model.enable then return end
 
-	for i = 1, #models do
-		local model = _G[models[i]]
+	for i = 1, #modelFrames do
+		local model = _G[modelFrames[i]]
 
 		model:EnableMouse(true)
 		model:EnableMouseWheel(true)
 
-		_G[models[i].."RotateLeftButton"]:Kill()
-		_G[models[i].."RotateRightButton"]:Kill()
+		_G[modelFrames[i].."RotateLeftButton"]:Kill()
+		_G[modelFrames[i].."RotateRightButton"]:Kill()
 
 		self:ModelWithControls(model)
 	end
 
 	if E.myclass == "HUNTER" then
-		PetPaperDollPetInfo:SetPoint("TOPLEFT", PetPaperDollFrame, 23, -76)
+		PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 23, -76)
 	end
 
 	local modelPanning = CreateFrame("Frame", "ModelPanningFrame", UIParent)
 	modelPanning:SetFrameStrata("DIALOG")
 	modelPanning:Hide()
-	modelPanning:SetSize(32, 32)
+	modelPanning:Size(32, 32)
 
 	modelPanning.texture = modelPanning:CreateTexture(nil, "ARTWORK")
 	modelPanning.texture:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-Cursor-Move")
@@ -406,11 +419,14 @@ function module:Initialize()
 	modelPanning:SetScript("OnUpdate", function(self)
 		local model = self.model
 		local controlFrame = model.controlFrame
+
 		if not IsMouseButtonDown(controlFrame.panButton) then
-			module:Model_StopPanning(model)
+			MF:Model_StopPanning(model)
+
 			if controlFrame.buttonDown then
-				module:ModelControlButton_OnMouseUp(controlFrame.buttonDown)
+				MF:ModelControlButton_OnMouseUp(controlFrame.buttonDown)
 			end
+
 			if not controlFrame:IsMouseOver() then
 				controlFrame:Hide()
 			end
@@ -421,7 +437,7 @@ function module:Initialize()
 end
 
 local function InitializeCallback()
-	module:Initialize()
+	MF:Initialize()
 end
 
-E:RegisterModule(module:GetName(), InitializeCallback)
+E:RegisterModule(MF:GetName(), InitializeCallback)

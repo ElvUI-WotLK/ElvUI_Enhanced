@@ -2,16 +2,19 @@
 local mod = E:GetModule("Enhanced_Blizzard")
 local S = E:GetModule("Skins")
 
+local FRAME_SIZE = false
+
 function mod:UpdateDressUpFrame()
 	local mult = E.db.enhanced.blizzard.dressUpFrame.multiplier
-	if ElvCharacterDB.Enhanced.ResizeDressUp then
-		DressUpFrame:SetSize(384 * mult, 512 * mult)
+--	if ElvCharacterDB.Enhanced.ResizeDressUp then
+	if FRAME_SIZE then
+		DressUpFrame:Size(384 * mult, 512 * mult)
 
-		DressUpFrameResizeButton.text:SetText("-")
+		S:SetNextPrevButtonDirection(DressUpFrameResizeButton, "up")
 	else
-		DressUpFrame:SetSize(384, 512)
+		DressUpFrame:Size(384, 512)
 
-		DressUpFrameResizeButton.text:SetText("+")
+		S:SetNextPrevButtonDirection(DressUpFrameResizeButton)
 	end
 
 	UpdateUIPanelPositions(DressUpFrame)
@@ -34,6 +37,7 @@ local function DressUpSources(appearanceSources, mainHandEnchant, offHandEnchant
 	DressUpModel:TryOn(appearanceSources[secondaryHandSlotID], "SECONDARYHANDSLOT", offHandEnchant)
 end
 
+--[[
 function mod:SelectOutfit(outfitID, loadOutfit)
 	local name
 	if outfitID then
@@ -52,19 +56,16 @@ function mod:SelectOutfit(outfitID, loadOutfit)
 	--self:UpdateSaveButton()
 	--self:OnSelectOutfit(outfitID)
 end
+]]
 
 function mod:DressUpFrame()
 	if not E.db.enhanced.blizzard.dressUpFrame.enable then return end
-
-	if not ElvCharacterDB.Enhanced then
-		ElvCharacterDB.Enhanced = {}
-	end
 
 	--[[DressUpFrame.OutfitDropDown = CreateFrame("Frame", "DressUpFrameOutfitDropDown", DressUpFrame, "UIDropDownMenuTemplate")
 	DressUpFrame.OutfitDropDown:Point("TOP", -23, -28)
 	S:HandleDropDownBox(DressUpFrame.OutfitDropDown)
 	DressUpFrame.OutfitDropDown:SetScript("OnShow", function(self) mod.SelectOutfit(self, nil, true) end)
-	
+
 	DressUpFrame.SaveButton = CreateFrame("Button", nil, DressUpFrame, "UIPanelButtonTemplate")
 	DressUpFrame.SaveButton:Size(88, 22)
 	DressUpFrame.SaveButton:Point("LEFT", DressUpFrame.OutfitDropDown, "RIGHT", -13, -3)
@@ -72,11 +73,11 @@ function mod:DressUpFrame()
 	S:HandleButton(DressUpFrame.SaveButton)]]
 
 	DressUpFrameCancelButton:ClearAllPoints()
-	DressUpFrameCancelButton:SetPoint("BOTTOMRIGHT", -39, 79)
+	DressUpFrameCancelButton:Point("BOTTOMRIGHT", -39, 79)
 
 	DressUpModel:ClearAllPoints()
-	DressUpModel:SetPoint("TOPLEFT", 22, -77)
-	DressUpModel:SetPoint("BOTTOMRIGHT", -47, 106)
+	DressUpModel:Point("TOPLEFT", 22, -77)
+	DressUpModel:Point("BOTTOMRIGHT", -47, 106)
 
 	DressUpBackgroundTopLeft:SetAlpha(0)
 	DressUpBackgroundTopRight:SetAlpha(0)
@@ -84,25 +85,27 @@ function mod:DressUpFrame()
 	DressUpBackgroundBotRight:SetAlpha(0)
 
 	DressUpModel:ClearAllPoints()
-	DressUpModel:SetPoint("TOPLEFT", 22, -77)
-	DressUpModel:SetPoint("BOTTOMRIGHT", -47, 106)
+	DressUpModel:Point("TOPLEFT", 22, -77)
+	DressUpModel:Point("BOTTOMRIGHT", -47, 106)
 	DressUpModel.backdrop:SetOutside()
 
 	local resizeButton = CreateFrame("Button", "DressUpFrameResizeButton", DressUpFrame)
-	resizeButton:SetSize(32, 32)
-	resizeButton:SetPoint("RIGHT", DressUpFrameCloseButton, "LEFT", 10, 0)
-	S:HandleCloseButton(resizeButton, nil, "+")
+	resizeButton:Size(32, 32)
+	resizeButton:Point("RIGHT", DressUpFrameCloseButton, "LEFT", 10, 0)
+	S:HandleNextPrevButton(resizeButton, nil, nil, true)
 	resizeButton:SetScript("OnClick", function()
-		if not ElvCharacterDB.Enhanced.ResizeDressUp then
-			ElvCharacterDB.Enhanced.ResizeDressUp = true
-		else
-			ElvCharacterDB.Enhanced.ResizeDressUp = false
-		end
+	--	if not ElvCharacterDB.Enhanced.ResizeDressUp then
+	--		ElvCharacterDB.Enhanced.ResizeDressUp = true
+	--	else
+	--		ElvCharacterDB.Enhanced.ResizeDressUp = false
+	--	end
+
+		FRAME_SIZE = not FRAME_SIZE
 
 		mod.UpdateDressUpFrame()
 	end);
 
-	local className, classFileName = UnitClass("player")
+	local _, classFileName = UnitClass("player")
 	DressUpFrame.ModelBackground = DressUpFrame:CreateTexture()
 	DressUpFrame.ModelBackground:SetAllPoints(DressUpModel)
 	DressUpFrame.ModelBackground:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\DressingRoom"..classFileName)

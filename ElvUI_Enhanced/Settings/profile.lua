@@ -42,36 +42,11 @@ P.enhanced = {
 		dpsLinks = false,
 	},
 	character = {
+		animations = true,
 		background = false,
 		petBackground = false,
 		inspectBackground = false,
 		companionBackground = false,
-		collapsed = false,
-		style = "Cata",
-		player = {
-			orderName = "",
-			collapsedName = {
-				ITEM_LEVEL = false,
-				BASE_STATS = false,
-				MELEE_COMBAT = false,
-				RANGED_COMBAT = false,
-				SPELL_COMBAT = false,
-				DEFENSES = false,
-				RESISTANCE = false,
-			},
-		},
-		pet = {
-			orderName = "",
-			collapsedName = {
-				ITEM_LEVEL = false,
-				BASE_STATS = false,
-				MELEE_COMBAT = false,
-				RANGED_COMBAT = false,
-				SPELL_COMBAT = false,
-				DEFENSES = false,
-				RESISTANCE = false,
-			},
-		},
 	},
 	datatexts = {
 		timeColorEnch = false,

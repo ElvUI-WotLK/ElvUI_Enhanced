@@ -2,17 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule("Enhanced_Blizzard")
 
 local floor = math.floor
+local tconcat = table.concat
 
 local CreateFrame = CreateFrame
 local DisableAddOn = DisableAddOn
 local EnableAddOn = EnableAddOn
-local GameTooltip_Hide = GameTooltip_Hide
 local GetAddOnDependencies = GetAddOnDependencies
 local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
+local GameTooltip_Hide = GameTooltip_Hide
 
 local function AddonList_HasAnyChanged()
 	for i = 1, GetNumAddOns() do
@@ -149,17 +150,16 @@ local function AddonList_LoadAddOn(index)
 end
 
 local function AddonList_TooltipBuildDeps(...)
-	local deps = ""
+	local deps
 
-	for i = 1, select("#", ...) do
-		if i == 1 then
-			deps = L["Dependencies: "]..select(i, ...)
-		else
-			deps = deps..", "..select(i, ...)
-		end
+	local argsCount = select("#", ...)
+	if argsCount == 1 then
+		deps = ...
+	else
+		deps = tconcat({...}, ", ")
 	end
 
-	return deps
+	return L["Dependencies: "] .. deps
 end
 
 local function AddonList_TooltipUpdate(self)
@@ -197,6 +197,10 @@ function mod:AddonList()
 	addonList:Size(520, 475)
 	addonList:Point("CENTER", 0, 0)
 	addonList:SetTemplate("Transparent")
+	addonList:SetClampedToScreen(true)
+	addonList:SetMovable(true)
+	addonList:EnableMouse(true)
+	addonList:RegisterForDrag("LeftButton")
 	addonList:Hide()
 	tinsert(UISpecialFrames, addonList:GetName())
 
@@ -209,28 +213,31 @@ function mod:AddonList()
 		addonList.startStatus[i] = enabled
 	end
 
-	local addonTitle = addonList:CreateFontString("$parentTitle", "BACKGROUND", "GameFontNormal")
-	addonTitle:Point("TOP", 0, -12)
-	addonTitle:SetText(ADDONS)
+	addonList:SetScript("OnDragStart", function(self)
+		if IsShiftKeyDown() then
+			self:StartMoving()
+		end
+	end)
+	addonList:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+	end)
 
-	local SPACING = (E.PixelMode and 3 or 5)
+	local addonTitle = addonList:CreateFontString("$parentTitle", "BACKGROUND", "GameFontNormal")
+	addonTitle:Point("TOP", 0, -10)
+	addonTitle:SetText(ADDONS)
 
 	local cancelButton = CreateFrame("Button", "$parentCancelButton", addonList, "UIPanelButtonTemplate")
 	cancelButton:Size(80, 22)
-	cancelButton:Point("BOTTOMRIGHT", -SPACING, SPACING)
+	cancelButton:Point("BOTTOMRIGHT", -10, 10)
 	cancelButton:SetText(CANCEL)
 	S:HandleButton(cancelButton)
-	cancelButton:SetScript("OnClick", function() ElvUI_AddonList:Hide() end)
-
-	local closeButton = CreateFrame("Button", "$parentCloseButton", addonList, "UIPanelCloseButton")
-	closeButton:Size(32)
-	closeButton:Point("TOPRIGHT", -2, 2)
-	S:HandleCloseButton(closeButton)
-	closeButton:SetScript("OnClick", function() ElvUI_AddonList:Hide() end)
+	cancelButton:SetScript("OnClick", function()
+		ElvUI_AddonList:Hide()
+	end)
 
 	local okayButton = CreateFrame("Button", "$parentOkayButton", addonList, "UIPanelButtonTemplate")
 	okayButton:Size(80, 22)
-	okayButton:Point("TOPRIGHT", cancelButton, "TOPLEFT", -SPACING, 0)
+	okayButton:Point("RIGHT", cancelButton, "LEFT", -10, 0)
 	okayButton:SetText(OKAY)
 	S:HandleButton(okayButton)
 	okayButton:SetScript("OnClick", function()
@@ -242,17 +249,23 @@ function mod:AddonList()
 
 	local enableAllButton = CreateFrame("Button", "$parentEnableAllButton", addonList, "UIPanelButtonTemplate")
 	enableAllButton:Size(120, 22)
-	enableAllButton:Point("BOTTOMLEFT", SPACING, SPACING)
+	enableAllButton:Point("BOTTOMLEFT", 10, 10)
 	enableAllButton:SetText(L["Enable All"])
 	S:HandleButton(enableAllButton)
-	enableAllButton:SetScript("OnClick", function() EnableAllAddOns(); AddonList_Update() end)
+	enableAllButton:SetScript("OnClick", function()
+		EnableAllAddOns()
+		AddonList_Update()
+	end)
 
 	local disableAllButton = CreateFrame("Button", "$parentDisableAllButton", addonList, "UIPanelButtonTemplate")
 	disableAllButton:Size(120, 22)
-	disableAllButton:Point("TOPLEFT", enableAllButton, "TOPRIGHT", SPACING, 0)
+	disableAllButton:Point("LEFT", enableAllButton, "RIGHT", 10, 0)
 	disableAllButton:SetText(L["Disable All"])
 	S:HandleButton(disableAllButton)
-	disableAllButton:SetScript("OnClick", function() DisableAllAddOns(); AddonList_Update() end)
+	disableAllButton:SetScript("OnClick", function()
+		DisableAllAddOns()
+		AddonList_Update()
+	end)
 
 	addonList:SetScript("OnShow", function()
 		AddonList_Update()
@@ -261,28 +274,6 @@ function mod:AddonList()
 	addonList:SetScript("OnHide", function()
 		PlaySound("igMainMenuOptionCheckBoxOn")
 	end)
-
-	addonList:SetClampedToScreen(true)
-	addonList:SetMovable(true)
-	addonList:EnableMouse(true)
-	addonList:RegisterForDrag("LeftButton")
-
-	addonList:SetScript("OnDragStart", function(self)
-		if IsShiftKeyDown() then
-			self:StartMoving()
-		end
-	end)
-	addonList:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-	end)
-	addonList:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
-
-		GameTooltip:Show()
-	end)
-	addonList:SetScript("OnLeave", GameTooltip_Hide)
 
 	local scrollFrame = CreateFrame("ScrollFrame", "$parentScrollFrame", addonList, "FauxScrollFrameTemplate")
 	scrollFrame:SetTemplate("Transparent")
@@ -297,7 +288,6 @@ function mod:AddonList()
 		AddonList_Update()
 		if GameTooltip:IsShown() then
 			AddonList_TooltipUpdate(GameTooltip:GetOwner())
-			GameTooltip:Show()
 		end
 	end)
 
@@ -313,14 +303,14 @@ function mod:AddonList()
 			addonListEntry[i]:Point("TOP", addonListEntry[i - 1], "BOTTOM", 0, -4)
 		end
 
-		local enabled = CreateFrame("CheckButton", "$parentEnabled", addonListEntry[i], "ChatConfigCheckButtonTemplate")
+		local enabled = CreateFrame("CheckButton", "$parentEnabled", addonListEntry[i])
 		enabled:Size(24, 24)
-		enabled:Point("LEFT", 5, 0)
+		enabled:Point("LEFT", -4, 0)
 		S:HandleCheckBox(enabled)
 
 		local title = addonListEntry[i]:CreateFontString("$parentTitle", "BACKGROUND", "GameFontNormal")
 		title:Size(220, 12)
-		title:Point("LEFT", 32, 0)
+		title:Point("LEFT", 22, 0)
 		title:SetJustifyH("LEFT")
 
 		local status = addonListEntry[i]:CreateFontString("$parentStatus", "BACKGROUND", "GameFontNormalSmall")
@@ -344,7 +334,7 @@ function mod:AddonList()
 		addonListEntry[i].LoadButton = load
 
 		addonListEntry[i]:SetScript("OnEnter", function(self)
-			GameTooltip:SetOwner(self, "ANCHOR_RIGHT", -270, 0)
+			GameTooltip:SetOwner(self)
 			AddonList_TooltipUpdate(self)
 		end)
 		addonListEntry[i]:SetScript("OnLeave", GameTooltip_Hide)
@@ -352,16 +342,6 @@ function mod:AddonList()
 		enabled:SetScript("OnClick", function(self)
 			AddonList_Enable(self:GetParent():GetID(), self:GetChecked())
 			PlaySound("igMainMenuOptionCheckBoxOn")
-		end)
-		enabled:SetScript("OnEnter", function(self)
-			if self.tooltip then
-				GameTooltip:SetOwner(self, "ANCHOR_RIGHT", -270, 0)
-				AddonList_TooltipUpdate(self)
-				GameTooltip:Show()
-			end
-		end)
-		enabled:SetScript("OnLeave", function()
-			GameTooltip:Hide()
 		end)
 
 		load:SetScript("OnClick", function(self)

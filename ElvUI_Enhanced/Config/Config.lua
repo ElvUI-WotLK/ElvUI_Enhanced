@@ -159,9 +159,159 @@ local function BlizzardOptions()
 				name = L["Death Recap Frame"],
 				get = function(info) return E.private.enhanced.blizzard.deathRecap end,
 				set = function(info, value) E.private.enhanced.blizzard.deathRecap = value; E:StaticPopup_Show("PRIVATE_RL") end
+			},
+			characterFrame = {
+				order = 2,
+				type = "group",
+				name = L["Character Frame"],
+				guiInline = true,
+				get = function(info) return E.private.enhanced.character[info[#info]] end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enhanced Character Frame"],
+						set = function(info, value)
+							E.private.enhanced.character.enable = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end
+					},
+					animations = {
+						order = 2,
+						type = "toggle",
+						name = L["Smooth Animations"],
+						get = function(info) return E.db.enhanced.character.animations end,
+						set = function(info, value)
+							E.db.enhanced.character.animations = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end
+					},
+					model = {
+						order = 3,
+						type = "toggle",
+						name = L["Enhanced Control Panel"],
+						set = function(info, value)
+							E.private.enhanced.character.model.enable = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end
+					},
+					paperdollBackgrounds = {
+						order = 4,
+						type = "group",
+						name = L["Paperdoll Backgrounds"],
+						guiInline = true,
+						get = function(info) return E.db.enhanced.character[info[#info]] end,
+						disabled = function() return not E.private.enhanced.character.enable end,
+						args = {
+							background = {
+								order = 1,
+								type = "toggle",
+								name = L["Character Background"],
+								set = function(info, value)
+									E.db.enhanced.character.background = value
+									E:GetModule("Enhanced_CharacterFrame"):UpdateCharacterModelFrame()
+								end
+							},
+							petBackground = {
+								order = 2,
+								type = "toggle",
+								name = L["Pet Background"],
+								set = function(info, value)
+									E.db.enhanced.character.petBackground = value
+									E:GetModule("Enhanced_CharacterFrame"):UpdatePetModelFrame()
+								end
+							},
+							inspectBackground = {
+								order = 3,
+								type = "toggle",
+								name = L["Inspect Background"],
+								set = function(info, value)
+									E.db.enhanced.character.inspectBackground = value
+									E:GetModule("Enhanced_CharacterFrame"):UpdateInspectModelFrame()
+								end
+							},
+							companionBackground = {
+								order = 4,
+								type = "toggle",
+								name = L["Companion Background"],
+								set = function(info, value)
+									E.db.enhanced.character.companionBackground = value
+									E:GetModule("Enhanced_CharacterFrame"):UpdateCompanionModelFrame()
+								end
+							}
+						}
+					}
+				}
+			},
+			dressingRoom = {
+				order = 3,
+				type = "group",
+				name = L["Dressing Room"],
+				guiInline = true,
+				get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+					E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
+				end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"]
+					},
+					undressButton = {
+						order = 2,
+						type = "toggle",
+						name = L["Undress Button"],
+						desc = L["Add button to Dressing Room frame with ability to undress model."],
+						get = function(info) return E.db.enhanced.general.undressButton end,
+						set = function(info, value)
+							E.db.enhanced.general.undressButton = value
+							E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end
+					},
+					multiplier = {
+						order = 3,
+						type = "range",
+						isPercent = true,
+						name = L["Scale"],
+						min = 1,
+						max = 2,
+						step = 0.01
+					}
+				}
+			},
+			timerTracker = {
+				order = 4,
+				type = "group",
+				name = L["Timer Tracker"],
+				guiInline = true,
+				get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						set = function(info, value)
+							E.db.enhanced.timerTracker.enable = value
+							E:GetModule("Enhanced_TimerTracker"):ToggleState()
+						end
+					},
+					dbm = {
+						order = 2,
+						type = "toggle",
+						name = L["Hook DBM"],
+						set = function(info, value)
+							E.db.enhanced.timerTracker.dbm = value
+							E:GetModule("Enhanced_TimerTracker"):HookDBM()
+						end,
+						disabled = function() return not E.db.enhanced.timerTracker.enable end
+					}
+				}
 			}
 		}
 	}
+
 	return config
 end
 
@@ -542,7 +692,6 @@ end
 
 -- Skins
 local function SkinsOptions()
-	local B = E:GetModule("Enhanced_Blizzard")
 	local M = E:GetModule("Enhanced_Misc")
 
 	local config = {
@@ -574,121 +723,8 @@ local function SkinsOptions()
 					}
 				}
 			},
-			characterFrame = {
-				order = 2,
-				type = "group",
-				name = L["Character Frame"],
-				get = function(info) return E.private.skins.animations; end,
-				set = function(info, value) E.private.skins.animations = value; end,
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = L["Character Frame"]
-					},
-					enable = {
-						order = 2,
-						type = "toggle",
-						name = L["Enhanced Character Frame"],
-						get = function(info) return E.private.enhanced.character.enable end,
-						set = function(info, value) E.private.enhanced.character.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
-					},
-					model = {
-						order = 3,
-						type = "toggle",
-						name = L["Enhanced Control Panel"],
-						get = function(info) return E.private.enhanced.character.model.enable end,
-						set = function(info, value) E.private.enhanced.character.model.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
-					},
-					paperdollBackgrounds = {
-						order = 4,
-						type = "group",
-						name = L["Paperdoll Backgrounds"],
-						guiInline = true,
-						args = {
-							background = {
-								order = 2,
-								type = "toggle",
-								name = L["Character Background"],
-								get = function(info) return E.db.enhanced.character.background end,
-								set = function(info, value) E.db.enhanced.character.background = value; E:GetModule("Enhanced_CharacterFrame"):UpdateCharacterModelFrame() end,
-								disabled = function() return not E.private.enhanced.character.enable end
-							},
-							petBackground = {
-								order = 3,
-								type = "toggle",
-								name = L["Pet Background"],
-								get = function(info) return E.db.enhanced.character.petBackground end,
-								set = function(info, value) E.db.enhanced.character.petBackground = value; E:GetModule("Enhanced_CharacterFrame"):UpdatePetModelFrame() end,
-								disabled = function() return not E.private.enhanced.character.enable end
-							},
-							inspectBackground = {
-								order = 4,
-								type = "toggle",
-								name = L["Inspect Background"],
-								get = function(info) return E.db.enhanced.character.inspectBackground end,
-								set = function(info, value) E.db.enhanced.character.inspectBackground = value; end,
-								disabled = function() return not E.private.enhanced.character.enable end
-							},
-							companionBackground = {
-								order = 5,
-								type = "toggle",
-								name = L["Companion Background"],
-								get = function(info) return E.db.enhanced.character.companionBackground end,
-								set = function(info, value) E.db.enhanced.character.companionBackground = value; E:GetModule("Enhanced_CharacterFrame"):UpdateCompanionModelFrame() end,
-								disabled = function() return not E.private.enhanced.character.enable end
-							}
-						}
-					}
-				}
-			},
-			dressingRoom = {
-				order = 3,
-				type = "group",
-				name = L["Dressing Room"],
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = L["Dressing Room"]
-					},
-					enhancedDressingRoom = {
-						order = 2,
-						type = "group",
-						name = L["Enhanced Dressing Room"],
-						guiInline = true,
-						get = function(info) return E.db.enhanced.blizzard.dressUpFrame[ info[#info] ] end,
-						set = function(info, value) E.db.enhanced.blizzard.dressUpFrame[ info[#info] ] = value; B:UpdateDressUpFrame() end,
-						args = {
-							enable = {
-								order = 1,
-								type = "toggle",
-								name = L["Enable"]
-							},
-							multiplier = {
-								order = 2,
-								type = "range",
-								isPercent = true,
-								name = L["Scale"],
-								min = 1, max = 2, step = 0.01
-							}
-						}
-					},
-					undressButton = {
-						order = 3,
-						type = "toggle",
-						name = L["Undress Button"],
-						desc = L["Add button to Dressing Room frame with ability to undress model."],
-						get = function(info) return E.db.enhanced.general.undressButton end,
-						set = function(info, value)
-							E.db.enhanced.general.undressButton = value
-							E:GetModule("Enhanced_UndressButtons"):ToggleState()
-						end
-					}
-				}
-			},
 			trainer = {
-				order = 4,
+				order = 3,
 				type = "group",
 				name = L["Trainer Frame"],
 				args = {
@@ -711,7 +747,7 @@ local function SkinsOptions()
 				}
 			},
 			quest = {
-				order = 5,
+				order = 4,
 				type = "group",
 				name = L["Quest Frames"],
 				args = {
@@ -1130,40 +1166,6 @@ local function InterruptTrackerOptions()
 	return config
 end
 
--- Timer Tracker
-local function TimerTrackerOptions()
-	local config = {
-		order = 14,
-		type = "group",
-		name = L["Timer Tracker"],
-		get = function(info) return E.db.enhanced.timerTracker[ info[#info] ] end,
-		set = function(info, value) E.db.enhanced.timerTracker[ info[#info] ] = value E:GetModule("Enhanced_TimerTracker"):UpdateAllIconsTimers() end,
-		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = ColorizeSettingName(L["Timer Tracker"])
-			},
-			enable = {
-				order = 1,
-				type = "toggle",
-				name = L["Enable"],
-				get = function(info) return E.db.enhanced.timerTracker.enable end,
-				set = function(info, value) E.db.enhanced.timerTracker.enable = value E:StaticPopup_Show("PRIVATE_RL") end
-			},
-			dbm = {
-				order = 2,
-				type = "toggle",
-				name = L["Hook DBM"],
-				get = function(info) return E.db.enhanced.timerTracker.dbm end,
-				set = function(info, value) E.db.enhanced.timerTracker.dbm = value E:GetModule("Enhanced_TimerTracker"):HookDBM() end,
-				disabled = function() return not E.db.enhanced.timerTracker.enable end
-			}
-		}
-	}
-	return config
-end
-
 -- Unitframes
 local function UnitFrameOptions()
 	local TC = E:GetModule("Enhanced_TargetClass")
@@ -1413,7 +1415,6 @@ function addon:GetOptions()
 			unitframesGroup = UnitFrameOptions(),
 			loseControlGroup = LoseControlOptions(),
 			interruptGroup = InterruptTrackerOptions(),
-			timerGroup = TimerTrackerOptions(),
 			watchFrameGroup = WatchFrameOptions(),
 		}
 	}

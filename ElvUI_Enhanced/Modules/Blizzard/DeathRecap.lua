@@ -1,17 +1,36 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule("Enhanced_Blizzard")
 
-local format, upper = string.format, string.upper
-local floor = math.floor
-local tsort, twipe = table.sort, table.wipe
 local band = bit.band
-local tonumber, strsub = tonumber, strsub
+local ceil, floor = math.ceil, math.floor
+local format, upper, sub = string.format, string.upper, string.sub
+local tsort, twipe = table.sort, table.wipe
+local tonumber = tonumber
 
+local _G = _G
+local CannotBeResurrected = CannotBeResurrected
+local CombatLog_String_SchoolString = CombatLog_String_SchoolString
+local CopyTable = CopyTable
+local GetReleaseTimeRemaining = GetReleaseTimeRemaining
+local GetSpellInfo = GetSpellInfo
+local GetSpellLink = GetSpellLink
+local HasSoulstone = HasSoulstone
+local IsActiveBattlefieldArena = IsActiveBattlefieldArena
+local RepopMe = RepopMe
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UseSoulstone = UseSoulstone
+
+local ACTION_SWING = ACTION_SWING
+local ARENA_SPECTATOR = ARENA_SPECTATOR
 local COMBATLOG_FILTER_ME = COMBATLOG_FILTER_ME
-local GetReleaseTimeRemaining = GetReleaseTimeRemaining
-local RepopMe = RepopMe
+local COMBATLOG_UNKNOWN_UNIT = COMBATLOG_UNKNOWN_UNIT
+local DEATH_RELEASE_NOTIMER = DEATH_RELEASE_NOTIMER
+local DEATH_RELEASE_SPECTATOR = DEATH_RELEASE_SPECTATOR
+local DEATH_RELEASE_TIMER = DEATH_RELEASE_TIMER
+local MINUTES = MINUTES
+local SECONDS = SECONDS
+local TEXT_MODE_A_STRING_VALUE_SCHOOL = TEXT_MODE_A_STRING_VALUE_SCHOOL
 
 local lastDeathEvents
 local index = 0
@@ -19,7 +38,7 @@ local deathList = {}
 local eventList = {}
 
 local function AddEvent(timestamp, event, sourceName, spellId, spellName, environmentalType, amount, overkill, school, resisted, blocked, absorbed)
-	if (index > 0) and (eventList[index].timestamp + 10 <= timestamp) then
+	if index > 0 and eventList[index].timestamp + 10 <= timestamp then
 		index = 0
 		twipe(eventList)
 	end
@@ -103,12 +122,13 @@ local function GetTableInfo(data)
 		nameIsNotSpell = true
 	elseif event == "RANGE_DAMAGE" then
 		nameIsNotSpell = true
---	elseif strsub(event, 1, 5) == "SPELL" then
+--	elseif sub(event, 1, 5) == "SPELL" then
 	elseif event == "ENVIRONMENTAL_DAMAGE" then
 		local environmentalType = data.environmentalType
 		environmentalType = upper(environmentalType)
 		spellName = _G["ACTION_ENVIRONMENTAL_DAMAGE_"..environmentalType]
 		nameIsNotSpell = true
+
 		if environmentalType == "DROWNING" then
 			texture = "spell_shadow_demonbreath"
 		elseif environmentalType == "FALLING" then
@@ -122,23 +142,19 @@ local function GetTableInfo(data)
 		else
 			texture = "ability_creature_cursed_05"
 		end
+
 		texture = "Interface\\Icons\\" .. texture
 	end
 
-	local spellNameStr = spellName
-	local spellString
-	if spellName then
-		if nameIsNotSpell then
-			spellString = format("|Haction:%s|h%s|h", event, spellNameStr)
-		else
-			spellString = spellName
-		end
+	if spellName and nameIsNotSpell then
+		spellName = format("|Haction:%s|h%s|h", event, spellName)
 	end
 
 	if spellId and not texture then
 		texture = select(3, GetSpellInfo(spellId))
 	end
-	return spellId, spellString, texture
+
+	return spellId, spellName, texture
 end
 
 local function OpenRecap(recapID)
@@ -159,9 +175,12 @@ local function OpenRecap(recapID)
 		for i = 1, 5 do
 			self.DeathRecapEntry[i]:Hide()
 		end
+
 		self.Unavailable:Show()
+
 		return
 	end
+
 	self.Unavailable:Hide()
 
 	local highestDmgIdx, highestDmgAmount = 1, 0
@@ -177,7 +196,7 @@ local function OpenRecap(recapID)
 		self.DeathTimeStamp = self.DeathTimeStamp or evtData.timestamp
 
 		if evtData.amount then
-			local amountStr = -(evtData.amount)
+			local amountStr = -evtData.amount
 			dmgInfo.Amount:SetText(amountStr)
 			dmgInfo.AmountLarge:SetText(amountStr)
 			dmgInfo.amount = evtData.amount
@@ -238,7 +257,7 @@ local function OpenRecap(recapID)
 		entry.SpellInfo.spellId = spellId
 	end
 
-	for i = #deathEvents + 1, #(self.DeathRecapEntry) do
+	for i = #deathEvents + 1, #self.DeathRecapEntry do
 		self.DeathRecapEntry[i]:Hide()
 	end
 
@@ -256,7 +275,7 @@ local function OpenRecap(recapID)
 end
 
 local function Spell_OnEnter(self)
-	if self.spellId  then
+	if self.spellId then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetHyperlink(GetSpellLink(self.spellId))
 		GameTooltip:Show()
@@ -266,6 +285,7 @@ end
 local function Amount_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 	GameTooltip:ClearLines()
+
 	if self.amount then
 		local valueStr = self.school and format(TEXT_MODE_A_STRING_VALUE_SCHOOL, self.amount, CombatLog_String_SchoolString(self.school)) or self.amount
 		GameTooltip:AddLine(format(L["%s %s"], valueStr, self.dmgExtraStr), 1, 0, 0, false)
@@ -279,7 +299,7 @@ local function Amount_OnEnter(self)
 		end
 	end
 
-	local seconds = DeathRecapFrame.DeathTimeStamp - self.timestamp
+	local seconds = ElvUI_DeathRecapFrame.DeathTimeStamp - self.timestamp
 	if seconds > 0 then
 		GameTooltip:AddLine(format(L["%s sec before death at %s%% health."], format("%.1F", seconds), self.hpPercent), 1, 0.824, 0, true)
 	else
@@ -308,16 +328,16 @@ end
 
 function mod:COMBAT_LOG_EVENT_UNFILTERED(_, timestamp, event, _, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 	if (band(destFlags, COMBATLOG_FILTER_ME) ~= COMBATLOG_FILTER_ME) or (band(sourceFlags, COMBATLOG_FILTER_ME) == COMBATLOG_FILTER_ME) then return end
-	if (event ~= "ENVIRONMENTAL_DAMAGE")
-	and (event ~= "RANGE_DAMAGE")
-	and (event ~= "SPELL_DAMAGE")
-	and (event ~= "SPELL_EXTRA_ATTACKS")
-	and (event ~= "SPELL_INSTAKILL")
-	and (event ~= "SPELL_PERIODIC_DAMAGE")
-	and (event ~= "SWING_DAMAGE")
+	if event ~= "ENVIRONMENTAL_DAMAGE"
+	and event ~= "RANGE_DAMAGE"
+	and event ~= "SPELL_DAMAGE"
+	and event ~= "SPELL_EXTRA_ATTACKS"
+	and event ~= "SPELL_INSTAKILL"
+	and event ~= "SPELL_PERIODIC_DAMAGE"
+	and event ~= "SWING_DAMAGE"
 	then return end
 
-	local subVal = strsub(event, 1, 5)
+	local subVal = sub(event, 1, 5)
 	local environmentalType, spellId, spellName, amount, overkill, school, resisted, blocked, absorbed
 
 	if event == "SWING_DAMAGE" then
@@ -334,7 +354,7 @@ function mod:COMBAT_LOG_EVENT_UNFILTERED(_, timestamp, event, _, sourceName, sou
 end
 
 function mod:SetItemRef(link, ...)
-	if strsub(link, 1, 5) == "death" then
+	if sub(link, 1, 5) == "death" then
 		local _, id = strsplit(":", link)
 		OpenRecap(tonumber(id))
 		return
@@ -344,6 +364,9 @@ function mod:SetItemRef(link, ...)
 end
 
 function mod:DeathRecap()
+	if DeathRecapFrame then return end
+	if not E.private.enhanced.blizzard.deathRecap then return end
+
 	local S = E:GetModule("Skins")
 
 	local frame = CreateFrame("Frame", "ElvUI_DeathRecapFrame", UIParent)
@@ -366,7 +389,7 @@ function mod:DeathRecap()
 	frame.CloseXButton = CreateFrame("Button", "$parentCloseXButton", frame)
 	frame.CloseXButton:Size(32, 32)
 	frame.CloseXButton:Point("TOPRIGHT", 2, 1)
-	frame.CloseXButton:SetScript("OnClick", function(self) HideUIPanel(self:GetParent()) end)
+	frame.CloseXButton:SetScript("OnClick", function(self) self:GetParent():Hide() end)
 	S:HandleCloseButton(frame.CloseXButton)
 
 	frame.DragButton = CreateFrame("Button", "$parentDragButton", frame)
@@ -377,6 +400,7 @@ function mod:DeathRecap()
 	frame.DragButton:SetScript("OnDragStop", function(self) self:GetParent():StopMovingOrSizing() end)
 
 	frame.DeathRecapEntry = {}
+
 	for i = 1, 5 do
 		local button = CreateFrame("Frame", nil, frame)
 		button:Size(308, 32)
@@ -432,7 +456,7 @@ function mod:DeathRecap()
 		button.SpellInfo.Caster:SetTextColor(0.5, 0.5, 0.5, 1)
 
 		if i == 1 then
-			button:SetPoint("BOTTOMLEFT", 16, 64)
+			button:Point("BOTTOMLEFT", 16, 64)
 			button.tombstone = button:CreateTexture("ARTWORK")
 			button.tombstone:Size(15, 20)
 			button.tombstone:Point("RIGHT", button.DamageInfo.Amount, "LEFT", -10, 0)
@@ -447,7 +471,7 @@ function mod:DeathRecap()
 	frame.CloseButton:Size(144, 21)
 	frame.CloseButton:Point("BOTTOM", 0, 15)
 	frame.CloseButton:SetText(CLOSE)
-	frame.CloseButton:SetScript("OnClick", function(self) HideUIPanel(ElvUI_DeathRecapFrame) end)
+	frame.CloseButton:SetScript("OnClick", function(self) ElvUI_DeathRecapFrame:Hide() end)
 	S:HandleButton(frame.CloseButton)
 
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -478,8 +502,8 @@ function mod:DeathRecap()
 			end
 			if HasEvents() then
 				self.button3:Enable()
-				self.button3:SetScript("OnEnter", nil)
-				self.button3:SetScript("OnLeave", nil)
+				self.button3:SetScript("OnEnter", S.SetModifiedBackdrop)
+				self.button3:SetScript("OnLeave", S.SetOriginalBackdrop)
 			else
 				self.button3:Disable()
 				self.button3:SetScript("OnEnter", function(self)
