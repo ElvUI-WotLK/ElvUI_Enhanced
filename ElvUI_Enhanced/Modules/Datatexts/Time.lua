@@ -73,7 +73,7 @@ function EDTT:UpdateSettings()
 
 		for func, _ in pairs(E["valueColorUpdateFuncs"]) do
 			if func == ValueColorUpdate then
-				func = nil
+				E["valueColorUpdateFuncs"][func] = nil
 				break
 			end
 		end

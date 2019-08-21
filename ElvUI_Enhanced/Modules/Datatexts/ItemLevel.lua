@@ -66,6 +66,7 @@ end
 
 local function OnEvent(self)
 	self.text:SetFormattedText(displayString, L["Item Level"], GetItemLvL())
+	lastPanel = self
 end
 
 local function OnEnter(self)
@@ -99,7 +100,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = join("", "%s: ", hex, "%d|r")
 
-	if(lastPanel ~= nil) then
+	if lastPanel then
 		OnEvent(lastPanel)
 	end
 end

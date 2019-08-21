@@ -42,7 +42,7 @@ local spamFirstLines = {
 }
 
 local spamNextLines = {
-	"^(%d+)\. (.*)$",	-- Recount, Skada
+	"^(%d+)%. (.*)$",	-- Recount, Skada
 	"^ (%d+). (.*)$",	-- Skada
 --	"^(.*)   (.*)$",	-- Additional Skada
 	"^.*%%%)$",			-- Skada player details
