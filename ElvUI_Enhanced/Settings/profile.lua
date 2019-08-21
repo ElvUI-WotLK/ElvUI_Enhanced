@@ -104,7 +104,7 @@ P.enhanced = {
 		fadeindelay = 5,
 	},
 	nameplates = {
-		cacheUnitClass = false,
+		classCache = false,
 		chatBubbles = false,
 	},
 	tooltip = {

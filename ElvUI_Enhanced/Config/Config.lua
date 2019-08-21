@@ -506,11 +506,15 @@ local function NamePlatesOptions()
 				type = "header",
 				name = ColorizeSettingName(L["NamePlates"])
 			},
-			cacheUnitClass = {
+			classCache = {
 				order = 1,
 				type = "toggle",
 				name = L["Cache Unit Class"],
-				set = function(info, value) E.db.enhanced.nameplates[info[#info]] = value E:GetModule("Enhanced_NamePlates"):CacheUnitClass() E:GetModule("NamePlates"):ConfigureAll() end,
+				set = function(info, value)
+					E.db.enhanced.nameplates[info[#info]] = value
+					E:GetModule("Enhanced_NamePlates"):ClassCache()
+					E:GetModule("NamePlates"):ConfigureAll()
+				end,
 			},
 			chatBubbles = {
 				order = 1,

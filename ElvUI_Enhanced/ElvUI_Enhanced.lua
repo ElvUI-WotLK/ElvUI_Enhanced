@@ -63,6 +63,21 @@ function addon:Initialize()
 	if E.db.enhanced.tooltip.progressInfo.tiers.TotC ~= nil then
 		E.db.enhanced.tooltip.progressInfo.tiers.TotC = nil
 	end
+	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then
+		E.db.enhanced.nameplates.classCache = true
+	end
+	if EnhancedDB and EnhancedDB.UnitClass and next(EnhancedDB.UnitClass) then
+		local classMap = {}
+		for i, class in ipairs(CLASS_SORT_ORDER) do
+			classMap[class] = i
+		end
+		for name, class in pairs(EnhancedDB.UnitClass) do
+			if type(class) == "string" then
+				EnhancedDB.UnitClass[name] = classMap[class]
+				print("move > ", name, class, classMap[class])
+			end
+		end
+	end
 
 	LEP:RegisterPlugin(addonName, self.GetOptions)
 
