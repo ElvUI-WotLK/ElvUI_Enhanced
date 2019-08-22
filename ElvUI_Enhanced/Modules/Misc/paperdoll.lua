@@ -19,8 +19,8 @@ local slots = {
 	["ShoulderSlot"] = true,
 	["BackSlot"] = false,
 	["ChestSlot"] = true,
-	-- ["ShirtSlot"] = false,
-	-- ["TabardSlot"] = false,
+--	["ShirtSlot"] = false,
+--	["TabardSlot"] = false,
 	["WristSlot"] = true,
 	["HandsSlot"] = true,
 	["WaistSlot"] = true,
@@ -33,7 +33,7 @@ local slots = {
 	["MainHandSlot"] = true,
 	["SecondaryHandSlot"] = true,
 	["RangedSlot"] = true,
-	-- ["AmmoSlot"] = false,
+--	["AmmoSlot"] = false,
 }
 
 function PD:UpdatePaperDoll(unit)
@@ -56,12 +56,14 @@ function PD:UpdatePaperDoll(unit)
 
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", baseName, slotName)]
-		slotID = GetInventorySlotInfo(slotName)
-		hasItem = GetInventoryItemTexture(unit, slotID)
 
-		if frame.ItemLevel then
+		if frame then
+			slotID = GetInventorySlotInfo(slotName)
+			hasItem = GetInventoryItemTexture(unit, slotID)
+
 			frame.ItemLevel:SetText()
-			if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or (unit ~= "player" and hasItem)) then
+
+			if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or hasItem) then
 				itemLink = GetInventoryItemLink(unit, slotID)
 
 				if itemLink then
@@ -82,15 +84,15 @@ function PD:UpdatePaperDoll(unit)
 					end
 				end
 			end
-		end
 
-		if unit == "player" and durability then
-			frame.DurabilityInfo:SetText()
-			if E.db.enhanced.equipment.durability.enable then
-				current, maximum = GetInventoryItemDurability(slotID)
-				if current and maximum and (not E.db.enhanced.equipment.durability.onlydamaged or current < maximum) then
-					r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0)
-					frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100)
+			if unit == "player" and durability then
+				frame.DurabilityInfo:SetText()
+				if E.db.enhanced.equipment.durability.enable then
+					current, maximum = GetInventoryItemDurability(slotID)
+					if current and maximum and (not E.db.enhanced.equipment.durability.onlydamaged or current < maximum) then
+						r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0)
+						frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100)
+					end
 				end
 			end
 		end
@@ -100,25 +102,27 @@ end
 function PD:UpdateInfoText(name)
 	local db = E.db.enhanced.equipment
 	local frame
+
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
 
-		if frame.ItemLevel then
+		if frame then
 			frame.ItemLevel:ClearAllPoints()
 			frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
 			frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-		end
 
-		if name == "Character" and durability then
-			frame.DurabilityInfo:ClearAllPoints()
-			frame.DurabilityInfo:Point(db.durability.position, frame, db.durability.xOffset, db.durability.yOffset)
-			frame.DurabilityInfo:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			if name == "Character" and durability then
+				frame.DurabilityInfo:ClearAllPoints()
+				frame.DurabilityInfo:Point(db.durability.position, frame, db.durability.xOffset, db.durability.yOffset)
+				frame.DurabilityInfo:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			end
 		end
 	end
 end
 
 function PD:BuildInfoText(name)
 	local frame
+
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
 
@@ -128,6 +132,7 @@ function PD:BuildInfoText(name)
 			frame.DurabilityInfo = frame:CreateFontString(nil, "OVERLAY")
 		end
 	end
+
 	self:UpdateInfoText(name)
 end
 
