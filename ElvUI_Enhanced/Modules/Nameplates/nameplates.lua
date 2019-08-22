@@ -117,7 +117,13 @@ end
 local function UpdateElement_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
-	if self.db.units[frame.UnitType].healthbar.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then return end
+	if self.db.units[frame.UnitType].healthbar.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then
+		if frame.Title then
+			frame.Title:SetText()
+			frame.Title:Hide()
+		end
+		return
+	end
 
 	if frame.UnitType == "FRIENDLY_PLAYER" and EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
