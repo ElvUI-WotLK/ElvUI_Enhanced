@@ -344,7 +344,6 @@ function ENP:UpdateAllSettings()
 end
 
 function ENP:Initialize()
-	EnhancedDB = EnhancedDB or {}
 	EnhancedDB.UnitClass = EnhancedDB.UnitClass or {}
 	EnhancedDB.UnitTitle = EnhancedDB.UnitTitle or {}
 

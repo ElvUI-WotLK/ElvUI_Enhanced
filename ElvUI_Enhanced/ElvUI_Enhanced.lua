@@ -50,6 +50,8 @@ E.PopupDialogs["GS_VERSION_INVALID"] = {
 };
 
 function addon:Initialize()
+	EnhancedDB = EnhancedDB or {}
+
 	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
 
 	if E.db.general.loginmessage then
