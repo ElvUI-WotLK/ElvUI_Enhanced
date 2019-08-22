@@ -116,7 +116,7 @@ local function AddonList_Update()
 		end
 	end
 
-	FauxScrollFrame_Update(ElvUI_AddonListScrollFrame, numEntries, 20, 16)
+	FauxScrollFrame_Update(ElvUI_AddonListScrollFrame, numEntries, 20, 16, nil, nil, nil, nil, nil, nil, true)
 
 	if AddonList_HasAnyChanged() then
 		ElvUI_AddonListOkayButton:SetText(L["Reload UI"])
