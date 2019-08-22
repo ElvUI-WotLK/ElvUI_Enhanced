@@ -3,20 +3,25 @@ local ENP = E:NewModule("Enhanced_NamePlates", "AceHook-3.0", "AceEvent-3.0")
 local NP = E:GetModule("NamePlates")
 local M = E:GetModule("Misc")
 
+local _G = _G
 local ipairs = ipairs
 local next = next
 local pairs = pairs
 local sub = string.sub
+local gsub = string.gsub
+local match = string.match
 local tinsert = table.insert
 
+local GetGuildInfo = GetGuildInfo
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
+local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
-local GetGuildInfo = GetGuildInfo
 
 local classMap = {}
 local guildMap = {}
+local npcTitleMap = {}
 
 function ENP:UPDATE_MOUSEOVER_UNIT()
 	if UnitIsPlayer("mouseover") and UnitReaction("mouseover", "player") ~= 2 then
@@ -44,6 +49,29 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 			if EnhancedDB.UnitTitle[name] ~= guildMap[guildName] then
 				EnhancedDB.UnitTitle[name] = guildMap[guildName]
 			end
+		end
+	else
+		self.scanner:ClearLines()
+ 		self.scanner:SetUnit("mouseover")
+
+ 		local name = _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
+		if not name then return end
+ 		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
+ 		if not description then return end
+
+		if match(description, UNIT_LEVEL_TEMPLATE) then return end
+
+		name = gsub(gsub((name), "|c........", "" ), "|r", "")
+		if name ~= UnitName("mouseover") then return end
+		if UnitPlayerControlled("mouseover") then return end
+
+		if not npcTitleMap[description] then
+			tinsert(EnhancedDB.NPCList, description)
+			npcTitleMap[description] = #EnhancedDB.NPCList
+		end
+
+		if EnhancedDB.UnitTitle[name] ~= npcTitleMap[description] then
+			EnhancedDB.UnitTitle[name] = npcTitleMap[description]
 		end
 	end
 end
@@ -89,20 +117,32 @@ end
 local function UpdateElement_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
-	if not self.db.units[frame.UnitType].healthbar.enable and not (self.db.alwaysShowTargetHealth and frame.isTarget) then
-		if frame.UnitType == "FRIENDLY_PLAYER" and EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
-			if not frame.Title then
-				frame.Title = frame:CreateFontString(nil, "OVERLAY")
-				frame.Title:SetWordWrap(false)
-			end
+	if self.db.units[frame.UnitType].healthbar.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then return end
 
-			local db = E.db.enhanced.nameplates.guild
-			frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-			frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
-			frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-			frame.Title:SetFormattedText("%s %s %s", db.separator, EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]], db.separator)
-			frame.Title:Show()
+	if frame.UnitType == "FRIENDLY_PLAYER" and EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
+		if not frame.Title then
+			frame.Title = frame:CreateFontString(nil, "OVERLAY")
+			frame.Title:SetWordWrap(false)
 		end
+
+		local db = E.db.enhanced.nameplates.guild
+		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
+		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
+		frame.Title:SetFormattedText("%s %s %s", db.separator, EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]], db.separator)
+		frame.Title:Show()
+	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
+		if not frame.Title then
+			frame.Title = frame:CreateFontString(nil, "OVERLAY")
+			frame.Title:SetWordWrap(false)
+		end
+
+		local db = E.db.enhanced.nameplates.npc
+		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
+		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
+		frame.Title:SetFormattedText("%s %s %s", db.separator, EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]], db.separator)
+		frame.Title:Show()
 	end
 end
 
@@ -266,7 +306,13 @@ function ENP:UpdateAllSettings()
 	self:TitleCache()
 
 	if E.db.enhanced.nameplates.titleCache or E.db.enhanced.nameplates.classCache then
+		if not self.scanner then
+			self.scanner = CreateFrame("GameTooltip", "Enhanced_ScanningTooltip", nil, "GameTooltipTemplate")
+			self.scanner:SetOwner(WorldFrame, "ANCHOR_NONE")
+		end
+
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+		
 	elseif not E.db.enhanced.nameplates.titleCache and not E.db.enhanced.nameplates.classCache then
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
 	end
@@ -293,6 +339,14 @@ function ENP:Initialize()
 		end
 	else
 		EnhancedDB.GuildList = {}
+	end
+
+	if EnhancedDB.NPCList then
+		for i, guildName in ipairs(EnhancedDB.NPCList) do
+			npcTitleMap[guildName] = i
+		end
+	else
+		EnhancedDB.NPCList = {}
 	end
 
 	for i, class in ipairs(CLASS_SORT_ORDER) do

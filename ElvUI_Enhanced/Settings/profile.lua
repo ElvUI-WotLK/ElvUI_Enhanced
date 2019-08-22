@@ -83,9 +83,16 @@ P.enhanced = {
 		chatBubbles = false,
 		titleCache = false,
 		guild = {
-			font = "Homespun",
-			fontSize = 10,
-			fontOutline = "MONOCHROMEOUTLINE",
+			font = "PT Sans Narrow",
+			fontSize = 11,
+			fontOutline = "OUTLINE",
+			color = {r = 1, g = 1, b = 1},
+			separator = " ",
+		},
+		npc = {
+			font = "PT Sans Narrow",
+			fontSize = 11,
+			fontOutline = "OUTLINE",
 			color = {r = 1, g = 1, b = 1},
 			separator = " ",
 		}

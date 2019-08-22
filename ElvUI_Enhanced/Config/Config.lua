@@ -755,6 +755,70 @@ local function NamePlatesOptions()
 							},
 						},
 					},
+					npcGroup = {
+						order = 3,
+						type = "group",
+						name = L["NPC"],
+						guiInline = true,
+						set = function(info, value)
+							E.db.enhanced.nameplates.npc[info[#info]] = value
+							E:GetModule("NamePlates"):ConfigureAll()
+						end,
+						get = function(info) return E.db.enhanced.nameplates.npc[info[#info]] end,
+						disabled = function() return not E.db.enhanced.nameplates.titleCache end,
+						args = {
+							font = {
+								order = 1,
+								type = "select",
+								dialogControl = "LSM30_Font",
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+							},
+							fontSize = {
+								order = 2,
+								type = "range",
+								name = L["FONT_SIZE"],
+								min = 4, max = 33, step = 1,
+							},
+							fontOutline = {
+								order = 3,
+								type = "select",
+								name = L["Font Outline"],
+								values = {
+									["NONE"] = L["None"],
+									["OUTLINE"] = "OUTLINE",
+									["MONOCHROME"] = (not E.isMacClient) and "MONOCHROME" or nil,
+									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+									["THICKOUTLINE"] = "THICKOUTLINE"
+								}
+							},
+							color = {
+								order = 4,
+								type = "color",
+								name = L["COLOR"],
+								get = function(info)
+									local t = E.db.enhanced.nameplates.npc[info[#info]]
+									local d = P.enhanced.nameplates.npc[info[#info]]
+									return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+								end,
+								set = function(info, r, g, b)
+									local t = E.db.enhanced.nameplates.npc[info[#info]]
+									t.r, t.g, t.b = r, g, b
+									E:GetModule("NamePlates"):ConfigureAll()
+								end,
+							},
+							separator = {
+								order = 5,
+								type = "select",
+								name = L["Separator"],
+								values = {
+									[" "] = L["None"],
+									["<"] = "< >",
+									["("] = "( )"
+								},
+							},
+						},
+					},
 				}
 			}
 		}
