@@ -82,6 +82,13 @@ P.enhanced = {
 		classCache = false,
 		chatBubbles = false,
 		titleCache = false,
+		guild = {
+			font = "Homespun",
+			fontSize = 10,
+			fontOutline = "MONOCHROMEOUTLINE",
+			color = {r = 1, g = 1, b = 1},
+			separator = " ",
+		}
 	},
 	tooltip = {
 		itemQualityBorderColor = false,

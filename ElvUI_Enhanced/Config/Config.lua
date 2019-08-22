@@ -661,30 +661,102 @@ local function NamePlatesOptions()
 				name = L["Cache Unit Class"],
 				set = function(info, value)
 					E.db.enhanced.nameplates[info[#info]] = value
-					E:GetModule("Enhanced_NamePlates"):ClassCache()
-					E:GetModule("NamePlates"):ConfigureAll()
-				end,
-			},
-			titleCache = {
-				order = 2,
-				type = "toggle",
-				name = L["Cache Unit Guilds / NPC Titles"],
-				set = function(info, value)
-					E.db.enhanced.nameplates[info[#info]] = value
-					E:GetModule("Enhanced_NamePlates"):TitleCache()
-					E:GetModule("NamePlates"):ConfigureAll()
+					E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
 				end,
 			},
 			chatBubbles = {
-				order = 3,
+				order = 2,
 				type = "toggle",
 				name = L["Chat Bubbles"],
 				set = function(info, value)
 					E.db.enhanced.nameplates[info[#info]] = value
-					E:GetModule("Enhanced_NamePlates"):ChatBubbles()
+					E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
 					E:GetModule("NamePlates"):ConfigureAll()
 				end,
 			},
+			titleCacheGroup = {
+				order = 3,
+				type = "group",
+				name = L["Cache Unit Guilds / NPC Titles"],
+				guiInline = true,
+				get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
+				args = {
+					titleCache = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						set = function(info, value)
+							E.db.enhanced.nameplates[info[#info]] = value
+							E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
+							E:GetModule("NamePlates"):ConfigureAll()
+						end,
+					},
+					guildGroup = {
+						order = 3,
+						type = "group",
+						name = L["Guild"],
+						guiInline = true,
+						set = function(info, value)
+							E.db.enhanced.nameplates.guild[info[#info]] = value
+							E:GetModule("NamePlates"):ConfigureAll()
+						end,
+						get = function(info) return E.db.enhanced.nameplates.guild[info[#info]] end,
+						disabled = function() return not E.db.enhanced.nameplates.titleCache end,
+						args = {
+							font = {
+								order = 1,
+								type = "select",
+								dialogControl = "LSM30_Font",
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+							},
+							fontSize = {
+								order = 2,
+								type = "range",
+								name = L["FONT_SIZE"],
+								min = 4, max = 33, step = 1,
+							},
+							fontOutline = {
+								order = 3,
+								type = "select",
+								name = L["Font Outline"],
+								values = {
+									["NONE"] = L["None"],
+									["OUTLINE"] = "OUTLINE",
+									["MONOCHROME"] = (not E.isMacClient) and "MONOCHROME" or nil,
+									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+									["THICKOUTLINE"] = "THICKOUTLINE"
+								}
+							},
+							color = {
+								order = 4,
+								type = "color",
+								name = L["COLOR"],
+								get = function(info)
+									local t = E.db.enhanced.nameplates.guild[info[#info]]
+									local d = P.enhanced.nameplates.guild[info[#info]]
+									return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+								end,
+								set = function(info, r, g, b)
+									local t = E.db.enhanced.nameplates.guild[info[#info]]
+									t.r, t.g, t.b = r, g, b
+									E:GetModule("NamePlates"):ConfigureAll()
+								end,
+							},
+							separator = {
+								order = 5,
+								type = "select",
+								name = L["Separator"],
+								values = {
+									[" "] = L["None"],
+									["<"] = "< >",
+									["("] = "( )"
+								},
+							},
+						},
+					},
+				}
+			}
 		}
 	}
 	return config
