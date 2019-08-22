@@ -411,14 +411,7 @@ end
 
 function TT:ToggleState()
 	if E.db.enhanced.timerTracker.enable then
-		if not self.initialized then
-			self.frame = CreateFrame("Frame", "ElvUI_TimerTracker", UIParent)
-			self.frame:SetAllPoints(UIParent)
-
-			self.timerList = {}
-
-			self.initialized = true
-		end
+		self.timerList = self.timerList or {}
 
 		self:RegisterEvent("CHAT_MSG_BG_SYSTEM_NEUTRAL", "OnEvent")
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "OnEvent")
