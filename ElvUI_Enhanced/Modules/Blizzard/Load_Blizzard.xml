@@ -3,6 +3,7 @@
 	<Script file="DeathRecap.lua"/>
 	<Script file="AddonList.lua"/>
 	<Script file="DressUpFrame.lua"/>
+	<Script file="ErrorFrame.lua"/>
 
 	<Include file="TimerTracker.xml"/>
 	<Script file="TimerTracker.lua"/>

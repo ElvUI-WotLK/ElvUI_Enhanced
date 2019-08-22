@@ -37,6 +37,13 @@ P.enhanced = {
 			enable = false,
 			multiplier = 1.25
 		},
+		errorFrame = {
+			width = 300,
+			height = 60,
+			font = "PT Sans Narrow",
+			fontSize = 12,
+			fontOutline = "NONE"
+		}
 	},
 	chat = {
 		dpsLinks = false,
