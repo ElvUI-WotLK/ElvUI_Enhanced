@@ -114,6 +114,15 @@ function ENP:ClassCache()
 end
 
 -- Title Cache
+
+local separatorMap = {
+	[" "] = "%s",
+	["<"] = "< %s >",
+	["("] = "( %s )",
+	["["] = "[ %s ]",
+	["{"] = "{ %s }"
+}
+
 local function UpdateElement_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
@@ -135,7 +144,7 @@ local function UpdateElement_NameHook(self, frame)
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-		frame.Title:SetFormattedText("%s %s %s", db.separator, EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]], db.separator)
+		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
 	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
@@ -147,7 +156,7 @@ local function UpdateElement_NameHook(self, frame)
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-		frame.Title:SetFormattedText("%s %s %s", db.separator, EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]], db.separator)
+		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
 	end
 end

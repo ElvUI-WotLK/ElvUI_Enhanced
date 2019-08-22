@@ -750,7 +750,9 @@ local function NamePlatesOptions()
 								values = {
 									[" "] = L["None"],
 									["<"] = "< >",
-									["("] = "( )"
+									["("] = "( )",
+									["["] = "[ ]",
+									["{"] = "{ }"
 								},
 							},
 						},
