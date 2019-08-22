@@ -90,7 +90,7 @@ local function UpdateElement_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
 	if not self.db.units[frame.UnitType].healthbar.enable and not (self.db.alwaysShowTargetHealth and frame.isTarget) then
-		if EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
+		if frame.UnitType == "FRIENDLY_PLAYER" and EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
 			if not frame.Title then
 				frame.Title = frame:CreateFontString(nil, "OVERLAY")
 				frame.Title:SetWordWrap(false)
