@@ -415,7 +415,7 @@ end
 
 -- Equipment
 local function CharacterFrameOptions()
-	local PD = E:GetModule("Enhanced_PaperDoll")
+	local EI = E:GetModule("Enhanced_EquipmentInfo")
 
 	local config = {
 		order = 5,
@@ -434,8 +434,7 @@ local function CharacterFrameOptions()
 				get = function(info) return E.db.enhanced.equipment[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.equipment[info[#info]] = value
-					LoadAddOn("Blizzard_InspectUI")
-					PD:ToggleState()
+					EI:ToggleState()
 				end,
 			},
 			durability = {
@@ -446,10 +445,9 @@ local function CharacterFrameOptions()
 				get = function(info) return E.db.enhanced.equipment.durability[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.equipment.durability[info[#info]] = value
-					LoadAddOn("Blizzard_InspectUI")
-					PD:ToggleState()
-					PD:UpdateInfoText("Character")
+					EI:UpdateText()
 				end,
+				disabled = function() return not (E.db.enhanced.equipment.enable and E.db.enhanced.equipment.durability.enable) end,
 				args = {
 					info = {
 						order = 1,
@@ -460,14 +458,14 @@ local function CharacterFrameOptions()
 						order = 2,
 						type = "toggle",
 						name = L["Enable"],
-						desc = L["Enable/Disable the display of durability information on the character screen."]
+						desc = L["Enable/Disable the display of durability information on the character screen."],
+						disabled = function() return not E.db.enhanced.equipment.enable end,
 					},
 					onlydamaged = {
 						order = 3,
 						type = "toggle",
 						name = L["Damaged Only"],
 						desc = L["Only show durabitlity information for items that are damaged."],
-						disabled = function() return not E.db.enhanced.equipment.durability.enable end
 					},
 					spacer = {
 						order = 4,
@@ -486,36 +484,44 @@ local function CharacterFrameOptions()
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["BOTTOMRIGHT"] = "BOTTOMRIGHT"
 						},
-						disabled = function() return not E.db.enhanced.equipment.durability.enable end
+						set = function(info, value)
+							E.db.enhanced.equipment.durability[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					},
 					xOffset = {
 						order = 6,
 						type = "range",
-						name = L["X-Offset"],
 						min = -50, max = 50, step = 1,
-						disabled = function() return not E.db.enhanced.equipment.durability.enable end
+						name = L["X-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.durability[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					},
 					yOffset = {
 						order = 7,
 						type = "range",
-						name = L["Y-Offset"],
 						min = -50, max = 50, step = 1,
-						disabled = function() return not E.db.enhanced.equipment.durability.enable end
+						name = L["Y-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.durability[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					}
 				}
 			},
 			itemlevel = {
 				order = 4,
 				type = "group",
-				name = L["Item Level"],
 				guiInline = true,
+				name = L["Item Level"],
 				get = function(info) return E.db.enhanced.equipment.itemlevel[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.equipment.itemlevel[info[#info]] = value
-					LoadAddOn("Blizzard_InspectUI")
-					PD:ToggleState()
-					PD:UpdateInfoText("Character")
+					EI:UpdateText()
 				end,
+				disabled = function() return not (E.db.enhanced.equipment.enable and E.db.enhanced.equipment.itemlevel.enable) end,
 				args = {
 					info = {
 						order = 1,
@@ -526,13 +532,13 @@ local function CharacterFrameOptions()
 						order = 2,
 						type = "toggle",
 						name = L["Enable"],
-						desc = L["Enable/Disable the display of item levels on the character screen."]
+						desc = L["Enable/Disable the display of item levels on the character screen."],
+						disabled = function() return not E.db.enhanced.equipment.enable end,
 					},
 					qualityColor = {
 						order = 3,
 						type = "toggle",
-						name = L["Quality Color"],
-						disabled = function() return not E.db.enhanced.equipment.itemlevel.enable end
+						name = L["Quality Color"]
 					},
 					spacer = {
 						order = 4,
@@ -551,36 +557,44 @@ local function CharacterFrameOptions()
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["BOTTOMRIGHT"] = "BOTTOMRIGHT"
 						},
-						disabled = function() return not E.db.enhanced.equipment.itemlevel.enable end
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					},
 					xOffset = {
 						order = 6,
 						type = "range",
-						name = L["X-Offset"],
 						min = -50, max = 50, step = 1,
-						disabled = function() return not E.db.enhanced.equipment.itemlevel.enable end
+						name = L["X-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					},
 					yOffset = {
 						order = 7,
 						type = "range",
-						name = L["Y-Offset"],
 						min = -50, max = 50, step = 1,
-						disabled = function() return not E.db.enhanced.equipment.itemlevel.enable end
+						name = L["Y-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
 					}
 				}
 			},
 			fontGroup = {
 				order = 5,
 				type = "group",
-				name = L["Font"],
 				guiInline = true,
+				name = L["Font"],
 				get = function(info) return E.db.enhanced.equipment[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.equipment[info[#info]] = value
-					LoadAddOn("Blizzard_InspectUI")
-					PD:ToggleState()
-					PD:UpdateInfoText("Character")
+					EI:UpdateTextSettings()
 				end,
+				disabled = function() return not E.db.enhanced.equipment.enable end,
 				args = {
 					font = {
 						order = 1,
@@ -592,8 +606,8 @@ local function CharacterFrameOptions()
 					fontSize = {
 						order = 2,
 						type = "range",
-						name = FONT_SIZE,
-						min = 6, max = 36, step = 1
+						min = 6, max = 36, step = 1,
+						name = FONT_SIZE
 					},
 					fontOutline = {
 						order = 3,

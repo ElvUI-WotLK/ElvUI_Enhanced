@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local PD = E:NewModule("Enhanced_PaperDoll", "AceHook-3.0", "AceEvent-3.0")
+local PD = E:NewModule("Enhanced_EquipmentInfo", "AceHook-3.0", "AceEvent-3.0")
 
 local format = string.format
 local pairs = pairs
@@ -9,9 +9,10 @@ local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
 
 local slots = {
 	["HeadSlot"] = true,
@@ -99,6 +100,22 @@ function PD:UpdatePaperDoll(unit)
 	end
 end
 
+function PD:BuildInfoText(name)
+	local frame
+
+	for slotName, durability in pairs(slots) do
+		frame = _G[format("%s%s", name, slotName)]
+
+		frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY")
+
+		if name == "Character" and durability then
+			frame.DurabilityInfo = frame:CreateFontString(nil, "OVERLAY")
+		end
+	end
+
+	self:UpdateInfoText(name)
+end
+
 function PD:UpdateInfoText(name)
 	local db = E.db.enhanced.equipment
 	local frame
@@ -120,40 +137,23 @@ function PD:UpdateInfoText(name)
 	end
 end
 
-function PD:BuildInfoText(name)
-	local frame
-
-	for slotName, durability in pairs(slots) do
-		frame = _G[format("%s%s", name, slotName)]
-
-		frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY")
-
-		if name == "Character" and durability then
-			frame.DurabilityInfo = frame:CreateFontString(nil, "OVERLAY")
-		end
-	end
-
-	self:UpdateInfoText(name)
-end
-
-local function UpdateTalentTab()
-	PD:UpdatePaperDoll(InspectFrame.unit)
+local function InspectFrame_UpdateTalentTab()
+	PD:UpdatePaperDoll()
 end
 
 function PD:OnEvent(event, unit)
-	if event == "ADDON_LOADED" and unit == "Blizzard_InspectUI" then
-		self:BuildInfoText("Inspect")
-
-		self:SecureHook("InspectFrame_UpdateTalentTab", UpdateTalentTab)
-
-		self:UnregisterEvent("ADDON_LOADED")
-	elseif event == "UPDATE_INVENTORY_DURABILITY" then
+	if event == "UPDATE_INVENTORY_DURABILITY" then
 		self:UpdatePaperDoll("player")
 	elseif event == "UNIT_INVENTORY_CHANGED" then
 		self:UpdatePaperDoll(unit)
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 		self:UpdatePaperDoll(unit)
+	elseif event == "ADDON_LOADED" and unit == "Blizzard_InspectUI" then
+		self.initializedInspect = true
+		self:UnregisterEvent("ADDON_LOADED")
+		self:BuildInfoText("Inspect")
+		self:SecureHook("InspectFrame_UpdateTalentTab", InspectFrame_UpdateTalentTab)
 	end
 end
 
@@ -161,10 +161,25 @@ function PD:InitialUpdatePaperDoll()
 	if self.initialized then return end
 
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
 	self:BuildInfoText("Character")
 
 	self.initialized = true
+end
+
+function PD:UpdateText()
+	self:UpdatePaperDoll("player")
+
+	if self.initializedInspect and InspectFrame:IsShown() then
+		self:UpdatePaperDoll()
+	end
+end
+
+function PD:UpdateTextSettings()
+	self:UpdateInfoText("Character")
+
+	if self.initializedInspect then
+		self:UpdateInfoText("Inspect")
+	end
 end
 
 function PD:ToggleState(init)
@@ -175,35 +190,37 @@ function PD:ToggleState(init)
 			else
 				self:InitialUpdatePaperDoll()
 			end
-		end
 
-		self:UpdatePaperDoll("player")
-
-		if self.initialized and InspectFrame_UpdateTalentTab then
-			self:UpdateInfoText("Inspect")
-
-			if not self:IsHooked("InspectFrame_UpdateTalentTab", UpdateTalentTab) then
-				self:SecureHook("InspectFrame_UpdateTalentTab", UpdateTalentTab)
+			if IsAddOnLoaded("Blizzard_InspectUI") then
+				self:OnEvent("ADDON_LOADED", "Blizzard_InspectUI")
+			else
+				self:RegisterEvent("ADDON_LOADED", "OnEvent")
 			end
 		end
 
+		self:UpdateText()
+
 		self:RegisterEvent("UPDATE_INVENTORY_DURABILITY", "OnEvent")
 		self:RegisterEvent("UNIT_INVENTORY_CHANGED", "OnEvent")
-		self:RegisterEvent("ADDON_LOADED", "OnEvent")
+
+		if not self.initializedInspect then
+			self:RegisterEvent("ADDON_LOADED", "OnEvent")
+		end
 	elseif self.initialized then
 		self:UnhookAll()
 		self:UnregisterAllEvents()
 
 		for slotName, durability in pairs(slots) do
-			if _G["Character"..slotName].ItemLevel then
-				_G["Character"..slotName].ItemLevel:SetText()
-			end
-			if _G["Inspect"..slotName].ItemLevel then
-				_G["Inspect"..slotName].ItemLevel:SetText()
-			end
+			_G["Character"..slotName].ItemLevel:SetText()
 
 			if durability then
 				_G["Character"..slotName].DurabilityInfo:SetText()
+			end
+
+			if self.initializedInspect then
+				if _G["Inspect"..slotName].ItemLevel then
+					_G["Inspect"..slotName].ItemLevel:SetText()
+				end
 			end
 		end
 	end
