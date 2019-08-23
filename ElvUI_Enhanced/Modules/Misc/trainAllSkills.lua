@@ -4,29 +4,87 @@ local TA = E:NewModule("Enhanced_TrainAll", "AceHook-3.0", "AceEvent-3.0")
 local select = select
 
 local BuyTrainerService = BuyTrainerService
+local GetMoney = GetMoney
 local GetNumTrainerServices = GetNumTrainerServices
 local GetTrainerServiceCost = GetTrainerServiceCost
 local GetTrainerServiceInfo = GetTrainerServiceInfo
+
+local function BetterSafeThanSorry_OnUpdate(self, elapsed)
+	self.delay = self.delay - elapsed
+
+	if self.delay <= 0 then
+		TA:ResetScript()
+	end
+end
+
+function TA:TrainAllSkills()
+	self.locked = true
+	self.button:Disable()
+
+	local j, cost = 0
+	local money = GetMoney()
+
+	for i = 1, GetNumTrainerServices() do
+		if select(3, GetTrainerServiceInfo(i)) == "available" then
+			j = j + 1
+			cost = GetTrainerServiceCost(i)
+			if money >= cost then
+				money = money - cost
+				BuyTrainerService(i)
+			else
+				self:ResetScript()
+				return
+			end
+		end
+	end
+
+	if j > 0 then
+		self.skillsToLearn = j
+		self.skillsLearned = 0
+
+		self:RegisterEvent("TRAINER_UPDATE")
+
+		self.button.delay = 1
+		self.button:SetScript("OnUpdate", BetterSafeThanSorry_OnUpdate)
+	else
+		self:ResetScript()
+	end
+end
+
+function TA:TRAINER_UPDATE(event)
+	self.skillsLearned = self.skillsLearned + 1
+
+	if self.skillsLearned >= self.skillsToLearn then
+		self:ResetScript()
+		self:TrainAllSkills()
+	else
+		self.button.delay = 1
+	end
+end
+
+function TA:ResetScript()
+	self.button:SetScript("OnUpdate", nil)
+	self:UnregisterEvent("TRAINER_UPDATE")
+
+	self.skillsLearned = nil
+	self.skillsToLearn = nil
+	self.button.delay = nil
+	self.locked = nil
+end
 
 function TA:ButtonCreate()
 	self.button = CreateFrame("Button", "ElvUI_TrainAllButton", ClassTrainerFrame, "UIPanelButtonTemplate")
 	self.button:Size(80, 22)
 	self.button:SetText(TRAIN.." "..ALL)
 
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then
-		self.button:Point("TOPRIGHT", ClassTrainerTrainButton, "TOPLEFT", 0, 0)
-	else
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer then
+		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT", -1, 0)
 		E:GetModule("Skins"):HandleButton(self.button)
-		self.button:Point("TOPRIGHT", ClassTrainerTrainButton, "TOPLEFT", -3, 0)
+	else
+		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT")
 	end
 
-	self.button:SetScript("OnClick", function()
-		for i = 1, GetNumTrainerServices() do
-			if select(3, GetTrainerServiceInfo(i)) == "available" then
-				BuyTrainerService(i)
-			end
-		end
-	end)
+	self.button:SetScript("OnClick", function() TA:TrainAllSkills() end)
 
 	self.button:HookScript("OnEnter", function()
 		local cost = 0
@@ -37,7 +95,7 @@ function TA:ButtonCreate()
 		end
 
 		GameTooltip:SetOwner(self.button,"ANCHOR_TOPRIGHT", 0, 4)
-		GameTooltip:SetText("|cffffffff"..L["Total cost:"].."|r "..E:FormatMoney(cost, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
+		GameTooltip:SetText("|cffffffff"..TABARDVENDORCOST.."|r "..E:FormatMoney(cost, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
 	end)
 
 	self.button:HookScript("OnLeave", function()
@@ -46,8 +104,10 @@ function TA:ButtonCreate()
 end
 
 function TA:ButtonUpdate()
+	if self.locked then return end
+
 	for i = 1, GetNumTrainerServices() do
-		if ClassTrainerTrainButton:IsEnabled() and select(3, GetTrainerServiceInfo(i)) == "available" then
+		if select(3, GetTrainerServiceInfo(i)) == "available" then
 			self.button:Enable()
 			return
 		end
@@ -56,24 +116,31 @@ function TA:ButtonUpdate()
 	self.button:Disable()
 end
 
-function TA:ADDON_LOADED(_, addon)
+function TA:ADDON_LOADED(event, addon)
 	if addon ~= "Blizzard_TrainerUI" then return end
 
 	self:ButtonCreate()
 
-	if not self:IsHooked("ClassTrainerFrame_Update") then
-		self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
-	end
+	ClassTrainerTrainButton:ClearAllPoints()
+	ClassTrainerTrainButton:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT", -39, 81)
 
+	ClassTrainerCancelButton:Kill()
+
+	self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
 	self:UnregisterEvent("ADDON_LOADED")
 end
 
 function TA:ToggleState()
-	if E.db.enhanced.general.trainAllButton then
+	if E.db.enhanced.general.trainAllSkills then
 		if not self.button then
-			self:RegisterEvent("ADDON_LOADED")
+			if IsAddOnLoaded("Blizzard_TrainerUI") then
+				self:ADDON_LOADED(nil, "Blizzard_TrainerUI")
+			else
+				self:RegisterEvent("ADDON_LOADED")
+			end
 		else
 			self.button:Show()
+
 			if not self:IsHooked("ClassTrainerFrame_Update") then
 				self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
 			end
@@ -84,12 +151,16 @@ function TA:ToggleState()
 		else
 			self.button:Hide()
 			self:UnhookAll()
+
+			if self.locked then
+				self:ResetScript()
+			end
 		end
 	end
 end
 
 function TA:Initialize()
-	if not E.db.enhanced.general.trainAllButton then return end
+	if not E.db.enhanced.general.trainAllSkills then return end
 
 	self:ToggleState()
 end

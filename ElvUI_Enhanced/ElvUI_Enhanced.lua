@@ -49,16 +49,11 @@ E.PopupDialogs["GS_VERSION_INVALID"] = {
 	showAlert = 1
 }
 
-function addon:Initialize()
-	EnhancedDB = EnhancedDB or {}
-
-	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
-
-	if E.db.general.loginmessage then
-		print(format(L["ENH_LOGIN_MSG"], E["media"].hexvaluecolor, addon.version))
+function addon:DBConversions()
+	if E.db.enhanced.general.trainAllButton then
+		E.db.enhanced.general.trainAllSkills = E.db.enhanced.general.trainAllButton
+		E.db.enhanced.general.trainAllButton = nil
 	end
-
-	LEP:RegisterPlugin(addonName, self.GetOptions)
 
 	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then
 		E.db.enhanced.nameplates.classCache = true
@@ -73,6 +68,20 @@ function addon:Initialize()
 				EnhancedDB.UnitClass[name] = classMap[class]
 			end
 		end
+	end
+end
+
+function addon:Initialize()
+	EnhancedDB = EnhancedDB or {}
+
+	self.version = GetAddOnMetadata("ElvUI_Enhanced", "Version")
+
+	self:DBConversions()
+
+	LEP:RegisterPlugin(addonName, self.GetOptions)
+
+	if E.db.general.loginmessage then
+		print(format(L["ENH_LOGIN_MSG"], E["media"].hexvaluecolor, addon.version))
 	end
 
 	if IsAddOnLoaded("GearScore") and IsAddOnLoaded("BonusScanner") then

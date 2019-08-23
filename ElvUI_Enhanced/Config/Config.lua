@@ -944,14 +944,14 @@ local function SkinsOptions()
 						type = "header",
 						name = L["Trainer Frame"]
 					},
-					trainAllButton = {
+					trainAllSkills = {
 						order = 2,
 						type = "toggle",
 						name = L["Train All Button"],
 						desc = L["Add button to Trainer frame with ability to train all available skills in one click."],
-						get = function(info) return E.db.enhanced.general.trainAllButton end,
+						get = function(info) return E.db.enhanced.general.trainAllSkills end,
 						set = function(info, value)
-							E.db.enhanced.general.trainAllButton = value
+							E.db.enhanced.general.trainAllSkills = value
 							E:GetModule("Enhanced_TrainAll"):ToggleState()
 						end
 					}

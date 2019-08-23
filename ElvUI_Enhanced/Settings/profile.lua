@@ -22,7 +22,7 @@ P.enhanced = {
 		showQuestLevel = false,
 		declineduel = false,
 		hideZoneText = false,
-		trainAllButton = false,
+		trainAllSkills = false,
 		undressButton = false,
 		alreadyKnown = false,
 	},
