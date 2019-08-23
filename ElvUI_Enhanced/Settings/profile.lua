@@ -142,12 +142,12 @@ P.enhanced = {
 		size = 32,
 		text = {
 			enable = true,
+			font = "PT Sans Narrow",
+			fontSize = 10,
+			fontOutline = "OUTLINE",
 			position = "CENTER",
 			xOffset = 0,
 			yOffset = 0,
-			font = "PT Sans Narrow",
-			fontSize = 10,
-			fontOutline = "MONOCHROMEOUTLINE"
 		}
 	},
 	unitframe = {

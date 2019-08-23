@@ -28,7 +28,7 @@ V.enhanced = {
 				RANGED_COMBAT = false,
 				SPELL_COMBAT = false,
 				DEFENSES = false,
-				RESISTANCE = false,
+				RESISTANCE = false
 			},
 		},
 		pet = {
@@ -40,7 +40,7 @@ V.enhanced = {
 				RANGED_COMBAT = false,
 				SPELL_COMBAT = false,
 				DEFENSES = false,
-				RESISTANCE = false,
+				RESISTANCE = false
 			},
 		},
 		model = {
@@ -54,6 +54,9 @@ V.enhanced = {
 		enable = false
 	},
 	interruptTracker = {
-		enable = false
+		enable = false,
+		everywhere = false,
+		arena = true,
+		battleground = false
 	}
 }

@@ -1,39 +1,91 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
-local IT = E:NewModule("Enhanced_InterruptTracker", "AceEvent-3.0", "AceTimer-3.0")
+local IT = E:NewModule("Enhanced_InterruptTracker", "AceEvent-3.0")
+
+local ipairs = ipairs
+local unpack = unpack
+local band = bit.band
+local ceil, floor = math.ceil, math.floor
+local twipe = table.wipe
+
+local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
+local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+
+local COMBATLOG_OBJECT_REACTION_HOSTILE = COMBATLOG_OBJECT_REACTION_HOSTILE
+
+local spellList = {
+	[72] = 12,		-- Shield Bash
+	[408] = 20,		-- Kidney Shot
+	[1766] = 10,	-- Kick
+	[2139] = 24,	-- Counterspell
+	[6552] = 10,	-- Pummel
+	[10890] = 23,	-- Psychic Scream
+	[15487] = 45,	-- Silence
+	[16979] = 15,	-- Feral Charge
+	[19503] = 30,	-- Scatter Shot
+	[19647] = 24,	-- Spell Lock
+	[23920] = 10,	-- Spell Reflection
+	[31224] = 90,	-- Cloak of Shadows
+	[34490] = 30,	-- Silencing Shot
+	[44572] = 30,	-- Deep Freeze
+	[47528] = 10,	-- Mind Freeze
+	[48707] = 45,	-- Anti-Magic Shell
+	[49916] = 120,	-- Strangulate
+	[51514] = 45,	-- Hex
+	[57994] = 6,	-- Wind Shear
+}
 
 local column = 5 -- max number of interrupt icons show per column
-
+local numRows = 1
 local iconTotal = 0
-local active = {}
+local activeIcons = {}
+
+local function UpdateIconTimer(self, elapsed)
+	if not self.expirationTime then return end
+
+	self.expirationTime = self.expirationTime - elapsed
+
+	if self.expirationTime > 0 then
+		self.timerText:SetText(floor(self.expirationTime + 1))
+	else
+		self.timerText:SetText("")
+		IT:StopIconTimer(self)
+	end
+end
 
 function IT:CountActiveIcons()
-	local total = 0
-	wipe(active)
+	local total, icon = 0
+	twipe(activeIcons)
 
 	for i = 1, iconTotal do
-		local b = self.icons[i]
-		if b:IsShown() then
+		icon = self.icons[i]
+		if icon:IsShown() then
 			total = total + 1
-			active[total] = b
+			activeIcons[total] = icon
 		end
 	end
+
 	return total
 end
 
 function IT:RepositionIcons()
 	local total = self:CountActiveIcons()
-	for i, b in pairs(active) do
-		local button = self.icons[i]
-		button.texture:SetTexture(b.iconTexture)
-		button.expirationTime = b.expirationTime
-		button:SetScript("OnUpdate", self.UpdateIconTimer)
-		button:Show()
+	local icon
+
+	for i, activeIcon in ipairs(activeIcons) do
+		icon = self.icons[i]
+		icon.texture:SetTexture(activeIcon.iconTexture)
+		icon.expirationTime = activeIcon.expirationTime
+		icon.cooldown:SetCooldown(GetTime(), activeIcon.expirationTime)
+		icon:SetScript("OnUpdate", UpdateIconTimer)
+		icon:Show()
 	end
 
 	for i = total + 1, iconTotal do
-		local button = self.icons[i]
-		button:Hide()
-		button:SetScript("OnUpdate", nil)
+		icon = self.icons[i]
+		icon:Hide()
+		icon:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -44,60 +96,48 @@ function IT:StopIconTimer(icon)
 	self:RepositionIcons()
 end
 
-function IT:UpdateIconTimer(elapsed)
-	if not self.expirationTime then return end
-	self.expirationTime = self.expirationTime - elapsed
-
-	local timer = self.timerText
-	local text = floor(self.expirationTime + 1)
-	if self.expirationTime > 0 then
-		timer:SetText(text)
-	else
-		timer:SetText("")
-		IT:StopIconTimer(self)
-	end
-end
-
 function IT:StartIconTimer(icon, cooldown)
-	icon:Show()
 	icon.expirationTime = cooldown
-	icon:SetScript("OnUpdate", self.UpdateIconTimer)
+	icon.cooldown:SetCooldown(GetTime(), cooldown)
+	icon:SetScript("OnUpdate", UpdateIconTimer)
+	icon:Show()
 end
 
-function IT:UpdateIcon(i, c, t)
-	local b = self.icons[i]
-	b.texture:SetTexture(t)
-	b.iconTexture = t
-	self:StartIconTimer(b, c)
+function IT:UpdateIcon(index, cooldown, texture)
+	local icon = self.icons[index]
+	icon.texture:SetTexture(texture)
+	icon.iconTexture = texture
+	self:StartIconTimer(icon, cooldown)
 end
 
-local numRows = 1
 function IT:CreateIcon(i)
 	self.icons[i] = CreateFrame("Frame", "ElvUI_InterruptIcon"..i, self.header)
 	self.icons[i]:Size(self.db.size)
-	self.icons[i]:SetTemplate("Default")
+	self.icons[i]:SetTemplate()
 
 	self.icons[i].texture = self.icons[i]:CreateTexture("$parentIconTexture", "BORDER")
 	self.icons[i].texture:SetInside()
-	self.icons[i].texture:SetTexCoord(.08, .92, .08, .92)
+	self.icons[i].texture:SetTexCoord(unpack(E.TexCoords))
 
-	self.icons[i].timerText = self.icons[i]:CreateFontString("$parentTimeText", "OVERLAY")
+	self.icons[i].cooldown = CreateFrame("Cooldown", self.icons[i]:GetName().."Cooldown", self.icons[i], "CooldownFrameTemplate")
+	self.icons[i].cooldown:SetInside()
+
+	self.icons[i].timerText = self.icons[i].cooldown:CreateFontString("$parentTimeText", "OVERLAY")
 	local x, y = E:GetXYOffset(self.db.text.position)
 	self.icons[i].timerText:ClearAllPoints()
 	self.icons[i].timerText:Point(self.db.text.position, self.icons[i], self.db.text.position, x + self.db.text.xOffset, y + self.db.text.yOffset)
 	self.icons[i].timerText:FontTemplate(E.LSM:Fetch("font", self.db.text.font), self.db.text.fontSize, self.db.text.fontOutline)
 
 	if i == 1 then
-		self.icons[i]:SetPoint("CENTER", self.header, "CENTER", -2, -6)
+		self.icons[i]:Point("CENTER", self.header, "CENTER", -2, -6)
 	else
 		local row = ceil(i / column)
+
 		if numRows ~= row then
-			local b = self.icons[i-column]
-			self.icons[i]:SetPoint("RIGHT", b, "LEFT", -6, 0)
+			self.icons[i]:Point("RIGHT", self.icons[i-column], "LEFT", -6, 0)
 			numRows = row
 		else
-			local b = self.icons[i-1]
-			self.icons[i]:SetPoint("TOP", b, "BOTTOM", 0, -6)
+			self.icons[i]:Point("TOP", self.icons[i-1], "BOTTOM", 0, -6)
 		end
 	end
 
@@ -105,10 +145,12 @@ function IT:CreateIcon(i)
 end
 
 function IT:Update(cooldown, texture)
-	local found = false
+	local found, icon
+
 	for i = 1, iconTotal do
-		local b = self.icons[i]
-		if b and not b:IsShown() then
+		icon = self.icons[i]
+
+		if icon and not icon:IsShown() then
 			found = true
 			self:UpdateIcon(i, cooldown, texture)
 			break
@@ -123,74 +165,69 @@ function IT:Update(cooldown, texture)
 end
 
 function IT:UpdateAllIconsTimers()
-	for i = 1, iconTotal do
-		local b = self.icons[i]
-		if b then
-			b:Size(self.db.size)
+	local x, y = E:GetXYOffset(self.db.text.position)
+	local icon
 
-			local x, y = E:GetXYOffset(self.db.text.position)
-			b.timerText:ClearAllPoints()
-			b.timerText:Point(self.db.text.position, b, self.db.text.position, x + self.db.text.xOffset, y + self.db.text.yOffset)
-			b.timerText:FontTemplate(E.LSM:Fetch("font", self.db.text.font), self.db.text.fontSize, self.db.text.fontOutline)
+	for i = 1, iconTotal do
+		icon = self.icons[i]
+
+		if icon then
+			icon:Size(self.db.size)
+
+			icon.timerText:ClearAllPoints()
+			icon.timerText:Point(self.db.text.position, icon, self.db.text.position, x + self.db.text.xOffset, y + self.db.text.yOffset)
+			icon.timerText:FontTemplate(E.LSM:Fetch("font", self.db.text.font), self.db.text.fontSize, self.db.text.fontOutline)
 		end
 	end
 end
 
 function IT:StopAllIconsTimers()
+	local icon
+
 	for i = 1, iconTotal do
-		local b = self.icons[i]
-		b:Hide()
-		b:SetScript("OnUpdate", nil)
+		icon = self.icons[i]
+		icon:Hide()
+		icon:SetScript("OnUpdate", nil)
 	end
 end
 
-function IT:COMBAT_LOG_EVENT_UNFILTERED(event, ...)
-	local _, subEvent, sourceGUID, _, sourceFlags, _, _, _, spellID = ...
-	local cooldown = self.spells[spellID]
-	if cooldown and subEvent == "SPELL_CAST_SUCCESS" then
-		if(sourceGUID and (bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == COMBATLOG_OBJECT_REACTION_HOSTILE)) then
+function IT:COMBAT_LOG_EVENT_UNFILTERED(event, _, subEvent, sourceGUID, _, sourceFlags, _, _, _, spellID)
+	if subEvent == "SPELL_CAST_SUCCESS" and spellList[spellID] then
+		if sourceGUID and (band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == COMBATLOG_OBJECT_REACTION_HOSTILE) then
 			local _, _, texture = GetSpellInfo(spellID)
-			self:Update(cooldown, texture)
+			self:Update(spellList[spellID], texture)
 		end
 	end
 end
 
 function IT:PLAYER_ENTERING_WORLD()
 	self:StopAllIconsTimers()
+	self:UpdateState()
+end
+
+function IT:UpdateState()
+	local _, zoneType = GetInstanceInfo()
+	if E.private.enhanced.interruptTracker.everywhere or (E.private.enhanced.interruptTracker.arena and zoneType == "arena") or (E.private.enhanced.interruptTracker.battleground and zoneType == "pvp") then
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	else
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	end
 end
 
 function IT:Initialize()
 	if not E.db.enhanced.interruptTracker.enable then return end
 
 	self.db = E.db.enhanced.interruptTracker
+	self.icons = {}
 
 	self.header = CreateFrame("Frame", "ElvUI_InterruptTrackerHeader", UIParent)
 	self.header:Size(50)
 	self.header:Point("CENTER", -300, 50)
-	E:CreateMover(self.header, self.header:GetName().."Mover", "Interrupt Tracker")
 
-	self.spells = {
-		[23920] = 10,
-		[6552] = 10,
-		[72] = 12,
-		[2139] = 24,
-		[19647] = 24,
-		[16979] = 15,
-		[57994] = 6,
-		[1766] = 10,
-		[47528] = 10,
-		[10890] = 23,
-		[31224] = 90,
-		[48707] = 45,
-		[49916] = 120,
-		[408] = 20,
-		[19503] = 30,
-		[44572] = 30
-	}
+	E:CreateMover(self.header, self.header:GetName().."Mover", L["Interrupt Tracker"])
 
-	self.icons = {}
-	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
 local function InitializeCallback()

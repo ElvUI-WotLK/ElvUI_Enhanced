@@ -1285,7 +1285,10 @@ local function InterruptTrackerOptions()
 		type = "group",
 		name = L["Interrupt Tracker"],
 		get = function(info) return E.db.enhanced.interruptTracker[info[#info]] end,
-		set = function(info, value) E.db.enhanced.interruptTracker[info[#info]] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
+		set = function(info, value)
+			E.db.enhanced.interruptTracker[info[#info]] = value
+			E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers()
+		end,
 		args = {
 			header = {
 				order = 0,
@@ -1293,31 +1296,71 @@ local function InterruptTrackerOptions()
 				name = ColorizeSettingName(L["Interrupt Tracker"])
 			},
 			enable = {
-				type = "toggle",
 				order = 1,
+				type = "toggle",
 				name = L["Enable"],
 				get = function(info) return E.db.enhanced.interruptTracker.enable end,
-				set = function(info, value) E.db.enhanced.interruptTracker.enable = value E:StaticPopup_Show("PRIVATE_RL") end
+				set = function(info, value)
+					E.db.enhanced.interruptTracker.enable = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end
 			},
 			size = {
 				order = 2,
-				name = L["Size"],
 				type = "range",
 				min = 10, max = 120, step = 1,
+				name = L["Size"],
 				disabled = function() return not E.db.enhanced.interruptTracker.enable end,
 			},
+			enableGroup = {
+				order = 3,
+				type = "group",
+				name = L["Where to show"],
+				guiInline = true,
+				get = function(info) return E.private.enhanced.interruptTracker[info[#info]] end,
+				set = function(info, value)
+					E.private.enhanced.interruptTracker[info[#info]] = value
+					E:GetModule("Enhanced_InterruptTracker"):UpdateState()
+				end,
+				disabled = function() return not E.private.enhanced.interruptTracker.enable end,
+				args = {
+					everywhere = {
+						order = 1,
+						type = "toggle",
+						name = L["Everywhere"],
+						desc = L["Show Everywhere"],
+					},
+					arena = {
+						order = 2,
+						type = "toggle",
+						name = ARENA,
+						desc = L["Show on Arena."],
+						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end,
+					},
+					battleground = {
+						order = 3,
+						type = "toggle",
+						name = BATTLEGROUND,
+						desc = L["Show on Battleground."],
+						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end,
+					},
+				},
+			},
 			textGroup = {
-				order = 300,
+				order = 4,
 				type = "group",
 				name = L["Text"],
 				guiInline = true,
 				get = function(info) return E.db.enhanced.interruptTracker.text[info[#info]] end,
-				set = function(info, value) E.db.enhanced.interruptTracker.text[info[#info]] = value E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers() end,
+				set = function(info, value)
+					E.db.enhanced.interruptTracker.text[info[#info]] = value
+					E:GetModule("Enhanced_InterruptTracker"):UpdateAllIconsTimers()
+				end,
 				disabled = function() return not E.db.enhanced.interruptTracker.enable end,
 				args = {
 					position = {
+						order = 1,
 						type = "select",
-						order = 2,
 						name = L["Text Position"],
 						values = {
 							TOPLEFT = "TOPLEFT",
@@ -1332,36 +1375,37 @@ local function InterruptTrackerOptions()
 						}
 					},
 					xOffset = {
-						order = 3,
+						order = 2,
 						type = "range",
 						name = L["Text xOffset"],
 						desc = L["Offset position for text."],
 						min = -300, max = 300, step = 1,
 					},
 					yOffset = {
-						order = 4,
+						order = 3,
 						type = "range",
 						name = L["Text yOffset"],
 						desc = L["Offset position for text."],
 						min = -300, max = 300, step = 1
 					},
 					font = {
-						type = "select", dialogControl = "LSM30_Font",
-						order = 5,
+						order = 4,
+						type = "select",
+						dialogControl = "LSM30_Font",
 						name = L["Font"],
 						values = AceGUIWidgetLSMlists.font,
 					},
 					fontSize = {
-						order = 6,
-						name = L["Font Size"],
+						order = 5,
 						type = "range",
+						name = L["Font Size"],
 						min = 6, max = 32, step = 1,
 					},
 					fontOutline = {
-						order = 7,
+						order = 6,
+						type = "select",
 						name = L["Font Outline"],
 						desc = L["Set the font outline."],
-						type = "select",
 						values = {
 							["NONE"] = L["None"],
 							["OUTLINE"] = "OUTLINE",
