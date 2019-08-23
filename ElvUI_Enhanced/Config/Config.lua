@@ -43,7 +43,10 @@ local function GeneralOptions()
 				name = L["Select Quest Reward"],
 				desc = L["Automatically select the quest reward with the highest vendor sell value."],
 				get = function(info) return E.private.general.selectQuestReward end,
-				set = function(info, value) E.private.general.selectQuestReward = value; end
+				set = function(info, value)
+					E.private.general.selectQuestReward = value
+					M:ToggleQuestReward()
+				end
 			},
 			declineduel = {
 				order = 5,
@@ -99,7 +102,7 @@ end
 
 -- Actionbars
 local function ActionbarOptions()
-	local ETAB = E:GetModule("Enhanced_TransparentActionbars")
+	local ETB = E:GetModule("Enhanced_TransparentBackdrops")
 
 	local config = {
 		order = 2,
@@ -117,24 +120,25 @@ local function ActionbarOptions()
 				name = L["Transparent ActionBars"],
 				guiInline = true,
 				get = function(info) return E.db.enhanced.actionbars.transparentActionbars[info[#info]] end,
-				set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value end,
+				set = function(info, value)
+					E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value
+					ETB:StyleBackdrops()
+				end,
+				disabled = function() return not E.private.actionbar.enable end,
 				args = {
 					transparentBackdrops = {
 						order = 1,
 						type = "toggle",
 						name = L["Transparent Backdrop"],
-						desc = L["Sets actionbars' backgrounds to transparent template."],
-						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value ETAB:StyleBackdrops() end
+						desc = L["Sets actionbars' backgrounds to transparent template."]
 					},
 					transparentButtons = {
 						order = 2,
 						type = "toggle",
 						name = L["Transparent Buttons"],
-						desc = L["Sets actionbars buttons' backgrounds to transparent template."],
-						set = function(info, value) E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value ETAB:StyleBackdrops() end
+						desc = L["Sets actionbars buttons' backgrounds to transparent template."]
 					}
-				},
-				disabled = function() return not E.private.actionbar.enable end
+				}
 			}
 		}
 	}

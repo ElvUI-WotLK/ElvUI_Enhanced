@@ -23,15 +23,15 @@ function M:CHAT_MSG_COMBAT_FACTION_CHANGE(_, msg)
 		end
 	end
 
-	if faction then
-		local active = GetWatchedFactionInfo()
+	if faction and faction ~= GetWatchedFactionInfo() then
 		for factionIndex = 1, GetNumFactions() do
 			local name = GetFactionInfo(factionIndex)
-			if name == faction and name ~= active then
-				-- check if watch has been disabled by user
+
+			if name == faction then
 				if not IsFactionInactive(factionIndex) then
 					SetWatchedFactionIndex(factionIndex)
 				end
+
 				break
 			end
 		end

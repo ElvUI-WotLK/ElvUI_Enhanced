@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AC = E:NewModule("Enhanced_AddonsCompat", "AceEvent-3.0")
 
+local pairs, ipairs = pairs, ipairs
 local tinsert, tremove = table.insert, table.remove
-local pairs = pairs
 
 local IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
 local IsAddOnLoaded = IsAddOnLoaded
@@ -53,14 +53,6 @@ local addonFixes = {
 	end,
 }
 
-local function table_count(t)
-	local i = 0
-	for _, _ in pairs(t) do
-		i = i + 1
-	end
-	return i
-end
-
 function AC:AddAddon(addon)
 	if not addon then return end
 
@@ -80,12 +72,14 @@ function AC:ApplyFix(addon, onDemandID)
 	end
 end
 
-function AC:ADDON_LOADED(_, AddonName)
-	for i, addon in pairs(self.addonQueue) do
-		if addon == AddonName then
+function AC:ADDON_LOADED(_, addonName)
+	if not addonFixes[addonName] then return end
+
+	for i, addon in ipairs(self.addonQueue) do
+		if addon == addonName then
 			self:ApplyFix(addon, i)
 
-			if table_count(self.addonQueue) == 0 then
+			if #self.addonQueue == 0 then
 				self:UnregisterEvent("ADDON_LOADED")
 			end
 

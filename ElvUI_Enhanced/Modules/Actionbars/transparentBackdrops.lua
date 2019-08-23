@@ -1,15 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
-local ETAB = E:NewModule("Enhanced_TransparentActionbars")
+local ETB = E:NewModule("Enhanced_TransparentBackdrops")
 
 local _G = _G
-local pairs = pairs
 
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
-function ETAB:StyleBackdrops()
+function ETB:StyleBackdrops()
 	local styleBackdrop = E.db.enhanced.actionbars.transparentActionbars.transparentBackdrops and "Transparent" or "Default"
 	local styleButtons = E.db.enhanced.actionbars.transparentActionbars.transparentButtons and "Transparent" or "Default"
+	local glossTex = styleButtons == "Default"
 
 	local frame
 
@@ -24,35 +24,34 @@ function ETAB:StyleBackdrops()
 				frame = _G["ElvUI_Bar"..i.."Button"..j]
 
 				if frame and frame.backdrop then
-					frame.backdrop:SetTemplate(styleButtons, true)
+					frame.backdrop:SetTemplate(styleButtons, glossTex)
 				end
 			end
 		end
 	end
 
-	for _, frame2 in pairs({ElvUI_BarPet, ElvUI_StanceBar}) do
-		if frame2.backdrop then
-			frame2.backdrop:SetTemplate(styleBackdrop)
-		end
+	frame = ElvUI_BarPet
+	if frame.backdrop then
+		frame.backdrop:SetTemplate(styleBackdrop)
 	end
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		frame = _G["PetActionButton"..i]
 
 		if frame and frame.backdrop then
-			frame.backdrop:SetTemplate(styleButtons, true)
+			frame.backdrop:SetTemplate(styleButtons, glossTex)
 		end
 	end
 end
 
-function ETAB:Initialize()
-	if not E.private.actionbar.enable or not (E.db.enhanced.actionbars.transparentActionbars.transparentBackdrops or E.db.enhanced.actionbars.transparentActionbars.transparentButtons) then return end
+function ETB:Initialize()
+	if not (E.private.actionbar.enable and (E.db.enhanced.actionbars.transparentActionbars.transparentBackdrops or E.db.enhanced.actionbars.transparentActionbars.transparentButtons)) then return end
 
 	self:StyleBackdrops()
 end
 
 local function InitializeCallback()
-	ETAB:Initialize()
+	ETB:Initialize()
 end
 
-E:RegisterModule(ETAB:GetName(), InitializeCallback)
+E:RegisterModule(ETB:GetName(), InitializeCallback)

@@ -387,12 +387,7 @@ function module:CharacterFrame_Collapse()
 	CharacterFrame.backdrop:Width(341)
 	CharacterFrame.Expanded = false
 
-	local Normal = CharacterFrameExpandButton:GetNormalTexture()
-	local Disabled = CharacterFrameExpandButton:GetDisabledTexture()
-	local Pushed = CharacterFrameExpandButton:GetPushedTexture()
-	Normal:SetRotation(S.ArrowRotation.right)
-	Pushed:SetRotation(S.ArrowRotation.right)
-	Disabled:SetRotation(S.ArrowRotation.right)
+	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "right")
 
 	for i = 1, #PAPERDOLL_SIDEBARS do
 		_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
@@ -410,12 +405,7 @@ function module:CharacterFrame_Expand()
 	CharacterFrame.backdrop:Width(341 + 192)
 	CharacterFrame.Expanded = true
 
-	local Normal = CharacterFrameExpandButton:GetNormalTexture()
-	local Disabled = CharacterFrameExpandButton:GetDisabledTexture()
-	local Pushed = CharacterFrameExpandButton:GetPushedTexture()
-	Normal:SetRotation(S.ArrowRotation.left)
-	Pushed:SetRotation(S.ArrowRotation.left)
-	Disabled:SetRotation(S.ArrowRotation.left)
+	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "left")
 
 	if PaperDollFrame:IsShown() and PaperDollFrame.currentSideBar then
 		CharacterStatsPane:Hide()
@@ -1144,7 +1134,7 @@ function PaperDoll_SaveStatCategoryOrder()
 			end
 		end
 		if same then
-			E.db.enhanced.character[CharacterStatsPane.unit].orderName = ""
+			E.private.enhanced.character[CharacterStatsPane.unit].orderName = ""
 			return
 		end
 	end
@@ -1157,7 +1147,7 @@ function PaperDoll_SaveStatCategoryOrder()
 			string = string..PAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id
 		end
 	end
-	E.db.enhanced.character[CharacterStatsPane.unit].orderName = string
+	E.private.enhanced.character[CharacterStatsPane.unit].orderName = string
 end
 
 function module:PaperDoll_UpdateCategoryPositions()
@@ -1675,6 +1665,8 @@ local function Animation_OnMouseWheel(self, delta, stepSize)
 end
 
 local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
+	if not E.db.enhanced.character.animations then return end
+
 	local scrollFrame = scrollBar:GetParent()
 	scrollFrame.times = 0
 	scrollFrame.direction = -1
@@ -1874,9 +1866,7 @@ function module:Initialize()
 	S:HandleScrollBar(titlePane.scrollBar)
 	FixHybridScrollBarSize(titlePane.scrollBar, 1, -1, -5, 5)
 
-	if E.db.enhanced.character.animations then
-		CreateSmoothScrollAnimation(titlePane.scrollBar, true)
-	end
+	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
 
 	titlePane.scrollBar.Show = function(self)
 		titlePane:Width(169)
@@ -1918,9 +1908,8 @@ function module:Initialize()
 	CharacterStatsPane.scrollBarHideable = 1
 	ScrollFrame_OnLoad(statsPane)
 	ScrollFrame_OnScrollRangeChanged(statsPane)
-	if E.db.enhanced.character.animations then
-		CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
-	end
+
+	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
 	statsPaneScrollChild:SetSize(170, 0)
@@ -2030,9 +2019,7 @@ function module:Initialize()
 	S:HandleScrollBar(equipmentManagerPane.scrollBar)
 	FixHybridScrollBarSize(equipmentManagerPane.scrollBar, 1, -1, -5, 5)
 
-	if E.db.enhanced.character.animations then
-		CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
-	end
+	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
 	equipmentManagerPane.scrollBar.Show = function(self)
 		equipmentManagerPane:Width(169)
@@ -2313,9 +2300,7 @@ function module:Initialize()
 	S:HandleScrollBar(companionPane.scrollBar)
 	FixHybridScrollBarSize(companionPane.scrollBar, 1, -1, -5, 5)
 
-	if E.db.enhanced.character.animations then
-		CreateSmoothScrollAnimation(companionPane.scrollBar, true)
-	end
+	CreateSmoothScrollAnimation(companionPane.scrollBar, true)
 
 	companionPane.scrollBar.Show = function(self)
 		companionPane:Width(169)

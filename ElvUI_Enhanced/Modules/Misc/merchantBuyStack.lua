@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
+local select = select
+
 local BuyMerchantItem = BuyMerchantItem
 local GetItemInfo = GetItemInfo
 local GetMerchantItemLink = GetMerchantItemLink
 local GetMerchantItemMaxStack = GetMerchantItemMaxStack
+local IsAltKeyDown = IsAltKeyDown
 
 function M:MerchantItemButton_OnModifiedClick(button)
 	if IsAltKeyDown() then

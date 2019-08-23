@@ -2,9 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
 local _G = _G
+local select = select
 
-local function SelectQuestReward(index)
-	local button = _G["QuestInfoItem"..index]
+local GetItemInfo = GetItemInfo
+local GetQuestItemLink = GetQuestItemLink
+
+local function SelectQuestReward(id)
+	local button = _G["QuestInfoItem"..id]
 	if button.type == "choice" then
 		QuestInfoItemHighlight:ClearAllPoints()
 		QuestInfoItemHighlight:SetAllPoints(button)
@@ -15,29 +19,32 @@ local function SelectQuestReward(index)
 end
 
 function M:QUEST_COMPLETE()
-	if not E.private.general.selectQuestReward then return end
+	local numItems = GetNumQuestChoices()
+	if numItems <= 0 then return end
 
-	local choice, price = 1, 0
-	local num = GetNumQuestChoices()
+	local link, sellPrice
+	local choiceID, maxPrice = 1, 0
 
-	if num <= 0 then
-		return
-	end
+	for i = 1, numItems do
+		link = GetQuestItemLink("choice", i)
 
-	for index = 1, num do
-		local link = GetQuestItemLink("choice", index)
 		if link then
-			local vsp = select(11, GetItemInfo(link))
-			if vsp and vsp > price then
-				price = vsp
-				choice = index
+			sellPrice = select(11, GetItemInfo(link))
+
+			if sellPrice and sellPrice > maxPrice then
+				maxPrice = sellPrice
+				choiceID = i
 			end
 		end
 	end
 
-	SelectQuestReward(choice)
+	SelectQuestReward(choiceID)
 end
 
-function M:LoadQuestReward()
-	self:RegisterEvent("QUEST_COMPLETE")
+function M:ToggleQuestReward()
+	if E.private.general.selectQuestReward then
+		self:RegisterEvent("QUEST_COMPLETE")
+	else
+		self:UnregisterEvent("QUEST_COMPLETE")
+	end
 end

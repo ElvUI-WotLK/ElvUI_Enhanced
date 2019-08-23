@@ -7,10 +7,15 @@ local CancelDuel = CancelDuel
 local IsInInstance = IsInInstance
 local RepopMe = RepopMe
 
+local soulstone
 function M:PLAYER_DEAD()
 	local inInstance, instanceType = IsInInstance()
-	if inInstance and (instanceType == "pvp") then
-		local soulstone = GetSpellInfo(20707)
+
+	if inInstance and instanceType == "pvp" then
+		if not soulstone then
+			soulstone = GetSpellInfo(20707)
+		end
+
 		if E.myclass ~= "SHAMAN" and not (soulstone and UnitBuff("player", soulstone)) then
 			RepopMe()
 		end
@@ -28,7 +33,7 @@ end
 function M:DUEL_REQUESTED(_, name)
 	StaticPopup_Hide("DUEL_REQUESTED")
 	CancelDuel()
-	E:Print(L["Declined duel request from "]..name..".")
+	E:Print(L["Declined duel request from "]..name)
 end
 
 function M:DeclineDuel()
@@ -53,7 +58,7 @@ function M:Initialize()
 	self:AutoRelease()
 	self:DeclineDuel()
 	self:HideZone()
-	self:LoadQuestReward()
+	self:ToggleQuestReward()
 	self:WatchedFaction()
 	self:LoadMoverTransparancy()
 	self:QuestLevelToggle()
