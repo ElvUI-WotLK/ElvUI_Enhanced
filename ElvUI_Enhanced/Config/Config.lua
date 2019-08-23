@@ -279,11 +279,9 @@ local function BlizzardOptions()
 					multiplier = {
 						order = 3,
 						type = "range",
+						min = 1, max = 2, step = 0.01,
 						isPercent = true,
-						name = L["Scale"],
-						min = 1,
-						max = 2,
-						step = 0.01
+						name = L["Scale"]
 					}
 				}
 			},
