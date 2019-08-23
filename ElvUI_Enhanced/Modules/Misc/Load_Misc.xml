@@ -1,16 +1,15 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="misc.lua"/>
 	<Script file="faction.lua"/>
-	<Script file="paperdoll.lua"/>
+	<Script file="equipmentInfo.lua"/>
 	<Script file="movers.lua"/>
 	<Script file="questLevel.lua"/>
 	<Script file="questReward.lua"/>
 	<Script file="loseControl.lua"/>
 	<Script file="alreadyKnown.lua"/>
-	<Script file="trainAllButton.lua"/>
+	<Script file="trainAllSkills.lua"/>
 	<Script file="undressButton.lua"/>
 	<Script file="addonsCompatibility.lua"/>
-	<Script file="merchant.lua"/>
+	<Script file="merchantBuyStack.lua"/>
 	<Script file="interruptTracker.lua"/>
-	<Script file="worldMapFrame.lua"/>
 </Ui>
