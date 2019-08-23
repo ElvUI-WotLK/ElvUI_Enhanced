@@ -9,10 +9,17 @@ local GetQuestItemLink = GetQuestItemLink
 
 local function SelectQuestReward(id)
 	local button = _G["QuestInfoItem"..id]
+
 	if button.type == "choice" then
-		QuestInfoItemHighlight:ClearAllPoints()
-		QuestInfoItemHighlight:SetAllPoints(button)
-		QuestInfoItemHighlight:Show()
+		if E.private.skins.blizzard.enable and E.private.skins.blizzard.quest then
+			_G[button:GetName()]:SetBackdropBorderColor(1, 0.80, 0.10)
+			_G[button:GetName()].backdrop:SetBackdropBorderColor(1, 0.80, 0.10)
+			_G[button:GetName().."Name"]:SetTextColor(1, 0.80, 0.10)
+		else
+			QuestInfoItemHighlight:ClearAllPoints()
+			QuestInfoItemHighlight:SetAllPoints(button)
+			QuestInfoItemHighlight:Show()
+		end
 
 		QuestInfoFrame.itemChoice = button:GetID()
 	end
