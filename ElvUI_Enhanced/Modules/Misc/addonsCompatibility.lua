@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI);
-local AC = E:NewModule("Enhanced_AddonsCompat", "AceEvent-3.0");
+local E, L, V, P, G = unpack(ElvUI)
+local AC = E:NewModule("Enhanced_AddonsCompat", "AceEvent-3.0")
 
 local tinsert, tremove = table.insert, table.remove
 local pairs = pairs

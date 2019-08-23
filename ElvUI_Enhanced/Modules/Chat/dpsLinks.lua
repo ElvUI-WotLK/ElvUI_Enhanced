@@ -37,7 +37,7 @@ local spamFirstLines = {
 	"^(.*) 의 Skada 보고 (.*):$",	-- Skada koKR
 	"^Отчёт Skada: (.*), с (.*):$",	-- Skada ruRU
 	"^Skada报告(.*)的(.*):$",		-- Skada zhCN
-	"^Skada:(.*)來自(.*):$",		-- Skada zhTW
+	"^Skada:(.*)來自(.*):$",			-- Skada zhTW
 	"^(.*) Done for (.*)$",			-- TinyDPS
 }
 

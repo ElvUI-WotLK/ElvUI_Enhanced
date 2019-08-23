@@ -12,7 +12,7 @@ E.PopupDialogs["GS_VERSION_INVALID"] = {
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:SetWidth(220)
-		self.editBox:SetText("http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
+		self.editBox:SetText("https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
 		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow()
 	end,
@@ -36,8 +36,8 @@ E.PopupDialogs["GS_VERSION_INVALID"] = {
 		self:GetParent():Hide()
 	end,
 	EditBoxOnTextChanged = function(self)
-		if self:GetText() ~= "http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105" then
-			self:SetText("http://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
+		if self:GetText() ~= "https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105" then
+			self:SetText("https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
 		end
 		self:HighlightText()
 		self:ClearFocus()
@@ -47,7 +47,7 @@ E.PopupDialogs["GS_VERSION_INVALID"] = {
 		self:HighlightText()
 	end,
 	showAlert = 1
-};
+}
 
 function addon:Initialize()
 	EnhancedDB = EnhancedDB or {}
@@ -71,7 +71,6 @@ function addon:Initialize()
 		for name, class in pairs(EnhancedDB.UnitClass) do
 			if type(class) == "string" then
 				EnhancedDB.UnitClass[name] = classMap[class]
-				print("move > ", name, class, classMap[class])
 			end
 		end
 	end

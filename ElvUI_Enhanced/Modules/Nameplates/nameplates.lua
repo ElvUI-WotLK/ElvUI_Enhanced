@@ -52,12 +52,12 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 		end
 	else
 		self.scanner:ClearLines()
- 		self.scanner:SetUnit("mouseover")
+		self.scanner:SetUnit("mouseover")
 
- 		local name = _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
+		local name = _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
 		if not name then return end
- 		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
- 		if not description then return end
+		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
+		if not description then return end
 
 		if match(description, UNIT_LEVEL_TEMPLATE) then return end
 
@@ -327,7 +327,7 @@ function ENP:UpdateAllSettings()
 		end
 
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-		
+
 	elseif not E.db.enhanced.nameplates.titleCache and not E.db.enhanced.nameplates.classCache then
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
 	end

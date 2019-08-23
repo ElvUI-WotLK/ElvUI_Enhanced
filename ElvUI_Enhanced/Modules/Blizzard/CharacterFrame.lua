@@ -551,7 +551,7 @@ function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	if isPercentage then
 		statFrame.Value:SetFormattedText("%.2F%%", text)
 	else
-		statFrame.Value:SetText(text);
+		statFrame.Value:SetText(text)
 	end
 end
 

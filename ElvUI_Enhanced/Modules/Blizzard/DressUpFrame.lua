@@ -29,7 +29,7 @@ local function DressUpSources(appearanceSources, mainHandEnchant, offHandEnchant
 	for i = 1, #appearanceSources do
 		if i ~= mainHandSlotID and i ~= secondaryHandSlotID then
 			if appearanceSources[i] and appearanceSources[i] ~= 0 then
-				DressUpModel:TryOn(appearanceSources[i]);
+				DressUpModel:TryOn(appearanceSources[i])
 			end
 		end
 	end
@@ -103,7 +103,7 @@ function mod:DressUpFrame()
 		FRAME_SIZE = not FRAME_SIZE
 
 		mod.UpdateDressUpFrame()
-	end);
+	end)
 
 	local _, classFileName = UnitClass("player")
 	DressUpFrame.ModelBackground = DressUpFrame:CreateTexture()

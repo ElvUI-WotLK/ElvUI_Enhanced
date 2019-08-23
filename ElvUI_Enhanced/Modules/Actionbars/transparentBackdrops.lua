@@ -20,7 +20,7 @@ function ETAB:StyleBackdrops()
 				frame.backdrop:SetTemplate(styleBackdrop)
 			end
 
-		for j = 1, NUM_ACTIONBAR_BUTTONS do
+			for j = 1, NUM_ACTIONBAR_BUTTONS do
 				frame = _G["ElvUI_Bar"..i.."Button"..j]
 
 				if frame and frame.backdrop then

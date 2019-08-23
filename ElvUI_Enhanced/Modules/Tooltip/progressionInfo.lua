@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local PI = E:NewModule("Enhanced_ProgressionInfo", "AceHook-3.0", "AceEvent-3.0")
 local TT = E:GetModule("Tooltip")
 
-local find, format = string.find, string.format
 local pairs, ipairs, select, tonumber = pairs, ipairs, select, tonumber
+local find, format = string.find, string.format
 
 local CanInspect = CanInspect
 local ClearAchievementComparisonUnit = ClearAchievementComparisonUnit
@@ -87,24 +87,16 @@ local tiers = {
 local playerGUID = UnitGUID("player")
 local progressCache = {}
 
-local function GetEntryCount(tab)
-	local i = 0
-	for _, _ in pairs(tab) do
-		i = i + 1
-	end
-	return i
-end
-
 local function GetProgression(guid)
 	local statFunc = guid == playerGUID and GetStatistic or GetComparisonStatistic
 	local total, kills, killed, tierName
 
-	for tier, _ in pairs(tiers) do
+	for tier in pairs(tiers) do
 		progressCache[guid].header[tier] = {}
 		progressCache[guid].info[tier] = {}
 
 		for i, difficulty in ipairs(difficulties) do
-			if GetEntryCount(tiers[tier][i]) > 0 then
+			if #tiers[tier][i] > 0 then
 				total, killed = 0, 0
 
 				for _, statsID in ipairs(tiers[tier][i]) do
@@ -116,7 +108,7 @@ local function GetProgression(guid)
 					end
 				end
 
-				if (killed > 0) then
+				if killed > 0 then
 					tierName = tier
 					if i <= 2 and tier == "ToC" then
 						tierName = "ToGC"
@@ -150,11 +142,11 @@ local function SetProgressionInfo(guid, tt)
 		for i = 1, tt:NumLines() do
 			local leftTipText = _G["GameTooltipTextLeft"..i]
 
-			for tier, _ in pairs(tiers) do
+			for tier in pairs(tiers) do
 				if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
 					for j, difficulty in ipairs(difficulties) do
-						if GetEntryCount(tiers[tier][j]) > 0 then
-							if (leftTipText:GetText() and find(leftTipText:GetText(), L[tier]) and find(leftTipText:GetText(), difficulty)) then
+						if #tiers[tier][j] > 0 then
+							if leftTipText:GetText() and find(leftTipText:GetText(), L[tier]) and find(leftTipText:GetText(), difficulty) then
 								local rightTipText = _G["GameTooltipTextRight"..i]
 								leftTipText:SetText(progressCache[guid].header[tier][j])
 								rightTipText:SetText(progressCache[guid].info[tier][j])
@@ -171,7 +163,7 @@ local function SetProgressionInfo(guid, tt)
 		for tier in pairs(tiers) do
 			if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
 				for i = 1, #difficulties do
-					if GetEntryCount(tiers[tier][i]) > 0 then
+					if #tiers[tier][i] > 0 then
 						tt:AddDoubleLine(progressCache[guid].header[tier][i], progressCache[guid].info[tier][i], nil, nil, nil, 1, 1, 1)
 					end
 				end
@@ -191,7 +183,7 @@ function PI:INSPECT_ACHIEVEMENT_READY(GUID)
 end
 
 function PI:MODIFIER_STATE_CHANGED(_, key)
-	if ((key == format("L%s", self.modifier) or key == format("R%s", self.modifier)) and UnitExists("mouseover")) then
+	if (key == format("L%s", self.modifier) or key == format("R%s", self.modifier)) and UnitExists("mouseover") then
 		GameTooltip:SetUnit("mouseover")
 	end
 end
@@ -199,8 +191,8 @@ end
 local function ShowInspectInfo(tt)
 	if InCombatLockdown() then return end
 
-	local modifier = E.db.enhanced.tooltip.progressInfo.modifier;
-	if(modifier ~= "ALL" and not ((modifier == "SHIFT" and IsShiftKeyDown()) or (modifier == "CTRL" and IsControlKeyDown()) or (modifier == "ALT" and IsAltKeyDown()))) then return; end
+	local modifier = E.db.enhanced.tooltip.progressInfo.modifier
+	if modifier ~= "ALL" and not ((modifier == "SHIFT" and IsShiftKeyDown()) or (modifier == "CTRL" and IsControlKeyDown()) or (modifier == "ALT" and IsAltKeyDown())) then return end
 
 	local unit = select(2, tt:GetUnit())
 	if not unit or not UnitIsPlayer(unit) then return end
@@ -210,7 +202,7 @@ local function ShowInspectInfo(tt)
 	local level = UnitLevel(unit)
 	if not level or level < MAX_PLAYER_LEVEL then return end
 
-	if not (CanInspect(unit, false)) then return end
+	if not CanInspect(unit, false) then return end
 
 	local guid = UnitGUID(unit)
 

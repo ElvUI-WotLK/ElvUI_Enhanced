@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI);
-local M = E:GetModule("Enhanced_Misc");
+local E, L, V, P, G = unpack(ElvUI)
+local M = E:GetModule("Enhanced_Misc")
 
 local find, gsub = string.find, string.gsub
 
@@ -9,17 +9,17 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local IsFactionInactive = IsFactionInactive
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 
-local incpat		= gsub(gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-local changedpat	= gsub(gsub(FACTION_STANDING_CHANGED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-local decpat		= gsub(gsub(FACTION_STANDING_DECREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+local increased	= gsub(gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+local decreased	= gsub(gsub(FACTION_STANDING_DECREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+local changed	= gsub(gsub(FACTION_STANDING_CHANGED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
 
 function M:CHAT_MSG_COMBAT_FACTION_CHANGE(_, msg)
-	local startPos, _, faction = find(msg, incpat)
+	local startPos, _, faction = find(msg, increased)
 
 	if not startPos then
-		startPos, _, faction = find(msg, changedpat)
+		startPos, _, faction = find(msg, decreased)
 		if not startPos then
-			_, _, faction = find(msg, decpat)
+			_, _, faction = find(msg, changed)
 		end
 	end
 
