@@ -320,31 +320,57 @@ local function BlizzardOptions()
 				type = "group",
 				name = L["Error Frame"],
 				guiInline = true,
+				get = function(info) return E.db.enhanced.blizzard.errorFrame[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.blizzard.errorFrame[info[#info]] = value
+					B:ErrorFrameSize()
+				end,
+				disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end,
 				args = {
-					header = {
+					enable = {
 						order = 1,
-						type = "header",
-						name = L["Error Frame"]
+						type = "toggle",
+						name = L["Enable"],
+						set = function(info, value)
+							E.db.enhanced.blizzard.errorFrame[info[#info]] = value
+							B:CustomErrorFrameToggle()
+						end,
+						disabled = false
+					},
+					width = {
+						order = 2,
+						type = "range",
+						min = 100, max = 1000, step = 1,
+						name = L["Width"],
+						desc = L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"]
+					},
+					height = {
+						order = 3,
+						type = "range",
+						min = 30, max = 300, step = 1,
+						name = L["Height"],
+						desc = L["Set the height of Error Frame. Higher frame can show more lines at once."]
+					},
+					spacer = {
+						order = 5,
+						type = "description",
+						name = " "
 					},
 					font = {
-						order = 1,
+						order = 6,
 						type = "select",
 						dialogControl = "LSM30_Font",
 						name = L["Font"],
-						values = AceGUIWidgetLSMlists.font,
-						get = function(info) return E.db.enhanced.blizzard.errorFrame.font end,
-						set = function(info, value) E.db.enhanced.blizzard.errorFrame.font = value B:ErrorFrameSize() end
+						values = AceGUIWidgetLSMlists.font
 					},
 					fontSize = {
-						order = 2,
+						order = 7,
 						type = "range",
-						name = L["Font Size"],
 						min = 6, max = 36, step = 1,
-						get = function(info) return E.db.enhanced.blizzard.errorFrame.fontSize end,
-						set = function(info, value) E.db.enhanced.blizzard.errorFrame.fontSize = value B:ErrorFrameSize() end
+						name = L["Font Size"]
 					},
 					fontOutline = {
-						order = 3,
+						order = 8,
 						type = "select",
 						name = L["Font Outline"],
 						values = {
@@ -352,27 +378,7 @@ local function BlizzardOptions()
 							["OUTLINE"] = "OUTLINE",
 							["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 							["THICKOUTLINE"] = "THICKOUTLINE"
-						},
-						get = function(info) return E.db.enhanced.blizzard.errorFrame.fontOutline end,
-						set = function(info, value) E.db.enhanced.blizzard.errorFrame.fontOutline = value B:ErrorFrameSize() end
-					},
-					width = {
-						order = 4,
-						type = "range",
-						name = L["Width"],
-						desc = L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"],
-						min = 100, max = 1000, step = 1,
-						get = function(info) return E.db.enhanced.blizzard.errorFrame.width end,
-						set = function(info, value) E.db.enhanced.blizzard.errorFrame.width = value B:ErrorFrameSize() end
-					},
-					height = {
-						order = 5,
-						type = "range",
-						name = L["Height"],
-						desc = L["Set the height of Error Frame. Higher frame can show more lines at once."],
-						min = 30, max = 300, step = 1,
-						get = function(info) return E.db.enhanced.blizzard.errorFrame.height end,
-						set = function(info, value) E.db.enhanced.blizzard.errorFrame.height = value B:ErrorFrameSize() end
+						}
 					}
 				}
 			}

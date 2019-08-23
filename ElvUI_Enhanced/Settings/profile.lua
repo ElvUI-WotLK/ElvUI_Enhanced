@@ -38,6 +38,7 @@ P.enhanced = {
 			multiplier = 1.25
 		},
 		errorFrame = {
+			enable = false,
 			width = 300,
 			height = 60,
 			font = "PT Sans Narrow",

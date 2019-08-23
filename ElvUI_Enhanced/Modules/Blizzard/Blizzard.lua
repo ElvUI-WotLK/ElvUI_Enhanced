@@ -5,6 +5,7 @@ function mod:Initialize()
 	self:DeathRecap()
 	self:AddonList()
 	self:DressUpFrame()
+	self:ErrorFrameSize()
 end
 
 local function InitializeCallback()
