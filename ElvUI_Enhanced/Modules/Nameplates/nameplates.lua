@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local ENP = E:NewModule("Enhanced_NamePlates", "AceHook-3.0", "AceEvent-3.0")
 local NP = E:GetModule("NamePlates")
 local M = E:GetModule("Misc")
+local CH = E:GetModule("Chat")
 
 local _G = _G
 local ipairs = ipairs
@@ -10,6 +11,9 @@ local pairs = pairs
 local sub = string.sub
 local gsub = string.gsub
 local match = string.match
+local gmatch = string.gmatch
+local format = string.format
+local lower = string.lower
 local tinsert = table.insert
 
 local GetGuildInfo = GetGuildInfo
@@ -187,6 +191,8 @@ local events = {
 	"CHAT_MSG_CHANNEL",
 	"CHAT_MSG_SAY",
 	"CHAT_MSG_YELL",
+	"CHAT_MSG_MONSTER_SAY",
+	"CHAT_MSG_MONSTER_YELL",
 }
 
 local inactiveBubbles = {}
@@ -246,8 +252,51 @@ local function AcquireBubble()
 	return CreateBubble()
 end
 
-function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID)
-	if author == UnitName("player") then return end
+function ENP:AddBubbleMessage(frame, msg, author, guid)
+	if E.private.general.chatBubbleName then
+		M:AddChatBubbleName(frame, guid, author)
+	else
+		frame.Name:SetText()
+	end
+
+	frame.text:SetText(msg)
+
+	if frame.text:GetStringWidth() > 300 then
+		frame.text:SetWidth(300)
+	end
+
+	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
+		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
+		if msg and match(msg, "%s-%S+%s*") then
+			for word in gmatch(msg, "%s-%S+%s*") do
+				tempWord = gsub(word, "^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
+				lowerCaseWord = lower(tempWord)
+
+				classMatch = CH.ClassNames[lowerCaseWord]
+				wordMatch = classMatch and lowerCaseWord
+
+				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
+					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch]
+					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+				end
+
+				if not isFirstWord then
+					rebuiltString = word
+					isFirstWord = true
+				else
+					rebuiltString = format("%s%s", rebuiltString, word)
+				end
+			end
+
+			if rebuiltString ~= nil then
+				frame.text:SetText(rebuiltString)
+			end
+		end
+	end
+end
+
+function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID, _, _, _, guid)
+	if author == UnitName("player") or not author then return end
 	if not next(NP.VisiblePlates) then return end
 
 	local chatType = sub(event, 10)
@@ -259,7 +308,7 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	if not info then return end
 
 	for frame in pairs(NP.VisiblePlates) do
-		if (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER") and frame.UnitName == author then
+		if frame.UnitType ~= "ENEMY_NPC" and frame.UnitName == author then
 			local nameplateBubble
 			if not frame.bubbleFrame then
 				nameplateBubble = AcquireBubble()
@@ -273,15 +322,26 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 				nameplateBubble = frame.bubbleFrame
 			end
 
-			nameplateBubble.text:SetSize(0, 0)
-			nameplateBubble.text:SetText(msg)
-			nameplateBubble.text:SetTextColor(info.r, info.g, info.b)
-
-			if nameplateBubble.text:GetStringWidth() > 300 then
-				nameplateBubble.text:SetWidth(300)
+			if not nameplateBubble:IsToplevel() then
+				nameplateBubble:SetToplevel(true)
 			end
 
-			M.UpdateBubbleBorder(nameplateBubble)
+			nameplateBubble.text:SetSize(0, 0)
+			nameplateBubble.text:SetTextColor(info.r, info.g, info.b)
+
+			if E.private.general.chatBubbles == "backdrop" then
+				if E.PixelMode then
+					nameplateBubble:SetBackdropBorderColor(info.r, info.g, info.b)
+				else
+					local r, g, b = info.r, info.g, info.b
+					nameplateBubble.bordertop:SetTexture(r, g, b)
+					nameplateBubble.borderbottom:SetTexture(r, g, b)
+					nameplateBubble.borderleft:SetTexture(r, g, b)
+					nameplateBubble.borderright:SetTexture(r, g, b)
+				end
+			end
+
+			ENP:AddBubbleMessage(nameplateBubble, msg, author, guid)
 
 			if nameplateBubble.delay == 0 then
 				E:UIFrameFadeRemoveFrame(nameplateBubble)
