@@ -1,3 +1,5 @@
+if IsAddOnLoaded("Mapster") then return end
+
 local _G =_G
 local select = select
 
