@@ -51,6 +51,63 @@ local addonFixes = {
 			end
 		end
 	end,
+
+	-- CLCRet 1.3.03.025
+	["CLCRet"] = function()
+		local UnitAffectingCombat = UnitAffectingCombat
+		local UnitCanAttack = UnitCanAttack
+		local UnitClassification = UnitClassification
+		local UnitExists = UnitExists
+		local UnitIsDead = UnitIsDead
+
+		local db = clcret.db.profile
+
+		function clcret:Enable()
+			self.addonEnabled = true
+			self.frame:Show()
+		end
+		function clcret:Disable()
+			self.addonEnabled = false
+			self.frame:Hide()
+		end
+
+		function clcret:PLAYER_REGEN_ENABLED()
+			if not self.addonEnabled then return end
+			self.frame:Hide()
+		end
+		function clcret:PLAYER_REGEN_DISABLED()
+			if not self.addonEnabled then return end
+			self.frame:Hide()
+		end
+		function clcret:PLAYER_TARGET_CHANGED()
+			if not self.addonEnabled then return end
+
+			if db.show == "boss" then
+				if UnitClassification("target") ~= "worldboss" then
+					self.frame:Hide()
+					return
+				end
+			end
+
+			if UnitExists("target") and UnitCanAttack("player", "target") and (not UnitIsDead("target")) then
+				self.frame:Show()
+			else
+				self.frame:Hide()
+			end
+		end
+
+		hooksecurefunc(clcret, "UpdateShowMethod", function(self)
+			if db.show == "combat" and self.addonEnabled then
+				if UnitAffectingCombat("player") then
+					self.frame:Show()
+				else
+					self.frame:Hide()
+				end
+			elseif db.show ~= "valid" and db.show ~= "boss" and self.addonEnabled then
+				self.frame:Show()
+			end
+		end)
+	end,
 }
 
 function AC:AddAddon(addon)
