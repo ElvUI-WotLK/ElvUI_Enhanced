@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local TI = E:NewModule("Enhanced_TooltipIcon", "AceHook-3.0")
 
 local _G = _G
-local select = select
-local find, strmatch = string.find, string.match
+local select, type = select, type
+local find, match = string.find, string.match
 
 local GetAchievementInfo = GetAchievementInfo
 local GetItemIcon = GetItemIcon
@@ -45,7 +45,8 @@ end
 
 local function AchievementIcon(self, link)
 	if type(link) ~= "string" then return end
-	local linkType, id = strmatch(link, "^([^:]+):(%d+)")
+
+	local linkType, id = match(link, "^([^:]+):(%d+)")
 	if id and (linkType == "achievement") then
 		AddIcon(self, select(10, GetAchievementInfo(id)))
 	end
@@ -54,7 +55,7 @@ end
 function TI:ToggleItemsState()
 	local state = E.db.enhanced.tooltip.tooltipIcon.tooltipIconItems and E.db.enhanced.tooltip.tooltipIcon.enable
 
-	for _, tooltip in pairs(itemTooltips) do
+	for _, tooltip in ipairs(itemTooltips) do
 		if state then
 			if not self:IsHooked(tooltip, "OnTooltipSetItem", ItemIcon) then
 				self:SecureHookScript(tooltip, "OnTooltipSetItem", ItemIcon)
@@ -68,7 +69,7 @@ end
 function TI:ToggleSpellsState()
 	local state = E.db.enhanced.tooltip.tooltipIcon.tooltipIconSpells and E.db.enhanced.tooltip.tooltipIcon.enable
 
-	for _, tooltip in pairs(spellTooltips) do
+	for _, tooltip in ipairs(spellTooltips) do
 		if state then
 			if not self:IsHooked(tooltip, "OnTooltipSetSpell", SpellIcon) then
 				self:SecureHookScript(tooltip, "OnTooltipSetSpell", SpellIcon)

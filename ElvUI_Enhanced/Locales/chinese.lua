@@ -224,4 +224,4 @@ L["Show Character Information"] = "显示角色信息"
 L["Show Pet Information"] = "显示宠物信息"
 L["Titles"] = "头衔"
 L["Total Companions"] = "所有小伙伴"
-L["Total Mounts"] = "所有坐骑"`
+L["Total Mounts"] = "所有坐骑"
