@@ -199,7 +199,7 @@ local inactiveBubbles = {}
 
 local function ReleaseBubble(frame)
 	inactiveBubbles[#inactiveBubbles + 1] = frame
-	frame:GetParent().bubbleFrame = nil
+	frame.parent.bubbleFrame = nil
 	frame.delay = 0
 	frame:Hide()
 end
@@ -322,6 +322,8 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 			else
 				nameplateBubble = frame.bubbleFrame
 			end
+
+			nameplateBubble.parent = nameplateBubble
 
 			if not nameplateBubble:IsToplevel() then
 				nameplateBubble:SetToplevel(true)
