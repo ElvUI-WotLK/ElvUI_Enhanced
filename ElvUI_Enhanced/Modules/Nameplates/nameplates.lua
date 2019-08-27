@@ -200,6 +200,7 @@ local inactiveBubbles = {}
 local function ReleaseBubble(frame)
 	inactiveBubbles[#inactiveBubbles + 1] = frame
 	frame:GetParent().bubbleFrame = nil
+	frame.delay = 0
 	frame:Hide()
 end
 
@@ -218,7 +219,8 @@ local function Bubble_OnUpdate(self, elapsed)
 end
 
 local function CreateBubble()
-	local frame = CreateFrame("Frame", nil, UIParent)
+	local frame = CreateFrame("Frame")
+	frame:SetFrameStrata("BACKGROUND")
 	frame:Hide()
 	frame.text = frame:CreateFontString()
 	frame.text:SetJustifyH("CENTER")
@@ -308,12 +310,11 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	if not info then return end
 
 	for frame in pairs(NP.VisiblePlates) do
-		if frame.UnitType ~= "ENEMY_NPC" and frame.UnitName == author then
+		if frame.UnitName == author then
 			local nameplateBubble
 			if not frame.bubbleFrame then
 				nameplateBubble = AcquireBubble()
 				frame.bubbleFrame = nameplateBubble
-				nameplateBubble:SetParent(frame)
 				nameplateBubble.text:ClearAllPoints()
 				nameplateBubble.text:SetPoint("BOTTOM", frame, "TOP", 0, 20)
 				nameplateBubble:Show()
