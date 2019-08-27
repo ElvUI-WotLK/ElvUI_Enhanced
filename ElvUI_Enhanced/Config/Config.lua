@@ -1667,7 +1667,7 @@ function addon:GetOptions()
 		order = 50,
 		type = "group",
 		childGroups = "tab",
-		name = ColorizeSettingName("Enhanced"),
+		name = ColorizeSettingName(L["Enhanced"]),
 		args = {
 			generalGroup = GeneralOptions(),
 			actionbarGroup = ActionbarOptions(),
