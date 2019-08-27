@@ -53,6 +53,7 @@ local addonFixes = {
 	end,
 
 	-- CLCRet 1.3.03.025
+	-- https://www.curseforge.com/wow/addons/clcret/files/439502
 	["CLCRet"] = function()
 		local UnitAffectingCombat = UnitAffectingCombat
 		local UnitCanAttack = UnitCanAttack
@@ -105,6 +106,45 @@ local addonFixes = {
 				end
 			elseif db.show ~= "valid" and db.show ~= "boss" and self.addonEnabled then
 				self.frame:Show()
+			end
+		end)
+	end,
+
+	-- DrDamage 1.7.8
+	-- https://www.wowace.com/projects/dr-damage/files/426084
+	["DrDamage"] = function()
+		if not E.private.actionbar.enable then return end
+
+		local SecureButton_GetEffectiveButton = SecureButton_GetEffectiveButton
+		local SecureButton_GetModifiedAttribute = SecureButton_GetModifiedAttribute
+
+		local AB = E:GetModule("ActionBars")
+
+		local DrD_ProcessButton = function(button, func, spell, uid, mana, disable)
+			if not button then return end
+			if not spell and not uid and not mana then
+				local frame = button.drd
+				if frame then frame:SetText(nil) end
+				frame = button.drd2
+				if frame then frame:SetText(nil) end
+			end
+			if not DrDamage.db.profile.ABText or disable then return end
+			if button:IsVisible() then
+				local id, name, rank = func(button)
+				if id and (not HasAction(id) or uid and uid ~= id) then return end
+				DrDamage:CheckAction(button, spell, id, name, rank, mana)
+			end
+		end
+
+		local updateFunc = function(button)
+			return SecureButton_GetModifiedAttribute(button, "action", SecureButton_GetEffectiveButton(button))
+		end
+
+		hooksecurefunc(DrDamage, "UpdateAB", function(self, spell, uid, disable, mana)
+			for _, bar in pairs(AB.handledBars) do
+				for _, button in ipairs(bar.buttons) do
+					DrD_ProcessButton(button, updateFunc, spell, uid, mana, disable)
+				end
 			end
 		end)
 	end,
