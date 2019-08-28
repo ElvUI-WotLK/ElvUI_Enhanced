@@ -15,6 +15,7 @@ local gmatch = string.gmatch
 local format = string.format
 local lower = string.lower
 local tinsert = table.insert
+local tremove = table.remove
 
 local GetGuildInfo = GetGuildInfo
 local UnitClass = UnitClass
@@ -168,7 +169,7 @@ end
 function ENP:TitleCache()
 	if E.db.enhanced.nameplates.titleCache then
 		if not self:IsHooked(NP, "UpdateElement_Name") then
-			self:Hook(NP, "UpdateElement_Name", UpdateElement_NameHook)
+			self:SecureHook(NP, "UpdateElement_Name", UpdateElement_NameHook)
 		end
 	else
 		if self:IsHooked(NP, "UpdateElement_Name") then
@@ -192,29 +193,64 @@ local events = {
 	"CHAT_MSG_SAY",
 	"CHAT_MSG_YELL",
 	"CHAT_MSG_MONSTER_SAY",
-	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_MONSTER_YELL"
 }
+
+local bubbleList = {}
+local delayFrame = CreateFrame("Frame")
+delayFrame:Hide()
+delayFrame:SetScript("OnUpdate", function(self, elapsed)
+	local i, frame = 1
+
+	while bubbleList[i] do
+		frame = bubbleList[i]
+		frame.delay = frame.delay - elapsed
+
+		if frame.delay <= 0 then
+			frame.delay = 0
+			E:UIFrameFadeOut(frame, .2, frame:GetAlpha(), 0)
+			tremove(bubbleList, i)
+		else
+			i = i + 1
+		end
+	end
+
+	if #bubbleList == 0 then
+		self:Hide()
+	end
+end)
+
+local function SetBubbleDelay(frame, delay)
+	local found
+
+	if #bubbleList > 0 then
+		for _, v in ipairs(bubbleList) do
+			if v == frame then
+				v.delay = delay
+				found = true
+				break
+			end
+		end
+	end
+
+	if not found then
+		frame.delay = delay
+		tinsert(bubbleList, frame)
+		delayFrame:Show()
+	end
+end
 
 local inactiveBubbles = {}
 
 local function ReleaseBubble(frame)
 	inactiveBubbles[#inactiveBubbles + 1] = frame
 	frame.parent.bubbleFrame = nil
-	frame.delay = 0
 	frame:Hide()
 end
 
 local function FadeClosure(frame)
 	if frame.fadeInfo.mode == "OUT" then
 		ReleaseBubble(frame)
-	end
-end
-
-local function Bubble_OnUpdate(self, elapsed)
-	self.delay = self.delay - elapsed
-	if self.delay <= 0 then
-		self.delay = 0
-		E:UIFrameFadeOut(self, .2, self:GetAlpha(), 0)
 	end
 end
 
@@ -237,8 +273,6 @@ local function CreateBubble()
 		finishedArg1 = frame,
 		finishedFunc = FadeClosure
 	}
-
-	frame:SetScript("OnUpdate", Bubble_OnUpdate)
 
 	return frame
 end
@@ -311,54 +345,72 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 
 	for frame in pairs(NP.VisiblePlates) do
 		if frame.UnitName == author then
-			local nameplateBubble
+			local bubbleFrame
 			if not frame.bubbleFrame then
-				nameplateBubble = AcquireBubble()
-				frame.bubbleFrame = nameplateBubble
-				nameplateBubble.text:ClearAllPoints()
-				nameplateBubble.text:SetPoint("BOTTOM", frame, "TOP", 0, 20)
-				nameplateBubble:Show()
-				E:UIFrameFadeIn(nameplateBubble, .2, 0, 1)
+				bubbleFrame = AcquireBubble()
+				frame.bubbleFrame = bubbleFrame
+				bubbleFrame.text:ClearAllPoints()
+				bubbleFrame.text:SetPoint("BOTTOM", frame, "TOP", 0, 20)
+				bubbleFrame:Show()
+				E:UIFrameFadeIn(bubbleFrame, .2, 0, 1)
 			else
-				nameplateBubble = frame.bubbleFrame
+				bubbleFrame = frame.bubbleFrame
 			end
 
-			nameplateBubble.parent = nameplateBubble
+			bubbleFrame.parent = frame
 
-			if not nameplateBubble:IsToplevel() then
-				nameplateBubble:SetToplevel(true)
-			end
-
-			nameplateBubble.text:SetSize(0, 0)
-			nameplateBubble.text:SetTextColor(info.r, info.g, info.b)
+			bubbleFrame.text:SetSize(0, 0)
+			bubbleFrame.text:SetTextColor(info.r, info.g, info.b)
+			bubbleFrame.author = author
 
 			if E.private.general.chatBubbles == "backdrop" then
 				if E.PixelMode then
-					nameplateBubble:SetBackdropBorderColor(info.r, info.g, info.b)
+					bubbleFrame:SetBackdropBorderColor(info.r, info.g, info.b)
 				else
 					local r, g, b = info.r, info.g, info.b
-					nameplateBubble.bordertop:SetTexture(r, g, b)
-					nameplateBubble.borderbottom:SetTexture(r, g, b)
-					nameplateBubble.borderleft:SetTexture(r, g, b)
-					nameplateBubble.borderright:SetTexture(r, g, b)
+					bubbleFrame.bordertop:SetTexture(r, g, b)
+					bubbleFrame.borderbottom:SetTexture(r, g, b)
+					bubbleFrame.borderleft:SetTexture(r, g, b)
+					bubbleFrame.borderright:SetTexture(r, g, b)
 				end
 			end
 
-			ENP:AddBubbleMessage(nameplateBubble, msg, author, guid)
+			ENP:AddBubbleMessage(bubbleFrame, msg, author, guid)
 
-			if nameplateBubble.delay == 0 then
-				E:UIFrameFadeRemoveFrame(nameplateBubble)
-				E:UIFrameFadeIn(nameplateBubble, .2, nameplateBubble:GetAlpha(), 1)
+			if bubbleFrame.delay == 0 then
+				E:UIFrameFadeRemoveFrame(bubbleFrame)
+				E:UIFrameFadeIn(bubbleFrame, .2, bubbleFrame:GetAlpha(), 1)
 			end
 
-			nameplateBubble.delay = 5
+			local _, delayMult = gsub(msg, "%s+", "")
+			SetBubbleDelay(bubbleFrame, 2 + (0.5 * delayMult))
+		end
+	end
+end
+
+local function OnShowHook(frame)
+	if frame.UnitFrame.bubbleFrame then
+		frame.UnitFrame.bubbleFrame = nil
+	end
+
+	if #bubbleList > 0 then
+		for _, bubbleFrame in ipairs(bubbleList) do
+			if frame.UnitFrame.UnitName == bubbleFrame.author then
+				frame.UnitFrame.bubbleFrame = bubbleFrame
+				bubbleFrame.parent = frame.UnitFrame
+
+				bubbleFrame.text:ClearAllPoints()
+				bubbleFrame.text:SetPoint("BOTTOM", frame.UnitFrame, "TOP", 0, 20)
+				bubbleFrame:Show()
+				break
+			end
 		end
 	end
 end
 
 local function OnHideHook(frame)
 	if frame.UnitFrame.bubbleFrame then
-		ReleaseBubble(frame.UnitFrame.bubbleFrame)
+		frame.UnitFrame.bubbleFrame:Hide()
 	end
 	if frame.UnitFrame.Title then
 		frame.UnitFrame.Title:SetText()
@@ -397,11 +449,20 @@ function ENP:UpdateAllSettings()
 
 	if E.db.enhanced.nameplates.chatBubbles or E.db.enhanced.nameplates.titleCache then
 		if not ENP:IsHooked(NP, "OnHide") then
-			ENP:Hook(NP, "OnHide", OnHideHook)
+			ENP:SecureHook(NP, "OnHide", OnHideHook)
 		end
 	elseif not E.db.enhanced.nameplates.chatBubbles and not E.db.enhanced.nameplates.titleCache then
 		if ENP:IsHooked(NP, "OnHide") then
 			ENP:Unhook(NP, "OnHide")
+		end
+	end
+	if E.db.enhanced.nameplates.chatBubbles then
+		if not ENP:IsHooked(NP, "OnShow") then
+			ENP:SecureHook(NP, "OnShow", OnShowHook)
+		end
+	else
+		if ENP:IsHooked(NP, "OnShow") then
+			ENP:Unhook(NP, "OnShow")
 		end
 	end
 end
