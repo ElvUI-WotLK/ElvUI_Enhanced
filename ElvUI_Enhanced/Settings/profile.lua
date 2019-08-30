@@ -7,10 +7,14 @@ P.general.minimap.locationText = "ABOVE"
 P.unitframe.units.player.portrait.detachFromFrame = false
 P.unitframe.units.player.portrait.detachedWidth = 54
 P.unitframe.units.player.portrait.detachedHeight = 54
+P.unitframe.units.player.portrait.higherPortrait = false
+P.unitframe.units.player.portrait.portraitAlpha = .5
 
 P.unitframe.units.target.portrait.detachFromFrame = false
 P.unitframe.units.target.portrait.detachedWidth = 54
 P.unitframe.units.target.portrait.detachedHeight = 54
+P.unitframe.units.target.portrait.higherPortrait = false
+P.unitframe.units.target.portrait.portraitAlpha = .5
 
 -- Enhanced
 P.enhanced = {
