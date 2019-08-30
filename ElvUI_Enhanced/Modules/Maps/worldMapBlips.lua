@@ -1,4 +1,5 @@
-if IsAddOnLoaded("Mapster") then return end
+local _, _, _, enabled, _, reason = GetAddOnInfo("Mapster")
+if reason ~= "MISSED" and enabled then return end
 
 local _G =_G
 local select = select
