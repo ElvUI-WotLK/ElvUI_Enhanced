@@ -64,19 +64,19 @@ P.enhanced = {
 		font = "Homespun",
 		fontSize = 10,
 		fontOutline = "MONOCHROMEOUTLINE",
+		itemlevel = {
+			enable = true,
+			qualityColor = true,
+			position = "BOTTOMLEFT",
+			xOffset = 1,
+			yOffset = 4
+		},
 		durability = {
 			enable = false,
 			onlydamaged = true,
 			position = "TOPLEFT",
 			xOffset = 1,
 			yOffset = 0
-		},
-		itemlevel = {
-			enable = false,
-			qualityColor = true,
-			position = "BOTTOMLEFT",
-			xOffset = 1,
-			yOffset = 4
 		}
 	},
 	minimap = {

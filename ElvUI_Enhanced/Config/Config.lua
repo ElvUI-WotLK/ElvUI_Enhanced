@@ -435,8 +435,81 @@ local function CharacterFrameOptions()
 					EI:ToggleState()
 				end,
 			},
-			durability = {
+			itemlevel = {
 				order = 3,
+				type = "group",
+				guiInline = true,
+				name = L["Item Level"],
+				get = function(info) return E.db.enhanced.equipment.itemlevel[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.equipment.itemlevel[info[#info]] = value
+					EI:UpdateText()
+				end,
+				disabled = function() return not (E.db.enhanced.equipment.enable and E.db.enhanced.equipment.itemlevel.enable) end,
+				args = {
+					info = {
+						order = 1,
+						type = "description",
+						name = L["ITEMLEVEL_DESC"]
+					},
+					enable = {
+						order = 2,
+						type = "toggle",
+						name = L["Enable"],
+						desc = L["Enable/Disable the display of item levels on the character screen."],
+						disabled = function() return not E.db.enhanced.equipment.enable end,
+					},
+					qualityColor = {
+						order = 3,
+						type = "toggle",
+						name = L["Quality Color"]
+					},
+					spacer = {
+						order = 4,
+						type = "description",
+						name = " "
+					},
+					position = {
+						order = 5,
+						type = "select",
+						name = L["Position"],
+						values = {
+							["TOP"] = "TOP",
+							["TOPLEFT"] = "TOPLEFT",
+							["TOPRIGHT"] = "TOPRIGHT",
+							["BOTTOM"] = "BOTTOM",
+							["BOTTOMLEFT"] = "BOTTOMLEFT",
+							["BOTTOMRIGHT"] = "BOTTOMRIGHT"
+						},
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
+					},
+					xOffset = {
+						order = 6,
+						type = "range",
+						min = -50, max = 50, step = 1,
+						name = L["X-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
+					},
+					yOffset = {
+						order = 7,
+						type = "range",
+						min = -50, max = 50, step = 1,
+						name = L["Y-Offset"],
+						set = function(info, value)
+							E.db.enhanced.equipment.itemlevel[info[#info]] = value
+							EI:UpdateTextSettings()
+						end
+					}
+				}
+			},
+			durability = {
+				order = 4,
 				type = "group",
 				name = DURABILITY,
 				guiInline = true,
@@ -504,79 +577,6 @@ local function CharacterFrameOptions()
 						name = L["Y-Offset"],
 						set = function(info, value)
 							E.db.enhanced.equipment.durability[info[#info]] = value
-							EI:UpdateTextSettings()
-						end
-					}
-				}
-			},
-			itemlevel = {
-				order = 4,
-				type = "group",
-				guiInline = true,
-				name = L["Item Level"],
-				get = function(info) return E.db.enhanced.equipment.itemlevel[info[#info]] end,
-				set = function(info, value)
-					E.db.enhanced.equipment.itemlevel[info[#info]] = value
-					EI:UpdateText()
-				end,
-				disabled = function() return not (E.db.enhanced.equipment.enable and E.db.enhanced.equipment.itemlevel.enable) end,
-				args = {
-					info = {
-						order = 1,
-						type = "description",
-						name = L["ITEMLEVEL_DESC"]
-					},
-					enable = {
-						order = 2,
-						type = "toggle",
-						name = L["Enable"],
-						desc = L["Enable/Disable the display of item levels on the character screen."],
-						disabled = function() return not E.db.enhanced.equipment.enable end,
-					},
-					qualityColor = {
-						order = 3,
-						type = "toggle",
-						name = L["Quality Color"]
-					},
-					spacer = {
-						order = 4,
-						type = "description",
-						name = " "
-					},
-					position = {
-						order = 5,
-						type = "select",
-						name = L["Position"],
-						values = {
-							["TOP"] = "TOP",
-							["TOPLEFT"] = "TOPLEFT",
-							["TOPRIGHT"] = "TOPRIGHT",
-							["BOTTOM"] = "BOTTOM",
-							["BOTTOMLEFT"] = "BOTTOMLEFT",
-							["BOTTOMRIGHT"] = "BOTTOMRIGHT"
-						},
-						set = function(info, value)
-							E.db.enhanced.equipment.itemlevel[info[#info]] = value
-							EI:UpdateTextSettings()
-						end
-					},
-					xOffset = {
-						order = 6,
-						type = "range",
-						min = -50, max = 50, step = 1,
-						name = L["X-Offset"],
-						set = function(info, value)
-							E.db.enhanced.equipment.itemlevel[info[#info]] = value
-							EI:UpdateTextSettings()
-						end
-					},
-					yOffset = {
-						order = 7,
-						type = "range",
-						min = -50, max = 50, step = 1,
-						name = L["Y-Offset"],
-						set = function(info, value)
-							E.db.enhanced.equipment.itemlevel[info[#info]] = value
 							EI:UpdateTextSettings()
 						end
 					}

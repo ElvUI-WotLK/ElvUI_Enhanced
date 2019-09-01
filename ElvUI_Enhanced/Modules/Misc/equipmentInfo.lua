@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
-local PD = E:NewModule("Enhanced_EquipmentInfo", "AceHook-3.0", "AceEvent-3.0")
+local EI = E:NewModule("Enhanced_EquipmentInfo", "AceHook-3.0", "AceEvent-3.0")
 
+local _G = _G
 local format = string.format
 local pairs = pairs
 
-local CanInspect = CanInspect
 local GetInventoryItemDurability = GetInventoryItemDurability
-local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventoryItemID = GetInventoryItemID
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -37,21 +36,24 @@ local slots = {
 --	["AmmoSlot"] = false,
 }
 
-function PD:UpdatePaperDoll(unit)
+function EI:UpdatePaperDoll(unit)
 	if not self.initialized then return end
 
-	if InCombatLockdown() then
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", function(event) self:OnEvent(event, unit) end)
+	if unit == "player" and InCombatLockdown() then
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
 		return
+	elseif unit ~= "player" then
+		if InspectFrame then
+			unit = InspectFrame.unit
+
+			if not unit then return end
+		else
+			return
+		end
 	end
 
-	unit = (unit ~= "player" and InspectFrame) and InspectFrame.unit or unit
-	if not unit then return end
-	if unit and not CanInspect(unit, false) then return end
-
 	local baseName = unit == "player" and "Character" or "Inspect"
-	local frame, slotID, hasItem
-	local itemLink
+	local frame, slotID, itemID
 	local _, rarity, itemLevel
 	local current, maximum, r, g, b
 
@@ -60,15 +62,15 @@ function PD:UpdatePaperDoll(unit)
 
 		if frame then
 			slotID = GetInventorySlotInfo(slotName)
-			hasItem = GetInventoryItemTexture(unit, slotID)
 
 			frame.ItemLevel:SetText()
 
-			if E.db.enhanced.equipment.itemlevel.enable and (unit == "player" or hasItem) then
-				itemLink = GetInventoryItemLink(unit, slotID)
+			if E.db.enhanced.equipment.itemlevel.enable then
+				itemID = GetInventoryItemID(unit, slotID)
 
-				if itemLink then
-					_, _, rarity, itemLevel = GetItemInfo(itemLink)
+				if itemID then
+					_, _, rarity, itemLevel = GetItemInfo(itemID)
+
 					if itemLevel then
 						frame.ItemLevel:SetText(itemLevel)
 
@@ -88,8 +90,10 @@ function PD:UpdatePaperDoll(unit)
 
 			if unit == "player" and durability then
 				frame.DurabilityInfo:SetText()
+
 				if E.db.enhanced.equipment.durability.enable then
 					current, maximum = GetInventoryItemDurability(slotID)
+
 					if current and maximum and (not E.db.enhanced.equipment.durability.onlydamaged or current < maximum) then
 						r, g, b = E:ColorGradient((current / maximum), 1, 0, 0, 1, 1, 0, 0, 1, 0)
 						frame.DurabilityInfo:SetFormattedText("%s%.0f%%|r", E:RGBToHex(r, g, b), (current / maximum) * 100)
@@ -100,7 +104,7 @@ function PD:UpdatePaperDoll(unit)
 	end
 end
 
-function PD:BuildInfoText(name)
+function EI:BuildInfoText(name)
 	local frame
 
 	for slotName, durability in pairs(slots) do
@@ -116,7 +120,7 @@ function PD:BuildInfoText(name)
 	self:UpdateInfoText(name)
 end
 
-function PD:UpdateInfoText(name)
+function EI:UpdateInfoText(name)
 	local db = E.db.enhanced.equipment
 	local frame
 
@@ -137,27 +141,30 @@ function PD:UpdateInfoText(name)
 	end
 end
 
-local function InspectFrame_UpdateTalentTab()
-	PD:UpdatePaperDoll()
+local function InspectFrameUpdate()
+	EI:UpdatePaperDoll()
 end
 
-function PD:OnEvent(event, unit)
+function EI:OnEvent(event, unit)
 	if event == "UPDATE_INVENTORY_DURABILITY" then
 		self:UpdatePaperDoll("player")
 	elseif event == "UNIT_INVENTORY_CHANGED" then
-		self:UpdatePaperDoll(unit)
+		if unit ~= "player" and InspectFrame and unit == InspectFrame.unit then
+			self:UpdatePaperDoll(unit)
+		end
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-		self:UpdatePaperDoll(unit)
+		self:UpdatePaperDoll("player")
 	elseif event == "ADDON_LOADED" and unit == "Blizzard_InspectUI" then
 		self.initializedInspect = true
 		self:UnregisterEvent("ADDON_LOADED")
 		self:BuildInfoText("Inspect")
-		self:SecureHook("InspectFrame_UpdateTalentTab", InspectFrame_UpdateTalentTab)
+		self:HookScript(InspectFrame, "OnShow", InspectFrameUpdate)
+		self:SecureHook("InspectFrame_UnitChanged", InspectFrameUpdate)
 	end
 end
 
-function PD:InitialUpdatePaperDoll()
+function EI:InitialUpdatePaperDoll()
 	if self.initialized then return end
 
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
@@ -166,15 +173,15 @@ function PD:InitialUpdatePaperDoll()
 	self.initialized = true
 end
 
-function PD:UpdateText()
+function EI:UpdateText()
 	self:UpdatePaperDoll("player")
 
-	if self.initializedInspect and InspectFrame:IsShown() then
+	if self.initializedInspect and InspectFrame.unit then
 		self:UpdatePaperDoll()
 	end
 end
 
-function PD:UpdateTextSettings()
+function EI:UpdateTextSettings()
 	self:UpdateInfoText("Character")
 
 	if self.initializedInspect then
@@ -182,7 +189,7 @@ function PD:UpdateTextSettings()
 	end
 end
 
-function PD:ToggleState(init)
+function EI:ToggleState(init)
 	if E.db.enhanced.equipment.enable then
 		if not self.initialized then
 			if init then
@@ -191,7 +198,7 @@ function PD:ToggleState(init)
 				self:InitialUpdatePaperDoll()
 			end
 
-			if IsAddOnLoaded("Blizzard_InspectUI") then
+			if IsAddOnLoaded("Blizzard_InspectUI") or InspectFrame then
 				self:OnEvent("ADDON_LOADED", "Blizzard_InspectUI")
 			else
 				self:RegisterEvent("ADDON_LOADED", "OnEvent")
@@ -226,14 +233,14 @@ function PD:ToggleState(init)
 	end
 end
 
-function PD:Initialize()
+function EI:Initialize()
 	if not E.db.enhanced.equipment.enable then return end
 
 	self:ToggleState(true)
 end
 
 local function InitializeCallback()
-	PD:Initialize()
+	EI:Initialize()
 end
 
-E:RegisterModule(PD:GetName(), InitializeCallback)
+E:RegisterModule(EI:GetName(), InitializeCallback)
