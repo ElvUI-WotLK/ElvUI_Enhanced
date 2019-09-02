@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:NewModule("Enhanced_Misc", "AceHook-3.0", "AceEvent-3.0")
 
-E.Enhanced_Misc = M
-
 local CancelDuel = CancelDuel
 local IsInInstance = IsInInstance
 local RepopMe = RepopMe

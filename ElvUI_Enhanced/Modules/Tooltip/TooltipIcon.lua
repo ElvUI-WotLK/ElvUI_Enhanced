@@ -24,8 +24,8 @@ local spellTooltips = {
 local function AddIcon(self, icon)
 	if not icon then return end
 
-	local title = _G[self:GetName() .. "TextLeft1"]
-	if title and not find(title:GetText(), "|T" .. icon) then
+	local title = _G[self:GetName().."TextLeft1"]
+	if title and not find(title:GetText(), "|T"..icon) then
 		title:SetFormattedText("|T%s:30:30:0:0:64:64:5:59:5:59|t %s", icon, title:GetText())
 	end
 end

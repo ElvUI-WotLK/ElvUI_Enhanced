@@ -2,7 +2,7 @@
 local LOS = E:NewModule("Enhanced_LoseControl", "AceEvent-3.0")
 
 local function SpellName(id)
-	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
+	local name = GetSpellInfo(id)
 	if not name then
 		print("|cff1784d1ElvUI:|r SpellID is not valid: "..id..". Please check for an updated version, if none exists report to ElvUI author.")
 		return "Impale"
@@ -159,12 +159,12 @@ G.loseControl = {
 local abilities = {}
 
 function LOS:OnUpdate(elapsed)
-	if(self.timeLeft) then
+	if self.timeLeft then
 		self.timeLeft = self.timeLeft - elapsed
 
-		if(self.timeLeft >= 10) then
+		if self.timeLeft >= 10 then
 			self.NumberText:SetFormattedText("%d", self.timeLeft)
-		elseif (self.timeLeft < 9.95) then
+		elseif self.timeLeft < 9.95 then
 			self.NumberText:SetFormattedText("%.1f", self.timeLeft)
 		end
 	end
@@ -177,7 +177,7 @@ function LOS:UNIT_AURA()
 	for i = 1, 40 do
 		local name, _, icon, _, _, duration, expirationTime = UnitDebuff("player", i)
 
-		if(E.db.enhanced.loseControl[abilities[name]] and expirationTime > maxExpirationTime) then
+		if E.db.enhanced.loseControl[abilities[name]] and expirationTime > maxExpirationTime then
 			maxExpirationTime = expirationTime
 			Icon = icon
 			Duration = duration
@@ -186,12 +186,12 @@ function LOS:UNIT_AURA()
 		end
 	end
 
-	if(maxExpirationTime == 0) then
+	if maxExpirationTime == 0 then
 		self.maxExpirationTime = 0
 		self.frame.timeLeft = nil
 		self.frame:SetScript("OnUpdate", nil)
 		self.frame:Hide()
-	elseif(maxExpirationTime ~= self.maxExpirationTime) then
+	elseif maxExpirationTime ~= self.maxExpirationTime then
 		self.maxExpirationTime = maxExpirationTime
 
 		self.Icon:SetTexture(Icon)
@@ -199,7 +199,7 @@ function LOS:UNIT_AURA()
 		self.Cooldown:SetCooldown(maxExpirationTime - Duration, Duration)
 
 		local timeLeft = maxExpirationTime - GetTime()
-		if(not self.frame.timeLeft) then
+		if not self.frame.timeLeft then
 			self.frame.timeLeft = timeLeft
 
 			self.frame:SetScript("OnUpdate", self.OnUpdate)
@@ -221,7 +221,7 @@ function LOS:Initialize()
 	self.frame:Hide()
 
 	for name, v in pairs(G.loseControl) do
-		if(name) then
+		if name then
 			abilities[name] = v
 		end
 	end

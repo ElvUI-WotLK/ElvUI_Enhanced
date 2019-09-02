@@ -1,65 +1,65 @@
-local E, L, V, P, G = unpack(ElvUI);
-local ML = E:NewModule("Enhanced_MinimapLocation", "AceHook-3.0");
-local M = E:GetModule("Minimap");
+local E, L, V, P, G = unpack(ElvUI)
+local ML = E:NewModule("Enhanced_MinimapLocation", "AceHook-3.0")
+local M = E:GetModule("Minimap")
 
-local GetPlayerMapPosition = GetPlayerMapPosition;
-local InCombatLockdown = InCombatLockdown;
+local GetPlayerMapPosition = GetPlayerMapPosition
+local InCombatLockdown = InCombatLockdown
 
-local init = false;
-local cluster, panel, location, xMap, yMap;
+local init = false
+local cluster, panel, location, xMap, yMap
 
 local digits = {
 	[0] = {.5, "%.0f"},
 	[1] = {.2, "%.1f"},
 	[2] = {.1, "%.2f"}
-};
+}
 
 local function UpdateLocation(self, elapsed)
-	location.elapsed = (location.elapsed or 0) + elapsed;
-	if(location.elapsed < digits[E.db.enhanced.minimap.locationdigits][1]) then return; end
+	location.elapsed = (location.elapsed or 0) + elapsed
+	if location.elapsed < digits[E.db.enhanced.minimap.locationdigits][1] then return end
 
-	xMap.pos, yMap.pos = GetPlayerMapPosition("player");
-	xMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], xMap.pos * 100);
-	yMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], yMap.pos * 100);
+	xMap.pos, yMap.pos = GetPlayerMapPosition("player")
+	xMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], xMap.pos * 100)
+	yMap.text:SetFormattedText(digits[E.db.enhanced.minimap.locationdigits][2], yMap.pos * 100)
 
-	location.elapsed = 0;
+	location.elapsed = 0
 end
 
 local function CreateEnhancedMaplocation()
-	cluster = _G["MinimapCluster"];
+	cluster = _G["MinimapCluster"]
 
-	panel = CreateFrame("Frame", "EnhancedLocationPanel", _G["MinimapCluster"]);
-	panel:SetFrameStrata("BACKGROUND");
-	panel:Point("CENTER", E.UIParent, "CENTER", 0, 0);
-	panel:Size(206, 22);
+	panel = CreateFrame("Frame", "EnhancedLocationPanel", _G["MinimapCluster"])
+	panel:SetFrameStrata("BACKGROUND")
+	panel:Point("CENTER", E.UIParent, "CENTER", 0, 0)
+	panel:Size(206, 22)
 
-	xMap = CreateFrame("Frame", "MapCoordinatesX", panel);
-	xMap:SetTemplate("Transparent");
-	xMap:Point("LEFT", panel, "LEFT", 0, 0);
-	xMap:Size(40, 22);
+	xMap = CreateFrame("Frame", "MapCoordinatesX", panel)
+	xMap:SetTemplate("Transparent")
+	xMap:Point("LEFT", panel, "LEFT", 0, 0)
+	xMap:Size(40, 22)
 
-	xMap.text = xMap:CreateFontString(nil, "OVERLAY");
-	xMap.text:FontTemplate();
-	xMap.text:SetAllPoints(xMap);
+	xMap.text = xMap:CreateFontString(nil, "OVERLAY")
+	xMap.text:FontTemplate()
+	xMap.text:SetAllPoints(xMap)
 
-	yMap = CreateFrame("Frame", "MapCoordinatesY", panel);
-	yMap:SetTemplate("Transparent");
-	yMap:Point("RIGHT", panel, "RIGHT", 0, 0);
-	yMap:Size(40, 22);
+	yMap = CreateFrame("Frame", "MapCoordinatesY", panel)
+	yMap:SetTemplate("Transparent")
+	yMap:Point("RIGHT", panel, "RIGHT", 0, 0)
+	yMap:Size(40, 22)
 
-	yMap.text = yMap:CreateFontString(nil, "OVERLAY");
-	yMap.text:FontTemplate();
-	yMap.text:SetAllPoints(yMap);
+	yMap.text = yMap:CreateFontString(nil, "OVERLAY")
+	yMap.text:FontTemplate()
+	yMap.text:SetAllPoints(yMap)
 
-	location = CreateFrame("Frame", "EnhancedLocationText", panel);
-	location:SetTemplate("Transparent");
-	location:Size(40, 22);
-	location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0);
-	location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0);
+	location = CreateFrame("Frame", "EnhancedLocationText", panel)
+	location:SetTemplate("Transparent")
+	location:Size(40, 22)
+	location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0)
+	location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0)
 
-	location.text = location:CreateFontString(nil, "OVERLAY");
-	location.text:FontTemplate();
-	location.text:SetAllPoints(location);
+	location.text = location:CreateFontString(nil, "OVERLAY")
+	location.text:FontTemplate()
+	location.text:SetAllPoints(location)
 end
 
 local function FadeFrame(frame, direction, startAlpha, endAlpha, time, func)
@@ -69,85 +69,85 @@ local function FadeFrame(frame, direction, startAlpha, endAlpha, time, func)
 		startAlpha = startAlpha,
 		endAlpha = endAlpha,
 		timeToFade = time
-	});
+	})
 end
 
 local function FadeInMinimap()
-	if(not InCombatLockdown()) then
-		FadeFrame(cluster, "IN", 0, 1, .5, function() if(not InCombatLockdown()) then cluster:Show(); end end);
+	if not InCombatLockdown() then
+		FadeFrame(cluster, "IN", 0, 1, .5, function() if(not InCombatLockdown()) then cluster:Show() end end)
 	end
 end
 
 local function ShowMinimap()
-	if(E.db.enhanced.minimap.fadeindelay == 0) then
-		FadeInMinimap();
+	if E.db.enhanced.minimap.fadeindelay == 0 then
+		FadeInMinimap()
 	else
-		E:Delay(E.db.enhanced.minimap.fadeindelay, FadeInMinimap);
+		E:Delay(E.db.enhanced.minimap.fadeindelay, FadeInMinimap)
 	end
 end
 
 local function HideMinimap()
-	cluster:Hide();
+	cluster:Hide()
 end
 
 local function Update_ZoneText()
 	if E.db.enhanced.minimap.showlocationdigits then
-		xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
-		yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
+		xMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+		yMap.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	end
 
-	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline);
-	location.text:SetTextColor(M:GetLocTextColor());
-	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25));
+	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	location.text:SetTextColor(M:GetLocTextColor())
+	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25))
 end
 
 local function UpdateSettings()
-	if(not E.private.general.minimap.enable) then return; end
+	if not E.private.general.minimap.enable then return end
 
-	if(not init) then
-		init = true;
-		CreateEnhancedMaplocation();
+	if not init then
+		init = true
+		CreateEnhancedMaplocation()
 	end
 
-	if(E.db.enhanced.minimap.hideincombat) then
-		M:RegisterEvent("PLAYER_REGEN_DISABLED", HideMinimap);
-		M:RegisterEvent("PLAYER_REGEN_ENABLED", ShowMinimap);
+	if E.db.enhanced.minimap.hideincombat then
+		M:RegisterEvent("PLAYER_REGEN_DISABLED", HideMinimap)
+		M:RegisterEvent("PLAYER_REGEN_ENABLED", ShowMinimap)
 	else
-		M:UnregisterEvent("PLAYER_REGEN_DISABLED");
-		M:UnregisterEvent("PLAYER_REGEN_ENABLED");
+		M:UnregisterEvent("PLAYER_REGEN_DISABLED")
+		M:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	end
 
-	local holder = MMHolder;
-	panel:Point("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1));
-	panel:Size(E:Scale(holder:GetWidth()) + (E.PixelMode and 1 or -1), 22);
+	local holder = MMHolder
+	panel:Point("BOTTOMLEFT", holder, "TOPLEFT", 0, -(E.PixelMode and 1 or -1))
+	panel:Size(E:Scale(holder:GetWidth()) + (E.PixelMode and 1 or -1), 22)
 
-	local point, relativeTo, relativePoint = holder:GetPoint();
-	if(E.db.general.minimap.locationText == "ABOVE") then
-		holder:Point(point, relativeTo, relativePoint, 0, -21);
-		holder:Height(holder:GetHeight() + 22);
+	local point, relativeTo, relativePoint = holder:GetPoint()
+	if E.db.general.minimap.locationText == "ABOVE" then
+		holder:Point(point, relativeTo, relativePoint, 0, -21)
+		holder:Height(holder:GetHeight() + 22)
 
 		if E.db.enhanced.minimap.showlocationdigits then
-			panel:SetScript("OnUpdate", UpdateLocation);
-			location:ClearAllPoints();
-			location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0);
-			location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0);
-			location:Size(40, 22);
-			xMap:Show();
-			yMap:Show();
+			panel:SetScript("OnUpdate", UpdateLocation)
+			location:ClearAllPoints()
+			location:Point("LEFT", xMap, "RIGHT", E.PixelMode and -1 or 1, 0)
+			location:Point("RIGHT", yMap, "LEFT", E.PixelMode and 1 or -1, 0)
+			location:Size(40, 22)
+			xMap:Show()
+			yMap:Show()
 		else
-			panel:SetScript("OnUpdate", nil);
-			location:ClearAllPoints();
-			location:Point("LEFT", panel, "LEFT", 0, 0);
-			location:Size(panel:GetWidth(), 22);
-			xMap:Hide();
-			yMap:Hide();
+			panel:SetScript("OnUpdate", nil)
+			location:ClearAllPoints()
+			location:Point("LEFT", panel, "LEFT", 0, 0)
+			location:Size(panel:GetWidth(), 22)
+			xMap:Hide()
+			yMap:Hide()
 		end
 
-		panel:Show();
+		panel:Show()
 	else
-		holder:Point(point, relativeTo, relativePoint, 0, 0);
-		panel:SetScript("OnUpdate", nil);
-		panel:Hide();
+		holder:Point(point, relativeTo, relativePoint, 0, 0)
+		panel:SetScript("OnUpdate", nil)
+		panel:Hide()
 	end
 
 	if MinimapMover then
