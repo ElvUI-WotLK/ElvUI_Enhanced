@@ -1821,6 +1821,7 @@ function module:Initialize()
 	end)
 
 	expandButton:SetScript("OnEnter", function(self)
+		S.SetModifiedBackdrop(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		if CharacterFrame.Expanded then
 			GameTooltip:SetText(self.collapseTooltip)
@@ -1828,7 +1829,10 @@ function module:Initialize()
 			GameTooltip:SetText(self.expandTooltip)
 		end
 	end)
-	expandButton:SetScript("OnLeave", GameTooltip_Hide)
+	expandButton:SetScript("OnLeave", function(self)
+		S.SetOriginalBackdrop(self)
+		GameTooltip_Hide()
+	end)
 
 	local sidebarTabs = CreateFrame("Frame", "PaperDollSidebarTabs", PaperDollFrame)
 	sidebarTabs:Hide()
