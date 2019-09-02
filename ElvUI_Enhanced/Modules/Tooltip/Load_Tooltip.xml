@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="itemQualityBorder.lua"/>
-	<Script file="tooltipicon.lua"/>
-	<Script file="progressionInfo.lua"/>
+	<Script file="ItemQualityBorder.lua"/>
+	<Script file="Tooltipicon.lua"/>
+	<Script file="ProgressionInfo.lua"/>
 </Ui>

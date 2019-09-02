@@ -1,11 +1,11 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="english.lua"/>
-	<Script file="french.lua"/>
-	<Script file="russian.lua"/>
-	<Script file="german.lua"/>
-	<Script file="taiwanese.lua"/>
-	<Script file="spanish.lua"/>
-	<Script file="korean.lua"/>
-	<Script file="chinese.lua"/>
-	<Script file="portuguese.lua"/>
+	<Script file="enUS.lua"/>
+	<Script file="deDE.lua"/>
+	<Script file="esMX.lua"/>
+	<Script file="frFR.lua"/>
+	<Script file="koKR.lua"/>
+	<Script file="ptBR.lua"/>
+	<Script file="ruRU.lua"/>
+	<Script file="zhTW.lua"/>
+	<Script file="zhCN.lua"/>
 </Ui>
