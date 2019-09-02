@@ -116,7 +116,7 @@ local function GeneralOptions()
 					E.db.enhanced.general[info[#info]] = value
 					M:UpdateMoverTransparancy()
 				end
-			},
+			}
 		}
 	}
 end
@@ -168,7 +168,7 @@ local function BlizzardOptions()
 	local WF = E:GetModule("Enhanced_WatchFrame")
 
 	local choices = {
-		["NONE"] = NONE,
+		["NONE"] = L["NONE"],
 		["COLLAPSED"] = L["Collapsed"],
 		["HIDDEN"] = L["Hidden"]
 	}
@@ -461,14 +461,14 @@ local function BlizzardOptions()
 						order = 7,
 						type = "range",
 						min = 6, max = 36, step = 1,
-						name = L["Font Size"]
+						name = L["FONT_SIZE"]
 					},
 					fontOutline = {
 						order = 8,
 						type = "select",
 						name = L["Font Outline"],
 						values = {
-							["NONE"] = L["None"],
+							["NONE"] = L["NONE"],
 							["OUTLINE"] = "OUTLINE",
 							["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 							["THICKOUTLINE"] = "THICKOUTLINE"
@@ -672,14 +672,14 @@ local function EquipmentInfoOptions()
 						order = 2,
 						type = "range",
 						min = 6, max = 36, step = 1,
-						name = FONT_SIZE
+						name = L["FONT_SIZE"]
 					},
 					fontOutline = {
 						order = 3,
 						type = "select",
 						name = L["Font Outline"],
 						values = {
-							["NONE"] = NONE,
+							["NONE"] = L["NONE"],
 							["OUTLINE"] = "OUTLINE",
 							["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 							["THICKOUTLINE"] = "THICKOUTLINE"
@@ -696,7 +696,7 @@ local function MinimapOptions()
 		["MOUSEOVER"] = L["Minimap Mouseover"],
 		["SHOW"] = L["Always Display"],
 		["ABOVE"] = EE:ColorizeSettingName(L["Above Minimap"]),
-		["HIDE"] = L["Hide"]
+		["HIDE"] = L["HIDE"]
 	}
 
 	return {
@@ -843,9 +843,8 @@ local function NamePlatesOptions()
 								type = "select",
 								name = L["Font Outline"],
 								values = {
-									["NONE"] = L["None"],
+									["NONE"] = L["NONE"],
 									["OUTLINE"] = "OUTLINE",
-									["MONOCHROME"] = (not E.isMacClient) and "MONOCHROME" or nil,
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
@@ -870,14 +869,14 @@ local function NamePlatesOptions()
 								type = "select",
 								name = L["Separator"],
 								values = {
-									[" "] = L["None"],
+									[" "] = L["NONE"],
 									["<"] = "< >",
 									["("] = "( )",
 									["["] = "[ ]",
 									["{"] = "{ }"
-								},
-							},
-						},
+								}
+							}
+						}
 					},
 					npcGroup = {
 						order = 3,
@@ -909,9 +908,8 @@ local function NamePlatesOptions()
 								type = "select",
 								name = L["Font Outline"],
 								values = {
-									["NONE"] = L["None"],
+									["NONE"] = L["NONE"],
 									["OUTLINE"] = "OUTLINE",
-									["MONOCHROME"] = (not E.isMacClient) and "MONOCHROME" or nil,
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
@@ -936,7 +934,7 @@ local function NamePlatesOptions()
 								type = "select",
 								name = L["Separator"],
 								values = {
-									[" "] = L["None"],
+									[" "] = L["NONE"],
 									["<"] = "< >",
 									["("] = "( )"
 								}
@@ -1071,9 +1069,9 @@ local function TooltipOptions()
 						end,
 						values = {
 							["ALL"] = ALWAYS,
-							["SHIFT"] = SHIFT_KEY,
-							["ALT"] = ALT_KEY,
-							["CTRL"] = CTRL_KEY
+							["SHIFT"] = L["SHIFT_KEY"],
+							["ALT"] = L["ALT_KEY"],
+							["CTRL"] = L["CTRL_KEY"]
 						}
 					},
 					tiers = {
@@ -1222,23 +1220,23 @@ local function InterruptTrackerOptions()
 						order = 1,
 						type = "toggle",
 						name = L["Everywhere"],
-						desc = L["Show Everywhere"],
+						desc = L["Show Everywhere"]
 					},
 					arena = {
 						order = 2,
 						type = "toggle",
 						name = ARENA,
 						desc = L["Show on Arena."],
-						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end,
+						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end
 					},
 					battleground = {
 						order = 3,
 						type = "toggle",
 						name = BATTLEGROUND,
 						desc = L["Show on Battleground."],
-						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end,
-					},
-				},
+						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end
+					}
+				}
 			},
 			textGroup = {
 				order = 4,
@@ -1265,21 +1263,19 @@ local function InterruptTrackerOptions()
 							BOTTOMRIGHT = "BOTTOMRIGHT",
 							CENTER = "CENTER",
 							TOP = "TOP",
-							BOTTOM = "BOTTOM",
+							BOTTOM = "BOTTOM"
 						}
 					},
 					xOffset = {
 						order = 2,
 						type = "range",
-						name = L["Text xOffset"],
-						desc = L["Offset position for text."],
-						min = -300, max = 300, step = 1,
+						name = L["X-Offset"],
+						min = -300, max = 300, step = 1
 					},
 					yOffset = {
 						order = 3,
 						type = "range",
-						name = L["Text yOffset"],
-						desc = L["Offset position for text."],
+						name = L["Y-Offset"],
 						min = -300, max = 300, step = 1
 					},
 					font = {
@@ -1287,13 +1283,13 @@ local function InterruptTrackerOptions()
 						type = "select",
 						dialogControl = "LSM30_Font",
 						name = L["Font"],
-						values = AceGUIWidgetLSMlists.font,
+						values = AceGUIWidgetLSMlists.font
 					},
 					fontSize = {
 						order = 5,
 						type = "range",
-						name = L["Font Size"],
-						min = 6, max = 32, step = 1,
+						name = L["FONT_SIZE"],
+						min = 6, max = 32, step = 1
 					},
 					fontOutline = {
 						order = 6,
@@ -1301,9 +1297,8 @@ local function InterruptTrackerOptions()
 						name = L["Font Outline"],
 						desc = L["Set the font outline."],
 						values = {
-							["NONE"] = L["None"],
+							["NONE"] = L["NONE"],
 							["OUTLINE"] = "OUTLINE",
-							["MONOCHROME"] = (not E.isMacClient) and "MONOCHROME" or nil,
 							["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 							["THICKOUTLINE"] = "THICKOUTLINE"
 						}
@@ -1392,12 +1387,12 @@ local function UnitFrameOptions()
 			player = {
 				order = 3,
 				type = "group",
-				name = L["Player"],
+				name = L["PLAYER"],
 				args = {
 					header = {
 						order = 1,
 						type = "header",
-						name = L["Player"]
+						name = L["PLAYER"]
 					},
 					detachPortrait = {
 						order = 3,
@@ -1444,12 +1439,12 @@ local function UnitFrameOptions()
 			target = {
 				order = 4,
 				type = "group",
-				name = L["Target"],
+				name = L["TARGET"],
 				args = {
 					header = {
 						order = 1,
 						type = "header",
-						name = L["Target"]
+						name = L["TARGET"]
 					},
 					classIcon = {
 						order = 2,
@@ -1489,13 +1484,13 @@ local function UnitFrameOptions()
 							xOffset = {
 								order = 4,
 								type = "range",
-								name = L["xOffset"],
+								name = L["X-Offset"],
 								min = -100, max = 100, step = 1
 							},
 							yOffset = {
 								order = 5,
 								type = "range",
-								name = L["yOffset"],
+								name = L["Y-Offset"],
 								min = -80, max = 40, step = 1
 							}
 						}
