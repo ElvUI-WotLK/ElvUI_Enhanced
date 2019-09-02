@@ -1,11 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
-
-local format = string.format
-
-local function ColorizeSettingName(settingName)
-	return format("|cffff8000%s|r", settingName)
-end
+local EE = E:GetModule("ElvUI_Enhanced")
 
 local function OnEvent(self, event, ...)
 	if event == "PLAYER_REGEN_ENABLED" then
@@ -21,4 +16,4 @@ local function OnEvent(self, event, ...)
 	self.text:SetTextColor(1, 1, 1)
 end
 
-DT:RegisterDatatext("Combat Indicator", {"PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, nil, nil, nil, ColorizeSettingName(L["Combat Indicator"]))
+DT:RegisterDatatext("Combat Indicator", {"PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, nil, nil, nil, EE:ColorizeSettingName(L["Combat Indicator"]))

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
+local EE = E:GetModule("ElvUI_Enhanced")
 
 if E.myclass ~= "SHAMAN" then return end
 
@@ -19,10 +20,6 @@ local tex = "Interface\\Icons\\Spell_Nature_Reincarnation"
 local displayString = ""
 
 local lastPanel
-
-local function ColorizeSettingName(settingName)
-	return format("|cffff8000%s|r", settingName)
-end
 
 local function OnUpdate(self)
 	local isKnown = IsSpellKnown(20608, false)
@@ -104,6 +101,6 @@ local function ValueColorUpdate(hex)
 		then OnEvent(lastPanel)
 	end
 end
-E["valueColorUpdateFuncs"][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext("Reincarnation", {"PLAYER_ENTERING_WORLD", "SPELL_UPDATE_COOLDOWN"}, OnEvent, OnUpdate, OnClick, OnEnter, nil, ColorizeSettingName(L["Reincarnation"]))
+DT:RegisterDatatext("Reincarnation", {"PLAYER_ENTERING_WORLD", "SPELL_UPDATE_COOLDOWN"}, OnEvent, OnUpdate, OnClick, OnEnter, nil, EE:ColorizeSettingName(L["Reincarnation"]))

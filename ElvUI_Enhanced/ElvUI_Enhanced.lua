@@ -1,9 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local addon = E:NewModule("ElvUI_Enhanced")
+local EP = E.Libs.EP
 
 local addonName = ...
 
-local LEP = LibStub("LibElvUIPlugin-1.0")
+local ipairs, pairs, next, type, print = ipairs, pairs, next, type, print
+local format = format
 
 local function gsPopupShow()
 	local url = "https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105"
@@ -53,6 +55,10 @@ local function gsPopupShow()
 	}
 
 	E:StaticPopup_Show("GS_VERSION_INVALID")
+end
+
+function addon:ColorizeSettingName(name)
+	return format("|cffff8000%s|r", name)
 end
 
 function addon:DBConversions()
@@ -115,10 +121,10 @@ function addon:Initialize()
 
 	self:DBConversions()
 
-	LEP:RegisterPlugin(addonName, self.GetOptions)
+	EP:RegisterPlugin(addonName, self.GetOptions)
 
 	if E.db.general.loginmessage then
-		print(format(L["ENH_LOGIN_MSG"], E["media"].hexvaluecolor, addon.version))
+		print(format(L["ENH_LOGIN_MSG"], E.media.hexvaluecolor, addon.version))
 	end
 
 	if IsAddOnLoaded("GearScore") and IsAddOnLoaded("BonusScanner") then

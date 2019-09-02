@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
+local EE = E:GetModule("ElvUI_Enhanced")
 
 local select = select
 local format, join = string.format, string.join
@@ -26,10 +27,6 @@ local iconString = "|T%s:16:16:0:0:64:64:4:55:4:55|t"
 local displayString = ""
 
 local lastPanel
-
-local function ColorizeSettingName(settingName)
-	return format("|cffff8000%s|r", settingName)
-end
 
 local function OnEvent(self)
 	local name, count, link
@@ -127,6 +124,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E["valueColorUpdateFuncs"][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext(INVTYPE_AMMO, {"PLAYER_ENTERING_WORLD", "BAG_UPDATE", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, OnClick, OnEnter, nil, ColorizeSettingName(L["Ammo/Shard Counter"]))
+DT:RegisterDatatext(INVTYPE_AMMO, {"PLAYER_ENTERING_WORLD", "BAG_UPDATE", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, OnClick, OnEnter, nil, EE:ColorizeSettingName(L["Ammo/Shard Counter"]))

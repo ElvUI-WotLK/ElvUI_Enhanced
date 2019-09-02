@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
+local EE = E:GetModule("ElvUI_Enhanced")
 
 local floor = math.floor
 local join = string.join
@@ -11,10 +12,6 @@ local GetItemInfo = GetItemInfo
 
 local displayString = ""
 local lastPanel
-
-local function ColorizeSettingName(settingName)
-	return format("|cffff8000%s|r", settingName)
-end
 
 local slots = {
 	{"HeadSlot", HEADSLOT},
@@ -39,7 +36,7 @@ local slots = {
 local levelColors = {
 	[0] = {1, 0, 0},
 	[1] = {0, 1, 0},
-	[2] = {1, 1, .5}
+	[2] = {1, 1, 0.5}
 }
 
 local function GetItemLvL()
@@ -48,16 +45,16 @@ local function GetItemLvL()
 
 	for i = 1, #slots do
 		itemLink = GetInventoryItemLink("player", GetInventorySlotInfo(slots[i][1]))
-		if(itemLink) then
+		if itemLink then
 			itemLevel = select(4, GetItemInfo(itemLink))
-			if(itemLevel and itemLevel > 0) then
+			if itemLevel and itemLevel > 0 then
 				item = item + 1
 				total = total + itemLevel
 			end
 		end
 	end
 
-	if(total < 1) then
+	if total < 1 then
 		return "0"
 	end
 
@@ -104,6 +101,6 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E["valueColorUpdateFuncs"][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter, nil, ColorizeSettingName(L["Item Level"]))
+DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter, nil, EE:ColorizeSettingName(L["Item Level"]))
