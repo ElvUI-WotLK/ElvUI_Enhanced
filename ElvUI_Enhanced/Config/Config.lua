@@ -1,11 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local addon = E:GetModule("ElvUI_Enhanced")
-
-local format = string.format
-
-local function ColorizeSettingName(settingName)
-	return format("|cffff8000%s|r", settingName)
-end
+local EE = E:GetModule("ElvUI_Enhanced")
 
 local function GeneralOptions()
 	local M = E:GetModule("Enhanced_Misc")
@@ -18,7 +12,7 @@ local function GeneralOptions()
 			header = {
 				order = 1,
 				type = "header",
-				name = ColorizeSettingName(L["General"])
+				name = EE:ColorizeSettingName(L["General"])
 			},
 			pvpAutoRelease = {
 				type = "toggle",
@@ -137,7 +131,7 @@ local function ActionbarOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["ActionBars"])
+				name = EE:ColorizeSettingName(L["ActionBars"])
 			},
 			transparentActionbars = {
 				order = 1,
@@ -191,7 +185,7 @@ local function BlizzardOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["BlizzUI Improvements"])
+				name = EE:ColorizeSettingName(L["BlizzUI Improvements"])
 			},
 			deathRecap = {
 				order = 1,
@@ -496,7 +490,7 @@ local function EquipmentInfoOptions()
 			header = {
 				order = 1,
 				type = "header",
-				name = ColorizeSettingName(L["Equipment Info"])
+				name = EE:ColorizeSettingName(L["Equipment Info"])
 			},
 			enable = {
 				order = 2,
@@ -701,7 +695,7 @@ local function MinimapOptions()
 	E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationText.values = {
 		["MOUSEOVER"] = L["Minimap Mouseover"],
 		["SHOW"] = L["Always Display"],
-		["ABOVE"] = ColorizeSettingName(L["Above Minimap"]),
+		["ABOVE"] = EE:ColorizeSettingName(L["Above Minimap"]),
 		["HIDE"] = L["Hide"]
 	}
 
@@ -718,7 +712,7 @@ local function MinimapOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Minimap"])
+				name = EE:ColorizeSettingName(L["Minimap"])
 			},
 			location = {
 				order = 1,
@@ -781,7 +775,7 @@ local function NamePlatesOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["NamePlates"])
+				name = EE:ColorizeSettingName(L["NamePlates"])
 			},
 			classCache = {
 				order = 1,
@@ -967,7 +961,7 @@ local function TooltipOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Tooltip"])
+				name = EE:ColorizeSettingName(L["Tooltip"])
 			},
 			itemQualityBorderColor = {
 				order = 1,
@@ -1129,7 +1123,7 @@ local function LoseControlOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Lose Control"])
+				name = EE:ColorizeSettingName(L["Lose Control"])
 			},
 			enable = {
 				order = 1,
@@ -1193,7 +1187,7 @@ local function InterruptTrackerOptions()
 			header = {
 				order = 0,
 				type = "header",
-				name = ColorizeSettingName(L["Interrupt Tracker"])
+				name = EE:ColorizeSettingName(L["Interrupt Tracker"])
 			},
 			enable = {
 				order = 1,
@@ -1331,7 +1325,7 @@ local function UnitFrameOptions()
 			header = {
 				order = 1,
 				type = "header",
-				name = ColorizeSettingName(L["UnitFrames"])
+				name = EE:ColorizeSettingName(L["UnitFrames"])
 			},
 			general = {
 				order = 2,
@@ -1552,12 +1546,12 @@ local function UnitFrameOptions()
 	}
 end
 
-function addon:GetOptions()
+function EE:GetOptions()
 	E.Options.args.enhanced = {
 		order = 50,
 		type = "group",
 		childGroups = "tab",
-		name = ColorizeSettingName(L["Enhanced"]),
+		name = EE:ColorizeSettingName(L["Enhanced"]),
 		args = {
 			generalGroup = GeneralOptions(),
 			actionbarGroup = ActionbarOptions(),
