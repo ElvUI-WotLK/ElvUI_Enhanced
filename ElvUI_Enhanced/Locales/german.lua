@@ -28,7 +28,7 @@ L["Requires Reload"] = "Benötigt Reload"
 
 -- Chat
 L["Filter DPS meters Spam"] = "Spam von DPS-Metern filtern"
-L["Replaces long reports from damage meters with a clickable hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"] = true
+L["Replaces reports from damage meters with a clickable hyperlink to reduce chat spam"] = true
 
 -- Datatext
 L["Ammo/Shard Counter"] = true
@@ -106,7 +106,7 @@ L["Use blizzard close buttons, but desaturated"] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true
-L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = true
+L["List of models with broken portrait camera. Separete each model name with ';' simbol"] = true
 L["Models to fix"] = true
 L["Portrait HD Fix"] = true
 L["Print to chat model names of units with enabled 3D portraits."] = true

@@ -29,7 +29,7 @@ L["Requires Reload"] = "需要重载"
 
 -- Chat
 L["Filter DPS meters Spam"] = "过滤DPS统计的垃圾讯息"
-L["Replaces long reports from damage meters with a clickable hyperlink to reduce chat spam.\nWorks correctly only with general reports such as DPS or HPS. May fail to filter te report of other things"] = "用可点击的超链接替换DPS统计的长篇报告，以减少聊天中的垃圾讯息。\n仅适用于DPS或HPS等常规报告。可能无法过滤其它事情的报告。"
+L["Replaces reports from damage meters with a clickable hyperlink to reduce chat spam"] = "用可点击的超链接替换DPS统计的长篇报告，以减少聊天中的垃圾讯息。"
 
 -- Datatext
 L["Ammo/Shard Counter"] = "弹药/碎片 计数"
@@ -113,7 +113,7 @@ L["Use blizzard close buttons, but desaturated"] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true
-L["List of models with broken portrait camera. Separete each model name with \"\" simbol"] = "头像镜头破损的模型列表。每个模型名称之间使用 \"\" 符号分隔。"
+L["List of models with broken portrait camera. Separete each model name with ';' simbol"] = "头像镜头破损的模型列表。每个模型名称之间使用 ';' 符号分隔。"
 L["Models to fix"] = "待修复的模型"
 L["Portrait HD Fix"] = "高清头像修复"
 L["Print to chat model names of units with enabled 3D portraits."] = "将可用3D头像的单位模型名称发布到聊天框中。"
