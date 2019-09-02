@@ -35,7 +35,6 @@ L["Replaces long reports from damage meters with a clickable hyperlink to reduce
 L["Ammo/Shard Counter"] = "弹药/碎片 计数"
 L["Combat Indicator"] = "战斗指示"
 L["Distance"] = "距离"
-L["Enhanced Time Color"] = "增强时间颜色"
 L["Equipped"] = "已装备"
 L["In Combat"] = "战斗中"
 L["New Mail"] = "新邮件"

@@ -35,7 +35,6 @@ L["Death Recap Frame"] = true
 L["Ammo/Shard Counter"] = true
 L["Combat Indicator"] = true
 L["Distance"] = true
-L["Enhanced Time Color"] = true
 L["Equipped"] = true
 L["In Combat"] = true
 L["New Mail"] = true

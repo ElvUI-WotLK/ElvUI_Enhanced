@@ -53,9 +53,6 @@ P.enhanced = {
 		inspectBackground = false,
 		companionBackground = false,
 	},
-	datatexts = {
-		timeColorEnch = false,
-	},
 	equipment = {
 		enable = false,
 		font = "Homespun",

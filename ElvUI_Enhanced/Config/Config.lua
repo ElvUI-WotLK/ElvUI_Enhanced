@@ -630,26 +630,6 @@ local function CharacterFrameOptions()
 	return config
 end
 
--- Datatext
-local function DataTextsOptions()
-	local config = {
-		order = 6,
-		type = "group",
-		name = L["DataTexts"],
-		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = ColorizeSettingName(L["DataTexts"])
-			},
-			timeColorEnch = {
-				order = 1,
-				type = "toggle",
-				name = L["Enhanced Time Color"],
-				get = function(info) return E.db.enhanced.datatexts.timeColorEnch end,
-				set = function(info, value) E.db.enhanced.datatexts.timeColorEnch = value E:GetModule("Enhanced_DatatextTime"):UpdateSettings() end
-			}
-		}
 	}
 	return config
 end
@@ -1660,7 +1640,6 @@ function addon:GetOptions()
 			blizzardGroup = BlizzardOptions(),
 			chatGroup = ChatOptions(),
 			characterFrameGroup = CharacterFrameOptions(),
-			datatextsGroup = DataTextsOptions(),
 			minimapGroup = MinimapOptions(),
 			namePlatesGroup = NamePlatesOptions(),
 			skinsGroup = SkinsOptions(),

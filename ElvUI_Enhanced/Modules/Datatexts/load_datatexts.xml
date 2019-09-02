@@ -10,5 +10,4 @@
 	<Script file="Stamina.lua"/>
 	<Script file="Strength.lua"/>
 	<Script file="Range.lua"/>
-	<Script file="Time.lua"/>
 </Ui>

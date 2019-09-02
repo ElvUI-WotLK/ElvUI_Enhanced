@@ -34,7 +34,6 @@ L["Replaces long reports from damage meters with a clickable hyperlink to reduce
 L["Ammo/Shard Counter"] = true
 L["Combat Indicator"] = "Kampfanzeige"
 L["Distance"] = "Entfernung"
-L["Enhanced Time Color"] = "Erweiterte Zeit-Färbung"
 L["Equipped"] = "Angelegt"
 L["In Combat"] = "Im Kampf"
 L["New Mail"] = "Neue Post"
