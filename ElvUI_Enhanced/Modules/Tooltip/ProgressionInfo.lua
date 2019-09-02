@@ -51,11 +51,10 @@ local tiers = {
 	}
 }
 
-local playerGUID = UnitGUID("player")
 local progressCache = {}
 
 local function GetProgression(guid)
-	local statFunc = guid == playerGUID and GetStatistic or GetComparisonStatistic
+	local statFunc = guid == E.myguid and GetStatistic or GetComparisonStatistic
 	local total, kills, killed, tierName
 
 	for tier in pairs(tiers) do
@@ -174,7 +173,7 @@ local function ShowInspectInfo(tt)
 	local guid = UnitGUID(unit)
 
 	if not progressCache[guid] or (GetTime() - progressCache[guid].timer) > 600 then
-		if guid == playerGUID then
+		if guid == E.myguid then
 			UpdateProgression(guid)
 		else
 			local self = E.private.tooltip.enable and TT or GameTooltip
