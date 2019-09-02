@@ -1,6 +1,6 @@
 SLASH_ANALYZE1 = "/analyze"
 
-SlashCmdList["ANALYZE"] = function(arg)
+SlashCmdList.ANALYZE = function(arg)
 	if arg ~= "" then
 		arg = _G[arg]
 	else
@@ -10,7 +10,7 @@ SlashCmdList["ANALYZE"] = function(arg)
 	if arg ~= nil and arg:GetName() ~= nil then
 		local name = arg:GetName()
 
-		local childFrames = { arg:GetChildren() }
+		local childFrames = {arg:GetChildren()}
 		ChatFrame1:AddMessage("|cffCC0000----------------------------")
 		ChatFrame1:AddMessage(name)
 		for _, child in ipairs(childFrames) do
@@ -23,7 +23,7 @@ SlashCmdList["ANALYZE"] = function(arg)
 end
 
 SLASH_PROFILE1 = "/profile"
-SlashCmdList["PROFILE"] = function()
+SlashCmdList.PROFILE = function()
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	if cpuProfiling then
 		SetCVar("scriptProfile", "0")

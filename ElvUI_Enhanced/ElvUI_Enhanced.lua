@@ -4,7 +4,6 @@ local EP = E.Libs.EP
 
 local addonName = ...
 
-local ipairs, pairs, next, type, print = ipairs, pairs, next, type, print
 local format = format
 
 local function gsPopupShow()
