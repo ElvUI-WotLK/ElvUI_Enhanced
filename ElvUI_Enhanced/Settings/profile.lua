@@ -47,7 +47,7 @@ P.enhanced = {
 		dpsLinks = false,
 	},
 	character = {
-		animations = true,
+		animations = false,
 		background = false,
 		petBackground = false,
 		inspectBackground = false,

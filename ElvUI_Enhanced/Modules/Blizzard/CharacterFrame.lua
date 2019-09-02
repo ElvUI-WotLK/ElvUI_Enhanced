@@ -1224,7 +1224,11 @@ function PaperDollStatCategory_OnDragStart(self)
 
 	for i, frame in next, StatCategoryFrames do
 		if frame ~= self then
-			UIFrameFadeIn(frame, 0.2, 1, 0.6)
+			if E.db.enhanced.character.animations then
+				UIFrameFadeIn(frame, 0.2, 1, 0.6)
+			else
+				frame:SetAlpha(0.6)
+			end
 		end
 	end
 end
@@ -1236,7 +1240,11 @@ function PaperDollStatCategory_OnDragStop(self)
 
 	for i, frame in next, StatCategoryFrames do
 		if frame ~= self then
-			UIFrameFadeOut(frame, 0.2, 0.6, 1)
+			if E.db.enhanced.character.animations then
+				UIFrameFadeOut(frame, 0.2, 0.6, 1)
+			else
+				frame:SetAlpha(1)
+			end
 		end
 	end
 	PaperDoll_SaveStatCategoryOrder()
@@ -1259,9 +1267,13 @@ function module:PaperDollFrame_SetSidebar(button, index)
 	if not _G[PAPERDOLL_SIDEBARS[index].frame]:IsShown() then
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
-				UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
+				if E.db.enhanced.character.animations then
+					UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
 
-				_G[PAPERDOLL_SIDEBARS[i].frame].fadeInfo.finishedFunc = function()
+					_G[PAPERDOLL_SIDEBARS[i].frame].fadeInfo.finishedFunc = function()
+						_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
+					end
+				else
 					_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
 				end
 
@@ -1271,7 +1283,9 @@ function module:PaperDollFrame_SetSidebar(button, index)
 		end
 
 		_G[PAPERDOLL_SIDEBARS[index].frame]:Show()
-		UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
+		if E.db.enhanced.character.animations then
+			UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
+		end
 		PaperDollFrame.currentSideBar = _G[PAPERDOLL_SIDEBARS[index].frame]
 
 		_G["PaperDollSidebarTab"..index].Hider:Hide()
