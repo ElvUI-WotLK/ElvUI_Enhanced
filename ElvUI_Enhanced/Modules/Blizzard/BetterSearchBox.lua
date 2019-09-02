@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
-function S:SearchBoxTemplate(frame)
+local function SearchBoxTemplate(frame)
 	frame:SetTextInsets(16, 20, 0, 0)
 
 	frame.Instructions = frame:CreateFontString(nil, "ARTWORK", "GameFontDisableSmall")
@@ -31,7 +31,7 @@ function S:SearchBoxTemplate(frame)
 	frame.clearButton:SetScript("OnEnter", function(self) self.texture:SetAlpha(1.0) end)
 	frame.clearButton:SetScript("OnLeave", function(self) self.texture:SetAlpha(0.5) end)
 	frame.clearButton:SetScript("OnMouseDown", function(self) if self:IsEnabled() then self.texture:Point("CENTER", 1, -1) end end)
-	frame.clearButton:SetScript("OnMouseUp", function(self) self.texture:Point("CENTER", 0, 0) end)
+	frame.clearButton:SetScript("OnMouseUp", function(self) self.texture:Point("CENTER") end)
 	frame.clearButton:SetScript("OnClick", function(self)
 		local editBox = self:GetParent()
 		editBox:SetText("")
@@ -64,3 +64,11 @@ function S:SearchBoxTemplate(frame)
 		end
 	end)
 end
+
+S:AddCallbackForAddon("Blizzard_AuctionUI", "Enhanced_AuctionUI", function()
+	SearchBoxTemplate(BrowseName)
+end)
+
+S:AddCallbackForAddon("Blizzard_TradeSkillUI", "Enhanced_TradeSkillUI", function()
+	SearchBoxTemplate(TradeSkillFrameEditBox)
+end)
