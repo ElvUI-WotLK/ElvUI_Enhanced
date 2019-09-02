@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local TT = E:NewModule("Enhanced_TimerTracker", "AceHook-3.0", "AceEvent-3.0")
 
 local ipairs = ipairs

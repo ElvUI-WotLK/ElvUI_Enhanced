@@ -1,8 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 
--- Minimap
-P.general.minimap.locationText = "ABOVE"
-
 -- Unitframes
 P.unitframe.units.player.portrait.detachFromFrame = false
 P.unitframe.units.player.portrait.detachedWidth = 54

@@ -7,7 +7,6 @@
 	<Include file="Actionbars\Load_Actionbars.xml"/>
 	<Include file="Watchframe\Load_Watchframe.xml"/>
 	<Include file="Datatexts\Load_Datatexts.xml"/>
-	<Include file="Skins\Load_Skins.xml"/>
 	<Include file="Nameplates\Load_Nameplates.xml"/>
 	<Include file="Unitframes\Load_Unitframes.xml"/>
 </Ui>

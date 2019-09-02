@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local MF = E:NewModule("Enhanced_ModelFrames", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
 
@@ -66,7 +66,7 @@ function MF:ModelControlButton(model)
 			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
 			GameTooltip:SetText(self.tooltip, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			if self.tooltipText then
-				GameTooltip:AddLine(self.tooltipText, _, _, _, 1, 1)
+				GameTooltip:AddLine(self.tooltipText, nil, nil, nil, 1, 1)
 			end
 			GameTooltip:Show()
 		end

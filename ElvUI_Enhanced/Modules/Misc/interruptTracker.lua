@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local IT = E:NewModule("Enhanced_InterruptTracker", "AceEvent-3.0")
 
 local ipairs = ipairs

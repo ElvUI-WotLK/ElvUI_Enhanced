@@ -5,49 +5,55 @@ local addonName = ...
 
 local LEP = LibStub("LibElvUIPlugin-1.0")
 
-E.PopupDialogs["GS_VERSION_INVALID"] = {
-	text = L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"],
-	hasEditBox = 1,
-	OnShow = function(self)
-		self.editBox:SetAutoFocus(false)
-		self.editBox.width = self.editBox:GetWidth()
-		self.editBox:SetWidth(220)
-		self.editBox:SetText("https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
-		self.editBox:HighlightText()
-		ChatEdit_FocusActiveWindow()
-	end,
-	OnHide = function(self)
-		self.editBox:SetWidth(self.editBox.width or 50)
-		self.editBox.width = nil
-	end,
-	hideOnEscape = 1,
-	button1 = DISABLE,
-	OnAccept = function()
-		DisableAddOn("GearScore")
-		DisableAddOn("BonusScanner")
-		ReloadUI()
-	end,
-	EditBoxOnEnterPressed = function(self)
-		ChatEdit_FocusActiveWindow()
-		self:GetParent():Hide()
-	end,
-	EditBoxOnEscapePressed = function(self)
-		ChatEdit_FocusActiveWindow()
-		self:GetParent():Hide()
-	end,
-	EditBoxOnTextChanged = function(self)
-		if self:GetText() ~= "https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105" then
-			self:SetText("https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105")
-		end
-		self:HighlightText()
-		self:ClearFocus()
-		ChatEdit_FocusActiveWindow()
-	end,
-	OnEditFocusGained = function(self)
-		self:HighlightText()
-	end,
-	showAlert = 1
-}
+local function gsPopupShow()
+	local url = "https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105"
+
+	E.PopupDialogs["GS_VERSION_INVALID"] = {
+		text = L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"],
+		hasEditBox = 1,
+		OnShow = function(self)
+			self.editBox:SetAutoFocus(false)
+			self.editBox.width = self.editBox:GetWidth()
+			self.editBox:SetWidth(220)
+			self.editBox:SetText(url)
+			self.editBox:HighlightText()
+			ChatEdit_FocusActiveWindow()
+		end,
+		OnHide = function(self)
+			self.editBox:SetWidth(self.editBox.width or 50)
+			self.editBox.width = nil
+		end,
+		hideOnEscape = 1,
+		button1 = DISABLE,
+		OnAccept = function()
+			DisableAddOn("GearScore")
+			DisableAddOn("BonusScanner")
+			ReloadUI()
+		end,
+		EditBoxOnEnterPressed = function(self)
+			ChatEdit_FocusActiveWindow()
+			self:GetParent():Hide()
+		end,
+		EditBoxOnEscapePressed = function(self)
+			ChatEdit_FocusActiveWindow()
+			self:GetParent():Hide()
+		end,
+		EditBoxOnTextChanged = function(self)
+			if self:GetText() ~= url then
+				self:SetText(url)
+			end
+			self:HighlightText()
+			self:ClearFocus()
+			ChatEdit_FocusActiveWindow()
+		end,
+		OnEditFocusGained = function(self)
+			self:HighlightText()
+		end,
+		showAlert = 1
+	}
+
+	E:StaticPopup_Show("GS_VERSION_INVALID")
+end
 
 function addon:DBConversions()
 	if E.db.enhanced.general.trainAllButton then
@@ -86,7 +92,7 @@ function addon:Initialize()
 
 	if IsAddOnLoaded("GearScore") and IsAddOnLoaded("BonusScanner") then
 		if GetAddOnMetadata("GearScore", "Version") == "3.1.20b - Release" then
-			E:StaticPopup_Show("GS_VERSION_INVALID")
+			gsPopupShow()
 		end
 	end
 end
