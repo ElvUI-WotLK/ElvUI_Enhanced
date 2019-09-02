@@ -4,6 +4,7 @@
 	<Script file="AddonList.lua"/>
 	<Script file="DressUpFrame.lua"/>
 	<Script file="BetterSearchBox.lua"/>
+	<Script file="AnimatedAchievementsBars.lua"/>
 	<Script file="ErrorFrame.lua"/>
 
 	<Include file="TimerTracker.xml"/>

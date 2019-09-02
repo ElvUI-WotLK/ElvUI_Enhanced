@@ -16,6 +16,7 @@ V.enhanced = {
 	blizzard = {
 		deathRecap = false
 	},
+	animatedAchievementBars = false,
 	character = {
 		enable = false,
 		collapsed = false,
