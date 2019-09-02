@@ -56,7 +56,7 @@ local function gsPopupShow()
 end
 
 function addon:DBConversions()
-	if E.db.enhanced.general.trainAllButton then
+	if E.db.enhanced.general.trainAllButton ~= nil then
 		E.db.enhanced.general.trainAllSkills = E.db.enhanced.general.trainAllButton
 		E.db.enhanced.general.trainAllButton = nil
 	end
@@ -74,6 +74,22 @@ function addon:DBConversions()
 	if E.private.enhanced.character.model and E.private.enhanced.character.model.enable ~= nil then
 		E.private.enhanced.character.modelFrames = E.private.enhanced.character.model.enable
 		E.private.enhanced.character.model.enable = nil
+	end
+
+	if P.unitframe.units.player.portrait.detachFromFrame ~= nil then
+		E.db.enhanced.unitframe.detachPortrait.player.enable = P.unitframe.units.player.portrait.detachFromFrame
+		E.db.enhanced.unitframe.detachPortrait.player.width = P.unitframe.units.player.portrait.detachedWidth
+		E.db.enhanced.unitframe.detachPortrait.player.height = P.unitframe.units.player.portrait.detachedHeight
+		E.db.enhanced.unitframe.detachPortrait.target.enable = P.unitframe.units.target.portrait.detachFromFrame
+		E.db.enhanced.unitframe.detachPortrait.target.width = P.unitframe.units.target.portrait.detachedWidth
+		E.db.enhanced.unitframe.detachPortrait.target.height = P.unitframe.units.target.portrait.detachedHeight
+
+		P.unitframe.units.player.portrait.detachFromFrame = nil
+		P.unitframe.units.player.portrait.detachedWidth = nil
+		P.unitframe.units.player.portrait.detachedHeight = nil
+		P.unitframe.units.target.portrait.detachFromFrame = nil
+		P.unitframe.units.target.portrait.detachedWidth = nil
+		P.unitframe.units.target.portrait.detachedHeight = nil
 	end
 
 	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then

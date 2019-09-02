@@ -1,15 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 
--- Unitframes
-P.unitframe.units.player.portrait.detachFromFrame = false
-P.unitframe.units.player.portrait.detachedWidth = 54
-P.unitframe.units.player.portrait.detachedHeight = 54
-
-P.unitframe.units.target.portrait.detachFromFrame = false
-P.unitframe.units.target.portrait.detachedWidth = 54
-P.unitframe.units.target.portrait.detachedHeight = 54
-
--- Enhanced
 P.enhanced = {
 	general = {
 		pvpAutoRelease = false,
@@ -149,6 +139,18 @@ P.enhanced = {
 			enable = false,
 			debug = false,
 			modelsToFix = "scourgemale.m2; scourgefemale.m2; humanfemale.m2; dwarfmale.m2; orcmalenpc.m2; scourgemalenpc.m2; scourgefemalenpc.m2; dwarfmalenpc.m2; humanmalekid.m2; humanfemalekid.m2; chicken.m2; rat.m2"
+		},
+		detachPortrait = {
+			player = {
+				enable = false,
+				width = 54,
+				height = 54
+			},
+			target = {
+				enable = false,
+				width = 54,
+				height = 54
+			}
 		},
 		units = {
 			target = {

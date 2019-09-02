@@ -1481,39 +1481,40 @@ local function UnitFrameOptions()
 					detachPortrait = {
 						order = 3,
 						type = "group",
-						name = L["Portrait"],
-						get = function(info) return E.db.unitframe.units["player"]["portrait"][info[#info]] end,
-						set = function(info, value) E.db.unitframe.units["player"]["portrait"][info[#info]] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("player") end,
+						name = L["Portrait 3D Detached"],
+						get = function(info) return E.db.enhanced.unitframe.detachPortrait.player[info[#info]] end,
+						set = function(info, value)
+							E.db.enhanced.unitframe.detachPortrait.player[info[#info]] = value
+							E:GetModule("UnitFrames"):CreateAndUpdateUF("player")
+						end,
+						disabled = function() return not E.db.unitframe.units.player.portrait.enable or E.db.unitframe.units.player.portrait.overlay end,
 						args = {
 							header = {
-								order = 1,
+								order = 0,
 								type = "header",
 								name = L["Portrait"]
 							},
-							detachFromFrame = {
-								order = 2,
+							enable = {
+								order = 1,
 								type = "toggle",
-								name = L["Detach From Frame"],
-								disabled = function() return not E.db.unitframe.units.player.portrait.enable end
+								name = L["Detach From Frame"]
 							},
 							spacer = {
-								order = 3,
+								order = 2,
 								type = "description",
 								name = " "
 							},
-							detachedWidth = {
-								order = 4,
+							width = {
+								order = 3,
 								type = "range",
 								name = L["Detached Width"],
-								min = 10, max = 600, step = 1,
-								disabled = function() return not E.db.unitframe.units.player.portrait.enable end
+								min = 10, max = 600, step = 1
 							},
-							detachedHeight = {
-								order = 5,
+							height = {
+								order = 4,
 								type = "range",
 								name = L["Detached Height"],
-								min = 10, max = 600, step = 1,
-								disabled = function() return not E.db.unitframe.units.player.portrait.enable end
+								min = 10, max = 600, step = 1
 							}
 						}
 					}
@@ -1585,39 +1586,40 @@ local function UnitFrameOptions()
 					detachPortrait = {
 						order = 3,
 						type = "group",
-						name = L["Portrait"],
-						get = function(info) return E.db.unitframe.units["target"]["portrait"][info[#info]] end,
-						set = function(info, value) E.db.unitframe.units["target"]["portrait"][info[#info]] = value E:GetModule("UnitFrames"):CreateAndUpdateUF("target") end,
+						name = L["Portrait 3D Detached"],
+						get = function(info) return E.db.enhanced.unitframe.detachPortrait.target[info[#info]] end,
+						set = function(info, value)
+							E.db.enhanced.unitframe.detachPortrait.target[info[#info]] = value
+							E:GetModule("UnitFrames"):CreateAndUpdateUF("target")
+						end,
+						disabled = function() return not E.db.unitframe.units.target.portrait.enable or E.db.unitframe.units.target.portrait.overlay end,
 						args = {
 							header = {
-								order = 1,
+								order = 0,
 								type = "header",
 								name = L["Portrait"]
 							},
-							detachFromFrame = {
-								order = 2,
+							enable = {
+								order = 1,
 								type = "toggle",
-								name = L["Detach From Frame"],
-								disabled = function() return not E.db.unitframe.units.target.portrait.enable end
+								name = L["Detach From Frame"]
 							},
 							spacer = {
-								order = 3,
+								order = 2,
 								type = "description",
 								name = " "
 							},
-							detachedWidth = {
-								order = 4,
+							width = {
+								order = 3,
 								type = "range",
 								name = L["Detached Width"],
-								min = 10, max = 600, step = 1,
-								disabled = function() return not E.db.unitframe.units.target.portrait.enable end
+								min = 10, max = 600, step = 1
 							},
-							detachedHeight = {
-								order = 5,
+							height = {
+								order = 4,
 								type = "range",
 								name = L["Detached Height"],
-								min = 10, max = 600, step = 1,
-								disabled = function() return not E.db.unitframe.units.target.portrait.enable end
+								min = 10, max = 600, step = 1
 							}
 						}
 					}
