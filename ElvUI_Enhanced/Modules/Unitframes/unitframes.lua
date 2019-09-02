@@ -12,7 +12,7 @@ hooksecurefunc(UF, "Configure_Portrait", function(self, frame)
 		if frame.USE_PORTRAIT then
 			local portrait = frame.Portrait
 
-			if frame.PORTRAIT_DETACHED then
+			if frame.PORTRAIT_DETACHED --[[and frame.db.portrait.style == "3D"]] then
 				if not portrait.Holder or (portrait.Holder and not portrait.Holder.mover) then
 					portrait.Holder = CreateFrame("Frame", nil, UIParent)
 					portrait.Holder:Size(db.width, db.height)
