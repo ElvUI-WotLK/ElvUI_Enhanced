@@ -119,7 +119,6 @@ function ENP:ClassCache()
 end
 
 -- Title Cache
-
 local separatorMap = {
 	[" "] = "%s",
 	["<"] = "< %s >",

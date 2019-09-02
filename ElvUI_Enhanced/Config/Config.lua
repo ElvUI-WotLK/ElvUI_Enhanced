@@ -1408,7 +1408,7 @@ local function UnitFrameOptions()
 					detachPortrait = {
 						order = 3,
 						type = "group",
-						name = L["Portrait 3D Detached"],
+						name = L["Detached Portrait"],
 						get = function(info) return E.db.enhanced.unitframe.detachPortrait.player[info[#info]] end,
 						set = function(info, value)
 							E.db.enhanced.unitframe.detachPortrait.player[info[#info]] = value
@@ -1509,7 +1509,7 @@ local function UnitFrameOptions()
 					detachPortrait = {
 						order = 3,
 						type = "group",
-						name = L["Portrait 3D Detached"],
+						name = L["Detached Portrait"],
 						get = function(info) return E.db.enhanced.unitframe.detachPortrait.target[info[#info]] end,
 						set = function(info, value)
 							E.db.enhanced.unitframe.detachPortrait.target[info[#info]] = value
