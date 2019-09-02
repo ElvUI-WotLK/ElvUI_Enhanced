@@ -389,7 +389,7 @@ function MF:ADDON_LOADED(event, addon)
 end
 
 function MF:Initialize()
-	if not E.private.enhanced.character.model.enable then return end
+	if not E.private.enhanced.character.modelFrames then return end
 
 	for i = 1, #modelFrames do
 		local model = _G[modelFrames[i]]

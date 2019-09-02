@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 V.enhanced = {
-	blizzard = {
-		deathRecap = false
-	},
 	animatedAchievementBars = false,
+	deathRecap = false,
 	character = {
 		enable = false,
+		modelFrames = false,
 		collapsed = false,
 		player = {
 			orderName = "",
@@ -18,7 +17,7 @@ V.enhanced = {
 				SPELL_COMBAT = false,
 				DEFENSES = false,
 				RESISTANCE = false
-			},
+			}
 		},
 		pet = {
 			orderName = "",
@@ -30,10 +29,7 @@ V.enhanced = {
 				SPELL_COMBAT = false,
 				DEFENSES = false,
 				RESISTANCE = false
-			},
-		},
-		model = {
-			enable = false
+			}
 		}
 	},
 	timerTracker = {

@@ -365,7 +365,7 @@ end
 
 function mod:DeathRecap()
 	if DeathRecapFrame then return end
-	if not E.private.enhanced.blizzard.deathRecap then return end
+	if not E.private.enhanced.deathRecap then return end
 
 	local S = E:GetModule("Skins")
 

@@ -153,6 +153,11 @@ local function BlizzardOptions()
 		order = 3,
 		type = "group",
 		name = L["Blizzard"],
+		get = function(info) return E.private.enhanced[info[#info]] end,
+		set = function(info, value)
+			E.private.enhanced[info[#info]] = value
+			E:StaticPopup_Show("PRIVATE_RL")
+		end,
 		args = {
 			header = {
 				order = 0,
@@ -162,25 +167,28 @@ local function BlizzardOptions()
 			deathRecap = {
 				order = 1,
 				type = "toggle",
-				name = L["Death Recap Frame"],
-				get = function(info) return E.private.enhanced.blizzard.deathRecap end,
-				set = function(info, value) E.private.enhanced.blizzard.deathRecap = value; E:StaticPopup_Show("PRIVATE_RL") end
+				name = L["Death Recap Frame"]
+			},
+			animatedAchievementBars = {
+				order = 2,
+				type = "toggle",
+				name = L["Animated Achievement Bars"]
 			},
 			characterFrame = {
-				order = 2,
+				order = 3,
 				type = "group",
 				name = L["Character Frame"],
 				guiInline = true,
 				get = function(info) return E.private.enhanced.character[info[#info]] end,
+				set = function(info, value)
+					E.private.enhanced.character[info[#info]] = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
 				args = {
 					enable = {
 						order = 1,
 						type = "toggle",
-						name = L["Enhanced Character Frame"],
-						set = function(info, value)
-							E.private.enhanced.character.enable = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end
+						name = L["Enhanced Character Frame"]
 					},
 					animations = {
 						order = 2,
@@ -190,16 +198,13 @@ local function BlizzardOptions()
 						set = function(info, value)
 							E.db.enhanced.character.animations = value
 							E:StaticPopup_Show("PRIVATE_RL")
-						end
+						end,
+						disabled = function() return not E.private.enhanced.character.enable end
 					},
-					model = {
+					modelFrames = {
 						order = 3,
 						type = "toggle",
-						name = L["Enhanced Control Panel"],
-						set = function(info, value)
-							E.private.enhanced.character.model.enable = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end
+						name = L["Enhanced Model Frames"]
 					},
 					paperdollBackgrounds = {
 						order = 4,
@@ -926,25 +931,6 @@ local function SkinsOptions()
 				order = 1,
 				type = "header",
 				name = ColorizeSettingName(L["Skins"])
-			},
-			achievements = {
-				order = 2,
-				type = "group",
-				name = ACHIEVEMENTS,
-				get = function(info) return E.private.skins.animations; end,
-				set = function(info, value) E.private.skins.animations = value; end,
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = ACHIEVEMENTS
-					},
-					animations = {
-						order = 2,
-						type = "toggle",
-						name = L["Animated Bars"]
-					}
-				}
 			},
 			trainer = {
 				order = 3,

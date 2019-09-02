@@ -61,6 +61,21 @@ function addon:DBConversions()
 		E.db.enhanced.general.trainAllButton = nil
 	end
 
+	if E.private.skins.animations ~= nil then
+		E.private.enhanced.animatedAchievementBars = E.private.skins.animations
+		E.private.skins.animations = nil
+	end
+
+	if E.private.enhanced.blizzard and E.private.enhanced.blizzard.deathRecap ~= nil then
+		E.private.enhanced.deathRecap = E.private.enhanced.blizzard.deathRecap
+		E.private.enhanced.blizzard.deathRecap = nil
+	end
+
+	if E.private.enhanced.character.model and E.private.enhanced.character.model.enable ~= nil then
+		E.private.enhanced.character.modelFrames = E.private.enhanced.character.model.enable
+		E.private.enhanced.character.model.enable = nil
+	end
+
 	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then
 		E.db.enhanced.nameplates.classCache = true
 	end
