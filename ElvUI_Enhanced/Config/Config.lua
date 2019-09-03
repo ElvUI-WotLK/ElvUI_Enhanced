@@ -1137,7 +1137,7 @@ local function LoseControlOptions()
 				get = function(info) return E.private.enhanced.loseControl.enable end,
 				set = function(info, value)
 					E.private.enhanced.loseControl.enable = value
-					E:StaticPopup_Show("PRIVATE_RL")
+					E:GetModule("Enhanced_LoseControl"):ToggleState()
 				end,
 			},
 			compactMode = {

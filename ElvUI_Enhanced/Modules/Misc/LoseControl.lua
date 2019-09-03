@@ -271,7 +271,29 @@ function LC:UpdateSpellNames()
 	end
 end
 
+function LC:ToggleState()
+	if E.private.enhanced.loseControl.enable then
+		if not self.initialized then
+			self:Initialize()
+			return
+		end
+
+		E:EnableMover(self.frame.mover:GetName())
+		self:RegisterEvent("UNIT_AURA")
+	else
+		self.ccExpirationTime = 0
+		self.frame.timeLeft = nil
+		self.frame:SetScript("OnUpdate", nil)
+		self.frame:Hide()
+
+		E:DisableMover(self.frame.mover:GetName())
+		self:UnregisterEvent("UNIT_AURA")
+	end
+end
+
 function LC:UpdateSettings()
+	if not self.db then return end
+
 	self.frame:Size(self.db.iconSize)
 
 	if self.db.compactMode then
@@ -323,6 +345,8 @@ function LC:Initialize()
 	self:UpdateSpellNames()
 
 	self:RegisterEvent("UNIT_AURA")
+
+	self.initialized = true
 end
 
 local function InitializeCallback()
