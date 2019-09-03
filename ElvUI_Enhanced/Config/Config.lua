@@ -1359,19 +1359,8 @@ local function UnitFrameOptions()
 						type = "header",
 						name = L["General"]
 					},
-					hideRoleInCombat = {
-						order = 2,
-						type = "toggle",
-						name = L["Hide Role Icon in combat"],
-						desc = L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."],
-						get = function(info) return E.db.enhanced.unitframe.hideRoleInCombat end,
-						set = function(info, value)
-							E.db.enhanced.unitframe.hideRoleInCombat = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end
-					},
 					portraitHDModelFix = {
-						order = 3,
+						order = 2,
 						type = "group",
 						guiInline = true,
 						name = L["Portrait HD Fix"],
