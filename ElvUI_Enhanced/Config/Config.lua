@@ -1440,7 +1440,11 @@ local function UnitFrameOptions()
 							enable = {
 								order = 1,
 								type = "toggle",
-								name = L["Detach From Frame"]
+								name = L["Detach From Frame"],
+								set = function(info, value)
+									E.db.enhanced.unitframe.detachPortrait.player[info[#info]] = value
+									E:GetModule("Enhanced_DetachedPortrait"):ToggleState("player")
+								end
 							},
 							spacer = {
 								order = 2,
@@ -1541,7 +1545,11 @@ local function UnitFrameOptions()
 							enable = {
 								order = 1,
 								type = "toggle",
-								name = L["Detach From Frame"]
+								name = L["Detach From Frame"],
+								set = function(info, value)
+									E.db.enhanced.unitframe.detachPortrait.target[info[#info]] = value
+									E:GetModule("Enhanced_DetachedPortrait"):ToggleState("target")
+								end
 							},
 							spacer = {
 								order = 2,
