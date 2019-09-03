@@ -1,258 +1,332 @@
-﻿local E, L, V, P, G, _ = unpack(ElvUI)
-local LOS = E:NewModule("Enhanced_LoseControl", "AceEvent-3.0")
+﻿local E, L, V, P, G = unpack(ElvUI)
+local LC = E:NewModule("Enhanced_LoseControl", "AceEvent-3.0")
 
-local function SpellName(id)
-	local name = GetSpellInfo(id)
-	if not name then
-		print("|cff1784d1ElvUI:|r SpellID is not valid: "..id..". Please check for an updated version, if none exists report to ElvUI author.")
-		return "Impale"
-	else
-		return name
-	end
-end
+local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+local UnitDebuff = UnitDebuff
 
-G.loseControl = {
--- Рыцарь смерти
-	[SpellName(47481)] = "CC", -- Отгрызть
-	[SpellName(51209)] = "CC", -- Ненасытная стужа
-	[SpellName(47476)] = "Silence", -- Удушение
-	[SpellName(45524)] = "Snare", -- Ледяные оковы
-	[SpellName(55666)] = "Snare", -- Осквернение
-	[SpellName(58617)] = "Snare", -- Символ удара в сердце
-	[SpellName(50436)] = "Snare", -- Ледяная хватка
--- Друид
-	[SpellName(5211)] = "CC", -- Оглушить
-	[SpellName(33786)] = "CC", -- Смерч
-	[SpellName(2637)] = "CC", -- Спячка
-	[SpellName(22570)] = "CC", -- Калечение
-	[SpellName(9005)] = "CC", -- Наскок
-	[SpellName(339)] = "Root",	-- Гнев деревьев
-	[SpellName(19675)] = "Root", -- Звериная атака - эффект
-	[SpellName(58179)] = "Snare", -- Зараженные раны
-	[SpellName(61391)] = "Snare", -- Тайфун
--- Охотник
-	[SpellName(60210)] = "CC", -- Эффект замораживающей стрелы
-	[SpellName(3355)] = "CC", -- Эффект замораживающей ловушки
-	[SpellName(24394)] = "CC", -- Устрашение
-	[SpellName(1513)] = "CC", -- Отпугивание зверя
-	[SpellName(19503)] = "CC", -- Дизориентирующий выстрел
-	[SpellName(19386)] = "CC", -- Укус виверны
-	[SpellName(34490)] = "Silence", -- Глушащий выстрел
-	[SpellName(53359)] = "Disarm", -- Выстрел химеры - сорпид
-	[SpellName(19306)] = "Root", -- Контратака
-	[SpellName(19185)] = "Root", -- Удержание
-	[SpellName(35101)] = "Snare", -- Шокирующий залп
-	[SpellName(5116)] = "Snare", -- Контузящий выстрел
-	[SpellName(13810)] = "Snare", -- Аура ледяной ловушки
-	[SpellName(61394)] = "Snare", -- Символ заморажевающей ловушки
-	[SpellName(2974)] = "Snare", -- Подрезать крылья
--- Питомец Охотника
-	[SpellName(50519)] = "CC", -- Ультразвук
-	[SpellName(50541)] = "Disarm", -- Хватка
-	[SpellName(54644)] = "Snare", -- Дыхание ледяной бури
-	[SpellName(50245)] = "Root", -- Шип
-	[SpellName(50271)] = "Snare", -- Повреждение сухожилий
-	[SpellName(50518)] = "CC", -- Накинуться
-	[SpellName(54706)] = "Root", -- Ядовитая паутина
-	[SpellName(4167)] = "Root", -- Сеть
--- Маг
-	[SpellName(44572)] = "CC", -- Глубокая замарозка
-	[SpellName(31661)] = "CC", -- Дыхание дракона
-	[SpellName(12355)] = "CC", -- Сотрясение
-	[SpellName(118)] = "CC", -- Превращение
-	[SpellName(18469)] = "Silence", -- Антимагия - немота
-	[SpellName(64346)] = "Disarm", -- Огненная расплата
-	[SpellName(33395)] = "Root", -- Холод
-	[SpellName(122)] = "Root", -- Кольцо льда
-	[SpellName(11071)] = "Root", -- Обморожение
-	[SpellName(55080)] = "Root", -- Разрушенная преграда
-	[SpellName(11113)] = "Snare", -- Врзрывная волна
-	[SpellName(6136)] = "Snare", -- Окоченение
-	[SpellName(120)] = "Snare", -- Конус льда
-	[SpellName(116)] = "Snare", -- Ледяная стрела
-	[SpellName(47610)] = "Snare", -- Стрела ледяного огня
-	[SpellName(31589)] = "Snare", -- Замедление
--- Паладин
-	[SpellName(853)] = "CC", -- Молот правосудия
-	[SpellName(2812)] = "CC", -- Гнев небес
-	[SpellName(20066)] = "CC", -- Покаяние
-	[SpellName(20170)] = "CC", -- Оглушение
-	[SpellName(10326)] = "CC", -- Изгнание зла
-	[SpellName(63529)] = "Silence", -- Немота - Щит храмовника
-	[SpellName(20184)] = "Snare", -- Правосудие справедливости
--- Жрец
-	[SpellName(605)] = "CC", -- Контроль над разумом
-	[SpellName(64044)] = "CC", -- Глубинный ужас
-	[SpellName(8122)] = "CC", -- Ментальный крик
-	[SpellName(9484)] = "CC", -- Сковывание нежити
-	[SpellName(15487)] = "Silence", -- Безмолвие
-	[SpellName(64058)] = "Disarm", -- Глубинный ужас
-	[SpellName(15407)] = "Snare", -- Пытка разума
--- Разбойник
-	[SpellName(2094)] = "CC", -- Ослепление
-	[SpellName(1833)] = "CC", -- Подлый трюк
-	[SpellName(1776)] = "CC", -- Парализующий удар
-	[SpellName(408)] = "CC", -- Удар по почкам
-	[SpellName(6770)] = "CC", -- Ошеломление
-	[SpellName(1330)] = "Silence", -- Гаррота - немота
-	[SpellName(18425)] = "Silence", -- Пинок - немота
-	[SpellName(51722)] = "Disarm", -- Долой оружие
-	[SpellName(31125)] = "Snare", -- Вращение лезвий
-	[SpellName(3409)] = "Snare", -- Калечащий яд
-	[SpellName(26679)] = "Snare", -- Смертельный бросок
--- Шаман
-	[SpellName(39796)] = "CC", -- Оглушение каменного когтя
-	[SpellName(51514)] = "CC", -- Сглаз
-	[SpellName(64695)] = "Root", -- Хватка земли
-	[SpellName(63685)] = "Root", -- Заморозка
-	[SpellName(3600)] = "Snare", -- Оковы земли
-	[SpellName(8056)] = "Snare", -- Ледяной шок
-	[SpellName(8034)] = "Snare", -- Наложение ледяного клейма
--- Чернокнижник
-	[SpellName(710)] = "CC", -- Изгнание
-	[SpellName(6789)] = "CC", -- Лик смерти
-	[SpellName(5782)] = "CC", -- Страх
-	[SpellName(5484)] = "CC", -- Вой ужаса
-	[SpellName(6358)] = "CC", -- Соблазн
-	[SpellName(30283)] = "CC", -- Неистовство Тьмы
-	[SpellName(24259)] = "Silence", -- Запрет чар
-	[SpellName(18118)] = "Snare", -- Огненный шлейф
-	[SpellName(18223)] = "Snare", -- Проклятие изнеможения
--- Воин
-	[SpellName(7922)] = "CC", -- Наскок и оглушение
-	[SpellName(12809)] = "CC", -- Оглушающий удар
-	[SpellName(20253)] = "CC", -- Перехват
-	[SpellName(5246)] = "CC", -- Устрашающий крик
-	[SpellName(12798)] = "CC", -- Реванш - оглушение
-	[SpellName(46968)] = "CC", -- Ударная волна
-	[SpellName(18498)] = "Silence", -- Обет молчания - немота
-	[SpellName(676)] = "Disarm", -- Разоружение
-	[SpellName(58373)] = "Root", -- Символ подрезанного сухожилия
-	[SpellName(23694)] = "Root", -- Улучшенное подрезание сухожилий
-	[SpellName(1715)] = "Snare", -- Подрезать сухожилия
-	[SpellName(12323)] = "Snare", -- Пронзительный вой
--- Разные
-	[SpellName(30217)] = "CC", -- Адамантитовая граната
-	[SpellName(67769)] = "CC", -- Кобальтовая осколочная бомба
-	[SpellName(30216)] = "CC", -- Бомба из оскверненного железа
-	[SpellName(20549)] = "CC", -- Громовая поступь
-	[SpellName(25046)] = "Silence", -- Волшебный поток
-	[SpellName(39965)] = "Root", -- Замораживающая граната
-	[SpellName(55536)] = "Root", -- Сеть из ледяной ткани
-	[SpellName(13099)] = "Root", -- Сетестрел
-	[SpellName(29703)] = "Snare", -- Головокружение
--- PvE
-	[SpellName(28169)] = "PvE", -- Мутагенный укол
-	[SpellName(28059)] = "PvE", -- Положительный заряд
-	[SpellName(28084)] = "PvE", -- Отрицательный заряд
-	[SpellName(27819)] = "PvE", -- Взрыв маны
-	[SpellName(63024)] = "PvE", -- Гравитационная бомба
-	[SpellName(63018)] = "PvE", -- Опаляющий свет
-	[SpellName(62589)] = "PvE", -- Гнев природы
-	[SpellName(63276)] = "PvE", -- Метка Безликого
-	[SpellName(66770)] = "PvE", -- Свирепое бодание
-	[SpellName(71340)] = "PvE", -- Пакт Омраченных
-	[SpellName(70126)] = "PvE", -- Ледяная метка
-	[SpellName(73785)] = "PvE" -- Мертвящая чума
+local spellNameList = {}
+local spellIDList = {
+	-- Death Knight
+	[47481]	= "CC",			-- Gnaw (Ghoul)
+	[51209]	= "CC",			-- Hungering Cold
+	[47476]	= "Silence",	-- Strangulate
+	[45524]	= "Snare",		-- Chains of Ice
+	[55666]	= "Snare",		-- Desecration
+	[58617]	= "Snare",		-- Glyph of Heart Strike
+	[50436]	= "Snare",		-- Icy Clutch
+	-- Druid
+	[5211]	= "CC",			-- Bash
+	[33786]	= "CC",			-- Cyclone
+	[2637]	= "CC",			-- Hibernate
+	[22570]	= "CC",			-- Maim
+	[9005]	= "CC",			-- Pounce
+	[339]	= "Root",		-- Entangling Roots
+	[19675]	= "Root",		-- Feral Charge Effect
+	[58179]	= "Snare",		-- Infected Wounds
+	[61391]	= "Snare",		-- Typhoon
+	-- Hunter
+	[60210]	= "CC",			-- Freezing Arrow Effect
+	[3355]	= "CC",			-- Freezing Trap Effect
+	[24394]	= "CC",			-- Intimidation
+	[1513]	= "CC",			-- Scare Beast
+	[19503]	= "CC",			-- Scatter Shot
+	[19386]	= "CC",			-- Wyvern Sting
+	[34490]	= "Silence",	-- Silencing Shot
+	[53359]	= "Disarm",		-- Chimera Shot - Scorpid
+	[19306]	= "Root",		-- Counterattack
+	[19185]	= "Root",		-- Entrapment
+	[35101]	= "Snare",		-- Concussive Barrage
+	[5116]	= "Snare",		-- Concussive Shot
+	[13810]	= "Snare",		-- Frost Trap Aura
+	[61394]	= "Snare",		-- Glyph of Freezing Trap
+	[2974]	= "Snare",		-- Wing Clip
+	-- Hunter Pets
+	[50519]	= "CC",			-- Sonic Blast
+	[50541]	= "Disarm",		-- Snatch
+	[54644]	= "Snare",		-- Froststorm Breath
+	[50245]	= "Root",		-- Pin
+	[50271]	= "Snare",		-- Tendon Rip
+	[50518]	= "CC",			-- Ravage
+	[54706]	= "Root",		-- Venom Web Spray
+	[4167]	= "Root",		-- Web
+	-- Mage
+	[44572]	= "CC",			-- Deep Freeze
+	[31661]	= "CC",			-- Dragon's Breath
+	[12355]	= "CC",			-- Impact
+	[118]	= "CC",			-- Polymorph
+	[18469]	= "Silence",	-- Silenced - Improved Counterspell
+	[64346]	= "Disarm",		-- Fiery Payback
+	[33395]	= "Root",		-- Freeze
+	[122]	= "Root",		-- Frost Nova
+	[11071]	= "Root",		-- Frostbite
+	[55080]	= "Root",		-- Shattered Barrier
+	[11113]	= "Snare",		-- Blast Wave
+	[6136]	= "Snare",		-- Chilled
+	[120]	= "Snare",		-- Cone of Cold
+	[116]	= "Snare",		-- Frostbolt
+	[47610]	= "Snare",		-- Frostfire Bolt
+	[31589]	= "Snare",		-- Slow
+	-- Paladin
+	[853]	= "CC",			-- Hammer of Justice
+	[2812]	= "CC",			-- Holy Wrath
+	[20066]	= "CC",			-- Repentance
+	[20170]	= "CC",			-- Stun
+	[10326]	= "CC",			-- Turn Evil
+	[63529]	= "Silence",	-- Silenced - Shield of the Templar
+	[20184]	= "Snare",		-- Judgement of Justice
+	-- Priest
+	[605]	= "CC",			-- Mind Control
+	[64044]	= "CC",			-- Psychic Horror
+	[8122]	= "CC",			-- Psychic Scream
+	[9484]	= "CC",			-- Shackle Undead
+	[15487]	= "Silence",	-- Silence
+	[64058]	= "Disarm",		-- Psychic Horror
+	[15407]	= "Snare",		-- Mind Flay
+	-- Rogue
+	[2094]	= "CC",			-- Blind
+	[1833]	= "CC",			-- Cheap Shot
+	[1776]	= "CC",			-- Gouge
+	[408]	= "CC",			-- Kidney Shot
+	[6770]	= "CC",			-- Sap
+	[1330]	= "Silence",	-- Garrote - Silence
+	[18425]	= "Silence",	-- Silenced - Improved Kick
+	[51722]	= "Disarm",		-- Dismantle
+	[31125]	= "Snare",		-- Blade Twisting
+	[3409]	= "Snare",		-- Crippling Poison
+	[26679]	= "Snare",		-- Deadly Throw
+	-- Shaman
+	[39796]	= "CC",			-- Stoneclaw Stun
+	[51514]	= "CC",			-- Hex
+	[64695]	= "Root",		-- Earthgrab
+	[63685]	= "Root",		-- Freeze
+	[3600]	= "Snare",		-- Earthbind
+	[8056]	= "Snare",		-- Frost Shock
+	[8034]	= "Snare",		-- Frostbrand Attack
+	-- Warlock
+	[710]	= "CC",			-- Banish
+	[6789]	= "CC",			-- Death Coil
+	[5782]	= "CC",			-- Fear
+	[5484]	= "CC",			-- Howl of Terror
+	[6358]	= "CC",			-- Seduction
+	[30283]	= "CC",			-- Shadowfury
+	[24259]	= "Silence",	-- Spell Lock
+	[18118]	= "Snare",		-- Aftermath
+	[18223]	= "Snare",		-- Curse of Exhaustion
+	-- Warrior
+	[7922]	= "CC",			-- Charge Stun
+	[12809]	= "CC",			-- Concussion Blow
+	[20253]	= "CC",			-- Intercept
+	[5246]	= "CC",			-- Intimidating Shout
+	[12798]	= "CC",			-- Revenge Stun
+	[46968]	= "CC",			-- Shockwave
+	[18498]	= "Silence",	-- Silenced - Gag Order
+	[676]	= "Disarm",		-- Disarm
+	[58373]	= "Root",		-- Glyph of Hamstring
+	[23694]	= "Root",		-- Improved Hamstring
+	[1715]	= "Snare",		-- Hamstring
+	[12323]	= "Snare",		-- Piercing Howl
+	-- Other
+	[30217]	= "CC",			-- Adamantite Grenade
+	[67769]	= "CC",			-- Cobalt Frag Bomb
+	[30216]	= "CC",			-- Fel Iron Bomb
+	[20549]	= "CC",			-- War Stomp
+	[25046]	= "Silence",	-- Arcane Torrent
+	[39965]	= "Root",		-- Frost Grenade
+	[55536]	= "Root",		-- Frostweave Net
+	[13099]	= "Root",		-- Net-o-Matic
+	[29703]	= "Snare",		-- Dazed
+	-- PvE
+	[28169]	= "PvE",		-- Mutating Injection
+	[28059]	= "PvE",		-- Positive Charge
+	[28084]	= "PvE",		-- Negative Charge
+	[27819]	= "PvE",		-- Detonate Mana
+	[63024]	= "PvE",		-- Gravity Bomb
+	[63018]	= "PvE",		-- Searing Light
+	[62589]	= "PvE",		-- Nature's Fury
+	[63276]	= "PvE",		-- Mark of the Faceless
+	[66770]	= "PvE",		-- Ferocious Butt
+	[71340]	= "PvE",		-- Pact of the Darkfallen
+	[70126]	= "PvE",		-- Frost Beacon
+	[73785]	= "PvE",		-- Necrotic Plague
 }
 
-local abilities = {}
+local priorities = {
+	["CC"]		= 60,
+	["PvE"]		= 50,
+	["Silence"]	= 40,
+	["Disarm"]	= 30,
+	["Root"]	= 20,
+	["Snare"]	= 10,
+}
 
-function LOS:OnUpdate(elapsed)
-	if self.timeLeft then
-		self.timeLeft = self.timeLeft - elapsed
+function LC:OnUpdate(elapsed)
+	self.timeLeft = self.timeLeft - elapsed
 
-		if self.timeLeft >= 10 then
-			self.NumberText:SetFormattedText("%d", self.timeLeft)
-		elseif self.timeLeft < 9.95 then
-			self.NumberText:SetFormattedText("%.1f", self.timeLeft)
-		end
+	if self.timeLeft > 10 then
+		self.cooldownTime:SetFormattedText("%d", self.timeLeft)
+	elseif self.timeLeft > 0 then
+		self.cooldownTime:SetFormattedText("%.1f", self.timeLeft)
+	else
+		self:SetScript("OnUpdate", nil)
+		self.timeLeft = nil
+		self.cooldownTime:SetText("0")
 	end
 end
 
-function LOS:UNIT_AURA()
-	local maxExpirationTime = 0
-	local Icon, Duration
+local function CheckPriority(priority, ccPriority, expirationTime, ccExpirationTime)
+	if not ccPriority then
+		return true
+	end
+
+	if priorities[priority] > priorities[ccPriority] then
+		return true
+	elseif priorities[priority] == priorities[ccPriority] and expirationTime > ccExpirationTime then
+		return true
+	end
+end
+
+function LC:UNIT_AURA(event, unit)
+	if unit ~= "player" then return end
+
+	local ccExpirationTime = 0
+	local ccName, ccIcon, ccDuration, ccPriority, wyvernsting
+	local _, name, icon, duration, expirationTime, spellID, priority
 
 	for i = 1, 40 do
-		local name, _, icon, _, _, duration, expirationTime = UnitDebuff("player", i)
+		name, _, icon, _, _, duration, expirationTime, _, _, _, spellID = UnitDebuff("player", i)
+		if not spellID then break end
 
-		if E.db.enhanced.loseControl[abilities[name]] and expirationTime > maxExpirationTime then
-			maxExpirationTime = expirationTime
-			Icon = icon
-			Duration = duration
+		if spellID == 19386 then
+			wyvernsting = 1
 
-			self.AbilityName:SetText(name)
+			if not self.wyvernsting then
+				self.wyvernsting = 1
+			elseif expirationTime > self.wyvernsting_expirationTime then
+				self.wyvernsting = 2
+			end
+
+			self.wyvernsting_expirationTime = expirationTime
+
+			if self.wyvernsting == 2 then
+				spellID = 0
+			end
+		elseif spellID == 64058 and icon ~= "Interface\\Icons\\Ability_Warrior_Disarm" then
+			spellID = 0
+		end
+
+		priority = self.db[spellNameList[name]]
+
+		if priority and CheckPriority(priority, ccPriority, expirationTime, ccExpirationTime) then
+			ccName = name
+			ccIcon = icon
+			ccDuration = duration
+			ccExpirationTime = expirationTime
+			ccPriority = priorities[priority]
 		end
 	end
 
-	if maxExpirationTime == 0 then
-		self.maxExpirationTime = 0
-		self.frame.timeLeft = nil
-		self.frame:SetScript("OnUpdate", nil)
-		self.frame:Hide()
-	elseif maxExpirationTime ~= self.maxExpirationTime then
-		self.maxExpirationTime = maxExpirationTime
+	if self.wyvernsting == 2 and not wyvernsting then
+		self.wyvernsting = nil
+	end
 
-		self.Icon:SetTexture(Icon)
+	if ccExpirationTime == 0 then
+		if self.ccExpirationTime ~= 0 then
+			self.ccExpirationTime = 0
+			self.frame.timeLeft = nil
+			self.frame:SetScript("OnUpdate", nil)
+			self.frame:Hide()
+		end
+	elseif ccExpirationTime ~= self.ccExpirationTime then
+		self.ccExpirationTime = ccExpirationTime
 
-		self.Cooldown:SetCooldown(maxExpirationTime - Duration, Duration)
+		self.frame.icon:SetTexture(ccIcon)
+		self.frame.spellName:SetText(ccName)
 
-		local timeLeft = maxExpirationTime - GetTime()
-		if not self.frame.timeLeft then
-			self.frame.timeLeft = timeLeft
+		if ccDuration > 0 then
+			self.frame.cooldown:SetCooldown(ccExpirationTime - ccDuration, ccDuration)
 
-			self.frame:SetScript("OnUpdate", self.OnUpdate)
-		else
-			self.frame.timeLeft = timeLeft
+			local timeLeft = ccExpirationTime - GetTime()
+
+			if self.frame.timeLeft then
+				self.frame.timeLeft = timeLeft
+			else
+				self.frame.timeLeft = timeLeft
+				self.frame:SetScript("OnUpdate", self.OnUpdate)
+			end
 		end
 
 		self.frame:Show()
 	end
 end
 
-function LOS:Initialize()
-	if not E.db.enhanced.loseControl.enable then return end
+function LC:UpdateSpellNames()
+	local spellName
+	for spellID, ccType in pairs(spellIDList) do
+		spellName = GetSpellInfo(spellID)
 
-	self.frame = CreateFrame("Frame", "ElvUI_loseControlFrame", UIParent)
-	self.frame:Point("CENTER", 0, 0)
-	self.frame:Size(54)
+		if spellName then
+			spellNameList[spellName] = ccType
+		end
+	end
+end
+
+function LC:UpdateSettings()
+	self.frame:Size(self.db.iconSize)
+
+	if self.db.compactMode then
+		self.frame.cooldownTime:FontTemplate(E.media.normFont, E:Round(self.db.iconSize / 3), "OUTLINE")
+		self.frame.cooldownTime:ClearAllPoints()
+		self.frame.cooldownTime:SetPoint("CENTER")
+		self.frame.spellName:Hide()
+		self.frame.secondsText:Hide()
+	else
+		self.frame.cooldownTime:FontTemplate(E.media.normFont, 20, "OUTLINE")
+		self.frame.cooldownTime:SetPoint("BOTTOM", 0, -50)
+		self.frame.spellName:Show()
+		self.frame.secondsText:Show()
+	end
+end
+
+function LC:Initialize()
+	if not E.private.enhanced.loseControl.enable then return end
+
+	self.db = E.db.enhanced.loseControl
+
+	self.frame = CreateFrame("Frame", "ElvUI_LoseControl", UIParent)
+	self.frame:SetPoint("CENTER")
 	self.frame:SetTemplate()
 	self.frame:Hide()
 
-	for name, v in pairs(G.loseControl) do
-		if name then
-			abilities[name] = v
-		end
-	end
+	self.frame.icon = self.frame:CreateTexture(nil, "ARTWORK")
+	self.frame.icon:SetInside()
+	self.frame.icon:SetTexCoord(unpack(E.TexCoords))
 
-	E:CreateMover(self.frame, "LoseControlMover", L["Lose Control Icon"])
+	self.frame.cooldown = CreateFrame("Cooldown", "$parent_Cooldown", self.frame, "CooldownFrameTemplate")
+	self.frame.cooldown:SetInside()
 
-	self.Icon = self.frame:CreateTexture(nil, "ARTWORK")
-	self.Icon:SetInside()
-	self.Icon:SetTexCoord(.1, .9, .1, .9)
+	self.frame.spellName = self.frame:CreateFontString(nil, "OVERLAY")
+	self.frame.spellName:FontTemplate(E.media.normFont, 20, "OUTLINE")
+	self.frame.spellName:SetPoint("BOTTOM", 0, -25)
 
-	self.AbilityName = self.frame:CreateFontString(nil, "OVERLAY")
-	self.AbilityName:FontTemplate(E["media"].normFont, 20, "OUTLINE")
-	self.AbilityName:SetPoint("BOTTOM", self.frame, 0, -28)
+	self.frame.cooldownTime = self.frame.cooldown:CreateFontString(nil, "OVERLAY")
 
-	self.Cooldown = CreateFrame("Cooldown", self.frame:GetName().."Cooldown", self.frame, "CooldownFrameTemplate")
-	self.Cooldown:SetInside()
+	self.frame.secondsText = self.frame.cooldown:CreateFontString(nil, "OVERLAY")
+	self.frame.secondsText:FontTemplate(E.media.normFont, 20, "OUTLINE")
+	self.frame.secondsText:SetPoint("BOTTOM", 0, -75)
+	self.frame.secondsText:SetText(L["seconds"])
 
-	self.frame.NumberText = self.frame:CreateFontString(nil, "OVERLAY")
-	self.frame.NumberText:FontTemplate(E["media"].normFont, 20, "OUTLINE")
-	self.frame.NumberText:SetPoint("BOTTOM", self.frame, 0, -58)
+	self:UpdateSettings()
 
-	self.SecondsText = self.frame:CreateFontString(nil, "OVERLAY")
-	self.SecondsText:FontTemplate(E["media"].normFont, 20, "OUTLINE")
-	self.SecondsText:SetPoint("BOTTOM", self.frame, 0, -80)
-	self.SecondsText:SetText(L["seconds"])
+	E:CreateMover(self.frame, "LossControlMover", L["Loss Control"], nil, nil, nil, "ALL,ARENA")
+
+	self:UpdateSpellNames()
 
 	self:RegisterEvent("UNIT_AURA")
 end
 
 local function InitializeCallback()
-	LOS:Initialize()
+	LC:Initialize()
 end
 
-E:RegisterModule(LOS:GetName(), InitializeCallback)
+E:RegisterModule(LC:GetName(), InitializeCallback)

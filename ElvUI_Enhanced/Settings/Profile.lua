@@ -112,12 +112,14 @@ P.enhanced = {
 		}
 	},
 	loseControl = {
+		iconSize = 60,
+		compactMode = false,
 		CC = true,
 		PvE = true,
 		Silence = true,
 		Disarm = true,
 		Root = false,
-		Snare = true
+		Snare = false
 	},
 	timerTracker = {
 		dbm = true
