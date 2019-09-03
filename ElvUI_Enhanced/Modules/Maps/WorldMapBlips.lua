@@ -1,7 +1,7 @@
-local _, _, _, enabled, _, reason = GetAddOnInfo("Mapster")
-if reason ~= "MISSED" and enabled then return end
+local E, L, V, P, G = unpack(ElvUI)
+local WMB = E:NewModule("PinUI_WorldMapBlips", "AceHook-3.0")
 
-local _G =_G
+local _G = _G
 local select = select
 
 local GetNumRaidMembers = GetNumRaidMembers
@@ -28,50 +28,65 @@ local BLIP_TEX_COORDS = {
 
 local BLIP_RAID_Y_OFFSET = 0.5
 
-for i = 1, MAX_PARTY_MEMBERS do
-	_G["WorldMapParty"..i].icon:SetTexture("Interface\\Minimap\\PartyRaidBlips")
-end
+function WMB:SetHook()
+	WorldMapButton:HookScript("OnUpdate", function(self, elapsed)
+		if GetNumRaidMembers() > 0 then
+			local playerCount = 0
 
-for i = 1, MAX_RAID_MEMBERS do
-	_G["WorldMapRaid"..i].icon:SetTexture("Interface\\Minimap\\PartyRaidBlips")
-end
+			for i = 1, MAX_RAID_MEMBERS do
+				local unit = "raid"..i
+				local partyX, partyY = GetPlayerMapPosition(unit)
 
-WorldMapButton:HookScript("OnUpdate", function(self, elapsed)
-	if GetNumRaidMembers() > 0 then
-		local playerCount = 0
+				if (partyX ~= 0 and partyY ~= 0) or not UnitIsUnit(unit, "player") then
+					local partyMemberFrame = _G["WorldMapRaid"..(playerCount + 1)]
+					local class = select(2, UnitClass(partyMemberFrame.unit))
 
-		for i = 1, MAX_RAID_MEMBERS do
-			local unit = "raid"..i
-			local partyX, partyY = GetPlayerMapPosition(unit)
+					if class then
+						if UnitInParty(partyMemberFrame.unit) then
+							partyMemberFrame.icon:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
+						else
+							partyMemberFrame.icon:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3] + BLIP_RAID_Y_OFFSET, BLIP_TEX_COORDS[class][4] + BLIP_RAID_Y_OFFSET)
+						end
+					end
 
-			if (partyX ~= 0 and partyY ~= 0) or not UnitIsUnit(unit, "player") then
-				local partyMemberFrame = _G["WorldMapRaid"..(playerCount + 1)]
-				local class = select(2, UnitClass(partyMemberFrame.unit))
+					playerCount = playerCount + 1
+				end
+			end
+		else
+			for i = 1, MAX_PARTY_MEMBERS do
+				local unit = "party"..i
+				local partyX, partyY = GetPlayerMapPosition("party"..i)
 
-				if class then
-					if UnitInParty(partyMemberFrame.unit) then
+				if partyX ~= 0 and partyY ~= 0 then
+					local class = select(2, UnitClass(unit))
+					local partyMemberFrame = _G["WorldMapParty"..i]
+
+					if class then
 						partyMemberFrame.icon:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
-					else
-						partyMemberFrame.icon:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3] + BLIP_RAID_Y_OFFSET, BLIP_TEX_COORDS[class][4] + BLIP_RAID_Y_OFFSET)
 					end
 				end
-
-				playerCount = playerCount + 1
 			end
 		end
-	else
-		for i = 1, MAX_PARTY_MEMBERS do
-			local unit = "party"..i
-			local partyX, partyY = GetPlayerMapPosition("party"..i)
+	end)
+end
 
-			if partyX ~= 0 and partyY ~= 0 then
-				local class = select(2, UnitClass(unit))
-				local partyMemberFrame = _G["WorldMapParty"..i]
+function WMB:Initialize()
+	local _, _, _, enabled, _, reason = GetAddOnInfo("Mapster")
+	if reason ~= "MISSED" and enabled then return end
 
-				if class then
-					partyMemberFrame.icon:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
-				end
-			end
-		end
+	for i = 1, MAX_PARTY_MEMBERS do
+		_G["WorldMapParty"..i].icon:SetTexture("Interface\\Minimap\\PartyRaidBlips")
 	end
-end)
+
+	for i = 1, MAX_RAID_MEMBERS do
+		_G["WorldMapRaid"..i].icon:SetTexture("Interface\\Minimap\\PartyRaidBlips")
+	end
+
+	self:SetHook()
+end
+
+local function InitializeCallback()
+	WMB:Initialize()
+end
+
+E:RegisterModule(WMB:GetName(), InitializeCallback)
