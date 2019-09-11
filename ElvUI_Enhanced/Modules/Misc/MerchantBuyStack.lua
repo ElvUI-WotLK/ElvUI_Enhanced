@@ -2,20 +2,42 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
 local select = select
+local ceil = math.ceil
 
 local BuyMerchantItem = BuyMerchantItem
 local GetItemInfo = GetItemInfo
+local GetMerchantItemInfo = GetMerchantItemInfo
 local GetMerchantItemLink = GetMerchantItemLink
 local GetMerchantItemMaxStack = GetMerchantItemMaxStack
 local IsAltKeyDown = IsAltKeyDown
 
 function M:MerchantItemButton_OnModifiedClick(button)
 	if IsAltKeyDown() then
-		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(button:GetID())))
+		local id = button:GetID()
+		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(id)))
 
 		if maxStack and maxStack > 1 then
-			BuyMerchantItem(button:GetID(), GetMerchantItemMaxStack(button:GetID()))
+			local stack = GetMerchantItemMaxStack(id)
+
+			if stack > 1 then
+				BuyMerchantItem(id, stack)
+				return
+			else
+				local _, _, _, quantity, numAvailable = GetMerchantItemInfo(id)
+				quantity = ceil(maxStack / quantity)
+
+				if numAvailable > -1 and numAvailable < quantity then
+					quantity = numAvailable
+				end
+
+				if quantity > 1 then
+					BuyMerchantItem(id, quantity)
+					return
+				end
+			end
 		end
+
+		BuyMerchantItem(id)
 	end
 end
 
