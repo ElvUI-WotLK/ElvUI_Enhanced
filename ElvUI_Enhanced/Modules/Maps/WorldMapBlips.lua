@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local WMB = E:NewModule("PinUI_WorldMapBlips", "AceHook-3.0")
+local WMB = E:NewModule("ElvUI_WorldMapBlips", "AceHook-3.0")
 
 local _G = _G
 local select = select
