@@ -190,29 +190,29 @@ function LC:UNIT_AURA(event, unit)
 	if unit ~= "player" then return end
 
 	local ccExpirationTime = 0
-	local ccName, ccIcon, ccDuration, ccPriority, wyvernsting
+	local ccName, ccIcon, ccDuration, ccPriority, wyvernSting
 	local _, name, icon, duration, expirationTime, spellID, priority
 
 	for i = 1, 40 do
-		name, _, icon, _, _, duration, expirationTime, _, _, _, spellID = UnitDebuff("player", i)
-		if not spellID then break end
+		name, _, icon, _, _, duration, expirationTime = UnitDebuff("player", i)
+		if not name then break end
 
-		if spellID == 19386 then
-			wyvernsting = 1
+		if name == self.wyvernStingName then
+			wyvernSting = 1
 
-			if not self.wyvernsting then
-				self.wyvernsting = 1
-			elseif expirationTime > self.wyvernsting_expirationTime then
-				self.wyvernsting = 2
+			if not self.wyvernSting then
+				self.wyvernSting = 1
+			elseif expirationTime > self.wyvernStingExpirationTime then
+				self.wyvernSting = 2
 			end
 
-			self.wyvernsting_expirationTime = expirationTime
+			self.wyvernStingExpirationTime = expirationTime
 
-			if self.wyvernsting == 2 then
-				spellID = 0
+			if self.wyvernSting == 2 then
+				name = nil
 			end
-		elseif spellID == 64058 and icon ~= "Interface\\Icons\\Ability_Warrior_Disarm" then
-			spellID = 0
+		elseif name == self.psychicHorrorName and icon ~= "Interface\\Icons\\Ability_Warrior_Disarm" then
+			name = nil
 		end
 
 		priority = self.db[spellNameList[name]]
@@ -226,8 +226,8 @@ function LC:UNIT_AURA(event, unit)
 		end
 	end
 
-	if self.wyvernsting == 2 and not wyvernsting then
-		self.wyvernsting = nil
+	if self.wyvernSting == 2 and not wyvernSting then
+		self.wyvernSting = nil
 	end
 
 	if ccExpirationTime == 0 then
@@ -343,6 +343,8 @@ function LC:Initialize()
 	E:CreateMover(self.frame, "LossControlMover", L["Loss Control"], nil, nil, nil, "ALL,ARENA")
 
 	self:UpdateSpellNames()
+	self.wyvernStingName = GetSpellInfo(19386)
+	self.psychicHorrorName = GetSpellInfo(64058)
 
 	self:RegisterEvent("UNIT_AURA")
 
