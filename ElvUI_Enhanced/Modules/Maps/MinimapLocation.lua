@@ -2,8 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local ML = E:NewModule("Enhanced_MinimapLocation", "AceHook-3.0")
 local M = E:GetModule("Minimap")
 
+local utf8sub = string.utf8sub
+
+local GetMinimapZoneText = GetMinimapZoneText
 local GetPlayerMapPosition = GetPlayerMapPosition
 local InCombatLockdown = InCombatLockdown
+local UIFrameFade = UIFrameFade
 
 local init = false
 local cluster, panel, location, xMap, yMap
@@ -11,7 +15,7 @@ local cluster, panel, location, xMap, yMap
 local digits = {
 	[0] = {.5, "%.0f"},
 	[1] = {.2, "%.1f"},
-	[2] = {.1, "%.2f"}
+	[2] = {.03, "%.2f"}
 }
 
 local function UpdateLocation(self, elapsed)
@@ -26,9 +30,9 @@ local function UpdateLocation(self, elapsed)
 end
 
 local function CreateEnhancedMaplocation()
-	cluster = _G["MinimapCluster"]
+	cluster = MinimapCluster
 
-	panel = CreateFrame("Frame", "EnhancedLocationPanel", _G["MinimapCluster"])
+	panel = CreateFrame("Frame", "EnhancedLocationPanel", MinimapCluster)
 	panel:SetFrameStrata("BACKGROUND")
 	panel:Point("CENTER", E.UIParent, "CENTER", 0, 0)
 	panel:Size(206, 22)
@@ -74,7 +78,11 @@ end
 
 local function FadeInMinimap()
 	if not InCombatLockdown() then
-		FadeFrame(cluster, "IN", 0, 1, .5, function() if(not InCombatLockdown()) then cluster:Show() end end)
+		FadeFrame(cluster, "IN", 0, 1, .5, function()
+			if not InCombatLockdown() then
+				cluster:Show()
+			end
+		end)
 	end
 end
 
@@ -98,12 +106,10 @@ local function Update_ZoneText()
 
 	location.text:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	location.text:SetTextColor(M:GetLocTextColor())
-	location.text:SetText(strsub(GetMinimapZoneText(), 1, 25))
+	location.text:SetText(utf8sub(GetMinimapZoneText(), 1, 25))
 end
 
 local function UpdateSettings()
-	if not E.private.general.minimap.enable then return end
-
 	if not init then
 		init = true
 		CreateEnhancedMaplocation()
@@ -156,6 +162,8 @@ local function UpdateSettings()
 end
 
 function ML:UpdateSettings()
+	if not E.private.general.minimap.enable then return end
+
 	if E.db.enhanced.minimap.location then
 		if not self:IsHooked(M, "Update_ZoneText") then
 			self:SecureHook(M, "Update_ZoneText", Update_ZoneText)
@@ -166,7 +174,7 @@ function ML:UpdateSettings()
 
 		M:UpdateSettings()
 		M:Update_ZoneText()
-	else
+	elseif init then
 		self:UnhookAll()
 
 		local mmholder = MMHolder
@@ -188,7 +196,7 @@ function ML:UpdateSettings()
 end
 
 function ML:Initialize()
-	if not E.db.enhanced.minimap.location then return end
+	if not (E.private.general.minimap.enable and E.db.enhanced.minimap.location) then return end
 
 	self:SecureHook(M, "Update_ZoneText", Update_ZoneText)
 	self:SecureHook(M, "UpdateSettings", UpdateSettings)

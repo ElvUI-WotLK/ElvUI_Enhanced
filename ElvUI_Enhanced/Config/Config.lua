@@ -705,7 +705,7 @@ local function MinimapOptions()
 		name = L["Minimap"],
 		get = function(info) return E.db.enhanced.minimap[info[#info]] end,
 		set = function(info, value)
-			E.db.enhanced.minimap.showlocationdigits = value
+			E.db.enhanced.minimap[info[#info]] = value
 			E:GetModule("Enhanced_MinimapLocation"):UpdateSettings()
 		end,
 		disabled = function() return not E.private.general.minimap.enable end,
