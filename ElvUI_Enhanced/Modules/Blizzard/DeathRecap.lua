@@ -9,7 +9,6 @@ local tonumber = tonumber
 
 local _G = _G
 local CannotBeResurrected = CannotBeResurrected
-local CombatLog_String_SchoolString = CombatLog_String_SchoolString
 local CopyTable = CopyTable
 local GetReleaseTimeRemaining = GetReleaseTimeRemaining
 local GetSpellInfo = GetSpellInfo
