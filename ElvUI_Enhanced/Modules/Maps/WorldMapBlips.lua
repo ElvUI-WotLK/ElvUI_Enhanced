@@ -23,6 +23,7 @@ local BLIP_RAID_Y_OFFSET = 0.5
 
 local function OnShowParty(self)
 	local _, class = UnitClass(self.unit)
+	if not class then return end
 
 	if self.class ~= class then
 		self.class = class
@@ -34,6 +35,8 @@ local function OnShowRaid(self)
 	if not self.unit then return end -- players in the battleground not in your raid
 
 	local _, class = UnitClass(self.unit)
+	if not class then return end
+
 	local inParty = UnitInParty(self.unit)
 
 	if self.class ~= class or self.inParty ~= inParty then
