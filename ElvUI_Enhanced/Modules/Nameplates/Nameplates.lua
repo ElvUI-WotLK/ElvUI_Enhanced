@@ -82,6 +82,11 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 end
 
 -- Class Cache
+local grenColorToClass = {}
+for class, color in pairs(RAID_CLASS_COLORS) do
+	grenColorToClass[color.g] = class
+end
+
 local function UnitClassHook(self, frame, unitType)
 	if unitType == "FRIENDLY_PLAYER" then
 		local unitName = frame.UnitName
@@ -97,12 +102,8 @@ local function UnitClassHook(self, frame, unitType)
 			return NP:GetUnitClassByGUID(frame)
 		end
 	elseif unitType == "ENEMY_PLAYER" then
-		local r, g, b = self:RoundColors(frame.oldHealthBar:GetStatusBarColor())
-		for class in pairs(RAID_CLASS_COLORS) do -- ENEMY_PLAYER
-			if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
-				return class
-			end
-		end
+		local _, g = frame.oldHealthBar:GetStatusBarColor()
+		return grenColorToClass[floor(g*100 + 0.5) / 100]
 	end
 end
 
