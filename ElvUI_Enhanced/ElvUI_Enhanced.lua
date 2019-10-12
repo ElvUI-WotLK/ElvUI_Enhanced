@@ -110,6 +110,8 @@ function addon:DBConversions()
 				EnhancedDB.UnitClass[name] = classMap[class]
 			end
 		end
+
+		EnhancedDB.UnitClass[UNKNOWN] = nil
 	end
 end
 

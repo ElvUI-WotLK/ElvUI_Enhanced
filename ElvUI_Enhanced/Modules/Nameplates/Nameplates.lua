@@ -28,10 +28,18 @@ local classMap = {}
 local guildMap = {}
 local npcTitleMap = {}
 
+local function UpdateNameplateByName(name)
+	for frame in pairs(NP.VisiblePlates) do
+		if frame and frame:IsShown() and frame.UnitName == name then
+			NP:UpdateAllFrame(frame)
+		end
+	end
+end
+
 function ENP:UPDATE_MOUSEOVER_UNIT()
 	if UnitIsPlayer("mouseover") and UnitReaction("mouseover", "player") ~= 2 then
 		local name, realm = UnitName("mouseover")
-		if realm or not name then return end
+		if realm or not name or name == UNKNOWN then return end
 
 		if E.db.enhanced.nameplates.classCache then
 			local _, class = UnitClass("mouseover")
@@ -53,6 +61,7 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 
 			if EnhancedDB.UnitTitle[name] ~= guildMap[guildName] then
 				EnhancedDB.UnitTitle[name] = guildMap[guildName]
+				UpdateNameplateByName(name)
 			end
 		end
 	else
@@ -77,6 +86,7 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 
 		if EnhancedDB.UnitTitle[name] ~= npcTitleMap[description] then
 			EnhancedDB.UnitTitle[name] = npcTitleMap[description]
+			UpdateNameplateByName(name)
 		end
 	end
 end
