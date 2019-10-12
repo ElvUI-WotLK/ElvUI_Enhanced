@@ -10,6 +10,7 @@ local next = next
 local pairs = pairs
 local sub = string.sub
 local gsub = string.gsub
+local floor = math.floor
 local match = string.match
 local gmatch = string.gmatch
 local format = string.format
@@ -18,11 +19,17 @@ local tinsert = table.insert
 local tremove = table.remove
 
 local GetGuildInfo = GetGuildInfo
+local IsInGuild = IsInGuild
+local IsInInstance = IsInInstance
+local IsResting = IsResting
 local UnitClass = UnitClass
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
+local UNKNOWN = UNKNOWN
 
 local classMap = {}
 local guildMap = {}
@@ -132,10 +139,10 @@ end
 -- Title Cache
 local separatorMap = {
 	[" "] = "%s",
-	["<"] = "< %s >",
-	["("] = "( %s )",
-	["["] = "[ %s ]",
-	["{"] = "{ %s }"
+	["<"] = "<%s>",
+	["("] = "(%s)",
+	["["] = "[%s]",
+	["{"] = "{%s}"
 }
 
 local function UpdateElement_NameHook(self, frame)
@@ -149,18 +156,54 @@ local function UpdateElement_NameHook(self, frame)
 		return
 	end
 
-	if frame.UnitType == "FRIENDLY_PLAYER" and EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]] then
-		if not frame.Title then
-			frame.Title = frame:CreateFontString(nil, "OVERLAY")
-			frame.Title:SetWordWrap(false)
-		end
-
+	local guildName = EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]]
+	if frame.UnitType == "FRIENDLY_PLAYER" and guildName then
 		local db = E.db.enhanced.nameplates.guild
-		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
-		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]])
-		frame.Title:Show()
+
+		local shown
+		if IsResting() then
+			shown = db.visibility.city
+		else
+			local _, instanceType = IsInInstance()
+			if instanceType == "pvp" then
+				shown = db.visibility.pvp
+			elseif instanceType == "arena" then
+				shown = db.visibility.arena
+			elseif instanceType == "party" then
+				shown = db.visibility.party
+			elseif instanceType == "raid" then
+				shown = db.visibility.raid
+			else
+				shown = true
+			end
+		end
+	
+		if shown then
+			if not frame.Title then
+				frame.Title = frame:CreateFontString(nil, "OVERLAY")
+				frame.Title:SetWordWrap(false)
+			end
+
+			frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+
+			local color
+			if UnitInRaid(frame.UnitName) then
+				color = db.colors.raid
+			elseif UnitInParty(frame.UnitName) then
+				color = db.colors.party
+			elseif IsInGuild and GetGuildInfo("player") == guildName then
+				color = db.colors.guild
+			else
+				color = db.colors.none
+			end
+
+			frame.Title:SetTextColor(color.r, color.g, color.b)
+			frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
+			frame.Title:SetFormattedText(separatorMap[db.separator], guildName)
+			frame.Title:Show()
+		elseif frame.Title then
+			frame.Title:Hide()
+		end
 	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
 			frame.Title = frame:CreateFontString(nil, "OVERLAY")

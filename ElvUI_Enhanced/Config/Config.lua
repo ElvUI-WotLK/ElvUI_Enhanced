@@ -850,23 +850,8 @@ local function NamePlatesOptions()
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
 							},
-							color = {
-								order = 4,
-								type = "color",
-								name = L["COLOR"],
-								get = function(info)
-									local t = E.db.enhanced.nameplates.guild[info[#info]]
-									local d = P.enhanced.nameplates.guild[info[#info]]
-									return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-								end,
-								set = function(info, r, g, b)
-									local t = E.db.enhanced.nameplates.guild[info[#info]]
-									t.r, t.g, t.b = r, g, b
-									E:GetModule("NamePlates"):ConfigureAll()
-								end,
-							},
 							separator = {
-								order = 5,
+								order = 4,
 								type = "select",
 								name = L["Separator"],
 								values = {
@@ -875,6 +860,82 @@ local function NamePlatesOptions()
 									["("] = "( )",
 									["["] = "[ ]",
 									["{"] = "{ }"
+								}
+							},
+							colorsGroup = {
+								order = 5,
+								type = "group",
+								name = L["COLORS"],
+								guiInline = true,
+								get = function(info)
+									local t = E.db.enhanced.nameplates.guild.colors[info[#info]]
+									local d = P.enhanced.nameplates.guild.colors[info[#info]]
+									return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+								end,
+								set = function(info, r, g, b)
+									local t = E.db.enhanced.nameplates.guild.colors[info[#info]]
+									t.r, t.g, t.b = r, g, b
+									E:GetModule("NamePlates"):ConfigureAll()
+								end,
+								args = {
+									raid = {
+										order = 1,
+										type = "color",
+										name = L["RAID"],
+									},
+									party = {
+										order = 2,
+										type = "color",
+										name = L["PARTY"],
+									},
+									guild = {
+										order = 3,
+										type = "color",
+										name = L["GUILD"],
+									},
+									none = {
+										order = 4,
+										type = "color",
+										name = L["ALL"],
+									},
+								}
+							},
+							visabilityGroup = {
+								order = 6,
+								type = "group",
+								name = L["Visibility State"],
+								guiInline = true,
+								get = function(info) return E.db.enhanced.nameplates.guild.visibility[info[#info]] end,
+								set = function(info, value)
+									E.db.enhanced.nameplates.guild.visibility[info[#info]] = value
+									E:GetModule("NamePlates"):ConfigureAll()
+								end,
+								args = {
+									city = {
+										order = 1,
+										type = "toggle",
+										name = L["City (Resting)"]
+									},
+									pvp = {
+										order = 2,
+										type = "toggle",
+										name = L["PvP"]
+									},
+									arena = {
+										order = 3,
+										type = "toggle",
+										name = L["Arena"]
+									},
+									party = {
+										order = 4,
+										type = "toggle",
+										name = L["Party"]
+									},
+									raid = {
+										order = 5,
+										type = "toggle",
+										name = L["Raid"]
+									}
 								}
 							}
 						}
