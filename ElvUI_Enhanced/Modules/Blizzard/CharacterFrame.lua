@@ -525,20 +525,18 @@ local function GetAverageItemLevel()
 			end
 
 			if isBagItemLevel then
-				if isBagItemLevel then
-					bagItem = bagItem + 1
-					totalBag = totalBag + isBagItemLevel
-				end
+				bagItem = bagItem + 1
+				totalBag = totalBag + isBagItemLevel
+			end
 
-				if slotName == "MainHandSlot" then
-					if hasTwoHandBag then
-						if isBagItemLevel then
-							if hasTwoHandBag > isBagItemLevel then
-								hasMainHandBag = hasTwoHandBag
-							end
-						else
+			if slotName == "MainHandSlot" then
+				if hasTwoHandBag then
+					if isBagItemLevel then
+						if hasTwoHandBag > isBagItemLevel then
 							hasMainHandBag = hasTwoHandBag
 						end
+					else
+						hasMainHandBag = hasTwoHandBag
 					end
 				end
 			end
