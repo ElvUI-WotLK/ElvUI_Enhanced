@@ -1297,12 +1297,12 @@ local function InterruptTrackerOptions()
 				type = "group",
 				name = L["Where to show"],
 				guiInline = true,
-				get = function(info) return E.private.enhanced.interruptTracker[info[#info]] end,
+				get = function(info) return E.db.enhanced.interruptTracker[info[#info]] end,
 				set = function(info, value)
-					E.private.enhanced.interruptTracker[info[#info]] = value
+					E.db.enhanced.interruptTracker[info[#info]] = value
 					E:GetModule("Enhanced_InterruptTracker"):UpdateState()
 				end,
-				disabled = function() return not E.private.enhanced.interruptTracker.enable end,
+				disabled = function() return not E.db.enhanced.interruptTracker.enable end,
 				args = {
 					everywhere = {
 						order = 1,
@@ -1315,14 +1315,14 @@ local function InterruptTrackerOptions()
 						type = "toggle",
 						name = ARENA,
 						desc = L["Show on Arena."],
-						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end
+						disabled = function() return not E.db.enhanced.interruptTracker.enable or E.db.enhanced.interruptTracker.everywhere end
 					},
 					battleground = {
 						order = 3,
 						type = "toggle",
 						name = BATTLEGROUND,
 						desc = L["Show on Battleground."],
-						disabled = function() return not E.private.enhanced.interruptTracker.enable or E.private.enhanced.interruptTracker.everywhere end
+						disabled = function() return not E.db.enhanced.interruptTracker.enable or E.db.enhanced.interruptTracker.everywhere end
 					}
 				}
 			},
