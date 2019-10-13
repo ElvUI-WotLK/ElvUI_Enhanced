@@ -3,7 +3,7 @@ local module = E:NewModule("Enhanced_CharacterFrame", "AceHook-3.0", "AceEvent-3
 local S = E:GetModule("Skins")
 
 local _G = _G
-local select, next, pairs, tonumber, getmetatable = select, next, pairs, tonumber, getmetatable
+local select, next, ipairs, pairs, tonumber, getmetatable = select, next, ipairs, pairs, tonumber, getmetatable
 local abs, floor, max, min = math.abs, math.floor, math.max, math.min
 local find, format, gmatch, gsub, lower, sub, trim = string.find, string.format, string.gmatch, string.gsub, string.lower, string.sub, string.trim
 local tinsert, tremove, sort, wipe = table.insert, table.remove, table.sort, table.wipe
@@ -332,7 +332,7 @@ function module:PaperDollFrame_SetLevel()
 	local classColor = RAID_CLASS_COLORS[class]
 	local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
 
-	if specName == "None" then
+	if specName == NONE then
 		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
 	else
 		CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
