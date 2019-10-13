@@ -440,12 +440,13 @@ local slots = {
 	["Finger1Slot"] = "INVTYPE_FINGER",
 	["Trinket0Slot"] = "INVTYPE_TRINKET",
 	["Trinket1Slot"] = "INVTYPE_TRINKET",
-	["MainHandSlot"] = "INVTYPE_WEAPONMAINHAND",
-	["SecondaryHandSlot"] = "INVTYPE_HOLDABLE",
-	["RangedSlot"] = "INVTYPE_RANGEDRIGHT"
+	["MainHandSlot"] = {"INVTYPE_WEAPONMAINHAND", "INVTYPE_2HWEAPON", "INVTYPE_WEAPON"},
+	["SecondaryHandSlot"] = {"INVTYPE_WEAPONOFFHAND", "INVTYPE_SHIELD", "INVTYPE_HOLDABLE", "INVTYPE_WEAPON"},
+	["RangedSlot"] = {"INVTYPE_RANGED", "INVTYPE_RANGEDRIGHT", "INVTYPE_THROWN", "INVTYPE_RELIC"}
 }
 
 local bagsTable = {}
+
 local function GetAverageItemLevel()
 	local _, itemLink, itemLevel, itemEquipLoc
 	local total, totalBag, item, bagItem, isBagItemLevel = 0, 0, 0, 0
@@ -468,11 +469,11 @@ local function GetAverageItemLevel()
 		end
 	end
 
+	local hasMainHand, hasMainHandBag
+	local hasTwoHandBag = bagsTable["INVTYPE_2HWEAPON"]
 	for slotName, itemLoc in pairs(slots) do
 		local slotID = GetInventorySlotInfo(slotName)
-		if slotID then
-			itemLink = GetInventoryItemLink("player", slotID)
-		end
+		itemLink = GetInventoryItemLink("player", slotID)
 
 		if itemLink then
 			_, _, _, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
@@ -480,7 +481,21 @@ local function GetAverageItemLevel()
 				item = item + 1
 				bagItem = bagItem + 1
 
-				isBagItemLevel = bagsTable[itemEquipLoc]
+				if type(itemLoc) == "table" then
+					local maxBagItemLevel = 0
+					for _, bagItemLoc in ipairs(itemLoc) do
+						isBagItemLevel = bagsTable[bagItemLoc]
+
+						if isBagItemLevel and isBagItemLevel > maxBagItemLevel then
+							maxBagItemLevel = isBagItemLevel
+						end
+					end
+
+					isBagItemLevel = maxBagItemLevel ~= 0 and maxBagItemLevel
+				else
+					isBagItemLevel = bagsTable[itemEquipLoc]
+				end
+
 				if isBagItemLevel and isBagItemLevel > itemLevel then
 					totalBag = totalBag + isBagItemLevel
 				else
@@ -488,23 +503,59 @@ local function GetAverageItemLevel()
 				end
 
 				total = total + itemLevel
+
+				if slotName == "MainHandSlot" and itemEquipLoc == "INVTYPE_2HWEAPON" then
+					hasMainHand = itemLevel
+				end
 			end
 		else
-			isBagItemLevel = bagsTable[itemLoc]
+			if type(itemLoc) == "table" then
+				local maxBagItemLevel = 0
+				for _, bagItemLoc in ipairs(itemLoc) do
+					isBagItemLevel = bagsTable[bagItemLoc]
+
+					if isBagItemLevel and isBagItemLevel > maxBagItemLevel then
+						maxBagItemLevel = isBagItemLevel
+					end
+				end
+
+				isBagItemLevel = maxBagItemLevel ~= 0 and maxBagItemLevel
+			else
+				isBagItemLevel = bagsTable[itemLoc]
+			end
+
 			if isBagItemLevel then
-				bagItem = bagItem + 1
-				totalBag = totalBag + isBagItemLevel
+				if isBagItemLevel then
+					bagItem = bagItem + 1
+					totalBag = totalBag + isBagItemLevel
+				end
+
+				if slotName == "MainHandSlot" then
+					if hasTwoHandBag then
+						if isBagItemLevel then
+							if hasTwoHandBag > isBagItemLevel then
+								hasMainHandBag = hasTwoHandBag
+							end
+						else
+							hasMainHandBag = hasTwoHandBag
+						end
+					end
+				end
 			end
 		end
 	end
 
 	wipe(bagsTable)
 
-	if total < 1 then
-		return 0, 0
+	if hasMainHand then
+		total = total + hasMainHand
 	end
 
-	return (totalBag / bagItem), (total / item)
+	if hasMainHandBag then
+		totalBag = totalBag + hasMainHandBag
+	end
+
+	return (totalBag / 17), (total / 17)
 end
 
 local function GetItemLevelColor(unit)
