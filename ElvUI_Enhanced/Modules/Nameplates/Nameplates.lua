@@ -222,7 +222,7 @@ end
 function ENP:TitleCache()
 	if E.db.enhanced.nameplates.titleCache then
 		if not self:IsHooked(NP, "UpdateElement_Name") then
-			self:SecureHook(NP, "UpdateElement_Name", UpdateElement_NameHook)
+			self:Hook(NP, "UpdateElement_Name", UpdateElement_NameHook)
 		end
 	else
 		if self:IsHooked(NP, "UpdateElement_Name") then
@@ -442,6 +442,8 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 end
 
 local function OnShowHook(frame)
+	NP._OnShow(frame)
+
 	if frame.UnitFrame.bubbleFrame then
 		frame.UnitFrame.bubbleFrame = nil
 	end
@@ -502,7 +504,7 @@ function ENP:UpdateAllSettings()
 
 	if E.db.enhanced.nameplates.chatBubbles or E.db.enhanced.nameplates.titleCache then
 		if not ENP:IsHooked(NP, "OnHide") then
-			ENP:SecureHook(NP, "OnHide", OnHideHook)
+			ENP:Hook(NP, "OnHide", OnHideHook)
 		end
 	elseif not E.db.enhanced.nameplates.chatBubbles and not E.db.enhanced.nameplates.titleCache then
 		if ENP:IsHooked(NP, "OnHide") then
@@ -510,12 +512,14 @@ function ENP:UpdateAllSettings()
 		end
 	end
 	if E.db.enhanced.nameplates.chatBubbles then
-		if not ENP:IsHooked(NP, "OnShow") then
-			ENP:SecureHook(NP, "OnShow", OnShowHook)
+		if not NP._OnShow then
+			NP._OnShow = NP.OnShow
+			NP.OnShow = OnShowHook
 		end
 	else
-		if ENP:IsHooked(NP, "OnShow") then
-			ENP:Unhook(NP, "OnShow")
+		if NP._OnShow then
+			NP.OnShow = NP._OnShow
+			NP._OnShow = nil
 		end
 	end
 end
