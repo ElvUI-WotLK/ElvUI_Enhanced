@@ -5,18 +5,10 @@ local M = E:GetModule("Misc")
 local CH = E:GetModule("Chat")
 
 local _G = _G
-local ipairs = ipairs
-local next = next
-local pairs = pairs
-local sub = string.sub
-local gsub = string.gsub
-local floor = math.floor
-local match = string.match
-local gmatch = string.gmatch
-local format = string.format
-local lower = string.lower
-local tinsert = table.insert
-local tremove = table.remove
+local ipairs, next, pairs = ipairs, next, pairs
+local sub, gsub, floor = string.sub, string.gsub, math.floor
+local match, gmatch, format, lower = string.match, string.gmatch, string.format, string.lower
+local tinsert, tremove = table.insert, table.remove
 
 local GetGuildInfo = GetGuildInfo
 local IsInGuild = IsInGuild
@@ -441,8 +433,8 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	end
 end
 
-local function OnShowHook(frame)
-	NP._OnShow(frame)
+local function OnShowHook(frame, isConfig)
+	ENP.hooks[NP].OnShow(frame, isConfig)
 
 	if frame.UnitFrame.bubbleFrame then
 		frame.UnitFrame.bubbleFrame = nil
@@ -512,14 +504,12 @@ function ENP:UpdateAllSettings()
 		end
 	end
 	if E.db.enhanced.nameplates.chatBubbles then
-		if not NP._OnShow then
-			NP._OnShow = NP.OnShow
-			NP.OnShow = OnShowHook
+		if not ENP:IsHooked(NP, "OnShow") then
+			ENP:RawHook(NP, "OnShow", OnShowHook, true)
 		end
 	else
-		if NP._OnShow then
-			NP.OnShow = NP._OnShow
-			NP._OnShow = nil
+		if ENP:IsHooked(NP, "OnShow") then
+			ENP:Unhook(NP, "OnShow")
 		end
 	end
 end
