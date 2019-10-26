@@ -387,6 +387,7 @@ function module:CharacterFrame_Collapse()
 	CharacterFrame.backdrop:Width(341)
 	CharacterFrame.Expanded = false
 
+	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "right")
 
 	for i = 1, #PAPERDOLL_SIDEBARS do
@@ -394,17 +395,13 @@ function module:CharacterFrame_Collapse()
 	end
 
 	PaperDollSidebarTabs:Hide()
-
-	if not InCombatLockdown() then
-		CharacterFrame:SetAttribute("UIPanelLayout-width", E:Scale(348))
-		UpdateUIPanelPositions(CharacterFrame)
-	end
 end
 
 function module:CharacterFrame_Expand()
 	CharacterFrame.backdrop:Width(341 + 192)
 	CharacterFrame.Expanded = true
 
+	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "left")
 
 	if PaperDollFrame:IsShown() and PaperDollFrame.currentSideBar then
@@ -416,11 +413,6 @@ function module:CharacterFrame_Expand()
 
 	self:PaperDollFrame_UpdateSidebarTabs()
 	PaperDollSidebarTabs:Show()
-
-	if not InCombatLockdown() then
-		CharacterFrame:SetAttribute("UIPanelLayout-width", E:Scale(540))
-		UpdateUIPanelPositions(CharacterFrame)
-	end
 end
 
 local StatCategoryFrames = {}
@@ -1579,29 +1571,30 @@ function module:UpdateCharacterModelFrame()
 	if E.db.enhanced.character.background then
 		CharacterModelFrame.backdrop:Show()
 
-		local _, fileName = UnitRace("player")
+		local _, raceEng = UnitRace("player")
+		raceEng = lower(raceEng)
 
 		CharacterModelFrame.textureTopLeft:Show()
-		CharacterModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_1.blp")
+		CharacterModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
 		CharacterModelFrame.textureTopLeft:SetDesaturated(true)
 		CharacterModelFrame.textureTopRight:Show()
-		CharacterModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_2.blp")
+		CharacterModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
 		CharacterModelFrame.textureTopRight:SetDesaturated(true)
 		CharacterModelFrame.textureBotLeft:Show()
-		CharacterModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_3.blp")
+		CharacterModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
 		CharacterModelFrame.textureBotLeft:SetDesaturated(true)
 		CharacterModelFrame.textureBotRight:Show()
-		CharacterModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_4.blp")
+		CharacterModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
 		CharacterModelFrame.textureBotRight:SetDesaturated(true)
 
 		CharacterModelFrame.backgroundOverlay:Show()
 		CharacterModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
-		if strupper(fileName) == "SCOURGE" then
+		if raceEng == "scourge" then
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.1)
-		elseif strupper(fileName) == "BLOODELF" or strupper(fileName) == "NIGHTELF" then
+		elseif raceEng == "bloodelf" or raceEng == "nightelf" then
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.3)
-		elseif strupper(fileName) == "TROLL" or strupper(fileName) == "ORC" then
+		elseif raceEng == "troll" or raceEng == "orc" then
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.4)
 		else
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.5)
@@ -1620,29 +1613,30 @@ function module:UpdateInspectModelFrame()
 	if E.db.enhanced.character.inspectBackground then
 		InspectModelFrame.backdrop:Show()
 
-		local _, fileName = UnitRace(InspectFrame.unit)
+		local _, raceEng = UnitRace(InspectFrame.unit)
+		raceEng = lower(raceEng)
 
 		InspectModelFrame.textureTopLeft:Show()
-		InspectModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_1.blp")
+		InspectModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
 		InspectModelFrame.textureTopLeft:SetDesaturated(true)
 		InspectModelFrame.textureTopRight:Show()
-		InspectModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_2.blp")
+		InspectModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
 		InspectModelFrame.textureTopRight:SetDesaturated(true)
 		InspectModelFrame.textureBotLeft:Show()
-		InspectModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_3.blp")
+		InspectModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
 		InspectModelFrame.textureBotLeft:SetDesaturated(true)
 		InspectModelFrame.textureBotRight:Show()
-		InspectModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..lower(fileName).."_4.blp")
+		InspectModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
 		InspectModelFrame.textureBotRight:SetDesaturated(true)
 
 		InspectModelFrame.backgroundOverlay:Show()
 		InspectModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
-		if strupper(fileName) == "SCOURGE" then
+		if raceEng == "scourge" then
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.1)
-		elseif strupper(fileName) == "BLOODELF" or strupper(fileName) == "NIGHTELF" then
+		elseif raceEng == "bloodelf" or raceEng == "nightelf" then
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.3)
-		elseif strupper(fileName) == "TROLL" or strupper(fileName) == "ORC" then
+		elseif raceEng == "troll" or raceEng == "orc" then
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.4)
 		else
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.5)
@@ -1830,14 +1824,6 @@ function module:Initialize()
 	GearManagerToggleButton:Kill()
 
 	-- New frames
-	if not InCombatLockdown() then
-		if E.private.enhanced.character.collapsed then
-			CharacterFrame:SetAttribute("UIPanelLayout-width", E:Scale(348))
-		else
-			CharacterFrame:SetAttribute("UIPanelLayout-width", E:Scale(540))
-		end
-	end
-
 	SetCVar("equipmentManager", 1)
 
 	CharacterNameFrame:ClearAllPoints()
@@ -1845,8 +1831,10 @@ function module:Initialize()
 	CharacterFrameCloseButton:Point("CENTER", CharacterFrame.backdrop, "TOPRIGHT", -12, -13)
 
 	CharacterFrame.backdrop:ClearAllPoints()
-	CharacterFrame.backdrop:Point("TOPLEFT", 10, -12)
+	CharacterFrame.backdrop:Point("TOPLEFT", 11, -12)
 	CharacterFrame.backdrop:SetSize(341, 424)
+
+	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 
 	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
 	expandButton:SetSize(25, 25)
@@ -2403,11 +2391,8 @@ function module:Initialize()
 	PetPaperDollFrameCompanionFrame:HookScript("OnShow", function(self)
 		CharacterFrame.backdrop:Width(341 + 192)
 		module:PetPaperDollCompanionPane_Update()
-
-		if not InCombatLockdown() then
-			CharacterFrame:SetAttribute("UIPanelLayout-width", E:Scale(540))
-			UpdateUIPanelPositions(CharacterFrame)
-		end
+		
+		S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	end)
 
 	PetPaperDollFrameCompanionFrame:HookScript("OnHide", function(self)
