@@ -2,11 +2,17 @@ local E, L, V, P, G = unpack(ElvUI)
 local MF = E:NewModule("Enhanced_ModelFrames", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
 
-local PI = PI
+local _G = _G
+local max, min = math.max, math.min
+local PI = math.pi
 
 local GetCVar = GetCVar
+local GetCursorPosition = GetCursorPosition
+local IsMouseButtonDown = IsMouseButtonDown
 local Model_RotateLeft = Model_RotateLeft
 local Model_RotateRight = Model_RotateRight
+
+local ROTATIONS_PER_SECOND = ROTATIONS_PER_SECOND
 
 local modelFrames = {
 	"CharacterModelFrame",
@@ -50,6 +56,7 @@ do
 		playerRaceSex = playerRaceSex.."Female"
 	end
 end
+
 function MF:ModelControlButton(model)
 	model:Size(18, 18)
 
@@ -63,7 +70,7 @@ function MF:ModelControlButton(model)
 	model:SetScript("OnEnter", function(self)
 		UIFrameFadeIn(self:GetParent(), 0.2, self:GetParent():GetAlpha(), 1)
 		if GetCVar("UberTooltips") == "1" then
-			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
+			GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 			GameTooltip:SetText(self.tooltip, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 			if self.tooltipText then
 				GameTooltip:AddLine(self.tooltipText, nil, nil, nil, 1, 1)
@@ -115,6 +122,14 @@ function MF:ModelWithControls(model)
 	panButton:SetScript("OnMouseDown", function(self)
 		MF:ModelControlButton_OnMouseDown(self)
 		MF:Model_StartPanning(self:GetParent():GetParent(), true)
+	end)
+	panButton:SetScript("OnMouseUp", function(self)
+		MF:Model_StopPanning(model)
+		MF:ModelControlButton_OnMouseUp(self)
+
+		if not model:IsMouseOver() and not model.controlFrame:IsMouseOver() then
+			model.controlFrame:Hide()
+		end
 	end)
 
 	local rotateLeftButton = CreateFrame("Button", "$parentRotateLeftButton", model.controlFrame)
@@ -249,10 +264,10 @@ function MF:Model_OnUpdate(frame, elapsedTime, rotationsPerSecond)
 
 	if frame.mouseDown then
 		if frame.rotationCursorStart then
-			local x = GetCursorPosition()
-			local diff = (x - frame.rotationCursorStart) * 0.010
+			local cursorX = GetCursorPosition()
+			local diff = (cursorX - frame.rotationCursorStart) * 0.010
 
-			frame.rotationCursorStart = GetCursorPosition()
+			frame.rotationCursorStart = cursorX
 			frame.rotation = frame.rotation + diff
 
 			if frame.rotation < 0 then
@@ -415,23 +430,6 @@ function MF:Initialize()
 	modelPanning.texture = modelPanning:CreateTexture(nil, "ARTWORK")
 	modelPanning.texture:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\UI-Cursor-Move")
 	modelPanning.texture:SetAllPoints()
-
-	modelPanning:SetScript("OnUpdate", function(self)
-		local model = self.model
-		local controlFrame = model.controlFrame
-
-		if not IsMouseButtonDown(controlFrame.panButton) then
-			MF:Model_StopPanning(model)
-
-			if controlFrame.buttonDown then
-				MF:ModelControlButton_OnMouseUp(controlFrame.buttonDown)
-			end
-
-			if not controlFrame:IsMouseOver() then
-				controlFrame:Hide()
-			end
-		end
-	end)
 
 	self:RegisterEvent("ADDON_LOADED")
 end
