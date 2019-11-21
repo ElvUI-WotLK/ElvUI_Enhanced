@@ -140,7 +140,8 @@ local separatorMap = {
 local function UpdateElement_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
-	if self.db.units[frame.UnitType].healthbar.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then
+	local helath = self.db.units[frame.UnitType].healthbar or self.db.units[frame.UnitType].health
+	if helath.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then
 		if frame.Title then
 			frame.Title:SetText()
 			frame.Title:Hide()
