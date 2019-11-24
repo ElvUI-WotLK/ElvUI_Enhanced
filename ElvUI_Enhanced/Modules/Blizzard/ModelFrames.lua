@@ -8,7 +8,6 @@ local PI = math.pi
 
 local GetCVar = GetCVar
 local GetCursorPosition = GetCursorPosition
-local IsMouseButtonDown = IsMouseButtonDown
 local Model_RotateLeft = Model_RotateLeft
 local Model_RotateRight = Model_RotateRight
 

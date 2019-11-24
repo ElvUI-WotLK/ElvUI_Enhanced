@@ -170,7 +170,7 @@ local function UpdateElement_NameHook(self, frame)
 				shown = true
 			end
 		end
-	
+
 		if shown then
 			if not frame.Title then
 				frame.Title = frame:CreateFontString(nil, "OVERLAY")

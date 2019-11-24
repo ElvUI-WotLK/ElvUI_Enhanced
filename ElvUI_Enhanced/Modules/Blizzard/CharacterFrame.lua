@@ -37,7 +37,6 @@ local GetUnitManaRegenRateFromSpirit = GetUnitManaRegenRateFromSpirit
 local GetUnitMaxHealthModifier = GetUnitMaxHealthModifier
 local GetUnitPowerModifier = GetUnitPowerModifier
 local HasPetUI = HasPetUI
-local InCombatLockdown = InCombatLockdown
 local IsTitleKnown = IsTitleKnown
 local PlaySound = PlaySound
 local SetCVar = SetCVar
@@ -2391,7 +2390,7 @@ function module:Initialize()
 	PetPaperDollFrameCompanionFrame:HookScript("OnShow", function(self)
 		CharacterFrame.backdrop:Width(341 + 192)
 		module:PetPaperDollCompanionPane_Update()
-		
+
 		S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	end)
 

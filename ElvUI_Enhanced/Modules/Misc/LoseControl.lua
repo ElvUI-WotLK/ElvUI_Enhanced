@@ -191,7 +191,7 @@ function LC:UNIT_AURA(event, unit)
 
 	local ccExpirationTime = 0
 	local ccName, ccIcon, ccDuration, ccPriority, wyvernSting
-	local _, name, icon, duration, expirationTime, spellID, priority
+	local _, name, icon, duration, expirationTime, priority
 
 	for i = 1, 40 do
 		name, _, icon, _, _, duration, expirationTime = UnitDebuff("player", i)
