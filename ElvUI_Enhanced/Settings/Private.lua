@@ -43,5 +43,6 @@ V.enhanced = {
 		everywhere = false,
 		arena = true,
 		battleground = false
-	}
+	},
+	minimapButtonGrabber = false
 }
