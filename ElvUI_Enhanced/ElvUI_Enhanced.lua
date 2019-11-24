@@ -4,14 +4,16 @@ local EP = E.Libs.EP
 
 local addonName = ...
 
-local format = format
+local format = string.format
 
 local function gsPopupShow()
 	local url = "https://www.wowinterface.com/downloads/getfile.php?id=12245&aid=47105"
 
 	E.PopupDialogs["GS_VERSION_INVALID"] = {
 		text = L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"],
-		hasEditBox = 1,
+		button1 = DISABLE,
+		hideOnEscape = 1,
+		showAlert = 1,
 		OnShow = function(self)
 			self.editBox:SetAutoFocus(false)
 			self.editBox.width = self.editBox:GetWidth()
@@ -20,16 +22,14 @@ local function gsPopupShow()
 			self.editBox:HighlightText()
 			ChatEdit_FocusActiveWindow()
 		end,
-		OnHide = function(self)
-			self.editBox:SetWidth(self.editBox.width or 50)
-			self.editBox.width = nil
-		end,
-		hideOnEscape = 1,
-		button1 = DISABLE,
 		OnAccept = function()
 			DisableAddOn("GearScore")
 			DisableAddOn("BonusScanner")
 			ReloadUI()
+		end,
+		OnHide = function(self)
+			self.editBox:SetWidth(self.editBox.width or 50)
+			self.editBox.width = nil
 		end,
 		EditBoxOnEnterPressed = function(self)
 			ChatEdit_FocusActiveWindow()
@@ -49,8 +49,7 @@ local function gsPopupShow()
 		end,
 		OnEditFocusGained = function(self)
 			self:HighlightText()
-		end,
-		showAlert = 1
+		end
 	}
 
 	E:StaticPopup_Show("GS_VERSION_INVALID")
@@ -113,6 +112,56 @@ function addon:DBConversions()
 
 		EnhancedDB.UnitClass[UNKNOWN] = nil
 	end
+
+	if E.db.general.minimap.buttons then
+		E.private.enhanced.minimapButtonGrabber = true
+
+		E.db.enhanced.minimap.buttonGrabber.buttonSize = E.db.general.minimap.buttons.buttonsize
+		E.db.enhanced.minimap.buttonGrabber.buttonSpacing = E.db.general.minimap.buttons.buttonspacing
+		E.db.enhanced.minimap.buttonGrabber.backdrop = E.db.general.minimap.buttons.backdrop
+		E.db.enhanced.minimap.buttonGrabber.backdropSpacing = E.db.general.minimap.buttons.backdropSpacing
+		E.db.enhanced.minimap.buttonGrabber.buttonsPerRow = E.db.general.minimap.buttons.buttonsPerRow
+		E.db.enhanced.minimap.buttonGrabber.alpha = E.db.general.minimap.buttons.alpha
+		E.db.enhanced.minimap.buttonGrabber.mouseover = E.db.general.minimap.buttons.mouseover
+		E.db.enhanced.minimap.buttonGrabber.growFrom = E.db.general.minimap.buttons.point
+
+		if E.db.enhanced.minimap.buttonGrabber.insideMinimap then
+			E.db.enhanced.minimap.buttonGrabber.insideMinimap.enable = E.db.general.minimap.buttons.insideMinimap.enable
+			E.db.enhanced.minimap.buttonGrabber.insideMinimap.position = E.db.general.minimap.buttons.insideMinimap.position
+			E.db.enhanced.minimap.buttonGrabber.insideMinimap.xOffset = E.db.general.minimap.buttons.insideMinimap.xOffset
+			E.db.enhanced.minimap.buttonGrabber.insideMinimap.yOffset = E.db.general.minimap.buttons.insideMinimap.yOffset
+		end
+
+		E.db.general.minimap.buttons = nil
+	end
+end
+
+function addon:PrintAddonMerged(mergedAddonName)
+	local _, _, _, enabled, _, reason = GetAddOnInfo(mergedAddonName)
+	if reason == "MISSING" then return end
+
+	local text = format(L["Addon |cffFFD100%s|r was merged into |cffFFD100ElvUI_Enhanced|r.\nPlease remove it to avoid conflicts."], mergedAddonName)
+	E:Print(text)
+
+	if enabled then
+		if not E.PopupDialogs.ENHANCED_MERGED_ADDON then
+			E.PopupDialogs.ENHANCED_MERGED_ADDON = {
+				button2 = CANCEL,
+				OnAccept = function()
+					DisableAddOn(E.PopupDialogs.ENHANCED_MERGED_ADDON.mergedAddonName)
+					ReloadUI()
+				end,
+				whileDead = 1,
+				hideOnEscape = false
+			}
+		end
+
+		local popup = E.PopupDialogs.ENHANCED_MERGED_ADDON
+		popup.text = text
+		popup.button1 = format("Disable %s", string.gsub(mergedAddonName, "^ElvUI_", ""))
+
+		E:StaticPopup_Show("ENHANCED_MERGED_ADDON")
+	end
 end
 
 function addon:Initialize()
@@ -133,6 +182,8 @@ function addon:Initialize()
 			gsPopupShow()
 		end
 	end
+
+	self:PrintAddonMerged("ElvUI_MinimapButtons")
 end
 
 local function InitializeCallback()
