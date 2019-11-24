@@ -238,6 +238,8 @@ function AC:Initialize()
 		end
 	end
 
+	self.initialized = true
+
 	for addon, func in pairs(addonFixes) do
 		self:AddAddon(addon, func)
 	end
@@ -247,8 +249,6 @@ function AC:Initialize()
 			self:AddAddon(addon, func)
 		end
 	end
-
-	self.initialized = true
 end
 
 local function InitializeCallback()
