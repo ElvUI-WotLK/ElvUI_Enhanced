@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Blizzard.lua"/>
 	<Script file="DeathRecap.lua"/>
+	<Script file="TakeAllMail.lua"/>
 	<Script file="AddonList.lua"/>
 	<Script file="DressUpFrame.lua"/>
 	<Script file="BetterSearchBox.lua"/>

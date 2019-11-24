@@ -31,7 +31,8 @@ P.enhanced = {
 			font = "PT Sans Narrow",
 			fontSize = 12,
 			fontOutline = "NONE"
-		}
+		},
+		takeAllMail = false
 	},
 	chat = {
 		dpsLinks = false,

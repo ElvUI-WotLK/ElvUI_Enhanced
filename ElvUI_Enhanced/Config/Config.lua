@@ -166,6 +166,7 @@ end
 local function BlizzardOptions()
 	local B = E:GetModule("Enhanced_Blizzard")
 	local WF = E:GetModule("Enhanced_WatchFrame")
+	local TAM = E:GetModule("Enhanced_TakeAllMail")
 
 	local choices = {
 		["NONE"] = L["NONE"],
@@ -192,13 +193,27 @@ local function BlizzardOptions()
 				type = "toggle",
 				name = L["Death Recap Frame"]
 			},
-			animatedAchievementBars = {
+			takeAllMail = {
 				order = 2,
+				type = "toggle",
+				name = L["Take All Mail"],
+				get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
+				set = function(info, value)
+					E.db.enhanced.blizzard.takeAllMail = value
+					if value and not TAM.initialized then
+						TAM:Initialize()
+					elseif not value then
+						E:StaticPopup_Show("CONFIG_RL")
+					end
+				end
+			},
+			animatedAchievementBars = {
+				order = 3,
 				type = "toggle",
 				name = L["Animated Achievement Bars"]
 			},
 			characterFrame = {
-				order = 3,
+				order = 4,
 				type = "group",
 				name = L["Character Frame"],
 				guiInline = true,
@@ -278,7 +293,7 @@ local function BlizzardOptions()
 				}
 			},
 			dressingRoom = {
-				order = 4,
+				order = 5,
 				type = "group",
 				name = L["Dressing Room"],
 				guiInline = true,
@@ -315,7 +330,7 @@ local function BlizzardOptions()
 				}
 			},
 			timerTracker = {
-				order = 5,
+				order = 6,
 				type = "group",
 				name = L["Timer Tracker"],
 				guiInline = true,
@@ -343,7 +358,7 @@ local function BlizzardOptions()
 				}
 			},
 			watchframe = {
-				order = 6,
+				order = 7,
 				type = "group",
 				guiInline = true,
 				name = L["Watch Frame"],
@@ -410,7 +425,7 @@ local function BlizzardOptions()
 				}
 			},
 			errorFrame = {
-				order = 7,
+				order = 8,
 				type = "group",
 				name = L["Error Frame"],
 				guiInline = true,
