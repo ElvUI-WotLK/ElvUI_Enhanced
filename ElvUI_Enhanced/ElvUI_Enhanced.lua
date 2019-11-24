@@ -125,7 +125,7 @@ function addon:DBConversions()
 		E.db.enhanced.minimap.buttonGrabber.mouseover = E.db.general.minimap.buttons.mouseover
 		E.db.enhanced.minimap.buttonGrabber.growFrom = E.db.general.minimap.buttons.point
 
-		if E.db.enhanced.minimap.buttonGrabber.insideMinimap then
+		if E.db.general.minimap.buttons.insideMinimap then
 			E.db.enhanced.minimap.buttonGrabber.insideMinimap.enable = E.db.general.minimap.buttons.insideMinimap.enable
 			E.db.enhanced.minimap.buttonGrabber.insideMinimap.position = E.db.general.minimap.buttons.insideMinimap.position
 			E.db.enhanced.minimap.buttonGrabber.insideMinimap.xOffset = E.db.general.minimap.buttons.insideMinimap.xOffset
