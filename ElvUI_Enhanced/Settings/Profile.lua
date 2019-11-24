@@ -127,6 +127,7 @@ P.enhanced = {
 		},
 		progressInfo = {
 			enable = false,
+			checkAchievements = false,
 			checkPlayer = false,
 			modifier = "SHIFT",
 			tiers = {

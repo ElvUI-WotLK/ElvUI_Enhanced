@@ -1265,13 +1265,19 @@ local function TooltipOptions()
 						end,
 						disabled = false
 					},
-					checkPlayer = {
+					checkAchievements = {
 						order = 2,
+						type = "toggle",
+						name = L["Check Achievements"],
+						desc = L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."]
+					},
+					checkPlayer = {
+						order = 3,
 						type = "toggle",
 						name = L["Check Player"]
 					},
 					modifier = {
-						order = 3,
+						order = 4,
 						type = "select",
 						name = L["Visibility"],
 						set = function(info, value)
@@ -1286,7 +1292,7 @@ local function TooltipOptions()
 						}
 					},
 					tiers = {
-						order = 4,
+						order = 5,
 						type = "group",
 						name = L["Tiers"],
 						get = function(info) return E.db.enhanced.tooltip.progressInfo.tiers[info[#info]] end,

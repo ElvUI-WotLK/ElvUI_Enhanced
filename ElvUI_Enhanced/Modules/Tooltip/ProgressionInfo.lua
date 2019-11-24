@@ -3,10 +3,13 @@ local PI = E:NewModule("Enhanced_ProgressionInfo", "AceHook-3.0", "AceEvent-3.0"
 local TT = E:GetModule("Tooltip")
 
 local pairs, ipairs, select, tonumber = pairs, ipairs, select, tonumber
-local find, format = string.find, string.format
+local format = string.format
+local twipe = table.wipe
 
 local CanInspect = CanInspect
 local ClearAchievementComparisonUnit = ClearAchievementComparisonUnit
+local GetAchievementComparisonInfo = GetAchievementComparisonInfo
+local GetAchievementInfo = GetAchievementInfo
 local GetComparisonStatistic = GetComparisonStatistic
 local GetStatistic = GetStatistic
 local GetTime = GetTime
@@ -24,7 +27,7 @@ local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
 local difficulties = {"H25", "H10", "N25", "N10"}
 
-local tiers = {
+local statisticTiers = {
 	["RS"] = {
 		{4823},	-- Heroic 25
 		{4822},	-- Heroic 10
@@ -51,23 +54,146 @@ local tiers = {
 	}
 }
 
+local achievementTiers = {
+	["RS"] = {
+		{	-- Heroic 25
+			4816	-- [1] Heroic: The Twilight Destroyer
+		},
+		{	-- Heroic 10
+			4818	-- [1] Heroic: The Twilight Destroyer
+		},
+		{	-- Normal 25
+			4815	-- [1] The Twilight Destroyer
+		},
+		{	-- Normal 10
+			4817	-- [1] The Twilight Destroyer
+		}
+	},
+	["ICC"] = {
+		{	-- Heroic 25
+		--	[0] = 4637,	-- [12] Heroic: Fall of the Lich King
+			4632,	-- [4] Heroic: Storming the Citadel
+			4633,	-- [3] Heroic: The Plagueworks
+			4634,	-- [2] Heroic: The Crimson Hall
+			4635,	-- [2] Heroic: The Frostwing Halls
+			4584	-- [1] The Light of Dawn
+		},
+		{	-- Heroic 10
+		--	[0] = 4636,	-- [12] Heroic: Fall of the Lich King
+			4628,	-- [4] Heroic: Storming the Citadel
+			4629,	-- [3] Heroic: The Plagueworks
+			4630,	-- [2] Heroic: The Crimson Hall
+			4631,	-- [2] Heroic: The Frostwing Halls
+			4583	-- [1] Bane of the Fallen King
+		},
+		{	-- Normal 25
+		--	[0] = 4608,	-- [12] Fall of the Lich King
+			4604,	-- [4] Storming the Citadel
+			4605,	-- [3] The Plagueworks
+			4606,	-- [2] The Crimson Hall
+			4607,	-- [2] The Frostwing Halls
+			4597	-- [1] The Frozen Throne
+		},
+		{	-- Normal 10
+		--	[0] = 4532,	-- [12] Fall of the Lich King
+			4531,	-- [4] Storming the Citadel
+			4528,	-- [3] The Plagueworks
+			4529,	-- [2] The Crimson Hall
+			4527,	-- [2] The Frostwing Halls
+			4530	-- [1] The Frozen Throne
+		}
+	},
+	["ToC"] = {
+		{	-- Heroic 25
+			3812	-- [5] Call of the Grand Crusade
+		},
+		{	-- Heroic 10
+			3918	-- [5] Call of the Grand Crusade
+		},
+		{	-- Normal 25
+			3916	-- [5] Call of the Crusade
+		},
+		{	-- Normal 10
+			3917	-- [5] Call of the Crusade
+		}
+	},
+	["Ulduar"] = {
+		{},
+		{},
+		{	-- Normal 25
+		--	[0] = 2895,	-- [13] The Secrets of Ulduar
+			2887,	-- [4] The Siege of Ulduar
+			2889,	-- [3] The Antechamber of Ulduar
+			2891,	-- [4] The Keepers of Ulduar
+			2893,	-- [2] The Descent into Madness
+			3037	-- [1] Observed
+		},
+		{	-- Normal 10
+		--	[0] = 2894,		-- [13] The Secrets of Ulduar
+			2886,	-- [4] The Siege of Ulduar
+			2888,	-- [3] The Antechamber of Ulduar
+			2890,	-- [4] The Keepers of Ulduar
+			2892,	-- [2] The Descent into Madness
+			3036	-- [1] Observed
+		}
+	}
+}
+
 local progressCache = {}
 
+--[[
+local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
+local GetAchievementNumCriteria = GetAchievementNumCriteria
+
+local function getAchievementProgress(achievementID, criteriaInfo)
+	local progress = 0
+
+	for i = 1, GetAchievementNumCriteria(achievementID) do
+		local _, _, completed = GetAchievementCriteriaInfo(achievementID, i)
+
+		if completed then
+			progress = progress + 1
+		end
+	end
+
+	return progress
+end
+]]
+
+local function isAchievementComplete(achievementID)
+	return (select(4, GetAchievementInfo(achievementID))) and 1 or 0
+end
+
+local function isAchievementComparisonComplete(achievementID)
+	return (GetAchievementComparisonInfo(achievementID)) and 1 or 0
+end
+
 local function GetProgression(guid)
-	local statFunc = guid == E.myguid and GetStatistic or GetComparisonStatistic
 	local total, kills, killed, tierName
+	local statFunc, tiers
+
+	if E.db.enhanced.tooltip.progressInfo.checkAchievements then
+		statFunc = guid == E.myguid and isAchievementComplete or isAchievementComparisonComplete
+		tiers = achievementTiers
+	else
+		statFunc = guid == E.myguid and GetStatistic or GetComparisonStatistic
+		tiers = statisticTiers
+	end
+
+	local header = progressCache[guid].header
+	local info = progressCache[guid].info
 
 	for tier in pairs(tiers) do
-		progressCache[guid].header[tier] = {}
-		progressCache[guid].info[tier] = {}
+		header[tier] = header[tier] and twipe(header[tier]) or {}
+		info[tier] = info[tier] and twipe(info[tier]) or {}
 
 		for i, difficulty in ipairs(difficulties) do
 			if #tiers[tier][i] > 0 then
-				total, killed = 0, 0
+				total = #tiers[tier][i]
+				killed = 0
 
 				for _, statsID in ipairs(tiers[tier][i]) do
 					kills = tonumber(statFunc(statsID))
-					total = total + 1
 
 					if kills and kills > 0 then
 						killed = killed + 1
@@ -80,8 +206,8 @@ local function GetProgression(guid)
 						tierName = "ToGC"
 					end
 
-					progressCache[guid].header[tier][i] = format("%s [%s]:", L[tierName], difficulty)
-					progressCache[guid].info[tier][i] = format("%d/%d", killed, total)
+					header[tier][i] = format("%s [%s]:", L[tierName], difficulty)
+					info[tier][i] = format("%d/%d", killed, total)
 
 					if killed == total then
 						break
@@ -93,64 +219,31 @@ local function GetProgression(guid)
 end
 
 local function UpdateProgression(guid)
-	progressCache[guid] = progressCache[guid] or {}
-	progressCache[guid].header = progressCache[guid].header or {}
-	progressCache[guid].info = progressCache[guid].info or {}
+	if not progressCache[guid] then
+		progressCache[guid] = {
+			header = {},
+			info = {},
+		}
+	end
+
 	progressCache[guid].timer = GetTime()
 
 	GetProgression(guid)
 end
 
 local function SetProgressionInfo(guid, tt)
-	if progressCache[guid] then
-		local updated = 0
+	if not progressCache[guid] then return end
 
-		for i = 1, tt:NumLines() do
-			local leftTipText = _G["GameTooltipTextLeft"..i]
+	local tiers = E.db.enhanced.tooltip.progressInfo.checkAchievements and achievementTiers or statisticTiers
 
-			for tier in pairs(tiers) do
-				if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
-					for j, difficulty in ipairs(difficulties) do
-						if #tiers[tier][j] > 0 then
-							if leftTipText:GetText() and find(leftTipText:GetText(), L[tier]) and find(leftTipText:GetText(), difficulty) then
-								local rightTipText = _G["GameTooltipTextRight"..i]
-								leftTipText:SetText(progressCache[guid].header[tier][j])
-								rightTipText:SetText(progressCache[guid].info[tier][j])
-								updated = 1
-							end
-						end
-					end
+	for tier in pairs(tiers) do
+		if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
+			for i = 1, #difficulties do
+				if #tiers[tier][i] > 0 then
+					tt:AddDoubleLine(progressCache[guid].header[tier][i], progressCache[guid].info[tier][i], nil, nil, nil, 1, 1, 1)
 				end
 			end
 		end
-
-		if updated == 1 then return end
-
-		for tier in pairs(tiers) do
-			if E.db.enhanced.tooltip.progressInfo.tiers[tier] then
-				for i = 1, #difficulties do
-					if #tiers[tier][i] > 0 then
-						tt:AddDoubleLine(progressCache[guid].header[tier][i], progressCache[guid].info[tier][i], nil, nil, nil, 1, 1, 1)
-					end
-				end
-			end
-		end
-	end
-end
-
-function PI:INSPECT_ACHIEVEMENT_READY(GUID)
-	if UnitExists("mouseover") then
-		UpdateProgression(GUID)
-		GameTooltip:SetUnit("mouseover")
-	end
-
-	ClearAchievementComparisonUnit()
-	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
-end
-
-function PI:MODIFIER_STATE_CHANGED(_, key)
-	if (key == format("L%s", self.modifier) or key == format("R%s", self.modifier)) and UnitExists("mouseover") then
-		GameTooltip:SetUnit("mouseover")
 	end
 end
 
@@ -161,9 +254,15 @@ local function ShowInspectInfo(tt)
 	if modifier ~= "ALL" and not ((modifier == "SHIFT" and IsShiftKeyDown()) or (modifier == "CTRL" and IsControlKeyDown()) or (modifier == "ALT" and IsAltKeyDown())) then return end
 
 	local unit = select(2, tt:GetUnit())
-	if not unit or not UnitIsPlayer(unit) then return end
+	if unit == "player" then
+		if not E.db.enhanced.tooltip.progressInfo.checkPlayer then return end
 
-	if unit == "player" and not E.db.enhanced.tooltip.progressInfo.checkPlayer then return end
+		UpdateProgression(E.myguid)
+		SetProgressionInfo(E.myguid, tt)
+		return
+	end
+
+	if not unit or not UnitIsPlayer(unit) then return end
 
 	local level = UnitLevel(unit)
 	if not level or level < MAX_PLAYER_LEVEL then return end
@@ -171,41 +270,45 @@ local function ShowInspectInfo(tt)
 	if not CanInspect(unit, false) then return end
 
 	local guid = UnitGUID(unit)
+	local frameShowen = AchievementFrame and AchievementFrame:IsShown()
 
-	if not progressCache[guid] or (GetTime() - progressCache[guid].timer) > 600 then
-		if guid == E.myguid then
-			UpdateProgression(guid)
-		else
-			local self = E.private.tooltip.enable and TT or GameTooltip
+	if progressCache[guid] and (frameShowen or (GetTime() - progressCache[guid].timer) < 1) then
+		SetProgressionInfo(guid, tt)
+	elseif not frameShowen then
+		ClearAchievementComparisonUnit()
+		SetAchievementComparisonUnit(unit)
 
-			ClearAchievementComparisonUnit()
+		PI.compareGUID = guid
+		PI:RegisterEvent("INSPECT_ACHIEVEMENT_READY", "INSPECT_ACHIEVEMENT_READY")
+	end
+end
 
-			if not self.loadedComparison and select(2, IsAddOnLoaded("Blizzard_AchievementUI")) then
-				AchievementFrame_DisplayComparison(unit)
-				HideUIPanel(AchievementFrame)
-				ClearAchievementComparisonUnit()
-				self.loadedComparison = true
-			end
+function PI:INSPECT_ACHIEVEMENT_READY()
+	UpdateProgression(self.compareGUID)
+	ClearAchievementComparisonUnit()
 
-			self.compareGUID = guid
-
-			if SetAchievementComparisonUnit(unit) then
-				PI:RegisterEvent("INSPECT_ACHIEVEMENT_READY", "INSPECT_ACHIEVEMENT_READY", self.compareGUID)
-			end
-			return
-		end
+	if UnitExists("mouseover") and UnitGUID("mouseover") == self.compareGUID then
+		GameTooltip:SetUnit("mouseover")
 	end
 
-	SetProgressionInfo(guid, tt)
+	self.compareGUID = nil
+	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
+end
+
+function PI:MODIFIER_STATE_CHANGED(_, key)
+	if (key == format("L%s", self.modifier) or key == format("R%s", self.modifier)) and UnitExists("mouseover") then
+		GameTooltip:SetUnit("mouseover")
+	end
 end
 
 function PI:UpdateSettings()
-	local db = E.db.enhanced.tooltip.progressInfo.tiers
 	local enabled
 
-	for _, state in pairs(db) do
-		enabled = state
-		if enabled then break end
+	for _, state in pairs(E.db.enhanced.tooltip.progressInfo.tiers) do
+		if state then
+			enabled = state
+			break
+		end
 	end
 
 	if enabled then
@@ -248,6 +351,7 @@ end
 function PI:Initialize()
 	if not E.db.enhanced.tooltip.progressInfo.enable then return end
 
+	self.progressCache = progressCache
 	self:ToggleState()
 end
 
