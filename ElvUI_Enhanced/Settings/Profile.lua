@@ -69,6 +69,22 @@ P.enhanced = {
 		locationdigits = 1,
 		hideincombat = false,
 		fadeindelay = 5,
+		buttonGrabber = {
+			buttonsize = 26,
+			buttonspacing = 1,
+			backdropSpacing = 1,
+			buttonsPerRow = 1,
+			alpha = 1,
+			point = "TOPLEFT",
+			mouseover = false,
+			backdrop = true,
+			insideMinimap = {
+				enable = true,
+				position = "TOPLEFT",
+				xOffset = 1,
+				yOffset = -1
+			}
+		}
 	},
 	nameplates = {
 		classCache = false,

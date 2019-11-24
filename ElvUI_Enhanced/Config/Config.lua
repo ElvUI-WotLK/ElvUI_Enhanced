@@ -700,6 +700,27 @@ local function MinimapOptions()
 		["HIDE"] = L["HIDE"]
 	}
 
+	local addon = E:GetModule("MinimapButtons")
+
+	local points = {
+		["TOPLEFT"] = "TOPLEFT",
+		["TOPRIGHT"] = "TOPRIGHT",
+		["BOTTOMLEFT"] = "BOTTOMLEFT",
+		["BOTTOMRIGHT"] = "BOTTOMRIGHT"
+	}
+
+	local positionValues = {
+		TOPLEFT = "TOPLEFT",
+		LEFT = "LEFT",
+		BOTTOMLEFT = "BOTTOMLEFT",
+		RIGHT = "RIGHT",
+		TOPRIGHT = "TOPRIGHT",
+		BOTTOMRIGHT = "BOTTOMRIGHT",
+		CENTER = "CENTER",
+		TOP = "TOP",
+		BOTTOM = "BOTTOM"
+	}
+
 	return {
 		type = "group",
 		name = L["Minimap"],
@@ -760,6 +781,116 @@ local function MinimapOptions()
 						desc = L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"],
 						min = 0, max = 20, step = 1,
 						disabled = function() return not E.db.enhanced.minimap.hideincombat end
+					}
+				}
+			},
+			minimapButtons = {
+				order = 10,
+				type = "group",
+				name = L["Minimap Buttons"],
+				get = function(info) return E.db.enhanced.minimap.buttonGrabber[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.minimap.buttonGrabber[info[#info]] = value
+					addon:UpdateLayout()
+					addon:UpdateAlpha()
+				end,
+				args = {
+					point = {
+						order = 1,
+						type = "select",
+						name = L["Anchor Point"],
+						desc = L["The first button anchors itself to this point on the bar."],
+						values = points
+					},
+					backdrop = {
+						order = 2,
+						type = "toggle",
+						name = L["Backdrop"]
+					},
+					mouseover = {
+						order = 3,
+						type = "toggle",
+						name = L["Mouse Over"],
+						desc = L["The frame is not shown unless you mouse over the frame."]
+					},
+					alpha = {
+						order = 4,
+						type = "range",
+						name = L["Alpha"],
+						min = 0, max = 1, step = 0.01
+					},
+					buttonsPerRow = {
+						order = 5,
+						type = "range",
+						name = L["Buttons Per Row"],
+						desc = L["The amount of buttons to display per row."],
+						min = 1, max = 12, step = 1
+					},
+					buttonsPerRow = {
+						order = 6,
+						type = "range",
+						name = L["Buttons Per Row"],
+						desc = L["The amount of buttons to display per row."],
+						min = 1, max = 12, step = 1
+					},
+					buttonsize = {
+						order = 7,
+						type = "range",
+						name = L["Button Size"],
+						min = 2, max = 60, step = 1
+					},
+					buttonspacing = {
+						order = 8,
+						type = "range",
+						name = L["Button Spacing"],
+						desc = L["The spacing between buttons."],
+						min = -1, max = 24, step = 1
+					},
+					backdropSpacing = {
+						order = 9,
+						type = "range",
+						name = L["Backdrop Spacing"],
+						desc = L["The spacing between the backdrop and the buttons."],
+						min = -1, max = 15, step = 1
+					},
+					insideMinimapGroup = {
+						order = 10,
+						type = "group",
+						name = L["Inside Minimap"],
+						guiInline = true,
+						get = function(info) return E.db.enhanced.minimap.buttonGrabber.insideMinimap[info[#info]] end,
+						set = function(info, value)
+							E.db.enhanced.minimap.buttonGrabber.insideMinimap[info[#info]] = value
+							addon:UpdatePosition()
+						end,
+						args = {
+							enable = {
+								order = 1,
+								type = "toggle",
+								name = L["Enable"],
+							},
+							position = {
+								order = 2,
+								type = "select",
+								name = L["Position"],
+								values = positionValues,
+								disabled = function() return not E.db.enhanced.minimap.buttonGrabber.insideMinimap.enable end
+							},
+							xOffset = {
+								order = 3,
+								type = "range",
+								name = L["xOffset"],
+								min = -20, max = 20, step = 1,
+								disabled = function() return not E.db.enhanced.minimap.buttonGrabber.insideMinimap.enable end
+							},
+							yOffset = {
+								order = 4,
+								type = "range",
+								name = L["yOffset"],
+								min = -20, max = 20, step = 1,
+								disabled = function() return not E.db.enhanced.minimap.buttonGrabber.insideMinimap.enable end
+							}
+						}
 					}
 				}
 			}
