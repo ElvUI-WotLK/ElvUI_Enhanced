@@ -386,7 +386,7 @@ function module:CharacterFrame_Collapse()
 	CharacterFrame.backdrop:Width(341)
 	CharacterFrame.Expanded = false
 
-	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+--	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "right")
 
 	for i = 1, #PAPERDOLL_SIDEBARS do
@@ -400,7 +400,7 @@ function module:CharacterFrame_Expand()
 	CharacterFrame.backdrop:Width(341 + 192)
 	CharacterFrame.Expanded = true
 
-	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+--	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "left")
 
 	if PaperDollFrame:IsShown() and PaperDollFrame.currentSideBar then
@@ -1833,7 +1833,7 @@ function module:Initialize()
 	CharacterFrame.backdrop:Point("TOPLEFT", 11, -12)
 	CharacterFrame.backdrop:SetSize(341, 424)
 
-	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+--	S:SetUIPanelWindowInfo(CharacterFrame, "width")
 
 	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
 	expandButton:SetSize(25, 25)
@@ -2391,7 +2391,7 @@ function module:Initialize()
 		CharacterFrame.backdrop:Width(341 + 192)
 		module:PetPaperDollCompanionPane_Update()
 
-		S:SetUIPanelWindowInfo(CharacterFrame, "width")
+--		S:SetUIPanelWindowInfo(CharacterFrame, "width")
 	end)
 
 	PetPaperDollFrameCompanionFrame:HookScript("OnHide", function(self)
