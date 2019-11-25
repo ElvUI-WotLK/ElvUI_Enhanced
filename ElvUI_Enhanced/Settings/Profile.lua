@@ -16,7 +16,8 @@ P.enhanced = {
 	actionbar = {
 		keyPressAnimation = {
 			color = {r = 1, g = 1, b = 1},
-			scale = 1.5
+			scale = 1.5,
+			rotation = 90,
 		}
 	},
 	actionbars = {

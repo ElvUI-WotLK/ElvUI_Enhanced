@@ -33,10 +33,11 @@ for i = 1, animationsCount do
 	scale2:SetOrder(2)
 	frame.scale2 = scale2
 
-	local rotation2 = animationGroup:CreateAnimation("Rotation")
-	rotation2:SetDegrees(90)
-	rotation2:SetDuration(0.2)
-	rotation2:SetOrder(2)
+	local rotation = animationGroup:CreateAnimation("Rotation")
+	rotation:SetDegrees(90)
+	rotation:SetDuration(0.2)
+	rotation:SetOrder(2)
+	frame.rotation = rotation
 
 	animations[i] = {frame = frame, animationGroup = animationGroup}
 end
@@ -75,6 +76,7 @@ function KPA:UpdateSetting()
 		local frame = v.frame
 		frame.texture:SetVertexColor(db.color.r, db.color.g, db.color.b)
 		frame.scale2:SetScale(db.scale, db.scale)
+		frame.rotation:SetDegrees(db.rotation)
 	end
 end
 

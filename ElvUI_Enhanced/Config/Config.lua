@@ -205,6 +205,13 @@ local function ActionbarOptions()
 						name = L["Scale"],
 						disabled = function() return not E.private.enhanced.actionbar.keyPressAnimation end,
 					},
+					rotation = {
+						order = 3,
+						type = "range",
+						min = 0, max = 360, step = 1,
+						name = L["Rotation"],
+						disabled = function() return not E.private.enhanced.actionbar.keyPressAnimation end,
+					},
 				}
 			}
 		}
