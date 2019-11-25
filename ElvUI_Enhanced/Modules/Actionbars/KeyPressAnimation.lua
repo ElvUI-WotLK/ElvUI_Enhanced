@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local KPA = E:NewModule("Enhanced_KeyPressAnimation")
 local LAB = E.Libs.LAB
 
+local ipairs = ipairs
+local pairs = pairs
+
 local animationsCount = 5
 local animations = {}
 
@@ -62,12 +65,8 @@ local function animate(button)
 	animationNum = (animationNum % animationsCount) + 1
 end
 
-if E.private.enhanced.actionbar.keyPressAnimation then
-	function KPA:LAB_OnButtonCreated(button)
-		button:HookScript("PreClick", animate)
-	end
-
-	LAB.RegisterCallback(KPA, "OnButtonCreated", KPA.LAB_OnButtonCreated)
+function KPA:LAB_OnButtonCreated(button)
+	button:HookScript("PreClick", animate)
 end
 
 function KPA:UpdateSetting()
@@ -81,7 +80,15 @@ function KPA:UpdateSetting()
 end
 
 function KPA:Initialize()
+	if not E.private.enhanced.actionbar.keyPressAnimation then return end
+
 	self:UpdateSetting()
+
+	LAB.RegisterCallback(KPA, "OnButtonCreated", KPA.LAB_OnButtonCreated)
+
+	for button in pairs(LAB.buttonRegistry) do
+		button:HookScript("PreClick", animate)
+	end
 end
 
 local function InitializeCallback()
