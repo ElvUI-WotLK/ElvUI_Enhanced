@@ -123,6 +123,7 @@ end
 
 local function ActionbarOptions()
 	local ETB = E:GetModule("Enhanced_TransparentBackdrops")
+	local KPA = E:GetModule("Enhanced_KeyPressAnimation")
 
 	return {
 		type = "group",
@@ -157,6 +158,53 @@ local function ActionbarOptions()
 						name = L["Transparent Buttons"],
 						desc = L["Sets actionbars buttons' backgrounds to transparent template."]
 					}
+				}
+			},
+			keyPressAnimation = {
+				order = 2,
+				type = "group",
+				name = L["Key Press Animation"],
+				guiInline = true,
+				get = function(info) return E.db.enhanced.actionbar.keyPressAnimation[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.actionbar.keyPressAnimation[info[#info]] = value
+					KPA:UpdateSetting()
+				end,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						get = function(info) return E.private.enhanced.actionbar.keyPressAnimation end,
+						set = function(info, value)
+							E.private.enhanced.actionbar.keyPressAnimation = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
+					},
+					color = {
+						order = 2,
+						type = "color",
+						name = L["COLOR"],
+						get = function(info)
+							local t = E.db.enhanced.actionbar.keyPressAnimation[info[#info]]
+							local d = P.enhanced.actionbar.keyPressAnimation[info[#info]]
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+						end,
+						set = function(info, r, g, b)
+							local t = E.db.enhanced.actionbar.keyPressAnimation[info[#info]]
+							t.r, t.g, t.b = r, g, b
+							KPA:UpdateSetting()
+						end,
+						disabled = function() return not E.private.enhanced.actionbar.keyPressAnimation end,
+					},
+					scale = {
+						order = 3,
+						type = "range",
+						min = 1, max = 3, step = 0.1,
+						isPercent = true,
+						name = L["Scale"],
+						disabled = function() return not E.private.enhanced.actionbar.keyPressAnimation end,
+					},
 				}
 			}
 		}

@@ -13,6 +13,12 @@ P.enhanced = {
 		undressButton = false,
 		alreadyKnown = false,
 	},
+	actionbar = {
+		keyPressAnimation = {
+			color = {r = 1, g = 1, b = 1},
+			scale = 1.5
+		}
+	},
 	actionbars = {
 		transparentActionbars = {
 			transparentBackdrops = false,
