@@ -122,7 +122,6 @@ local function GeneralOptions()
 end
 
 local function ActionbarOptions()
-	local ETB = E:GetModule("Enhanced_TransparentBackdrops")
 	local KPA = E:GetModule("Enhanced_KeyPressAnimation")
 
 	return {
@@ -134,34 +133,8 @@ local function ActionbarOptions()
 				type = "header",
 				name = EE:ColorizeSettingName(L["ActionBars"])
 			},
-			transparentActionbars = {
-				order = 1,
-				type = "group",
-				name = L["Transparent ActionBars"],
-				guiInline = true,
-				get = function(info) return E.db.enhanced.actionbars.transparentActionbars[info[#info]] end,
-				set = function(info, value)
-					E.db.enhanced.actionbars.transparentActionbars[info[#info]] = value
-					ETB:StyleBackdrops()
-				end,
-				disabled = function() return not E.private.actionbar.enable end,
-				args = {
-					transparentBackdrops = {
-						order = 1,
-						type = "toggle",
-						name = L["Transparent Backdrop"],
-						desc = L["Sets actionbars' backgrounds to transparent template."]
-					},
-					transparentButtons = {
-						order = 2,
-						type = "toggle",
-						name = L["Transparent Buttons"],
-						desc = L["Sets actionbars buttons' backgrounds to transparent template."]
-					}
-				}
-			},
 			keyPressAnimation = {
-				order = 2,
+				order = 1,
 				type = "group",
 				name = L["Key Press Animation"],
 				guiInline = true,

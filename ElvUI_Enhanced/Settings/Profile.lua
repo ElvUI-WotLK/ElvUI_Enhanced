@@ -20,12 +20,6 @@ P.enhanced = {
 			rotation = 90,
 		}
 	},
-	actionbars = {
-		transparentActionbars = {
-			transparentBackdrops = false,
-			transparentButtons = false
-		}
-	},
 	blizzard = {
 		dressUpFrame = {
 			enable = false,
