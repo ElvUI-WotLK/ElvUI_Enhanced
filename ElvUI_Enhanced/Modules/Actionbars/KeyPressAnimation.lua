@@ -98,7 +98,7 @@ function KPA:Initialize()
 		tinsert(framePool, CreateAnimationFrame())
 	end
 
-	LAB.RegisterCallback(KPA, "OnButtonCreated", function(button)
+	LAB.RegisterCallback(KPA, "OnButtonCreated", function(_, button)
 		button:HookScript("PreClick", StartAnimation)
 	end)
 
