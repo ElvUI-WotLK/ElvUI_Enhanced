@@ -215,7 +215,7 @@ function IT:UpdateState()
 end
 
 function IT:Initialize()
-	if not E.db.enhanced.interruptTracker.enable then return end
+	if not E.private.enhanced.interruptTracker.enable then return end
 
 	self.db = E.db.enhanced.interruptTracker
 	self.icons = {}
