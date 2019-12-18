@@ -158,12 +158,12 @@ L["Target Portrait"] = "Портрет цели"
 
 -- Loss Control
 L["CC"] = "Потеря контроля"
-L["Disarm"] = "Безоружие"
+L["Disarm"] = "Разоружение"
 L["Lose Control"] = "Иконка потери контроля"
 L["PvE"] = "Рейдовые"
-L["Root"] = "Замедления"
+L["Root"] = "Удержание на месте"
 L["Silence"] = "Молчание"
-L["Snare"] = "Ловушки"
+L["Snare"] = "Замедление"
 
 -- Unitframes
 L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Все иконки ролей (дд/хил/танк) на фреймах юнитов будут скрыты во время боя."
