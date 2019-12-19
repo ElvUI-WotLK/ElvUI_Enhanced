@@ -275,6 +275,10 @@ local function ShowInspectInfo(tt)
 	if progressCache[guid] and (frameShowen or (GetTime() - progressCache[guid].timer) < 1) then
 		SetProgressionInfo(guid, tt)
 	elseif not frameShowen then
+		if achievementFunctions then
+			achievementFunctions.selectedCategory = 0
+		end
+
 		ClearAchievementComparisonUnit()
 		SetAchievementComparisonUnit(unit)
 
@@ -292,6 +296,11 @@ function PI:INSPECT_ACHIEVEMENT_READY()
 	end
 
 	self.compareGUID = nil
+
+	if achievementFunctions then
+		achievementFunctions.selectedCategory = "summary"
+	end
+
 	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
 end
 
