@@ -418,7 +418,8 @@ function MF:Initialize()
 	end
 
 	if E.myclass == "HUNTER" then
-		PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 23, -76)
+		PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 24, -76)
+		PetStablePetInfo:Point("TOPLEFT", PetStableModel, 5, -5)
 	end
 
 	local modelPanning = CreateFrame("Frame", "ModelPanningFrame", UIParent)

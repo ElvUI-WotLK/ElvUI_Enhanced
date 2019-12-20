@@ -51,7 +51,7 @@ function TA:TrainAllSkills()
 	end
 end
 
-function TA:TRAINER_UPDATE(event)
+function TA:TRAINER_UPDATE()
 	self.skillsLearned = self.skillsLearned + 1
 
 	if self.skillsLearned >= self.skillsToLearn then
@@ -78,7 +78,7 @@ function TA:ButtonCreate()
 	self.button:SetText(TRAIN.." "..ALL)
 
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer then
-		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT", -1, 0)
+		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT", -3, 0)
 		E:GetModule("Skins"):HandleButton(self.button)
 	else
 		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT")
@@ -94,7 +94,7 @@ function TA:ButtonCreate()
 			end
 		end
 
-		GameTooltip:SetOwner(self.button,"ANCHOR_TOPRIGHT", 0, 4)
+		GameTooltip:SetOwner(self.button,"ANCHOR_TOPLEFT", 0, 5)
 		GameTooltip:SetText("|cffffffff"..TABARDVENDORCOST.."|r "..E:FormatMoney(cost, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
 	end)
 
@@ -116,15 +116,25 @@ function TA:ButtonUpdate()
 	self.button:Disable()
 end
 
-function TA:ADDON_LOADED(event, addon)
-	if addon ~= "Blizzard_TrainerUI" then return end
+function TA:ButtonPosition(disable)
+	if disable then
+		ClassTrainerTrainButton:Point("CENTER", ClassTrainerFrame, "TOPLEFT", 221, -417)
+
+		ClassTrainerCancelButton.Show = nil
+		ClassTrainerCancelButton:Show()
+	else
+		ClassTrainerTrainButton:Point("CENTER", ClassTrainerFrame, "TOPLEFT", 304, -417)
+
+		ClassTrainerCancelButton.Show = E.noop
+		ClassTrainerCancelButton:Hide()
+	end
+end
+
+function TA:ADDON_LOADED(_, addon)
+	if self.blockCallback or addon ~= "Blizzard_TrainerUI" then return end
 
 	self:ButtonCreate()
-
-	ClassTrainerTrainButton:ClearAllPoints()
-	ClassTrainerTrainButton:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT", -39, 81)
-
-	ClassTrainerCancelButton:Kill()
+	self:ButtonPosition()
 
 	self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
 	self:UnregisterEvent("ADDON_LOADED")
@@ -134,12 +144,24 @@ function TA:ToggleState()
 	if E.db.enhanced.general.trainAllSkills then
 		if not self.button then
 			if IsAddOnLoaded("Blizzard_TrainerUI") then
+				self.blockCallback = nil
 				self:ADDON_LOADED(nil, "Blizzard_TrainerUI")
+			elseif E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer then
+				if not self.skinCallback then
+					E:GetModule("Skins"):AddCallbackForAddon("Blizzard_TrainerUI", "Enhanced_Blizzard_TrainerUI_TrainAll", function()
+						self:ADDON_LOADED(nil, "Blizzard_TrainerUI")
+					end)
+
+					self.skinCallback = true
+				else
+					self.blockCallback = nil
+				end
 			else
 				self:RegisterEvent("ADDON_LOADED")
 			end
 		else
 			self.button:Show()
+			self:ButtonPosition()
 
 			if not self:IsHooked("ClassTrainerFrame_Update") then
 				self:SecureHook("ClassTrainerFrame_Update", "ButtonUpdate")
@@ -148,9 +170,14 @@ function TA:ToggleState()
 	else
 		if not self.button then
 			self:UnregisterEvent("ADDON_LOADED")
+
+			if self.skinCallback then
+				self.blockCallback = true
+			end
 		else
 			self.button:Hide()
 			self:UnhookAll()
+			self:ButtonPosition(true)
 
 			if self.locked then
 				self:ResetScript()
