@@ -334,7 +334,11 @@ local function BlizzardOptions()
 					enable = {
 						order = 1,
 						type = "toggle",
-						name = L["Enable"]
+						name = L["Enable"],
+						set = function(info, value)
+							E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
 					},
 					multiplier = {
 						order = 3,

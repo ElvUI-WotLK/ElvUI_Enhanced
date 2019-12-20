@@ -2,22 +2,19 @@
 local mod = E:GetModule("Enhanced_Blizzard")
 local S = E:GetModule("Skins")
 
-local FRAME_SIZE = false
-
 function mod:UpdateDressUpFrame()
 	local mult = E.db.enhanced.blizzard.dressUpFrame.multiplier
---	if ElvCharacterDB.Enhanced.ResizeDressUp then
-	if FRAME_SIZE then
-		DressUpFrame:Size(384 * mult, 512 * mult)
 
+	if ElvCharacterDB.Enhanced_DressUpResize then
+		DressUpFrame:Size(384 * mult, 512 * mult)
 		S:SetNextPrevButtonDirection(DressUpFrameResizeButton, "up")
 	else
 		DressUpFrame:Size(384, 512)
-
 		S:SetNextPrevButtonDirection(DressUpFrameResizeButton)
 	end
 
-	UpdateUIPanelPositions(DressUpFrame)
+	DressUpFrame:GetLeft() -- update size
+	S:SetUIPanelWindowInfo(DressUpFrame, "width")
 end
 
 --[[
@@ -61,48 +58,30 @@ end
 function mod:DressUpFrame()
 	if not E.db.enhanced.blizzard.dressUpFrame.enable then return end
 
-	--[[DressUpFrame.OutfitDropDown = CreateFrame("Frame", "DressUpFrameOutfitDropDown", DressUpFrame, "UIDropDownMenuTemplate")
-	DressUpFrame.OutfitDropDown:Point("TOP", -23, -28)
-	S:HandleDropDownBox(DressUpFrame.OutfitDropDown)
-	DressUpFrame.OutfitDropDown:SetScript("OnShow", function(self) mod.SelectOutfit(self, nil, true) end)
-
-	DressUpFrame.SaveButton = CreateFrame("Button", nil, DressUpFrame, "UIPanelButtonTemplate")
-	DressUpFrame.SaveButton:Size(88, 22)
-	DressUpFrame.SaveButton:Point("LEFT", DressUpFrame.OutfitDropDown, "RIGHT", -13, -3)
-	DressUpFrame.SaveButton:SetText(SAVE)
-	S:HandleButton(DressUpFrame.SaveButton)]]
-
-	DressUpFrameCancelButton:ClearAllPoints()
-	DressUpFrameCancelButton:Point("BOTTOMRIGHT", -39, 79)
-
-	DressUpModel:ClearAllPoints()
-	DressUpModel:Point("TOPLEFT", 22, -77)
-	DressUpModel:Point("BOTTOMRIGHT", -47, 106)
-
 	DressUpBackgroundTopLeft:SetAlpha(0)
 	DressUpBackgroundTopRight:SetAlpha(0)
 	DressUpBackgroundBotLeft:SetAlpha(0)
 	DressUpBackgroundBotRight:SetAlpha(0)
 
+	DressUpFrameCancelButton:ClearAllPoints()
+	DressUpFrameCancelButton:Point("BOTTOMRIGHT", -40, 84)
+
 	DressUpModel:ClearAllPoints()
-	DressUpModel:Point("TOPLEFT", 22, -77)
-	DressUpModel:Point("BOTTOMRIGHT", -47, 106)
-	DressUpModel.backdrop:SetOutside()
+	DressUpModel:Point("TOPLEFT", 20, -67)
+	DressUpModel:Point("BOTTOMRIGHT", -41, 114)
 
 	local resizeButton = CreateFrame("Button", "DressUpFrameResizeButton", DressUpFrame)
-	resizeButton:Size(32, 32)
-	resizeButton:Point("RIGHT", DressUpFrameCloseButton, "LEFT", 10, 0)
 	S:HandleNextPrevButton(resizeButton, nil, nil, true)
+	resizeButton:Size(26)
+	resizeButton:Point("RIGHT", DressUpFrameCloseButton, "LEFT", 10, 0)
 	resizeButton:SetScript("OnClick", function()
-	--	if not ElvCharacterDB.Enhanced.ResizeDressUp then
-	--		ElvCharacterDB.Enhanced.ResizeDressUp = true
-	--	else
-	--		ElvCharacterDB.Enhanced.ResizeDressUp = false
-	--	end
+		if ElvCharacterDB.Enhanced_DressUpResize then
+			ElvCharacterDB.Enhanced_DressUpResize = nil
+		else
+			ElvCharacterDB.Enhanced_DressUpResize = true
+		end
 
-		FRAME_SIZE = not FRAME_SIZE
-
-		mod.UpdateDressUpFrame()
+		mod:UpdateDressUpFrame()
 	end)
 
 	local _, classFileName = UnitClass("player")
@@ -111,6 +90,21 @@ function mod:DressUpFrame()
 	DressUpFrame.ModelBackground:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\DressingRoom"..classFileName)
 	DressUpFrame.ModelBackground:SetTexCoord(0.00195312, 0.935547, 0.00195312, 0.978516)
 	DressUpFrame.ModelBackground:SetDesaturated(true)
+
+--[[
+	DressUpFrame.OutfitDropDown = CreateFrame("Frame", "DressUpFrameOutfitDropDown", DressUpFrame, "UIDropDownMenuTemplate")
+	DressUpFrame.OutfitDropDown:Point("TOP", -23, -28)
+	S:HandleDropDownBox(DressUpFrame.OutfitDropDown)
+	DressUpFrame.OutfitDropDown:SetScript("OnShow", function(self)
+		mod.SelectOutfit(self, nil, true)
+	end)
+
+	DressUpFrame.SaveButton = CreateFrame("Button", nil, DressUpFrame, "UIPanelButtonTemplate")
+	DressUpFrame.SaveButton:Size(88, 22)
+	DressUpFrame.SaveButton:Point("LEFT", DressUpFrame.OutfitDropDown, "RIGHT", -13, -3)
+	DressUpFrame.SaveButton:SetText(SAVE)
+	S:HandleButton(DressUpFrame.SaveButton)
+]]
 
 	self:UpdateDressUpFrame()
 end
