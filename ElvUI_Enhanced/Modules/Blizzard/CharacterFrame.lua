@@ -383,10 +383,26 @@ function module:PaperDollSidebarTab(button)
 end
 
 function module:CharacterFrame_Collapse()
-	CharacterFrame.backdrop:Width(341)
+	if self.skinEnabled then
+		CharacterFrame.backdrop:Width(341)
+
+		S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
+	else
+		CharacterFrame:Width(384)
+
+		S:SetBackdropHitRect(PaperDollFrame)
+		S:SetBackdropHitRect(PetPaperDollFrame)
+		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame)
+		S:SetBackdropHitRect(PetPaperDollFramePetFrame)
+	end
+
 	CharacterFrame.Expanded = false
 
 	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "right")
 
 	for i = 1, #PAPERDOLL_SIDEBARS do
@@ -397,10 +413,26 @@ function module:CharacterFrame_Collapse()
 end
 
 function module:CharacterFrame_Expand()
-	CharacterFrame.backdrop:Width(341 + 192)
+	if self.skinEnabled then
+		CharacterFrame.backdrop:Width(341 + 192)
+
+		S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
+	else
+		CharacterFrame:Width(352 + 192)
+
+		S:SetBackdropHitRect(PaperDollFrame)
+		S:SetBackdropHitRect(PetPaperDollFrame)
+		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame)
+		S:SetBackdropHitRect(PetPaperDollFramePetFrame)
+	end
+
 	CharacterFrame.Expanded = true
 
 	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+
 	S:SetNextPrevButtonDirection(CharacterFrameExpandButton, "left")
 
 	if PaperDollFrame:IsShown() and PaperDollFrame.currentSideBar then
@@ -638,15 +670,17 @@ local function GetAverageItemLevel()
 			if itemLink then
 				local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
-				ilvl = ilvl + itemLevel
+				if itemLevel then
+					ilvl = ilvl + itemLevel
 
-				colorCount = colorCount + 1
-				sumR = sumR + qualityColors[quality][1]
-				sumG = sumG + qualityColors[quality][2]
-				sumB = sumB + qualityColors[quality][3]
+					colorCount = colorCount + 1
+					sumR = sumR + qualityColors[quality][1]
+					sumG = sumG + qualityColors[quality][2]
+					sumB = sumB + qualityColors[quality][3]
 
-				if slotID == INVSLOT_MAINHAND and (itemEquipLoc ~= "INVTYPE_2HWEAPON" or titanGrip) then
-					items = 17
+					if slotID == INVSLOT_MAINHAND and (itemEquipLoc ~= "INVTYPE_2HWEAPON" or titanGrip) then
+						items = 17
+					end
 				end
 			end
 		end
@@ -1876,6 +1910,8 @@ end
 function module:Initialize()
 	if not E.private.enhanced.character.enable then return end
 
+	self.skinEnabled = (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) and true or false
+
 	if PersonalGearScore then
 		PersonalGearScore:Hide()
 	end
@@ -1912,19 +1948,26 @@ function module:Initialize()
 	-- New frames
 	SetCVar("equipmentManager", 1)
 
-	CharacterNameFrame:ClearAllPoints()
-	CharacterNameFrame:Point("CENTER", CharacterFrame.backdrop, 6, 200)
-	CharacterFrameCloseButton:Point("CENTER", CharacterFrame.backdrop, "TOPRIGHT", -12, -13)
+	if self.skinEnabled then
+		CharacterNameFrame:ClearAllPoints()
+		CharacterNameFrame:Point("CENTER", CharacterFrame.backdrop, 6, 200)
+		CharacterFrameCloseButton:Point("CENTER", CharacterFrame.backdrop, "TOPRIGHT", -12, -13)
 
-	CharacterFrame.backdrop:ClearAllPoints()
-	CharacterFrame.backdrop:Point("TOPLEFT", 11, -12)
-	CharacterFrame.backdrop:SetSize(341, 424)
+		CharacterFrame.backdrop:ClearAllPoints()
+		CharacterFrame.backdrop:Point("TOPLEFT", 11, -12)
+		CharacterFrame.backdrop:Size(341, 424)
 
-	S:SetUIPanelWindowInfo(CharacterFrame, "width")
+		S:SetUIPanelWindowInfo(CharacterFrame, "width")
+
+		S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
+		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
+	end
 
 	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
 	expandButton:SetSize(25, 25)
-	expandButton:Point("BOTTOMLEFT", CharacterFrame, 315, 84)
+	expandButton:Point("BOTTOMLEFT", CharacterFrame, 326, 85)
 	expandButton:SetFrameLevel(CharacterFrame:GetFrameLevel() + 5)
 	S:HandleNextPrevButton(CharacterFrameExpandButton)
 
@@ -2252,11 +2295,11 @@ function module:Initialize()
 
 	GearManagerDialogPopup:SetParent(PaperDollFrame)
 	GearManagerDialogPopup:ClearAllPoints()
-	GearManagerDialogPopup:SetPoint("LEFT", CharacterFrame.backdrop, "RIGHT")
+	GearManagerDialogPopup:SetPoint("LEFT", CharacterFrame.backdrop, "RIGHT", -6, 4)
 
 	CharacterModelFrame:CreateBackdrop("Default")
-	CharacterModelFrame:Size(231, 320)
-	CharacterModelFrame:Point("TOPLEFT", PaperDollFrame, "TOPLEFT", 66, -78)
+	CharacterModelFrame:Size(237, 324)
+	CharacterModelFrame:Point("TOPLEFT", 63, -77)
 
 	CharacterModelFrame.textureTopLeft = CharacterModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
 	CharacterModelFrame.textureTopLeft:Size(212, 244)
@@ -2342,9 +2385,14 @@ function module:Initialize()
 		self:CharacterFrame_Expand()
 	end
 
+	PetNameText:ClearAllPoints()
 	PetNameText:Point("CENTER", CharacterFrame.backdrop, 6, 200)
+
+	PetLevelText:ClearAllPoints()
 	PetLevelText:Point("TOP", CharacterFrame.backdrop, 0, -20)
-	PetModelFrame:SetSize(310, 320)
+
+	PetModelFrame:Size(310, 320)
+
 	PetPaperDollCloseButton:Kill()
 	PetAttributesFrame:Kill()
 	PetResistanceFrame:Kill()
@@ -2355,7 +2403,7 @@ function module:Initialize()
 	PetPaperDollFrameExpBar:Width(285)
 
 	PetModelFrame:CreateBackdrop("Default")
-	PetModelFrame:SetSize(310, 320)
+	PetModelFrame:Size(310, 320)
 
 	PetModelFrame.petPaperDollPetModelBg = PetModelFrame:CreateTexture("$parentPetPaperDollPetModelBg", "BACKGROUND")
 	PetModelFrame.petPaperDollPetModelBg:Size(494, 461)
@@ -2391,8 +2439,8 @@ function module:Initialize()
 
 	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
-	CompanionModelFrame:SetSize(325, 350)
-	CompanionModelFrame:Point("TOPLEFT", 18, -78)
+	CompanionModelFrame:Size(326, 351)
+	CompanionModelFrame:Point("TOPLEFT", 19, -77)
 	CompanionModelFrame:CreateBackdrop("Default")
 
 	CompanionModelFrame.backgroundTex = CompanionModelFrame:CreateTexture("$parentBackgroundTex", "BACKGROUND")
@@ -2475,10 +2523,25 @@ function module:Initialize()
 	end)
 
 	PetPaperDollFrameCompanionFrame:HookScript("OnShow", function(self)
-		CharacterFrame.backdrop:Width(341 + 192)
-		module:PetPaperDollCompanionPane_Update()
+		if module.skinEnabled then
+			CharacterFrame.backdrop:Width(341 + 192)
+
+			S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
+			S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
+			S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
+			S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
+		else
+			CharacterFrame:Width(352 + 192)
+
+			S:SetBackdropHitRect(PaperDollFrame)
+			S:SetBackdropHitRect(PetPaperDollFrame)
+			S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame)
+			S:SetBackdropHitRect(PetPaperDollFramePetFrame)
+		end
 
 		S:SetUIPanelWindowInfo(CharacterFrame, "width")
+
+		module:PetPaperDollCompanionPane_Update()
 	end)
 
 	PetPaperDollFrameCompanionFrame:HookScript("OnHide", function(self)
