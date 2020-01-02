@@ -195,6 +195,7 @@ local function BlizzardOptions()
 	local B = E:GetModule("Enhanced_Blizzard")
 	local WF = E:GetModule("Enhanced_WatchFrame")
 	local TAM = E:GetModule("Enhanced_TakeAllMail")
+	local CHAR = E:GetModule("Enhanced_CharacterFrame")
 
 	local choices = {
 		["NONE"] = L["NONE"],
@@ -204,6 +205,7 @@ local function BlizzardOptions()
 
 	return {
 		type = "group",
+		childGroups = "tree",
 		name = L["BlizzUI Improvements"],
 		get = function(info) return E.private.enhanced[info[#info]] end,
 		set = function(info, value)
@@ -212,52 +214,68 @@ local function BlizzardOptions()
 		end,
 		args = {
 			header = {
-				order = 0,
+				order = 1,
 				type = "header",
 				name = EE:ColorizeSettingName(L["BlizzUI Improvements"])
 			},
-			deathRecap = {
-				order = 1,
-				type = "toggle",
-				name = L["Death Recap Frame"]
-			},
-			takeAllMail = {
+			general = {
 				order = 2,
-				type = "toggle",
-				name = L["Take All Mail"],
-				get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
-				set = function(info, value)
-					E.db.enhanced.blizzard.takeAllMail = value
-					if value and not TAM.initialized then
-						TAM:Initialize()
-					elseif not value then
-						E:StaticPopup_Show("CONFIG_RL")
-					end
-				end
-			},
-			animatedAchievementBars = {
-				order = 3,
-				type = "toggle",
-				name = L["Animated Achievement Bars"]
+				type = "group",
+				name = L["General"],
+				args = {
+					header = {
+						order = 1,
+						type = "header",
+						name = L["General"]
+					},
+					deathRecap = {
+						order = 2,
+						type = "toggle",
+						name = L["Death Recap Frame"]
+					},
+					takeAllMail = {
+						order = 3,
+						type = "toggle",
+						name = L["Take All Mail"],
+						get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
+						set = function(info, value)
+							E.db.enhanced.blizzard.takeAllMail = value
+							if value and not TAM.initialized then
+								TAM:Initialize()
+							elseif not value then
+								E:StaticPopup_Show("CONFIG_RL")
+							end
+						end
+					},
+					animatedAchievementBars = {
+						order = 4,
+						type = "toggle",
+						name = L["Animated Achievement Bars"]
+					}
+				}
 			},
 			characterFrame = {
-				order = 4,
+				order = 3,
 				type = "group",
 				name = L["Character Frame"],
-				guiInline = true,
 				get = function(info) return E.private.enhanced.character[info[#info]] end,
 				set = function(info, value)
 					E.private.enhanced.character[info[#info]] = value
 					E:StaticPopup_Show("PRIVATE_RL")
 				end,
 				args = {
-					enable = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Character Frame"]
+					},
+					enable = {
+						order = 2,
 						type = "toggle",
 						name = L["Enhanced Character Frame"]
 					},
 					animations = {
-						order = 2,
+						order = 3,
 						type = "toggle",
 						name = L["Smooth Animations"],
 						get = function(info) return E.db.enhanced.character.animations end,
@@ -268,71 +286,134 @@ local function BlizzardOptions()
 						disabled = function() return not E.private.enhanced.character.enable end
 					},
 					modelFrames = {
-						order = 3,
+						order = 4,
 						type = "toggle",
 						name = L["Enhanced Model Frames"]
 					},
 					paperdollBackgrounds = {
-						order = 4,
+						order = 5,
 						type = "group",
 						name = L["Paperdoll Backgrounds"],
 						guiInline = true,
 						get = function(info) return E.db.enhanced.character[info[#info]] end,
 						disabled = function() return not E.private.enhanced.character.enable end,
 						args = {
-							background = {
+							characterBackground = {
 								order = 1,
 								type = "toggle",
 								name = L["Character Background"],
 								set = function(info, value)
-									E.db.enhanced.character.background = value
-									E:GetModule("Enhanced_CharacterFrame"):UpdateCharacterModelFrame()
+									E.db.enhanced.character.characterBackground = value
+									CHAR:UpdateCharacterModelFrame()
 								end
 							},
-							petBackground = {
+							desaturateCharacter = {
 								order = 2,
+								type = "toggle",
+								name = L["Desaturate"],
+								get = function(info) return E.db.enhanced.character.desaturateCharacter end,
+								set = function(info, value)
+									E.db.enhanced.character.desaturateCharacter = value
+									CHAR:UpdateCharacterModelFrame()
+								end,
+								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.characterBackground end
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = " "
+							},
+							petBackground = {
+								order = 4,
 								type = "toggle",
 								name = L["Pet Background"],
 								set = function(info, value)
 									E.db.enhanced.character.petBackground = value
-									E:GetModule("Enhanced_CharacterFrame"):UpdatePetModelFrame()
+									CHAR:UpdatePetModelFrame()
 								end
 							},
+							desaturatePet = {
+								order = 5,
+								type = "toggle",
+								name = L["Desaturate"],
+								get = function(info) return E.db.enhanced.character.desaturatePet end,
+								set = function(info, value)
+									E.db.enhanced.character.desaturatePet = value
+									CHAR:UpdatePetModelFrame()
+								end,
+								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.petBackground end
+							},
+							spacer2 = {
+								order = 6,
+								type = "description",
+								name = " "
+							},
 							inspectBackground = {
-								order = 3,
+								order = 6,
 								type = "toggle",
 								name = L["Inspect Background"],
 								set = function(info, value)
 									E.db.enhanced.character.inspectBackground = value
-									E:GetModule("Enhanced_CharacterFrame"):UpdateInspectModelFrame()
+									CHAR:UpdateInspectModelFrame()
 								end
 							},
+							desaturateInspect = {
+								order = 8,
+								type = "toggle",
+								name = L["Desaturate"],
+								get = function(info) return E.db.enhanced.character.desaturateInspect end,
+								set = function(info, value)
+									E.db.enhanced.character.desaturateInspect = value 
+									CHAR:UpdateInspectModelFrame()
+								end,
+								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
+							},
+							spacer3 = {
+								order = 9,
+								type = "description",
+								name = " "
+							},
 							companionBackground = {
-								order = 4,
+								order = 10,
 								type = "toggle",
 								name = L["Companion Background"],
 								set = function(info, value)
 									E.db.enhanced.character.companionBackground = value
-									E:GetModule("Enhanced_CharacterFrame"):UpdateCompanionModelFrame()
+									CHAR:UpdateCompanionModelFrame()
 								end
+							},
+							desaturateCompanion = {
+								order = 11,
+								type = "toggle",
+								name = L["Desaturate"],
+								get = function(info) return E.db.enhanced.character.desaturateCompanion end,
+								set = function(info, value)
+									E.db.enhanced.character.desaturateCompanion = value
+									CHAR:UpdateCompanionModelFrame()
+								end,
+								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.companionBackground end
 							}
 						}
 					}
 				}
 			},
 			dressingRoom = {
-				order = 5,
+				order = 4,
 				type = "group",
 				name = L["Dressing Room"],
-				guiInline = true,
 				get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
 					E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
 				end,
 				args = {
-					enable = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Dressing Room"],
+					},
+					enable = {
+						order = 2,
 						type = "toggle",
 						name = L["Enable"],
 						set = function(info, value)
@@ -349,7 +430,7 @@ local function BlizzardOptions()
 						disabled = function() return not E.db.enhanced.blizzard.dressUpFrame.enable end
 					},
 					undressButton = {
-						order = 3,
+						order = 4,
 						type = "toggle",
 						name = L["Undress Button"],
 						desc = L["Add button to Dressing Room frame with ability to undress model."],
@@ -362,14 +443,18 @@ local function BlizzardOptions()
 				}
 			},
 			timerTracker = {
-				order = 6,
+				order = 5,
 				type = "group",
 				name = L["Timer Tracker"],
-				guiInline = true,
 				get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
 				args = {
-					enable = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Timer Tracker"]
+					},
+					enable = {
+						order = 2,
 						type = "toggle",
 						name = L["Enable"],
 						set = function(info, value)
@@ -378,7 +463,7 @@ local function BlizzardOptions()
 						end
 					},
 					dbm = {
-						order = 2,
+						order = 3,
 						type = "toggle",
 						name = L["Hook DBM"],
 						set = function(info, value)
@@ -390,9 +475,8 @@ local function BlizzardOptions()
 				}
 			},
 			watchframe = {
-				order = 7,
+				order = 6,
 				type = "group",
-				guiInline = true,
 				name = L["Watch Frame"],
 				get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
 				set = function(info, value)
@@ -400,18 +484,23 @@ local function BlizzardOptions()
 					WF:UpdateSettings()
 				end,
 				args = {
-					intro = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Watch Frame"],
+					},
+					intro = {
+						order = 2,
 						type = "description",
 						name = L["WATCHFRAME_DESC"]
 					},
 					enable = {
-						order = 2,
+						order = 3,
 						type = "toggle",
 						name = L["Enable"]
 					},
 					settings = {
-						order = 3,
+						order = 4,
 						type = "group",
 						name = L["Visibility State"],
 						guiInline = true,
@@ -457,40 +546,44 @@ local function BlizzardOptions()
 				}
 			},
 			errorFrame = {
-				order = 8,
+				order = 7,
 				type = "group",
 				name = L["Error Frame"],
-				guiInline = true,
 				get = function(info) return E.db.enhanced.blizzard.errorFrame[info[#info]] end,
 				set = function(info, value)
 					E.db.enhanced.blizzard.errorFrame[info[#info]] = value
 					B:ErrorFrameSize()
 				end,
-				disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end,
 				args = {
-					enable = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Error Frame"]
+					},
+					enable = {
+						order = 2,
 						type = "toggle",
 						name = L["Enable"],
 						set = function(info, value)
 							E.db.enhanced.blizzard.errorFrame[info[#info]] = value
 							B:CustomErrorFrameToggle()
-						end,
-						disabled = false
+						end
 					},
 					width = {
-						order = 2,
+						order = 3,
 						type = "range",
 						min = 100, max = 1000, step = 1,
 						name = L["Width"],
-						desc = L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"]
+						desc = L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"],
+						disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end
 					},
 					height = {
-						order = 3,
+						order = 4,
 						type = "range",
 						min = 30, max = 300, step = 1,
 						name = L["Height"],
-						desc = L["Set the height of Error Frame. Higher frame can show more lines at once."]
+						desc = L["Set the height of Error Frame. Higher frame can show more lines at once."],
+						disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end
 					},
 					spacer = {
 						order = 5,
@@ -502,13 +595,15 @@ local function BlizzardOptions()
 						type = "select",
 						dialogControl = "LSM30_Font",
 						name = L["Font"],
-						values = AceGUIWidgetLSMlists.font
+						values = AceGUIWidgetLSMlists.font,
+						disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end
 					},
 					fontSize = {
 						order = 7,
 						type = "range",
 						min = 6, max = 36, step = 1,
-						name = L["FONT_SIZE"]
+						name = L["FONT_SIZE"],
+						disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end
 					},
 					fontOutline = {
 						order = 8,
@@ -519,7 +614,8 @@ local function BlizzardOptions()
 							["OUTLINE"] = "OUTLINE",
 							["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 							["THICKOUTLINE"] = "THICKOUTLINE"
-						}
+						},
+						disabled = function() return not E.db.enhanced.blizzard.errorFrame.enable end
 					}
 				}
 			}

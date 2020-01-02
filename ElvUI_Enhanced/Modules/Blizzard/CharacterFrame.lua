@@ -218,7 +218,7 @@ local PAPERDOLL_STATINFO = {
 	},
 	["SHADOW"] = {
 		updateFunc = function(statFrame, unit) module:SetResistance(statFrame, unit, 5) end
-	},
+	}
 }
 
 local PAPERDOLL_STATCATEGORIES = {
@@ -291,7 +291,7 @@ local PAPERDOLL_STATCATEGORIES = {
 			"NATURE",
 			"SHADOW"
 		}
-	},
+	}
 }
 
 local PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
@@ -326,15 +326,19 @@ locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
 "Level %s %s%s %s|r"
 
 function module:PaperDollFrame_SetLevel()
-	local _, specName = E:GetTalentSpecInfo()
-	local classDisplayName, class = UnitClass("player")
-	local classColor = RAID_CLASS_COLORS[class]
+	local talentTree = E:GetTalentSpecInfo()
+	local classColor = RAID_CLASS_COLORS[E.myclass]
 	local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
+	local specName
 
-	if specName == NONE then
-		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
+	if talentTree then
+		specName = GetTalentTabInfo(talentTree)
+	end
+
+	if specName and specName ~= "" then
+		CharacterLevelText:SetFormattedText(classTextFormat, E.mylevel, classColorString, specName, E.myLocalizedClass)
 	else
-		CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
+		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, E.mylevel, classColorString, E.myLocalizedClass)
 	end
 
 	if CharacterLevelText:GetWidth() > 210 then
@@ -350,7 +354,6 @@ end
 
 function module:PaperDollSidebarTab(button)
 	button:Size(33, 35)
-
 	button:SetTemplate("Default")
 
 	button.Icon = button:CreateTexture(nil, "ARTWORK")
@@ -360,7 +363,7 @@ function module:PaperDollSidebarTab(button)
 	button.Icon:SetTexCoord(tcoords[1], tcoords[2], tcoords[3], tcoords[4])
 
 	button.Hider = button:CreateTexture(nil, "OVERLAY")
-	button.Hider:SetTexture(0.4, 0.4, 0.4, 0.4)
+	button.Hider:SetTexture(0, 0, 0, 0.8)
 	button.Hider:SetInside()
 
 	button.Highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -716,7 +719,7 @@ function module:ItemLevel(statFrame, unit)
 	--	statFrame.Label:SetTextColor(GetItemLevelColor())
 
 		local avgItemLevel, r, g, b = GetAverageItemLevel()
-		statFrame.Label:SetFormattedText("%.2f", avgItemLevel)
+		statFrame.Label:SetFormattedText("%.1f", avgItemLevel)
 		statFrame.Label:SetTextColor(r, g, b)
 	end
 end
@@ -1470,8 +1473,16 @@ function module:PaperDollTitlesPane_UpdateScrollFrame()
 			button.text:SetText(playerTitle.name)
 			button.titleId = playerTitle.id
 
+			local highlight = button:GetHighlightTexture()
+			highlight:SetTexture(E.Media.Textures.Highlight)
+			highlight:SetInside()
+			highlight:SetVertexColor(1, 1, 1, 0.35)
+
 			if PaperDollTitlesPane.selected == playerTitle.id then
 				button.Check:SetAlpha(1)
+				button.SelectedBar:SetTexture(E.Media.Textures.Highlight)
+				button.SelectedBar:SetVertexColor(1, 0.80, 0.10, 0.3)
+				button.SelectedBar:SetInside()
 				button.SelectedBar:Show()
 			else
 				button.Check:SetAlpha(0)
@@ -1479,8 +1490,7 @@ function module:PaperDollTitlesPane_UpdateScrollFrame()
 			end
 
 			if (i + scrollOffset) % 2 == 0 then
-				button.Stripe:SetTexture(0.9, 0.9, 1)
-				button.Stripe:SetAlpha(0.1)
+				button.Stripe:SetTexture(0.9, 0.9, 1, 0.1)
 				button.Stripe:Show()
 			else
 				button.Stripe:Hide()
@@ -1688,36 +1698,39 @@ function module:PetPaperDollCompanionPane_Update()
 end
 
 function module:UpdateCharacterModelFrame()
-	if E.db.enhanced.character.background then
+	if E.db.enhanced.character.characterBackground then
 		CharacterModelFrame.backdrop:Show()
 
-		local _, raceEng = UnitRace("player")
-		raceEng = lower(raceEng)
+		local desaturate = E.db.enhanced.character.desaturateCharacter and true or false
+		local raceEng = lower(E.myrace)
 
 		CharacterModelFrame.textureTopLeft:Show()
 		CharacterModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
-		CharacterModelFrame.textureTopLeft:SetDesaturated(true)
+		CharacterModelFrame.textureTopLeft:SetDesaturated(desaturate)
+
 		CharacterModelFrame.textureTopRight:Show()
 		CharacterModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
-		CharacterModelFrame.textureTopRight:SetDesaturated(true)
+		CharacterModelFrame.textureTopRight:SetDesaturated(desaturate)
+
 		CharacterModelFrame.textureBotLeft:Show()
 		CharacterModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
-		CharacterModelFrame.textureBotLeft:SetDesaturated(true)
+		CharacterModelFrame.textureBotLeft:SetDesaturated(desaturate)
+
 		CharacterModelFrame.textureBotRight:Show()
 		CharacterModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
-		CharacterModelFrame.textureBotRight:SetDesaturated(true)
+		CharacterModelFrame.textureBotRight:SetDesaturated(desaturate)
 
 		CharacterModelFrame.backgroundOverlay:Show()
 		CharacterModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
 		if raceEng == "scourge" then
-			CharacterModelFrame.backgroundOverlay:SetAlpha(0.1)
+			CharacterModelFrame.backgroundOverlay:SetAlpha(0.2)
 		elseif raceEng == "bloodelf" or raceEng == "nightelf" then
-			CharacterModelFrame.backgroundOverlay:SetAlpha(0.3)
+			CharacterModelFrame.backgroundOverlay:SetAlpha(0.7)
 		elseif raceEng == "troll" or raceEng == "orc" then
-			CharacterModelFrame.backgroundOverlay:SetAlpha(0.4)
-		else
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.5)
+		else
+			CharacterModelFrame.backgroundOverlay:SetAlpha(0.6)
 		end
 	else
 		CharacterModelFrame.backdrop:Hide()
@@ -1730,36 +1743,42 @@ function module:UpdateCharacterModelFrame()
 end
 
 function module:UpdateInspectModelFrame()
+	if not InspectModelFrame then return end
+
 	if E.db.enhanced.character.inspectBackground then
 		InspectModelFrame.backdrop:Show()
 
 		local _, raceEng = UnitRace(InspectFrame.unit)
 		raceEng = lower(raceEng)
+		local desaturate = E.db.enhanced.character.desaturateInspect and true or false
 
 		InspectModelFrame.textureTopLeft:Show()
 		InspectModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
-		InspectModelFrame.textureTopLeft:SetDesaturated(true)
+		InspectModelFrame.textureTopLeft:SetDesaturated(desaturate)
+
 		InspectModelFrame.textureTopRight:Show()
 		InspectModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
-		InspectModelFrame.textureTopRight:SetDesaturated(true)
+		InspectModelFrame.textureTopRight:SetDesaturated(desaturate)
+
 		InspectModelFrame.textureBotLeft:Show()
 		InspectModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
-		InspectModelFrame.textureBotLeft:SetDesaturated(true)
+		InspectModelFrame.textureBotLeft:SetDesaturated(desaturate)
+
 		InspectModelFrame.textureBotRight:Show()
 		InspectModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
-		InspectModelFrame.textureBotRight:SetDesaturated(true)
+		InspectModelFrame.textureBotRight:SetDesaturated(desaturate)
 
 		InspectModelFrame.backgroundOverlay:Show()
 		InspectModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
 		if raceEng == "scourge" then
-			InspectModelFrame.backgroundOverlay:SetAlpha(0.1)
+			InspectModelFrame.backgroundOverlay:SetAlpha(0.2)
 		elseif raceEng == "bloodelf" or raceEng == "nightelf" then
-			InspectModelFrame.backgroundOverlay:SetAlpha(0.3)
+			InspectModelFrame.backgroundOverlay:SetAlpha(0.7)
 		elseif raceEng == "troll" or raceEng == "orc" then
-			InspectModelFrame.backgroundOverlay:SetAlpha(0.4)
-		else
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.5)
+		else
+			InspectModelFrame.backgroundOverlay:SetAlpha(0.6)
 		end
 	else
 		InspectModelFrame.backdrop:Hide()
@@ -1772,25 +1791,23 @@ function module:UpdateInspectModelFrame()
 end
 
 function module:UpdatePetModelFrame()
-	if E.private.enhanced.character.petBackground then
+	if E.db.enhanced.character.petBackground then
 		PetModelFrame.backdrop:Show()
 
-		local _, playerClass = UnitClass("player")
-
 		PetModelFrame.petPaperDollPetModelBg:Show()
-		if playerClass == "HUNTER" then
+		if E.myclass == "HUNTER" then
 			PetModelFrame.petPaperDollPetModelBg:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\petHunter.blp")
-			PetModelFrame.backgroundOverlay:SetAlpha(0.3)
-		elseif playerClass == "WARLOCK" then
+			PetModelFrame.backgroundOverlay:SetAlpha(0.4)
+		elseif E.myclass == "WARLOCK" then
 			PetModelFrame.petPaperDollPetModelBg:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\petWarlock.blp")
-			PetModelFrame.backgroundOverlay:SetAlpha(0.1)
-		elseif playerClass == "DEATHKNIGHT" then
+			PetModelFrame.backgroundOverlay:SetAlpha(0.2)
+		elseif E.myclass == "DEATHKNIGHT" then
 			PetModelFrame.petPaperDollPetModelBg:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\petDeathKnight.blp")
 			PetModelFrame.backgroundOverlay:SetAlpha(0.1)
 		else
 			PetModelFrame.petPaperDollPetModelBg:Hide()
 		end
-		PetModelFrame.petPaperDollPetModelBg:SetDesaturated(true)
+		PetModelFrame.petPaperDollPetModelBg:SetDesaturated(E.db.enhanced.character.desaturatePet and true or false)
 
 		PetModelFrame.backgroundOverlay:Show()
 		PetModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
@@ -1805,6 +1822,7 @@ function module:UpdateCompanionModelFrame()
 	if E.db.enhanced.character.companionBackground then
 		CompanionModelFrame.backdrop:Show()
 		CompanionModelFrame.backgroundTex:Show()
+		CompanionModelFrame.backgroundTex:SetDesaturated(E.db.enhanced.character.desaturateCompanion and true or false)
 		CompanionModelFrame.backgroundOverlay:Show()
 	else
 		CompanionModelFrame.backdrop:Hide()
@@ -2298,8 +2316,8 @@ function module:Initialize()
 	GearManagerDialogPopup:SetPoint("LEFT", CharacterFrame.backdrop, "RIGHT", -6, 4)
 
 	CharacterModelFrame:CreateBackdrop("Default")
-	CharacterModelFrame:Size(237, 324)
-	CharacterModelFrame:Point("TOPLEFT", 63, -77)
+	CharacterModelFrame:Size(231, 320)
+	CharacterModelFrame:Point("TOPLEFT", 66, -78)
 
 	CharacterModelFrame.textureTopLeft = CharacterModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
 	CharacterModelFrame.textureTopLeft:Size(212, 244)
@@ -2386,24 +2404,23 @@ function module:Initialize()
 	end
 
 	PetNameText:ClearAllPoints()
-	PetNameText:Point("CENTER", CharacterFrame.backdrop, 6, 200)
+	PetNameText:Point("CENTER", CharacterFrame.backdrop, 0, 200)
 
 	PetLevelText:ClearAllPoints()
 	PetLevelText:Point("TOP", CharacterFrame.backdrop, 0, -20)
 
-	PetModelFrame:Size(310, 320)
+	PetPaperDollPetInfo:SetPoint("TOPLEFT", 28, -80)
 
 	PetPaperDollCloseButton:Kill()
 	PetAttributesFrame:Kill()
 	PetResistanceFrame:Kill()
 
-	PetModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 27, -80)
-
-	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", PetPaperDollFramePetFrame, "BOTTOMLEFT", 25, 88)
-	PetPaperDollFrameExpBar:Width(285)
+	PetPaperDollFrameExpBar:Size(294, 12)
+	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", 25, 88)
 
 	PetModelFrame:CreateBackdrop("Default")
 	PetModelFrame:Size(310, 320)
+	PetModelFrame:Point("TOPLEFT", 25, -77)
 
 	PetModelFrame.petPaperDollPetModelBg = PetModelFrame:CreateTexture("$parentPetPaperDollPetModelBg", "BACKGROUND")
 	PetModelFrame.petPaperDollPetModelBg:Size(494, 461)
@@ -2447,7 +2464,6 @@ function module:Initialize()
 	CompanionModelFrame.backgroundTex:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\MountJournal-BG")
 	CompanionModelFrame.backgroundTex:SetInside(CompanionModelFrame.backdrop)
 	CompanionModelFrame.backgroundTex:SetTexCoord(0.00390625, 0.783203125, 0.00390625, 0.99609375)
-	CompanionModelFrame.backgroundTex:SetDesaturated(true)
 
 	CompanionModelFrame.backgroundOverlay = CompanionModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
 	CompanionModelFrame.backgroundOverlay:SetInside(CompanionModelFrame.backdrop)
