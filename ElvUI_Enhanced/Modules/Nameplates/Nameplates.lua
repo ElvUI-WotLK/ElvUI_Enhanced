@@ -137,11 +137,10 @@ local separatorMap = {
 	["{"] = "{%s}"
 }
 
-local function UpdateElement_NameHook(self, frame)
+local function Update_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
-	local helath = self.db.units[frame.UnitType].healthbar or self.db.units[frame.UnitType].health
-	if helath.enable or (self.db.alwaysShowTargetHealth and frame.isTarget) then
+	if frame.Health:IsShown() then
 		if frame.Title then
 			frame.Title:SetText()
 			frame.Title:Hide()
@@ -214,24 +213,12 @@ end
 
 function ENP:TitleCache()
 	if E.db.enhanced.nameplates.titleCache then
-		if NP.Update_Name then
-			if not self:IsHooked(NP, "Update_Name") then
-				self:Hook(NP, "Update_Name", UpdateElement_NameHook)
-			end
-		else
-			if not self:IsHooked(NP, "UpdateElement_Name") then
-				self:Hook(NP, "UpdateElement_Name", UpdateElement_NameHook)
-			end
+		if not self:IsHooked(NP, "Update_Name") then
+			self:Hook(NP, "Update_Name", Update_NameHook)
 		end
 	else
-		if NP.Update_Name then
-			if self:IsHooked(NP, "Update_Name") then
-				self:Unhook(NP, "Update_Name")
-			end
-		else
-			if self:IsHooked(NP, "UpdateElement_Name") then
-				self:Unhook(NP, "UpdateElement_Name")
-			end
+		if self:IsHooked(NP, "Update_Name") then
+			self:Unhook(NP, "Update_Name")
 		end
 	end
 end
