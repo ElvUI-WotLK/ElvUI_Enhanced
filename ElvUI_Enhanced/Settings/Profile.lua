@@ -40,10 +40,14 @@ P.enhanced = {
 	},
 	character = {
 		animations = false,
-		background = false,
+		characterBackground = false,
 		petBackground = false,
 		inspectBackground = false,
 		companionBackground = false,
+		desaturateCharacter = false,
+		desaturatePet = false,
+		desaturateInspect = false,
+		desaturateCompanion = false
 	},
 	equipment = {
 		enable = false,
