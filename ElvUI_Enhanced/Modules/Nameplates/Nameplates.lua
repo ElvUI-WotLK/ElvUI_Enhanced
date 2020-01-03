@@ -208,6 +208,8 @@ local function Update_NameHook(self, frame)
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
 		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
+	elseif frame.Title then
+		frame.Title:SetText("")
 	end
 end
 
