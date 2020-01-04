@@ -29,8 +29,8 @@ local npcTitleMap = {}
 
 local function UpdateNameplateByName(name)
 	for frame in pairs(NP.VisiblePlates) do
-		if frame and frame:IsShown() and frame.UnitName == name then
-			NP:UpdateAllFrame(frame)
+		if frame.UnitName == name then
+			NP.OnShow(frame:GetParent(), nil, true)
 		end
 	end
 end
@@ -435,8 +435,8 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	end
 end
 
-local function OnShowHook(frame, isConfig)
-	ENP.hooks[NP].OnShow(frame, isConfig)
+local function OnShowHook(frame, ...)
+	ENP.hooks[NP].OnShow(frame, ...)
 
 	if frame.UnitFrame.bubbleFrame then
 		frame.UnitFrame.bubbleFrame = nil
