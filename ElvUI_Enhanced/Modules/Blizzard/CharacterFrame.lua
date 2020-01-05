@@ -1042,7 +1042,8 @@ end
 function PaperDollFrame_CollapseStatCategory(categoryFrame)
 	if not categoryFrame.collapsed then
 		categoryFrame.collapsed = true
-		categoryFrame.Toolbar:SetTemplate("NoBackdrop")
+		--categoryFrame.Toolbar:SetTemplate("NoBackdrop")
+		categoryFrame.Toolbar:SetAlpha(0.4)
 		local index = 1
 		while categoryFrame.Stats[index] do
 			categoryFrame.Stats[index]:Hide()
@@ -1056,7 +1057,8 @@ end
 function PaperDollFrame_ExpandStatCategory(categoryFrame)
 	if categoryFrame.collapsed then
 		categoryFrame.collapsed = false
-		categoryFrame.Toolbar:SetTemplate("Default", true)
+		--categoryFrame.Toolbar:SetTemplate("Default", true)
+		categoryFrame.Toolbar:SetAlpha(1)
 		module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 		module:PaperDollFrame_UpdateStatScrollChildHeight()
 	end
@@ -2126,6 +2128,8 @@ function module:Initialize()
 		button.Toolbar:Size(150, 18)
 		button.Toolbar:Point("TOP")
 		button.Toolbar:SetTemplate("Default", true)
+		button.Toolbar:HookScript("OnEnter", S.SetModifiedBackdrop)
+		button.Toolbar:HookScript("OnLeave", S.SetOriginalBackdrop)
 
 		button.Toolbar:SetScript("OnClick", function(self)
 			if self:GetParent().collapsed then
