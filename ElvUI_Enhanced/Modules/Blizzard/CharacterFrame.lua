@@ -1700,6 +1700,8 @@ function module:PetPaperDollCompanionPane_Update()
 end
 
 function module:UpdateCharacterModelFrame()
+	if not module.Initialized then return end
+
 	if E.db.enhanced.character.characterBackground then
 		CharacterModelFrame.backdrop:Show()
 
@@ -1745,7 +1747,7 @@ function module:UpdateCharacterModelFrame()
 end
 
 function module:UpdateInspectModelFrame()
-	if not InspectModelFrame then return end
+	if not module.Initialized then return end
 
 	if E.db.enhanced.character.inspectBackground then
 		InspectModelFrame.backdrop:Show()
@@ -1793,6 +1795,8 @@ function module:UpdateInspectModelFrame()
 end
 
 function module:UpdatePetModelFrame()
+	if not module.Initialized then return end
+
 	if E.db.enhanced.character.petBackground then
 		PetModelFrame.backdrop:Show()
 
@@ -1821,6 +1825,8 @@ function module:UpdatePetModelFrame()
 end
 
 function module:UpdateCompanionModelFrame()
+	if not module.Initialized then return end
+
 	if E.db.enhanced.character.companionBackground then
 		CompanionModelFrame.backdrop:Show()
 		CompanionModelFrame.backgroundTex:Show()
@@ -1929,6 +1935,8 @@ end
 
 function module:Initialize()
 	if not E.private.enhanced.character.enable then return end
+
+	module.Initialized = true
 
 	self.skinEnabled = (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) and true or false
 
