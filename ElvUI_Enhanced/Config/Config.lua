@@ -274,8 +274,13 @@ local function BlizzardOptions()
 						type = "toggle",
 						name = L["Enhanced Character Frame"]
 					},
-					animations = {
+					modelFrames = {
 						order = 3,
+						type = "toggle",
+						name = L["Enhanced Model Frames"]
+					},
+					animations = {
+						order = 4,
 						type = "toggle",
 						name = L["Smooth Animations"],
 						get = function(info) return E.db.enhanced.character.animations end,
@@ -284,11 +289,6 @@ local function BlizzardOptions()
 							E:StaticPopup_Show("PRIVATE_RL")
 						end,
 						disabled = function() return not E.private.enhanced.character.enable end
-					},
-					modelFrames = {
-						order = 4,
-						type = "toggle",
-						name = L["Enhanced Model Frames"]
 					},
 					paperdollBackgrounds = {
 						order = 5,
@@ -363,7 +363,7 @@ local function BlizzardOptions()
 								name = L["Desaturate"],
 								get = function(info) return E.db.enhanced.character.desaturateInspect end,
 								set = function(info, value)
-									E.db.enhanced.character.desaturateInspect = value 
+									E.db.enhanced.character.desaturateInspect = value
 									CHAR:UpdateInspectModelFrame()
 								end,
 								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
