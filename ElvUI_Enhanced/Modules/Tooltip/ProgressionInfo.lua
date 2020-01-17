@@ -272,18 +272,19 @@ local function ShowInspectInfo(tt)
 	local guid = UnitGUID(unit)
 	local frameShowen = AchievementFrame and AchievementFrame:IsShown()
 
-	if progressCache[guid] and (frameShowen or (GetTime() - progressCache[guid].timer) < 1) then
+	if progressCache[guid] and (frameShowen or (GetTime() - progressCache[guid].timer) < 600) then
 		SetProgressionInfo(guid, tt)
 	elseif not frameShowen then
-		if achievementFunctions then
-			achievementFunctions.selectedCategory = 0
+		PI.compareGUID = guid
+
+		PI:RegisterEvent("INSPECT_ACHIEVEMENT_READY")
+
+		if AchievementFrameComparison then
+			AchievementFrameComparison:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
 		end
 
 		ClearAchievementComparisonUnit()
 		SetAchievementComparisonUnit(unit)
-
-		PI.compareGUID = guid
-		PI:RegisterEvent("INSPECT_ACHIEVEMENT_READY", "INSPECT_ACHIEVEMENT_READY")
 	end
 end
 
@@ -295,13 +296,13 @@ function PI:INSPECT_ACHIEVEMENT_READY()
 		GameTooltip:SetUnit("mouseover")
 	end
 
-	self.compareGUID = nil
+	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
 
-	if achievementFunctions then
-		achievementFunctions.selectedCategory = "summary"
+	if AchievementFrameComparison then
+		AchievementFrameComparison:RegisterEvent("INSPECT_ACHIEVEMENT_READY")
 	end
 
-	self:UnregisterEvent("INSPECT_ACHIEVEMENT_READY")
+	self.compareGUID = nil
 end
 
 function PI:MODIFIER_STATE_CHANGED(_, key)
