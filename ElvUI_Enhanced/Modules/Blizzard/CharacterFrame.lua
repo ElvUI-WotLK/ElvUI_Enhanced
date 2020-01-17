@@ -1799,7 +1799,7 @@ function module:UpdateCharacterModelFrame()
 end
 
 function module:UpdateInspectModelFrame()
-	if not module.Initialized then return end
+	if not module.Initialized or not InspectModelFrame then return end
 
 	if E.db.enhanced.character.inspectBackground then
 		if not InspectModelFrame.backdrop then
