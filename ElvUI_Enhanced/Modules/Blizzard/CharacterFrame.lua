@@ -1133,7 +1133,7 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 					label:Width(187)
 					label:ClearAllPoints()
 					label:SetPoint("CENTER")
-					label:FontTemplate(nil, 20)
+					label:FontTemplate(nil, 20, "NONE")
 					label:SetJustifyH("CENTER")
 					statFrame.Value:SetText("")
 
@@ -1141,21 +1141,19 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 						statFrame.leftGrad:Show()
 						statFrame.rightGrad:Show()
 					end
-				else
-					if statFrame:GetHeight() > 22 then
-						statFrame:Height(15)
-						local label = statFrame.Label
-						label:Width(122)
-						label:ClearAllPoints()
-						label:Point("LEFT", 7, 0)
-						label:FontTemplate()
-						label:SetJustifyH("LEFT")
-						label:SetTextColor(1, 0.82, 0)
+				elseif statFrame:GetHeight() > 22 then
+					statFrame:Height(15)
+					local label = statFrame.Label
+					label:Width(122)
+					label:ClearAllPoints()
+					label:Point("LEFT", 7, 0)
+					label:FontTemplate(nil, nil, "NONE")
+					label:SetJustifyH("LEFT")
+					label:SetTextColor(1, 0.82, 0)
 
-						if statFrame.leftGrad then
-							statFrame.leftGrad:Hide()
-							statFrame.rightGrad:Hide()
-						end
+					if statFrame.leftGrad then
+						statFrame.leftGrad:Hide()
+						statFrame.rightGrad:Hide()
 					end
 				end
 
@@ -1725,29 +1723,61 @@ function module:UpdateCharacterModelFrame()
 	if not module.Initialized then return end
 
 	if E.db.enhanced.character.characterBackground then
-		CharacterModelFrame.backdrop:Show()
+		if not CharacterModelFrame.backdrop then
+			CharacterModelFrame:CreateBackdrop()
+			CharacterModelFrame.backdrop:SetAllPoints(CharacterModelFrame)
+
+			CharacterModelFrame.textureTopLeft = CharacterModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
+			CharacterModelFrame.textureTopLeft:Point("TOPLEFT", 1, -1)
+			CharacterModelFrame.textureTopLeft:Size(216, 246)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 256, 256, 216, 248, 40, 8
+			CharacterModelFrame.textureTopLeft:SetTexCoord(0.15625, 1, 0.03125, 1)
+
+			CharacterModelFrame.textureTopRight = CharacterModelFrame:CreateTexture("$parentTextureTopRight", "BACKGROUND")
+			CharacterModelFrame.textureTopRight:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "TOPRIGHT")
+			CharacterModelFrame.textureTopRight:Size(19, 246)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 64, 256, 19, 248, 0, 8
+			CharacterModelFrame.textureTopRight:SetTexCoord(0, 0.296875, 0.03125, 1)
+
+			CharacterModelFrame.textureBotLeft = CharacterModelFrame:CreateTexture("$parentTextureBotLeft", "BACKGROUND")
+			CharacterModelFrame.textureBotLeft:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "BOTTOMLEFT")
+			CharacterModelFrame.textureBotLeft:Size(216, 76)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 256, 128, 216, 76, 40, 0
+			CharacterModelFrame.textureBotLeft:SetTexCoord(0.15625, 1, 0, 0.59375)
+
+			CharacterModelFrame.textureBotRight = CharacterModelFrame:CreateTexture("$parentTextureBotRight", "BACKGROUND")
+			CharacterModelFrame.textureBotRight:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "BOTTOMRIGHT")
+			CharacterModelFrame.textureBotRight:Size(19, 76)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 64, 128, 19, 76, 0, 0
+			CharacterModelFrame.textureBotRight:SetTexCoord(0, 0.296875, 0, 0.59375)
+
+			CharacterModelFrame.backgroundOverlay = CharacterModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
+			CharacterModelFrame.backgroundOverlay:SetInside(CharacterModelFrame.backdrop)
+			CharacterModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
+		else
+			CharacterModelFrame.backdrop:Show()
+		end
 
 		local desaturate = E.db.enhanced.character.desaturateCharacter and true or false
 		local raceEng = lower(E.myrace)
 
-		CharacterModelFrame.textureTopLeft:Show()
 		CharacterModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
 		CharacterModelFrame.textureTopLeft:SetDesaturated(desaturate)
+		CharacterModelFrame.textureTopLeft:Show()
 
-		CharacterModelFrame.textureTopRight:Show()
 		CharacterModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
 		CharacterModelFrame.textureTopRight:SetDesaturated(desaturate)
+		CharacterModelFrame.textureTopRight:Show()
 
-		CharacterModelFrame.textureBotLeft:Show()
 		CharacterModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
 		CharacterModelFrame.textureBotLeft:SetDesaturated(desaturate)
+		CharacterModelFrame.textureBotLeft:Show()
 
-		CharacterModelFrame.textureBotRight:Show()
 		CharacterModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
 		CharacterModelFrame.textureBotRight:SetDesaturated(desaturate)
+		CharacterModelFrame.textureBotRight:Show()
 
 		CharacterModelFrame.backgroundOverlay:Show()
-		CharacterModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
 		if raceEng == "scourge" then
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.2)
@@ -1758,7 +1788,7 @@ function module:UpdateCharacterModelFrame()
 		else
 			CharacterModelFrame.backgroundOverlay:SetAlpha(0.6)
 		end
-	else
+	elseif CharacterModelFrame.textureTopLeft then
 		CharacterModelFrame.backdrop:Hide()
 		CharacterModelFrame.textureTopLeft:Hide()
 		CharacterModelFrame.textureTopRight:Hide()
@@ -1772,30 +1802,62 @@ function module:UpdateInspectModelFrame()
 	if not module.Initialized then return end
 
 	if E.db.enhanced.character.inspectBackground then
-		InspectModelFrame.backdrop:Show()
+		if not InspectModelFrame.backdrop then
+			InspectModelFrame:CreateBackdrop("Default")
+			InspectModelFrame.backdrop:SetAllPoints(InspectModelFrame)
+
+			InspectModelFrame.textureTopLeft = InspectModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
+			InspectModelFrame.textureTopLeft:Point("TOPLEFT", 1, -1)
+			InspectModelFrame.textureTopLeft:Size(216, 246)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 256, 256, 216, 248, 40, 8
+			InspectModelFrame.textureTopLeft:SetTexCoord(0.15625, 1, 0.03125, 1)
+
+			InspectModelFrame.textureTopRight = InspectModelFrame:CreateTexture("$parentTextureTopRight", "BACKGROUND")
+			InspectModelFrame.textureTopRight:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "TOPRIGHT")
+			InspectModelFrame.textureTopRight:Size(19, 246)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 64, 256, 19, 248, 0, 8
+			InspectModelFrame.textureTopRight:SetTexCoord(0, 0.296875, 0.03125, 1)
+
+			InspectModelFrame.textureBotLeft = InspectModelFrame:CreateTexture("$parentTextureBotLeft", "BACKGROUND")
+			InspectModelFrame.textureBotLeft:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "BOTTOMLEFT")
+			InspectModelFrame.textureBotLeft:Size(216, 76)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 256, 128, 216, 76, 40, 0
+			InspectModelFrame.textureBotLeft:SetTexCoord(0.15625, 1, 0, 0.59375)
+
+			InspectModelFrame.textureBotRight = InspectModelFrame:CreateTexture("$parentTextureBotRight", "BACKGROUND")
+			InspectModelFrame.textureBotRight:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "BOTTOMRIGHT")
+			InspectModelFrame.textureBotRight:Size(19, 76)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 64, 128, 19, 76, 0, 0
+			InspectModelFrame.textureBotRight:SetTexCoord(0, 0.296875, 0, 0.59375)
+
+			InspectModelFrame.backgroundOverlay = InspectModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
+			InspectModelFrame.backgroundOverlay:SetInside(InspectModelFrame.backdrop)
+			InspectModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
+		else
+			InspectModelFrame.backdrop:Show()
+		end
 
 		local _, raceEng = UnitRace(InspectFrame.unit)
 		raceEng = lower(raceEng)
 		local desaturate = E.db.enhanced.character.desaturateInspect and true or false
 
-		InspectModelFrame.textureTopLeft:Show()
 		InspectModelFrame.textureTopLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_1.blp")
 		InspectModelFrame.textureTopLeft:SetDesaturated(desaturate)
+		InspectModelFrame.textureTopLeft:Show()
 
-		InspectModelFrame.textureTopRight:Show()
 		InspectModelFrame.textureTopRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_2.blp")
 		InspectModelFrame.textureTopRight:SetDesaturated(desaturate)
+		InspectModelFrame.textureTopRight:Show()
 
-		InspectModelFrame.textureBotLeft:Show()
 		InspectModelFrame.textureBotLeft:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_3.blp")
 		InspectModelFrame.textureBotLeft:SetDesaturated(desaturate)
+		InspectModelFrame.textureBotLeft:Show()
 
-		InspectModelFrame.textureBotRight:Show()
 		InspectModelFrame.textureBotRight:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\"..raceEng.."_4.blp")
 		InspectModelFrame.textureBotRight:SetDesaturated(desaturate)
+		InspectModelFrame.textureBotRight:Show()
 
 		InspectModelFrame.backgroundOverlay:Show()
-		InspectModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
 
 		if raceEng == "scourge" then
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.2)
@@ -1806,7 +1868,7 @@ function module:UpdateInspectModelFrame()
 		else
 			InspectModelFrame.backgroundOverlay:SetAlpha(0.6)
 		end
-	else
+	elseif InspectModelFrame.textureTopLeft then
 		InspectModelFrame.backdrop:Hide()
 		InspectModelFrame.textureTopLeft:Hide()
 		InspectModelFrame.textureTopRight:Hide()
@@ -1820,9 +1882,21 @@ function module:UpdatePetModelFrame()
 	if not module.Initialized then return end
 
 	if E.db.enhanced.character.petBackground then
-		PetModelFrame.backdrop:Show()
+		if not PetModelFrame.backdrop then
+			PetModelFrame:CreateBackdrop("Default")
+			PetModelFrame.backdrop:SetAllPoints(PetModelFrame)
 
-		PetModelFrame.petPaperDollPetModelBg:Show()
+			PetModelFrame.petPaperDollPetModelBg = PetModelFrame:CreateTexture("$parentPetPaperDollPetModelBg", "BACKGROUND")
+			PetModelFrame.petPaperDollPetModelBg:SetInside(PetModelFrame.backdrop)
+			PetModelFrame.petPaperDollPetModelBg:SetTexCoord(0.00390625, 0.623046875, 0.00390625, 0.689453125)
+
+			PetModelFrame.backgroundOverlay = PetModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
+			PetModelFrame.backgroundOverlay:SetInside(PetModelFrame.backdrop)
+			PetModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
+		else
+			PetModelFrame.backdrop:Show()
+		end
+
 		if E.myclass == "HUNTER" then
 			PetModelFrame.petPaperDollPetModelBg:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\petHunter.blp")
 			PetModelFrame.backgroundOverlay:SetAlpha(0.4)
@@ -1835,11 +1909,12 @@ function module:UpdatePetModelFrame()
 		else
 			PetModelFrame.petPaperDollPetModelBg:Hide()
 		end
+
 		PetModelFrame.petPaperDollPetModelBg:SetDesaturated(E.db.enhanced.character.desaturatePet and true or false)
 
+		PetModelFrame.petPaperDollPetModelBg:Show()
 		PetModelFrame.backgroundOverlay:Show()
-		PetModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
-	else
+	elseif PetModelFrame.petPaperDollPetModelBg then
 		PetModelFrame.backdrop:Hide()
 		PetModelFrame.petPaperDollPetModelBg:Hide()
 		PetModelFrame.backgroundOverlay:Hide()
@@ -1850,11 +1925,28 @@ function module:UpdateCompanionModelFrame()
 	if not module.Initialized then return end
 
 	if E.db.enhanced.character.companionBackground then
-		CompanionModelFrame.backdrop:Show()
-		CompanionModelFrame.backgroundTex:Show()
+		if not CompanionModelFrame.backdrop then
+			CompanionModelFrame:CreateBackdrop("Default")
+			CompanionModelFrame.backdrop:SetAllPoints(CompanionModelFrame)
+
+			CompanionModelFrame.backgroundTex = CompanionModelFrame:CreateTexture("$parentBackgroundTex", "BACKGROUND")
+			CompanionModelFrame.backgroundTex:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\MountJournal-BG")
+			CompanionModelFrame.backgroundTex:SetInside(CompanionModelFrame.backdrop)
+			CompanionModelFrame.backgroundTex:SetTexCoord(0.00390625, 0.783203125, 0.0078125, 0.984375)
+
+			CompanionModelFrame.backgroundOverlay = CompanionModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
+			CompanionModelFrame.backgroundOverlay:SetInside(CompanionModelFrame.backdrop)
+			CompanionModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
+			CompanionModelFrame.backgroundOverlay:SetAlpha(0.3)
+		else
+			CompanionModelFrame.backdrop:Show()
+		end
+
 		CompanionModelFrame.backgroundTex:SetDesaturated(E.db.enhanced.character.desaturateCompanion and true or false)
+
+		CompanionModelFrame.backgroundTex:Show()
 		CompanionModelFrame.backgroundOverlay:Show()
-	else
+	elseif CompanionModelFrame.backgroundTex then
 		CompanionModelFrame.backdrop:Hide()
 		CompanionModelFrame.backgroundTex:Hide()
 		CompanionModelFrame.backgroundOverlay:Hide()
@@ -1918,41 +2010,6 @@ local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
 			self.range = select(2, self.scrollBar:GetMinMaxValues())
 		end)
 	end
-end
-
-function module:ADDON_LOADED(_, addon)
-	if addon ~= "Blizzard_InspectUI" then return end
-	self:UnregisterEvent("ADDON_LOADED")
-
-	InspectModelFrame:CreateBackdrop("Default")
-	InspectModelFrame:Size(231, 320)
-	InspectModelFrame:Point("TOPLEFT", 66, -78)
-
-	InspectModelFrame.textureTopLeft = InspectModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
-	InspectModelFrame.textureTopLeft:Point("TOPLEFT")
-	InspectModelFrame.textureTopLeft:Size(212, 244)
-	InspectModelFrame.textureTopLeft:SetTexCoord(0.171875, 1, 0.0392156862745098, 1)
-
-	InspectModelFrame.textureTopRight = InspectModelFrame:CreateTexture("$parentTextureTopRight", "BACKGROUND")
-	InspectModelFrame.textureTopRight:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "TOPRIGHT")
-	InspectModelFrame.textureTopRight:Size(19, 244)
-	InspectModelFrame.textureTopRight:SetTexCoord(0, 0.296875, 0.0392156862745098, 1)
-
-	InspectModelFrame.textureBotLeft = InspectModelFrame:CreateTexture("$parentTextureBotLeft", "BACKGROUND")
-	InspectModelFrame.textureBotLeft:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "BOTTOMLEFT")
-	InspectModelFrame.textureBotLeft:Size(212, 128)
-	InspectModelFrame.textureBotLeft:SetTexCoord(0.171875, 1, 0, 1)
-
-	InspectModelFrame.textureBotRight = InspectModelFrame:CreateTexture("$parentTextureBotRight", "BACKGROUND")
-	InspectModelFrame.textureBotRight:Point("TOPLEFT", InspectModelFrame.textureTopLeft, "BOTTOMRIGHT")
-	InspectModelFrame.textureBotRight:Size(19, 128)
-	InspectModelFrame.textureBotRight:SetTexCoord(0, 0.296875, 0, 1)
-
-	InspectModelFrame.backgroundOverlay = InspectModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
-	InspectModelFrame.backgroundOverlay:Point("TOPLEFT", InspectModelFrame.textureTopLeft)
-	InspectModelFrame.backgroundOverlay:Point("BOTTOMRIGHT", InspectModelFrame.textureBotRight, 0, 52)
-
-	self:SecureHook("InspectFrame_UpdateTalentTab", "UpdateInspectModelFrame")
 end
 
 function module:Initialize()
@@ -2335,35 +2392,7 @@ function module:Initialize()
 	GearManagerDialogPopup:ClearAllPoints()
 	GearManagerDialogPopup:Point("LEFT", CharacterFrame.backdrop, "RIGHT", -6, 4)
 
-	CharacterModelFrame:CreateBackdrop("Default")
 	CharacterModelFrame:Size(237, 324)
-	CharacterModelFrame:Point("TOPLEFT", 63, -76)
-
-	CharacterModelFrame.textureTopLeft = CharacterModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
-	CharacterModelFrame.textureTopLeft:Size(212, 244)
-	CharacterModelFrame.textureTopLeft:Point("TOPLEFT")
-	CharacterModelFrame.textureTopLeft:SetTexCoord(0.171875, 1, 0.0392156862745098, 1)
-
-	CharacterModelFrame.textureTopRight = CharacterModelFrame:CreateTexture("$parentTextureTopRight", "BACKGROUND")
-	CharacterModelFrame.textureTopRight:Size(19, 244)
-	CharacterModelFrame.textureTopRight:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "TOPRIGHT")
-	CharacterModelFrame.textureTopRight:SetTexCoord(0, 0.296875, 0.0392156862745098, 1)
-
-	CharacterModelFrame.textureBotLeft = CharacterModelFrame:CreateTexture("$parentTextureBotLeft", "BACKGROUND")
-	CharacterModelFrame.textureBotLeft:Size(212, 128)
-	CharacterModelFrame.textureBotLeft:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "BOTTOMLEFT")
-	CharacterModelFrame.textureBotLeft:SetTexCoord(0.171875, 1, 0, 1)
-
-	CharacterModelFrame.textureBotRight = CharacterModelFrame:CreateTexture("$parentTextureBotRight", "BACKGROUND")
-	CharacterModelFrame.textureBotRight:Size(19, 128)
-	CharacterModelFrame.textureBotRight:Point("TOPLEFT", CharacterModelFrame.textureTopLeft, "BOTTOMRIGHT")
-	CharacterModelFrame.textureBotRight:SetTexCoord(0, 0.296875, 0, 1)
-
-	CharacterModelFrame.backgroundOverlay = CharacterModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
-	CharacterModelFrame.backgroundOverlay:Point("TOPLEFT", CharacterModelFrame.textureTopLeft)
-	CharacterModelFrame.backgroundOverlay:Point("BOTTOMRIGHT", CharacterModelFrame.textureBotRight, 0, 52)
-
-	self:UpdateCharacterModelFrame()
 
 	self:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
 
@@ -2433,7 +2462,6 @@ function module:Initialize()
 	PetAttributesFrame:Kill()
 	PetResistanceFrame:Kill()
 
-	PetModelFrame:CreateBackdrop("Default")
 	PetModelFrame:Size(325, 324)
 	PetModelFrame:Point("TOPLEFT", 19, -76)
 
@@ -2441,15 +2469,6 @@ function module:Initialize()
 
 	PetPaperDollFrameExpBar:Width(297)
 	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", 20, 88)
-
-	PetModelFrame.petPaperDollPetModelBg = PetModelFrame:CreateTexture("$parentPetPaperDollPetModelBg", "BACKGROUND")
-	PetModelFrame.petPaperDollPetModelBg:Size(494, 461)
-	PetModelFrame.petPaperDollPetModelBg:Point("TOPLEFT")
-
-	PetModelFrame.backgroundOverlay = PetModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
-	PetModelFrame.backgroundOverlay:SetAllPoints()
-
-	self:UpdatePetModelFrame()
 
 	PetPaperDollFramePetFrame:HookScript("OnShow", function()
 		if E.private.enhanced.character.collapsed then
@@ -2476,28 +2495,15 @@ function module:Initialize()
 
 	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
-	CompanionModelFrame:CreateBackdrop("Default")
 	CompanionModelFrame:Size(325, 352)
 	CompanionModelFrame:Point("TOPLEFT", 19, -76)
 
 	CompanionModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 23, -80)
 
-	CompanionModelFrame.backgroundTex = CompanionModelFrame:CreateTexture("$parentBackgroundTex", "BACKGROUND")
-	CompanionModelFrame.backgroundTex:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\MountJournal-BG")
-	CompanionModelFrame.backgroundTex:SetInside(CompanionModelFrame.backdrop)
-	CompanionModelFrame.backgroundTex:SetTexCoord(0.00390625, 0.783203125, 0.00390625, 0.99609375)
-
-	CompanionModelFrame.backgroundOverlay = CompanionModelFrame:CreateTexture("$parentBackgroundOverlay", "BORDER")
-	CompanionModelFrame.backgroundOverlay:SetInside(CompanionModelFrame.backdrop)
-	CompanionModelFrame.backgroundOverlay:SetTexture(0, 0, 0)
-	CompanionModelFrame.backgroundOverlay:SetAlpha(0.3)
-
 	CompanionSelectedName:ClearAllPoints()
 	CompanionSelectedName:Point("BOTTOM", CompanionModelFrame, "BOTTOM", 0, 10)
 	CompanionSelectedName:SetParent(CompanionModelFrame)
 	CompanionSelectedName:SetTextColor(1, 1, 1)
-
-	self:UpdateCompanionModelFrame()
 
 	CompanionPageNumber:Kill()
 	CompanionSummonButton:Kill()
@@ -2597,7 +2603,16 @@ function module:Initialize()
 		end
 	end)
 
-	self:RegisterEvent("ADDON_LOADED")
+	self:UpdateCharacterModelFrame()
+	self:UpdatePetModelFrame()
+	self:UpdateCompanionModelFrame()
+
+	self:RegisterEvent("ADDON_LOADED", function(event, addon)
+		if addon == "Blizzard_InspectUI" then
+			module:UnregisterEvent(event)
+			module:SecureHook("InspectFrame_UpdateTalentTab", "UpdateInspectModelFrame")
+		end
+	end)
 end
 
 local function InitializeCallback()
