@@ -418,7 +418,11 @@ function MF:Initialize()
 	end
 
 	if E.myclass == "HUNTER" then
-		PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 24, -76)
+		if E.private.enhanced.character.enable then
+			PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 24, -81)
+		else
+			PetPaperDollPetInfo:Point("TOPLEFT", PetPaperDollFrame, 24, -76)
+		end
 		PetStablePetInfo:Point("TOPLEFT", PetStableModel, 5, -5)
 	end
 

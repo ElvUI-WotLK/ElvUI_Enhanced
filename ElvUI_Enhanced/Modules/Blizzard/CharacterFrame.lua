@@ -79,6 +79,8 @@ local HEALTH_PER_STAMINA = HEALTH_PER_STAMINA
 local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
 local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER
 
+local CHARACTERFRAME_EXPANDED_WIDTH = 197
+
 local STATCATEGORY_MOVING_INDENT = 4
 local MOVING_STAT_CATEGORY
 
@@ -313,35 +315,50 @@ local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 	"RESISTANCE"
 }
 
-local locale = GetLocale()
-local classTextFormat =
-locale == "deDE" and "Stufe %s %s%s %s" or
-locale == "ruRU" and "%2$s%4$s (%3$s)|r %1$s-го уровня" or
-locale == "frFR" and "%2$s%4$s %3$s|r de niveau %1$s" or
-locale == "koKR" and "%s 레벨 %s%s %s|r" or
-locale == "zhCN" and "等级%s %s%s %s|r" or
-locale == "zhTW" and "等級%s%s%s%s|r" or
-locale == "esES" and "%2$s%4$s %3$s|r de nivel %1$s" or
-locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
-"Level %s %s%s %s|r"
+local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
+
+do
+	local locale = GetLocale()
+
+	if locale == "deDE" then
+		_PLAYER_LEVEL = "Stufe %s, |c%s%s-%s|r"
+		_PLAYER_LEVEL_NO_SPEC = "Stufe %s, |c%s%s|r"
+	elseif locale == "esES" or locale == "esMX" then
+		_PLAYER_LEVEL = "|c%2$s%4$s %3$s|r de nivel %1$s"
+		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r de nivel %1$s"
+	elseif locale == "frFR" then
+		_PLAYER_LEVEL = "|c%2$s%4$s %3$s|r de niveau %1$s"
+		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r de niveau %1$s"
+	elseif locale == "koKR" then
+		_PLAYER_LEVEL = "%s 레벨 |c%s%s %s|r"
+		_PLAYER_LEVEL_NO_SPEC = "%s 레벨 |c%s%s|r"
+	elseif locale == "ruRU" then
+		_PLAYER_LEVEL = "|c%2$s%4$s (%3$s)|r %1$s-го уровня"
+		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r %1$s-го уровня"
+	elseif locale == "zhCN" then
+		_PLAYER_LEVEL = "等级%s |c%s%s %s|r"
+		_PLAYER_LEVEL_NO_SPEC = "等级%s |c%s%s|r"
+	elseif locale == "zhTW" then
+		_PLAYER_LEVEL = "等級%s|c%s%s%s|r"
+		_PLAYER_LEVEL_NO_SPEC = "等級%s|c%s%s|r"
+	else
+		_PLAYER_LEVEL = "Level %s |c%s%s %s|r"
+		_PLAYER_LEVEL_NO_SPEC = "Level %s |c%s%s|r"
+	end
+end
 
 function module:PaperDollFrame_SetLevel()
-	local talentTree = E:GetTalentSpecInfo()
+	local _, specName = E:GetTalentSpecInfo()
 	local classColor = RAID_CLASS_COLORS[E.myclass]
-	local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
-	local specName
+	local classColorString = format("FF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
 
-	if talentTree then
-		specName = GetTalentTabInfo(talentTree)
-	end
-
-	if specName and specName ~= "" then
-		CharacterLevelText:SetFormattedText(classTextFormat, E.mylevel, classColorString, specName, E.myLocalizedClass)
+	if specName == NONE then
+		CharacterLevelText:SetFormattedText(_PLAYER_LEVEL_NO_SPEC, E.mylevel, classColorString, E.myLocalizedClass)
 	else
-		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, E.mylevel, classColorString, E.myLocalizedClass)
+		CharacterLevelText:SetFormattedText(_PLAYER_LEVEL, E.mylevel, classColorString, specName, E.myLocalizedClass)
 	end
 
-	if CharacterLevelText:GetWidth() > 210 then
+	if CharacterLevelText:GetWidth() > 205 then
 		if PaperDollSidebarTab1:IsVisible() then
 			CharacterLevelText:Point("TOP", CharacterNameText, "BOTTOM", -10, -6)
 		else
@@ -417,14 +434,14 @@ end
 
 function module:CharacterFrame_Expand()
 	if self.skinEnabled then
-		CharacterFrame.backdrop:Width(341 + 192)
+		CharacterFrame.backdrop:Width(341 + CHARACTERFRAME_EXPANDED_WIDTH)
 
 		S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
 		S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
 		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
 		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
 	else
-		CharacterFrame:Width(352 + 192)
+		CharacterFrame:Width(352 + CHARACTERFRAME_EXPANDED_WIDTH)
 
 		S:SetBackdropHitRect(PaperDollFrame)
 		S:SetBackdropHitRect(PetPaperDollFrame)
@@ -477,6 +494,16 @@ do
 end
 
 --[[
+local function OnEvent(event, bagID, slotID)
+	if event == "ITEM_UNLOCKED" then
+		if not slotID then
+			-- equiped item removed
+		else
+			-- bag item removed
+		end
+	end
+end
+
 local slots = {
 	["HeadSlot"] = "INVTYPE_HEAD",
 	["NeckSlot"] = "INVTYPE_NECK",
@@ -1317,11 +1344,7 @@ function PaperDoll_SaveStatCategoryOrder()
 end
 
 function module:PaperDoll_UpdateCategoryPositions()
-	local prevFrame = nil
-	for index = 1, #StatCategoryFrames do
-		local frame = StatCategoryFrames[index]
-		frame:ClearAllPoints()
-	end
+	local prevFrame
 
 	for index = 1, #StatCategoryFrames do
 		local frame = StatCategoryFrames[index]
@@ -1333,6 +1356,7 @@ function module:PaperDoll_UpdateCategoryPositions()
 			xOffset = -STATCATEGORY_MOVING_INDENT
 		end
 
+		frame:ClearAllPoints()
 		if prevFrame then
 			frame:Point("TOPLEFT", prevFrame, "BOTTOMLEFT", 0 + xOffset, -4)
 		else
@@ -1346,9 +1370,7 @@ local function StatCategory_OnDragUpdate(self)
 	local _, cursorY = GetCursorPosition()
 	cursorY = cursorY * GetScreenHeightScale()
 
-	local myIndex = nil
-	local insertIndex = nil
-	local closestPos
+	local myIndex, insertIndex, closestPos
 
 	for index = 1, #StatCategoryFrames + 1 do
 		if StatCategoryFrames[index] == self then
@@ -1904,7 +1926,7 @@ function module:ADDON_LOADED(_, addon)
 
 	InspectModelFrame:CreateBackdrop("Default")
 	InspectModelFrame:Size(231, 320)
-	InspectModelFrame:Point("TOPLEFT", InspectPaperDollFrame, "TOPLEFT", 66, -78)
+	InspectModelFrame:Point("TOPLEFT", 66, -78)
 
 	InspectModelFrame.textureTopLeft = InspectModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
 	InspectModelFrame.textureTopLeft:Point("TOPLEFT")
@@ -1947,23 +1969,14 @@ function module:Initialize()
 		GearScore2:Hide()
 	end
 
-	local function FixHybridScrollBarSize(frame, w1, w2, h1, h2)
-		if not frame.fixed then
-			local name = frame:GetName()
+	local function FixHybridScrollBarSkin(frame, h1, h2)
+		frame.scrollUp:Size(18)
+		frame.scrollDown:Size(18)
 
-			if _G[name.."ScrollUpButton"] and _G[name.."ScrollDownButton"] then
-				_G[name.."ScrollUpButton"]:Width(_G[name.."ScrollUpButton"]:GetWidth() + 2)
-				_G[name.."ScrollDownButton"]:Width(_G[name.."ScrollDownButton"]:GetWidth() + 2)
-			end
+		frame.scrollBar.thumbTexture:Size(18, 24)
 
-			frame.fixed = true
-		end
-
-		if frame.thumbbg then
-			frame.thumbTexture:Size(16, 28)
-			frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", w1, h1)
-			frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", w2, h2)
-		end
+		frame.scrollBar.Thumb.backdrop:Point("TOPLEFT", frame.scrollBar.Thumb, "TOPLEFT", 2, h1 or -5)
+		frame.scrollBar.Thumb.backdrop:Point("BOTTOMRIGHT", frame.scrollBar.Thumb, "BOTTOMRIGHT", -2, h2 or 1)
 	end
 
 	-- Hide frames
@@ -1994,10 +2007,10 @@ function module:Initialize()
 	end
 
 	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
-	expandButton:SetSize(25, 25)
-	expandButton:Point("BOTTOMLEFT", CharacterFrame, 326, 85)
+	expandButton:Point("BOTTOMLEFT", CharacterFrame, 325, 85)
 	expandButton:SetFrameLevel(CharacterFrame:GetFrameLevel() + 5)
-	S:HandleNextPrevButton(CharacterFrameExpandButton)
+	S:HandleNextPrevButton(expandButton)
+	expandButton:Size(19)
 
 	expandButton:SetScript("OnClick", function(self)
 		if CharacterFrame.Expanded then
@@ -2030,8 +2043,8 @@ function module:Initialize()
 
 	local sidebarTabs = CreateFrame("Frame", "PaperDollSidebarTabs", PaperDollFrame)
 	sidebarTabs:Hide()
-	sidebarTabs:SetSize(168, 35)
-	sidebarTabs:Point("BOTTOMRIGHT", CharacterFrame.backdrop, "TOPRIGHT", -4, -62)
+	sidebarTabs:Size(168, 35)
+	sidebarTabs:Point("BOTTOMRIGHT", CharacterFrame.backdrop, "TOPRIGHT", -18, -59)
 
 	local sidebarTabs3 = CreateFrame("Button", "PaperDollSidebarTab3", sidebarTabs)
 	sidebarTabs3:SetID(3)
@@ -2040,12 +2053,12 @@ function module:Initialize()
 
 	local sidebarTabs2 = CreateFrame("Button", "PaperDollSidebarTab2", sidebarTabs)
 	sidebarTabs2:SetID(2)
-	sidebarTabs2:Point("RIGHT", "PaperDollSidebarTab3", "LEFT", -4, 0)
+	sidebarTabs2:Point("RIGHT", "PaperDollSidebarTab3", "LEFT", -5, 0)
 	self:PaperDollSidebarTab(sidebarTabs2)
 
 	local sidebarTabs1 = CreateFrame("Button", "PaperDollSidebarTab1", sidebarTabs)
 	sidebarTabs1:SetID(1)
-	sidebarTabs1:Point("RIGHT", "PaperDollSidebarTab2", "LEFT", -4, 0)
+	sidebarTabs1:Point("RIGHT", "PaperDollSidebarTab2", "LEFT", -5, 0)
 	self:PaperDollSidebarTab(sidebarTabs1)
 
 	sidebarTabs1:RegisterEvent("UNIT_PORTRAIT_UPDATE")
@@ -2067,22 +2080,20 @@ function module:Initialize()
 
 	local titlePane = CreateFrame("ScrollFrame", "PaperDollTitlesPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	titlePane:Hide()
-	titlePane:SetSize(172, 354)
-	titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+	titlePane:Size(169, 350)
+	titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 
 	titlePane.scrollBar = CreateFrame("Slider", "$parentScrollBar", titlePane, "HybridScrollBarTemplate")
-	titlePane.scrollBar:Width(20)
-	titlePane.scrollBar:ClearAllPoints()
-	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 1, -14)
-	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 1, 14)
+	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 2, -16)
+	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 2, 14)
 	S:HandleScrollBar(titlePane.scrollBar)
-	FixHybridScrollBarSize(titlePane.scrollBar, 1, -1, -5, 5)
+	FixHybridScrollBarSkin(titlePane)
 
 	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
 
 	titlePane.scrollBar.Show = function(self)
 		titlePane:Width(169)
-		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 		for _, button in next, titlePane.buttons do
 			button:Width(169)
 		end
@@ -2090,10 +2101,10 @@ function module:Initialize()
 	end
 
 	titlePane.scrollBar.Hide = function(self)
-		titlePane:Width(187)
-		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
+		titlePane:Width(190)
+		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
 		for _, button in next, titlePane.buttons do
-			button:Width(187)
+			button:Width(190)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2106,14 +2117,13 @@ function module:Initialize()
 
 	local statsPane = CreateFrame("ScrollFrame", "CharacterStatsPane", CharacterFrame, "UIPanelScrollFrameTemplate")
 	statsPane:Hide()
-	statsPane:SetSize(172, 354)
-	statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+	statsPane:Size(169, 350)
+	statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 	statsPane.Categories = {}
 
 	statsPane.scrollBar = CharacterStatsPaneScrollBar
-	CharacterStatsPaneScrollBar:ClearAllPoints()
-	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 3, -16)
-	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 3, 16)
+	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 4, -18)
+	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 4, 16)
 	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 
 	CharacterStatsPaneScrollBar.scrollStep = 50
@@ -2124,7 +2134,7 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
-	statsPaneScrollChild:SetSize(170, 0)
+	statsPaneScrollChild:Size(169, 0)
 	statsPaneScrollChild:Point("TOPLEFT")
 
 	for i = 1, 8 do
@@ -2170,7 +2180,7 @@ function module:Initialize()
 
 	CharacterStatsPaneScrollBar.Show = function(self)
 		statsPane:Width(169)
-		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 		for _, button in next, statsPane.Categories do
 			button:Width(169)
 			button.Toolbar:Width(132)
@@ -2179,19 +2189,13 @@ function module:Initialize()
 	end
 
 	CharacterStatsPaneScrollBar.Hide = function(self)
-		statsPane:Width(187)
-		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
+		statsPane:Width(190)
+		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
 		for _, button in next, statsPane.Categories do
-			button:Width(187)
+			button:Width(190)
 			button.Toolbar:Width(150)
 		end
 		getmetatable(self).__index.Hide(self)
-	end
-
-	statsPane:Width(169)
-	statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
-	for _, button in next, statsPane.Categories do
-		button:Width(169)
 	end
 
 	statsPane:SetScript("OnShow", function(self)
@@ -2200,13 +2204,13 @@ function module:Initialize()
 
 	local equipmentManagerPane = CreateFrame("ScrollFrame", "PaperDollEquipmentManagerPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	equipmentManagerPane:Hide()
-	equipmentManagerPane:SetSize(172, 354)
-	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+	equipmentManagerPane:Size(169, 350)
+	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 
 	equipmentManagerPane.EquipSet = CreateFrame("Button", "$parentEquipSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.EquipSet:SetText(EQUIPSET_EQUIP)
-	equipmentManagerPane.EquipSet:SetSize(79, 22)
-	equipmentManagerPane.EquipSet:Point("TOPLEFT", equipmentManagerPane, "TOPLEFT", 8, 0)
+	equipmentManagerPane.EquipSet:Size(93, 22)
+	equipmentManagerPane.EquipSet:Point("TOPLEFT")
 	S:HandleButton(equipmentManagerPane.EquipSet)
 
 	equipmentManagerPane.EquipSet:SetScript("OnClick", function()
@@ -2219,25 +2223,26 @@ function module:Initialize()
 
 	equipmentManagerPane.SaveSet = CreateFrame("Button", "$parentSaveSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.SaveSet:SetText(SAVE)
-	equipmentManagerPane.SaveSet:SetSize(79, 22)
-	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 4, 0)
+	equipmentManagerPane.SaveSet:Size(94, 22)
+	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 3, 0)
 	S:HandleButton(equipmentManagerPane.SaveSet)
 
 	equipmentManagerPane.SaveSet:SetScript("OnClick", GearManagerDialogSaveSet_OnClick)
 
 	equipmentManagerPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", equipmentManagerPane, "HybridScrollBarTemplate")
-	equipmentManagerPane.scrollBar:Width(20)
-	equipmentManagerPane.scrollBar:ClearAllPoints()
-	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 1, -14)
-	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 1, 14)
+	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 2, -16)
+	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 2, 14)
 	S:HandleScrollBar(equipmentManagerPane.scrollBar)
-	FixHybridScrollBarSize(equipmentManagerPane.scrollBar, 1, -1, -5, 5)
+	FixHybridScrollBarSkin(equipmentManagerPane)
 
 	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
 	equipmentManagerPane.scrollBar.Show = function(self)
+		equipmentManagerPane.EquipSet:Width(83)
+		equipmentManagerPane.SaveSet:Width(83)
+
 		equipmentManagerPane:Width(169)
-		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 		for _, button in next, equipmentManagerPane.buttons do
 			button:Width(169)
 		end
@@ -2245,10 +2250,13 @@ function module:Initialize()
 	end
 
 	equipmentManagerPane.scrollBar.Hide = function(self)
-		equipmentManagerPane:Width(187)
-		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
+		equipmentManagerPane.EquipSet:Width(93)
+		equipmentManagerPane.SaveSet:Width(94)
+
+		equipmentManagerPane:Width(190)
+		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
 		for _, button in next, equipmentManagerPane.buttons do
-			button:Width(187)
+			button:Width(190)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2325,11 +2333,11 @@ function module:Initialize()
 
 	GearManagerDialogPopup:SetParent(PaperDollFrame)
 	GearManagerDialogPopup:ClearAllPoints()
-	GearManagerDialogPopup:SetPoint("LEFT", CharacterFrame.backdrop, "RIGHT", -6, 4)
+	GearManagerDialogPopup:Point("LEFT", CharacterFrame.backdrop, "RIGHT", -6, 4)
 
 	CharacterModelFrame:CreateBackdrop("Default")
-	CharacterModelFrame:Size(231, 320)
-	CharacterModelFrame:Point("TOPLEFT", 66, -78)
+	CharacterModelFrame:Size(237, 324)
+	CharacterModelFrame:Point("TOPLEFT", 63, -76)
 
 	CharacterModelFrame.textureTopLeft = CharacterModelFrame:CreateTexture("$parentTextureTopLeft", "BACKGROUND")
 	CharacterModelFrame.textureTopLeft:Size(212, 244)
@@ -2421,18 +2429,18 @@ function module:Initialize()
 	PetLevelText:ClearAllPoints()
 	PetLevelText:Point("TOP", CharacterFrame.backdrop, 0, -20)
 
-	PetPaperDollPetInfo:SetPoint("TOPLEFT", 28, -80)
-
 	PetPaperDollCloseButton:Kill()
 	PetAttributesFrame:Kill()
 	PetResistanceFrame:Kill()
 
-	PetPaperDollFrameExpBar:Size(294, 12)
-	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", 25, 88)
-
 	PetModelFrame:CreateBackdrop("Default")
-	PetModelFrame:Size(310, 320)
-	PetModelFrame:Point("TOPLEFT", 25, -77)
+	PetModelFrame:Size(325, 324)
+	PetModelFrame:Point("TOPLEFT", 19, -76)
+
+	PetModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 23, -80)
+
+	PetPaperDollFrameExpBar:Width(297)
+	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", 20, 88)
 
 	PetModelFrame.petPaperDollPetModelBg = PetModelFrame:CreateTexture("$parentPetPaperDollPetModelBg", "BACKGROUND")
 	PetModelFrame.petPaperDollPetModelBg:Size(494, 461)
@@ -2468,9 +2476,11 @@ function module:Initialize()
 
 	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
-	CompanionModelFrame:Size(326, 351)
-	CompanionModelFrame:Point("TOPLEFT", 19, -77)
 	CompanionModelFrame:CreateBackdrop("Default")
+	CompanionModelFrame:Size(325, 352)
+	CompanionModelFrame:Point("TOPLEFT", 19, -76)
+
+	CompanionModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 23, -80)
 
 	CompanionModelFrame.backgroundTex = CompanionModelFrame:CreateTexture("$parentBackgroundTex", "BACKGROUND")
 	CompanionModelFrame.backgroundTex:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\Media\\Textures\\backgrounds\\MountJournal-BG")
@@ -2501,27 +2511,25 @@ function module:Initialize()
 
 	local companionPane = CreateFrame("ScrollFrame", "PetPaperDollCompanionPane", PetPaperDollFrameCompanionFrame, "HybridScrollFrameTemplate")
 	companionPane:Hide()
-	companionPane:SetSize(172, 354)
-	companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+	companionPane:Size(169, 350)
+	companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 
 	companionPane.text = companionPane:CreateFontString(nil, "OVERLAY")
-	companionPane.text:SetSize(172, 20)
+	companionPane.text:Size(169, 20)
 	companionPane.text:Point("BOTTOMLEFT", companionPane, "TOPLEFT", -4, 10)
 	companionPane.text:FontTemplate()
 
 	companionPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", companionPane, "HybridScrollBarTemplate")
-	companionPane.scrollBar:Width(20)
-	companionPane.scrollBar:ClearAllPoints()
-	companionPane.scrollBar:Point("TOPLEFT", companionPane, "TOPRIGHT", 1, -14)
-	companionPane.scrollBar:Point("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 1, 14)
+	companionPane.scrollBar:Point("TOPLEFT", companionPane, "TOPRIGHT", 2, -16)
+	companionPane.scrollBar:Point("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 2, 14)
 	S:HandleScrollBar(companionPane.scrollBar)
-	FixHybridScrollBarSize(companionPane.scrollBar, 1, -1, -5, 5)
+	FixHybridScrollBarSkin(companionPane)
 
 	CreateSmoothScrollAnimation(companionPane.scrollBar, true)
 
 	companionPane.scrollBar.Show = function(self)
 		companionPane:Width(169)
-		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -24, -64)
+		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 		for _, button in next, companionPane.buttons do
 			button:Width(169)
 		end
@@ -2529,10 +2537,10 @@ function module:Initialize()
 	end
 
 	companionPane.scrollBar.Hide = function(self)
-		companionPane:Width(187)
-		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -6, -64)
+		companionPane:Width(190)
+		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
 		for _, button in next, companionPane.buttons do
-			button:Width(187)
+			button:Width(190)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2552,14 +2560,14 @@ function module:Initialize()
 
 	PetPaperDollFrameCompanionFrame:HookScript("OnShow", function(self)
 		if module.skinEnabled then
-			CharacterFrame.backdrop:Width(341 + 192)
+			CharacterFrame.backdrop:Width(341 + CHARACTERFRAME_EXPANDED_WIDTH)
 
 			S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
 			S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
 			S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
 			S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
 		else
-			CharacterFrame:Width(352 + 192)
+			CharacterFrame:Width(352 + CHARACTERFRAME_EXPANDED_WIDTH)
 
 			S:SetBackdropHitRect(PaperDollFrame)
 			S:SetBackdropHitRect(PetPaperDollFrame)
