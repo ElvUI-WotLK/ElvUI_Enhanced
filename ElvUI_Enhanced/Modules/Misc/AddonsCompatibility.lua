@@ -155,6 +155,14 @@ local addonFixes = {
 			end
 		end)
 	end,
+
+	-- All Stats 1.1
+	-- https://www.curseforge.com/wow/addons/all-stats/files/430951
+	["AllStats"] = function()
+		if E.private.enhanced.character.modelFrames and not E.private.enhanced.character.enable then
+			CharacterModelFrame:Size(237, 324)
+		end
+	end,
 }
 
 function AC:AddAddon(addon, func)
