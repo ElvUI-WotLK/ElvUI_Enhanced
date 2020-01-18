@@ -163,6 +163,17 @@ local addonFixes = {
 			CharacterModelFrame:Size(237, 324)
 		end
 	end,
+
+	-- https://github.com/ElvUI-WotLK/ElvUI_Enhanced/issues/100
+	["OmniBar"] = function()
+		hooksecurefunc("OmniBar_CreateIcon", function(self)
+			E:RegisterCooldown(self.icons[#self.icons].cooldown)
+		end)
+		
+		for _, icon in ipairs(OmniBar.icons) do
+			E:RegisterCooldown(icon.cooldown)
+		end
+	end,
 }
 
 function AC:AddAddon(addon, func)
