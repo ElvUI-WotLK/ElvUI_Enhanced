@@ -2,9 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
 local EE = E:GetModule("ElvUI_Enhanced")
 
-local HasNewMail = HasNewMail
+local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxNumItems = GetInboxNumItems
 local GetLatestThreeSenders = GetLatestThreeSenders
+local HasNewMail = HasNewMail
+
 local MAIL_LABEL = MAIL_LABEL
 local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 

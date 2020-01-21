@@ -1,20 +1,25 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule("Enhanced_Blizzard")
 
+local _G = _G
+local select = select
+local tonumber = tonumber
+local unpack = unpack
 local band = bit.band
 local ceil, floor = math.ceil, math.floor
-local format, upper, sub = string.format, string.upper, string.sub
+local format, upper, split, sub = string.format, string.upper, string.split, string.sub
 local tsort, twipe = table.sort, table.wipe
-local tonumber = tonumber
 
-local _G = _G
 local CannotBeResurrected = CannotBeResurrected
 local CopyTable = CopyTable
+local CreateFrame = CreateFrame
 local GetReleaseTimeRemaining = GetReleaseTimeRemaining
 local GetSpellInfo = GetSpellInfo
 local GetSpellLink = GetSpellLink
 local HasSoulstone = HasSoulstone
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
+local IsFalling = IsFalling
+local IsOutOfBounds = IsOutOfBounds
 local RepopMe = RepopMe
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -354,7 +359,7 @@ end
 
 function mod:SetItemRef(link, ...)
 	if sub(link, 1, 5) == "death" then
-		local _, id = strsplit(":", link)
+		local _, id = split(":", link)
 		OpenRecap(tonumber(id))
 		return
 	else

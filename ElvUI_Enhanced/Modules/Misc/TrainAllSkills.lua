@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local TA = E:NewModule("Enhanced_TrainAll", "AceHook-3.0", "AceEvent-3.0")
 
 local select = select
+local format = string.format
 
 local BuyTrainerService = BuyTrainerService
 local GetMoney = GetMoney
@@ -75,7 +76,7 @@ end
 function TA:ButtonCreate()
 	self.button = CreateFrame("Button", "ElvUI_TrainAllButton", ClassTrainerFrame, "UIPanelButtonTemplate")
 	self.button:Size(80, 22)
-	self.button:SetText(TRAIN.." "..ALL)
+	self.button:SetFormattedText("%s %s", TRAIN, ALL)
 
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer then
 		self.button:Point("RIGHT", ClassTrainerTrainButton, "LEFT", -3, 0)
@@ -95,7 +96,7 @@ function TA:ButtonCreate()
 		end
 
 		GameTooltip:SetOwner(self.button,"ANCHOR_TOPLEFT", 0, 5)
-		GameTooltip:SetText("|cffffffff"..TABARDVENDORCOST.."|r "..E:FormatMoney(cost, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
+		GameTooltip:SetText(format("|cffffffff%s|r %s", TABARDVENDORCOST, E:FormatMoney(cost, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)))
 	end)
 
 	self.button:HookScript("OnLeave", function()

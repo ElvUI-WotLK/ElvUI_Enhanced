@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule("DataTexts")
 local EE = E:GetModule("ElvUI_Enhanced")
 
+local select = select
 local floor = math.floor
 local join = string.join
 

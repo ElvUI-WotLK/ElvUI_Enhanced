@@ -1,6 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TC = E:NewModule("Enhanced_TargetClass", "AceEvent-3.0")
 
+local select = select
+
+local UnitClass = UnitClass
+local UnitClassification = UnitClassification
+local UnitIsPlayer = UnitIsPlayer
+
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 function TC:TargetChanged()

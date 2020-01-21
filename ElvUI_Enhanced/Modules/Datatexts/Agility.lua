@@ -5,6 +5,8 @@ local EE = E:GetModule("ElvUI_Enhanced")
 local select = select
 local join = string.join
 
+local UnitStat = UnitStat
+
 local AGILITY_COLON = AGILITY_COLON
 local SPELL_STAT2_NAME = SPELL_STAT2_NAME
 

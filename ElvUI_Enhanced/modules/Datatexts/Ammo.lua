@@ -5,16 +5,19 @@ local EE = E:GetModule("ElvUI_Enhanced")
 local select = select
 local format, join = string.format, string.join
 
-local GetItemInfo = GetItemInfo
-local GetItemCount = GetItemCount
-local GetAuctionItemSubClasses = GetAuctionItemSubClasses
-local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemCount = GetInventoryItemCount
-local GetInventorySlotInfo = GetInventorySlotInfo
 local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetContainerNumSlots = GetContainerNumSlots
+local GetAuctionItemSubClasses = GetAuctionItemSubClasses
+local GetContainerItemID = GetContainerItemID
+local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local GetInventoryItemCount = GetInventoryItemCount
+local GetInventoryItemLink = GetInventoryItemLink
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemCount = GetItemCount
+local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
+
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local INVTYPE_AMMO = INVTYPE_AMMO

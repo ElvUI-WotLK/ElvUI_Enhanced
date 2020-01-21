@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local IBC = E:NewModule("Enhanced_ItemBorderColor", "AceHook-3.0")
 local TT = E:GetModule("Tooltip")
 
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
+
 function IBC:SetBorderColor(_, tt)
 	if not tt.GetItem then return end
 

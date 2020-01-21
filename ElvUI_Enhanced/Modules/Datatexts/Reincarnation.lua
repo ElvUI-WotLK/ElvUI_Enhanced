@@ -4,16 +4,19 @@ local EE = E:GetModule("ElvUI_Enhanced")
 
 if E.myclass ~= "SHAMAN" then return end
 
-local format, join = string.format, string.join
 local floor = math.floor
+local format, join = string.format, string.join
 
-local GetTime = GetTime
-local IsSpellKnown = IsSpellKnown
+local GetItemCount = GetItemCount
+local GetItemInfo = GetItemInfo
 local GetSpellCooldown = GetSpellCooldown
+local GetTime = GetTime
 local IsInInstance = IsInInstance
+local IsSpellKnown = IsSpellKnown
+
+local READY = READY
 local SPELL_FAILED_NOT_KNOWN = SPELL_FAILED_NOT_KNOWN
 local TIME_REMAINING = TIME_REMAINING
-local READY = READY
 
 local iconString = "|T%s:20:20:0:0:64:64:4:55:4:55|t"
 local tex = "Interface\\Icons\\Spell_Nature_Reincarnation"

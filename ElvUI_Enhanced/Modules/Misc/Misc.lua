@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:NewModule("Enhanced_Misc", "AceHook-3.0", "AceEvent-3.0")
 
 local CancelDuel = CancelDuel
+local GetSpellInfo = GetSpellInfo
 local IsInInstance = IsInInstance
 local RepopMe = RepopMe
+local UnitBuff = UnitBuff
 
 local soulstone
 function M:PLAYER_DEAD()

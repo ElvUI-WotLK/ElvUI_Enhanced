@@ -6,21 +6,23 @@ local match = string.match
 local ceil, fmod = math.ceil, math.fmod
 
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local GetAuctionItemClasses = GetAuctionItemClasses
 local GetAuctionItemInfo = GetAuctionItemInfo
 local GetAuctionItemLink = GetAuctionItemLink
+local GetBuybackItemInfo = GetBuybackItemInfo
+local GetBuybackItemLink = GetBuybackItemLink
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemInfo = GetGuildBankItemInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetItemInfo = GetItemInfo
+local GetMerchantItemInfo = GetMerchantItemInfo
+local GetMerchantItemLink = GetMerchantItemLink
 local GetMerchantNumItems = GetMerchantNumItems
 local GetNumAuctionItems = GetNumAuctionItems
-local GetAuctionItemClasses = GetAuctionItemClasses
 local GetNumBuybackItems = GetNumBuybackItems
-local GetMerchantItemInfo = GetMerchantItemInfo
-local GetBuybackItemInfo = GetBuybackItemInfo
-local GetBuybackItemLink = GetBuybackItemLink
 local IsAddOnLoaded = IsAddOnLoaded
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+
 local BUYBACK_ITEMS_PER_PAGE = BUYBACK_ITEMS_PER_PAGE
 local ITEM_SPELL_KNOWN = ITEM_SPELL_KNOWN
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE

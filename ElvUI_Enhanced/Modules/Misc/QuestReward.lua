@@ -5,6 +5,7 @@ local _G = _G
 local select = select
 
 local GetItemInfo = GetItemInfo
+local GetNumQuestChoices = GetNumQuestChoices
 local GetQuestItemLink = GetQuestItemLink
 
 local function SelectQuestReward(id)

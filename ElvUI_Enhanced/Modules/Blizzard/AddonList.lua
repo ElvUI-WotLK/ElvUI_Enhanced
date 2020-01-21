@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule("Enhanced_Blizzard")
 
+local _G = _G
+local select = select
 local floor = math.floor
 local tconcat = table.concat
 
@@ -14,6 +16,7 @@ local IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
+local PlaySound = PlaySound
 
 local function AddonList_HasAnyChanged()
 	local status = ElvUI_AddonList.startStatus

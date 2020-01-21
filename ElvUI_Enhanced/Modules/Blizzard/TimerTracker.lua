@@ -3,8 +3,10 @@ local TT = E:NewModule("Enhanced_TimerTracker", "AceHook-3.0", "AceEvent-3.0")
 
 local ipairs = ipairs
 local tonumber = tonumber
+local unpack = unpack
 local floor, fmod = math.floor, math.fmod
 
+local GetTime = GetTime
 local UnitFactionGroup = UnitFactionGroup
 
 local chatMessage = GetLocale() == "ruRU" and {
