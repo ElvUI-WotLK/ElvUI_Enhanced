@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local mod = E:NewModule("Enhanced_Blizzard", "AceHook-3.0", "AceEvent-3.0")
 
 function mod:Initialize()

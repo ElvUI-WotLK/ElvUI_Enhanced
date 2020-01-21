@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local EDL = E:NewModule("Enhanced_DPSLinks", "AceHook-3.0")
 
 local find, format, gsub, split = string.find, string.format, string.gsub, string.split

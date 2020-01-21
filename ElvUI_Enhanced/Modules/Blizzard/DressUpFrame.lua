@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule("Enhanced_Blizzard")
 local S = E:GetModule("Skins")
 
