@@ -169,7 +169,7 @@ local addonFixes = {
 		hooksecurefunc("OmniBar_CreateIcon", function(self)
 			E:RegisterCooldown(self.icons[#self.icons].cooldown)
 		end)
-		
+
 		for _, icon in ipairs(OmniBar.icons) do
 			E:RegisterCooldown(icon.cooldown)
 		end

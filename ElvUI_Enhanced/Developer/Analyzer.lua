@@ -1,19 +1,15 @@
 SLASH_ANALYZE1 = "/analyze"
-
 SlashCmdList.ANALYZE = function(arg)
-	if arg ~= "" then
-		arg = _G[arg]
-	else
+	if arg == "" then
 		arg = GetMouseFocus()
+	else
+		arg = _G[arg]
 	end
-	if arg ~= nil then FRAME = arg end --Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
-	if arg ~= nil and arg:GetName() ~= nil then
-		local name = arg:GetName()
 
-		local childFrames = {arg:GetChildren()}
+	if arg and arg:GetName() then
 		ChatFrame1:AddMessage("|cffCC0000----------------------------")
-		ChatFrame1:AddMessage(name)
-		for _, child in ipairs(childFrames) do
+		ChatFrame1:AddMessage(arg:GetName())
+		for _, child in ipairs({arg:GetChildren()}) do
 			if child:GetName() then
 				ChatFrame1:AddMessage("+="..child:GetName())
 			end
