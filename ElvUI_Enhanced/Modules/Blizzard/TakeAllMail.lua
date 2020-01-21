@@ -245,13 +245,13 @@ function TAM:Initialize()
 
 	self.takeAll = CreateFrame("Button", "ElvUI_MailButtonAll", InboxFrame, "UIPanelButtonTemplate")
 	self.takeAll:Size(80, 22)
-	self.takeAll:Point("BOTTOM", "MailFrame","BOTTOM", -55, 92)
+	self.takeAll:Point("BOTTOM", "MailFrame","BOTTOM", -53, 92)
 	self.takeAll:SetText(L["Take All"])
 	S:HandleButton(self.takeAll)
 
 	self.takeCash = CreateFrame("Button", "ElvUI_MailButtonCash", InboxFrame, "UIPanelButtonTemplate")
 	self.takeCash:Size(80, 22)
-	self.takeCash:Point("BOTTOM", "MailFrame","BOTTOM", 36, 92)
+	self.takeCash:Point("BOTTOM", "MailFrame","BOTTOM", 34, 92)
 	self.takeCash:SetText(L["Take Cash"])
 	S:HandleButton(self.takeCash)
 
