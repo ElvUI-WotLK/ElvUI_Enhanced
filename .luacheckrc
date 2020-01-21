@@ -42,6 +42,8 @@ globals = {
 	"CharacterFrameExpandButton",
 	"CharacterStatsPane",
 	"CharacterStatsPaneScrollBar",
+	"CharacterStatsPaneScrollBarScrollDownButton",
+	"CharacterStatsPaneScrollBarScrollUpButton",
 	"CharacterStatsPaneScrollChild",
 	"DeathRecapFrame",
 	"DressUpFrameResizeButton",
@@ -75,6 +77,7 @@ globals = {
 	"GearScore2",
 	"GroupCalendar",
 	"HealBot_MMButton",
+	"OmniBar",
 	"PersonalGearScore",
 	"clcret",
 
