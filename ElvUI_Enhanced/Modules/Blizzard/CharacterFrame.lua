@@ -2569,8 +2569,6 @@ do -- CharacterFrame
 		CharacterFrameExpandButton:Show()
 		CharacterFrameExpandButton.collapseTooltip = L["Hide Character Information"]
 		CharacterFrameExpandButton.expandTooltip = L["Show Character Information"]
-
-		PaperDollSidebarTabs:Show()
 	end)
 
 	PaperDollFrame:SetScript("OnHide", function(self)
@@ -2579,7 +2577,6 @@ do -- CharacterFrame
 		if MOVING_STAT_CATEGORY then
 			PaperDollStatCategory_OnDragStop(MOVING_STAT_CATEGORY)
 		end
-		PaperDollSidebarTabs:Hide()
 	end)
 end
 
