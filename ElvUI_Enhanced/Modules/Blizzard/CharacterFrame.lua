@@ -944,7 +944,7 @@ function module:SetResistance(statFrame, unit, resistanceIndex)
 	local petBonus = ComputePetBonus("PET_BONUS_RES", resistance)
 	local resistanceNameShort = _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"]
 	local resistanceName = _G["RESISTANCE"..resistanceIndex.."_NAME"]
-	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex + 1)..":14:14:0:0:64:64:4:60:4:60|t"
+	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex + 1)..":14:14:2:2:16:16:2:14:2:14|t"
 	statFrame.Label:SetText(resistanceIconCode.." "..format(STAT_FORMAT, resistanceNameShort))
 	local text = _G[statFrame:GetName().."StatText"]
 	PaperDollFormatStat(resistanceName, base, positive, negative, statFrame, text)
