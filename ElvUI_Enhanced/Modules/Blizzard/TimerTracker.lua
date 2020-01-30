@@ -18,7 +18,7 @@ local timerTypes = {
 	["60-60"] = {1, 60, 60},
 }
 
-local chatMessage = GetLocale() == "ruRU" and {
+local chatMessage = {
 	-- Ущелье Песни Войны
 	["Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовьтесь!"] = timerTypes["30-120"],
 	["Битва за Ущелье Песни Войны начнется через 1 минуту."] = timerTypes["60-120"],
@@ -49,8 +49,10 @@ local chatMessage = GetLocale() == "ruRU" and {
 	-- Арена
 	["15 секунд до начала боя на арене!"] = timerTypes["15-60"],
 	["30 секунд до начала боя на арене!"] = timerTypes["30-60"],
-	["1 минута до начала боя на арене!"] = timerTypes["60-60"]
-} or {
+	["1 минута до начала боя на арене!"] = timerTypes["60-60"],
+	["Пятнадцать секунд до начала боя на арене!"] = timerTypes["15-60"],
+	["Тридцать секунд до начала боя на арене !"] = timerTypes["30-60"],
+
 	-- WSG
 	["The battle for Warsong Gulch begins in 30 seconds. Prepare yourselves!"] = timerTypes["30-120"],
 	["The battle for Warsong Gulch begins in 1 minute."] = timerTypes["60-120"],
