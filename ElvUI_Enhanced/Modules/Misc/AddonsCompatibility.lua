@@ -174,6 +174,45 @@ local addonFixes = {
 			E:RegisterCooldown(icon.cooldown)
 		end
 	end,
+
+	-- BlizzMove r18
+	-- https://www.curseforge.com/wow/addons/blizzmove/files/456128
+	-- https://github.com/ElvUI-WotLK/ElvUI_Enhanced/issues/96
+	["BlizzMove"] = function()
+		if E.private.enhanced.character.enable then
+			local MouseIsOver = MouseIsOver
+
+			local origOnMouseWheel
+
+			local function onMouseWheel(self, delta)
+				if MouseIsOver(CharacterStatsPane) then
+					CharacterStatsPane:GetScript("OnMouseWheel")(self, delta, CharacterStatsPaneScrollBar)
+				else
+					origOnMouseWheel(self, delta)
+				end
+			end
+
+			local f = CreateFrame("Frame")
+			f:RegisterEvent("PLAYER_ENTERING_WORLD")
+			f:SetScript("OnEvent", function(self)
+				origOnMouseWheel = PaperDollFrame:GetScript("OnMouseWheel", OnMouseWheel)
+
+				if PaperDollFrame.frameToMove and PaperDollFrame.frameToMove.EnableMouse then
+					PaperDollFrame:SetScript("OnMouseWheel", onMouseWheel)
+				end
+
+				hooksecurefunc(BlizzMove, "Toggle", function(self, handler)
+					if handler == PaperDollFrame then
+						if not handler:GetScript("OnDragStart") then
+							PaperDollFrame:SetScript("OnMouseWheel", nil)
+						else
+							PaperDollFrame:SetScript("OnMouseWheel", onMouseWheel)
+						end
+					end
+				end)
+			end)
+		end
+	end,
 }
 
 function AC:AddAddon(addon, func)
