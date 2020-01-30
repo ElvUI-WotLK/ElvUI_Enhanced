@@ -1,28 +1,32 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
+local ipairs = ipairs
+
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestLogTitle = GetQuestLogTitle
 local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
 local QuestLogTitleButton_Resize = QuestLogTitleButton_Resize
 
 local function ShowLevel()
-	local buttons = QuestLogScrollFrame.buttons
 	local scrollOffset = HybridScrollFrame_GetOffset(QuestLogScrollFrame)
 	local numEntries = GetNumQuestLogEntries()
-	local questIndex, questLogTitle, questCheck, title, level, isHeader, _
+	local _, questIndex, title, level, isHeader
 
-	for i = 1, #buttons do
+	for i, questLogTitle in ipairs(QuestLogScrollFrame.buttons) do
 		questIndex = i + scrollOffset
-		questLogTitle = buttons[i]
-		questCheck = buttons[i].check
 
 		if questIndex <= numEntries then
 			title, level, _, _, isHeader = GetQuestLogTitle(questIndex)
 
 			if not isHeader then
-				questLogTitle:SetFormattedText("[%d] %s", level, title)
-				questCheck:Point("LEFT", 5, 0)
+				if questLogTitle.groupMates:IsShown() then
+					questLogTitle.groupMates:Hide()
+					questLogTitle:SetFormattedText("|cff4F8CC9%s|r[%d] %s", questLogTitle.groupMates:GetText() or "", level, title)
+				else
+					questLogTitle:SetFormattedText("[%d] %s", level, title)
+				end
+
 				QuestLogTitleButton_Resize(questLogTitle)
 			end
 		end
@@ -32,7 +36,17 @@ end
 function M:QuestLevelToggle()
 	if IsAddOnLoaded("QuestGuru") then return end
 
-	if E.db.enhanced.general.showQuestLevel then
+	local enabled = E.db.enhanced.general.showQuestLevel
+
+	for _, questLogTitle in ipairs(QuestLogScrollFrame.buttons) do
+		if enabled then
+			questLogTitle.check:Point("LEFT", 5, 0)
+		else
+			questLogTitle.check:Point("LEFT", questLogTitle.normalText, "RIGHT", 2, 0)
+		end
+	end
+
+	if enabled then
 		self:SecureHook("QuestLog_Update", ShowLevel)
 		self:SecureHookScript(QuestLogScrollFrameScrollBar, "OnValueChanged", ShowLevel)
 	else
