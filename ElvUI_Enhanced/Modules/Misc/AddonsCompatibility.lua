@@ -195,7 +195,9 @@ local addonFixes = {
 			local f = CreateFrame("Frame")
 			f:RegisterEvent("PLAYER_ENTERING_WORLD")
 			f:SetScript("OnEvent", function(self)
-				origOnMouseWheel = PaperDollFrame:GetScript("OnMouseWheel", OnMouseWheel)
+				self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+				origOnMouseWheel = PaperDollFrame:GetScript("OnMouseWheel")
 
 				if PaperDollFrame.frameToMove and PaperDollFrame.frameToMove.EnableMouse then
 					PaperDollFrame:SetScript("OnMouseWheel", onMouseWheel)
