@@ -215,6 +215,14 @@ local addonFixes = {
 			end)
 		end
 	end,
+
+	-- InspectEquip 1.7.7
+	["InspectEquip"] = function()
+		if E.private.enhanced.character.enable then
+			PaperDollFrame:HookScript("OnShow", InspectEquip.PaperDollFrame_OnShow)
+			PaperDollFrame:HookScript("OnHide", InspectEquip.PaperDollFrame_OnHide)
+		end
+	end,
 }
 
 function AC:AddAddon(addon, func)
