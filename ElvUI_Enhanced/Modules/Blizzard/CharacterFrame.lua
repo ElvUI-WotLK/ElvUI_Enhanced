@@ -804,21 +804,41 @@ end
 
 function module:ItemLevel(statFrame, unit)
 	if PersonalGearScore then
-		statFrame.Label:SetText(PersonalGearScore:GetText())
-		statFrame.Label:SetTextColor(PersonalGearScore:GetTextColor())
-	else
-	--	local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
-	--	if avgItemLevelEquipped == avgItemLevel then
-	--		statFrame.Label:SetFormattedText("%.2f", avgItemLevelEquipped)
-	--	else
-	--		statFrame.Label:SetFormattedText("%.2f / %.2f", avgItemLevelEquipped, avgItemLevel)
-	--	end
-	--	statFrame.Label:SetTextColor(GetItemLevelColor())
+		if GearScoreLite and GearScoreLite.GetScore then
+			local gearScore, avgItemLevel = GearScoreLite:GetScore(E.myname, "player")
+			local r, g, b = GearScoreLite:GetQuality(gearScore)
 
-		local avgItemLevel, r, g, b = GetAverageItemLevel()
-		statFrame.Label:SetFormattedText("%.1f", avgItemLevel)
-		statFrame.Label:SetTextColor(r, g, b)
+			statFrame.Label:SetFormattedText("%d (%d)", avgItemLevel, gearScore)
+			statFrame.Label:SetTextColor(r, g, b)
+
+			return
+		elseif GearScore_GetScore then
+			GearScore_GetScore(E.myname, "player")
+
+			local data = GS_Data[E.myrealm].Players[E.myname]
+			local gearScore = data.GearScore
+			local avgItemLevel = data.Average
+			local r, b, g = GearScore_GetQuality(gearScore)
+
+			statFrame.Label:SetFormattedText("%d (%d)", avgItemLevel, gearScore)
+			statFrame.Label:SetTextColor(r, g, b)
+
+			return
+		end
 	end
+
+--	local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
+--	if avgItemLevelEquipped == avgItemLevel then
+--		statFrame.Label:SetFormattedText("%.2f", avgItemLevelEquipped)
+--	else
+--		statFrame.Label:SetFormattedText("%.2f / %.2f", avgItemLevelEquipped, avgItemLevel)
+--	end
+--	statFrame.Label:SetTextColor(GetItemLevelColor())
+
+	local avgItemLevel, r, g, b = GetAverageItemLevel()
+	statFrame.Label:SetFormattedText("%.1f", avgItemLevel)
+	statFrame.Label:SetTextColor(r, g, b)
+
 end
 
 function module:SetStat(statFrame, unit, statIndex)
