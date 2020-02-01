@@ -144,13 +144,13 @@ local STAT_RESILIENCE = STAT_RESILIENCE
 -- GLOBALS: CharacterLevelText, CharacterMicroButton, CharacterModelFrame, CharacterNameFrame, CharacterNameText, CharacterResistanceFrame, CharacterSpellBonusDamage_OnEnter
 -- GLOBALS: CharacterStatsPane, CharacterStatsPaneScrollBar, CharacterStatsPaneScrollBarScrollDownButton, CharacterStatsPaneScrollBarScrollUpButton, CharacterStatsPaneScrollChild
 -- GLOBALS: CompanionModelFrame, CompanionModelFrameRotateLeftButton, CompanionNextPageButton, CompanionPageNumber, CompanionPrevPageButton, CompanionSelectedName
--- GLOBALS: CompanionSummonButton, ComputePetBonus, CreateAnimationGroup, EquipmentManager_EquipSet, GameTooltip, GearManagerDialogPopup, GearManagerToggleButton, GearScore2
--- GLOBALS: HybridScrollFrame_CreateButtons, HybridScrollFrame_GetOffset, HybridScrollFrame_OnLoad, HybridScrollFrame_Update, InspectFrame, InspectModelFrame
--- GLOBALS: PaperDollEquipmentManagerPane, PaperDollEquipmentManagerPaneEquipSet, PaperDollEquipmentManagerPaneSaveSet, PaperDollFormatStat, PaperDollFrame, PaperDollSidebarTab1
--- GLOBALS: PaperDollSidebarTabs, PaperDollStatTooltip, PaperDollTitlesPane, PersonalGearScore, PetAttributesFrame, PetExpBar_Update, PetLevelText, PetModelFrame
--- GLOBALS: PetModelFrameRotateLeftButton, PetNameText, PetPaperDollCloseButton, PetPaperDollCompanionPane, PetPaperDollFrame, PetPaperDollFrameExpBar, PetPaperDollFramePetFrame
--- GLOBALS: PetPaperDollFrame_Update, PetPaperDollFrame_UpdateCompanionCooldowns, PetPaperDollFrame_UpdateTabs, PetResistanceFrame, PlayerTitleFrame, PlayerTitlePickerFrame
--- GLOBALS: SetButtonPulse, SetCVar, StaticPopup_Hide, UIFrameFadeIn, UIFrameFadeOut, hooksecurefunc, table
+-- GLOBALS: CompanionSummonButton, ComputePetBonus, CreateAnimationGroup, EquipmentManager_EquipSet, GS_Data, GameTooltip, GearManagerDialogPopup, GearManagerToggleButton
+-- GLOBALS: GearScore2, GearScore_GetQuality, GearScore_GetScore, HybridScrollFrame_CreateButtons, HybridScrollFrame_GetOffset, HybridScrollFrame_OnLoad, HybridScrollFrame_Update
+-- GLOBALS: InspectFrame, InspectModelFrame, PaperDollEquipmentManagerPane, PaperDollEquipmentManagerPaneEquipSet, PaperDollEquipmentManagerPaneSaveSet, PaperDollFormatStat
+-- GLOBALS: PaperDollFrame, PaperDollSidebarTab1, PaperDollSidebarTabs, PaperDollStatTooltip, PaperDollTitlesPane, PersonalGearScore, PetAttributesFrame, PetExpBar_Update
+-- GLOBALS: PetLevelText, PetModelFrame, PetModelFrameRotateLeftButton, PetNameText, PetPaperDollCloseButton, PetPaperDollCompanionPane, PetPaperDollFrame, PetPaperDollFrameExpBar
+-- GLOBALS: PetPaperDollFramePetFrame, PetPaperDollFrame_Update, PetPaperDollFrame_UpdateCompanionCooldowns, PetPaperDollFrame_UpdateTabs, PetResistanceFrame, PlayerTitleFrame
+-- GLOBALS: PlayerTitlePickerFrame, SetButtonPulse, SetCVar, StaticPopup_Hide, UIFrameFadeIn, UIFrameFadeOut, hooksecurefunc, table
 -- GLOBALS: EQUIPSET_EQUIP, SAVE
 
 local CHARACTERFRAME_EXPANDED_WIDTH = 197
@@ -804,26 +804,23 @@ end
 
 function module:ItemLevel(statFrame, unit)
 	if PersonalGearScore then
-		if GearScoreLite and GearScoreLite.GetScore then
-			local gearScore, avgItemLevel = GearScoreLite:GetScore(E.myname, "player")
-			local r, g, b = GearScoreLite:GetQuality(gearScore)
+		if GearScore_GetScore then
+			local gearScore = GearScore_GetScore(E.myname, "player")
 
-			statFrame.Label:SetFormattedText("%d (%d)", avgItemLevel, gearScore)
-			statFrame.Label:SetTextColor(r, g, b)
+			if not gearScore then
+				if GS_Data and GS_Data[E.myrealm] then
+					gearScore = GS_Data[E.myrealm].Players[E.myname].GearScore
+				end
+			end
 
-			return
-		elseif GearScore_GetScore then
-			GearScore_GetScore(E.myname, "player")
+			if gearScore then
+				local r, b, g = GearScore_GetQuality(gearScore)
 
-			local data = GS_Data[E.myrealm].Players[E.myname]
-			local gearScore = data.GearScore
-			local avgItemLevel = data.Average
-			local r, b, g = GearScore_GetQuality(gearScore)
+				statFrame.Label:SetText(gearScore)
+				statFrame.Label:SetTextColor(r, g, b)
 
-			statFrame.Label:SetFormattedText("%d (%d)", avgItemLevel, gearScore)
-			statFrame.Label:SetTextColor(r, g, b)
-
-			return
+				return
+			end
 		end
 	end
 
