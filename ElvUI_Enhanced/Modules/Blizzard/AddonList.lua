@@ -220,7 +220,7 @@ function mod:AddonList()
 
 	local addonList = CreateFrame("Frame", "ElvUI_AddonList", UIParent)
 	addonList:SetFrameStrata("HIGH")
-	addonList:Size(520, 475)
+	addonList:Size(520, 466)
 	addonList:Point("CENTER", 0, 0)
 	addonList:SetTemplate("Transparent")
 	addonList:SetClampedToScreen(true)
@@ -307,8 +307,8 @@ function mod:AddonList()
 
 	local scrollFrame = CreateFrame("ScrollFrame", "$parentScrollFrame", addonList, "FauxScrollFrameTemplate")
 	scrollFrame:SetTemplate("Transparent")
-	scrollFrame:Point("TOPLEFT", addonList, "TOPLEFT", 8, -25)
-	scrollFrame:Point("BOTTOMRIGHT", addonList, "BOTTOMRIGHT", -29, 37)
+	scrollFrame:Point("TOPLEFT", 8, -25)
+	scrollFrame:Point("BOTTOMRIGHT", -29, 37)
 	scrollFrame.scrollBar = _G[scrollFrame:GetName().."ScrollBar"]
 	S:HandleScrollBar(scrollFrame.scrollBar, 5)
 
@@ -358,20 +358,20 @@ function mod:AddonList()
 
 		local status = addonListEntry[i]:CreateFontString("$parentStatus", "BACKGROUND", "GameFontNormalSmall")
 		status:Size(220, 12)
-		status:Point("RIGHT", "$parent", -22, 0)
+		status:Point("RIGHT", -22, 0)
 		status:SetJustifyH("RIGHT")
 		addonListEntry[i].Status = status
 
 		local reload = addonListEntry[i]:CreateFontString("$parentReload", "BACKGROUND", "GameFontRed")
 		reload:Size(220, 12)
-		reload:Point("RIGHT", "$parent", -22, 0)
+		reload:Point("RIGHT", -22, 0)
 		reload:SetJustifyH("RIGHT")
 		reload:SetText(L["Requires Reload"])
 		addonListEntry[i].Reload = reload
 
 		local load = CreateFrame("Button", "$parentLoad", addonListEntry[i], "UIPanelButtonTemplate")
 		load:Size(100, 22)
-		load:Point("RIGHT", "$parent", -21, 0)
+		load:Point("RIGHT", -21, 0)
 		load:SetText(L["Load AddOn"])
 		S:HandleButton(load)
 		addonListEntry[i].LoadButton = load
