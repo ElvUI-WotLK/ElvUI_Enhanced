@@ -1,12 +1,18 @@
 local E, L, V, P, G = unpack(ElvUI)
-local Fog = E:NewModule("Enhanced_FogClear", "AceHook-3.0", "AceEvent-3.0")
+local FC = E:NewModule("Enhanced_FogClear", "AceHook-3.0")
 
 local _G = _G
 local pairs = pairs
-local ceil, mod, floor = math.ceil, math.fmod, math.floor
+local ceil, fmod, floor = math.ceil, math.fmod, math.floor
+local format, len, lower, sub = string.format, string.len, string.lower, string.sub
 local tinsert, twipe = table.insert, table.wipe
 
-local worldMapCache, discoveredOverlays = {}, {}, {}
+local GetMapInfo = GetMapInfo
+local GetMapOverlayInfo = GetMapOverlayInfo
+local GetNumMapOverlays = GetNumMapOverlays
+
+local worldMapCache = {}
+local discoveredOverlays = {}
 
 local errata = {
 	-- Eastern Kingdoms
@@ -283,7 +289,7 @@ local errata = {
 	},
 	["Silverpine"] = {
 		["AMBERMILL"] = 281838600432,
-		["BERENSPERIL"] = 448265375984,
+		["BERENSPERIL"] = 446117892336, -- 448265375984
 		["DEEPELEMMINE"] = 280739621024,
 		["FENRISISLE"] = 80078920954,
 		["MALDENSORCHARD"] = 487751936,
@@ -347,7 +353,7 @@ local errata = {
 	["Tirisfal"] = {
 		["AGAMANDMILLS"] = 149601601792,
 		["BALNIRFARMSTEAD"] = 350700621016,
-		["BRIGHTWATERLAKE"] = 149865922761,
+		["BRIGHTWATERLAKE"] = 149862777033, -- 149865922761
 		["BRILL"] = 321612152960,
 		["BULWARK"] = 389426656486,
 		["COLDHEARTHMANOR"] = 351610732694,
@@ -1035,10 +1041,10 @@ local errata = {
 	["*"] = {},
 }
 
-local function UpdateOverlayTextures(_, frame, frameName, textureCache, scale, alphaMod)
-	local mapFileName, textureHeight, _, isMicroDungeon = GetMapInfo()
+local function UpdateOverlayTextures(frame, frameName, textureCache, scale, r, g, b, alpha)
+	local mapFileName = GetMapInfo()
 
-	if not mapFileName or isMicroDungeon then
+	if not mapFileName then
 		for i = 1, #textureCache do
 			textureCache[i]:Hide()
 		end
@@ -1049,7 +1055,7 @@ local function UpdateOverlayTextures(_, frame, frameName, textureCache, scale, a
 	local pathPrefix = "Interface\\WorldMap\\"..mapFileName.."\\"
 	local overlayMap = errata[mapFileName]
 	local numOverlays = GetNumMapOverlays()
-	local pathLen = strlen(pathPrefix) + 1
+	local pathLen = len(pathPrefix) + 1
 
 	if not overlayMap then
 		overlayMap = {}
@@ -1057,47 +1063,59 @@ local function UpdateOverlayTextures(_, frame, frameName, textureCache, scale, a
 
 	for i = 1, numOverlays do
 		local texName, texWidth, texHeight, offsetX, offsetY = GetMapOverlayInfo(i)
-		texName = strsub(texName or "", pathLen)
 
-		local texID = texWidth + texHeight * 2^10 + offsetX * 2^20 + offsetY * 2^30
-		if texID ~= 0 and texID ~= 131200 and texName ~= "" and strlower(texName) ~= "pixelfix" then
-			discoveredOverlays[texName] = texID
-			overlayMap[texName] = texID
+		if texName then
+			texName = sub(texName, pathLen)
+
+			if lower(texName) ~= "pixelfix" then
+				discoveredOverlays[texName] = true
+
+				if not overlayMap[texName] then
+					local texID = texWidth + texHeight * 2^10 + offsetX * 2^20 + offsetY * 2^30
+
+					if texID ~= 0 and texID ~= 131200 then
+						overlayMap[texName] = texID
+					end
+				end
+			end
 		end
 	end
 
 	local textureCount = 0
-	local numOv = #textureCache
-	local r, g, b, a = E.db.enhanced.map.fogClear.color.r, E.db.enhanced.map.fogClear.color.g, E.db.enhanced.map.fogClear.color.b, E.db.enhanced.map.fogClear.color.a
+	local numOverlays = #textureCache
 
 	for texName, texID in pairs(overlayMap) do
 		local textureName = pathPrefix .. texName
-		local textureWidth, textureHeight, offsetX, offsetY = mod(texID, 2^10), mod(floor(texID / 2^10), 2^10), mod(floor(texID / 2^20), 2^10), floor(texID / 2^30)
+		local textureWidth, textureHeight, offsetX, offsetY = fmod(texID, 2^10), fmod(floor(texID / 2^10), 2^10), fmod(floor(texID / 2^20), 2^10), floor(texID / 2^30)
+
 		local numTexturesWide = ceil(textureWidth / 256)
 		local numTexturesTall = ceil(textureHeight / 256)
-		local neededTextures = textureCount + (numTexturesWide * numTexturesTall)
-		local texturePixelWidth, textureFileWidth, texturePixelHeight, textureFileHeight
 
-		if neededTextures > numOv then
-			for j = numOv + 1, neededTextures do
-				local texture = frame:CreateTexture(format(frameName, j), "ARTWORK")
-				tinsert(textureCache, texture)
+		local neededTextures = textureCount + (numTexturesWide * numTexturesTall)
+
+		if neededTextures > numOverlays then
+			for j = numOverlays + 1, neededTextures do
+				tinsert(textureCache, (frame:CreateTexture(format(frameName, j), "ARTWORK")))
 			end
-			numOv = neededTextures
+
+			numOverlays = neededTextures
+			FC.NUM_WORLDMAP_OVERLAYS = numOverlays
+			NUM_WORLDMAP_OVERLAYS = numOverlays
 		end
+
+		local texture, texturePixelWidth, textureFileWidth, texturePixelHeight, textureFileHeight
 
 		for j = 1, numTexturesTall do
 			if j < numTexturesTall then
 				texturePixelHeight = 256
 				textureFileHeight = 256
 			else
-				texturePixelHeight = mod(textureHeight, 256)
+				texturePixelHeight = fmod(textureHeight, 256)
+				textureFileHeight = 16
 
 				if texturePixelHeight == 0 then
 					texturePixelHeight = 256
 				end
-
-				textureFileHeight = 16
 
 				while textureFileHeight < texturePixelHeight do
 					textureFileHeight = textureFileHeight * 2
@@ -1106,40 +1124,37 @@ local function UpdateOverlayTextures(_, frame, frameName, textureCache, scale, a
 
 			for k = 1, numTexturesWide do
 				textureCount = textureCount + 1
+				texture = textureCache[textureCount]
 
-				local texture = textureCache[textureCount]
 				if k < numTexturesWide then
 					texturePixelWidth = 256
 					textureFileWidth = 256
 				else
-					texturePixelWidth = mod(textureWidth, 256)
+					texturePixelWidth = fmod(textureWidth, 256)
+					textureFileWidth = 16
 
 					if texturePixelWidth == 0 then
 						texturePixelWidth = 256
 					end
-
-					textureFileWidth = 16
 
 					while textureFileWidth < texturePixelWidth do
 						textureFileWidth = textureFileWidth * 2
 					end
 				end
 
-				texture:Width(texturePixelWidth*scale)
-				texture:Height(texturePixelHeight*scale)
+				texture:Size(texturePixelWidth * scale, texturePixelHeight * scale)
+				texture:Point("TOPLEFT", (offsetX + (256 * (k - 1))) * scale, -(offsetY + (256 * (j - 1))) * scale)
 				texture:SetTexCoord(0, texturePixelWidth / textureFileWidth, 0, texturePixelHeight / textureFileHeight)
-				texture:ClearAllPoints()
-				texture:Point("TOPLEFT", (offsetX + (256 * (k - 1))) * scale, - (offsetY + (256 * (j - 1))) * scale)
-				texture:SetTexture(format(textureName.."%d", ((j - 1) * numTexturesWide) + k))
+				texture:SetTexture(format("%s%d", textureName, ((j - 1) * numTexturesWide) + k))
 
 				if discoveredOverlays[texName] then
-					texture:SetVertexColor(1, 1, 1)
-					texture:SetAlpha(1 - (alphaMod or 0))
 					texture:SetDrawLayer("ARTWORK")
+					texture:SetVertexColor(1, 1, 1)
+					texture:SetAlpha(1)
 				else
-					texture:SetVertexColor(r, g, b)
-					texture:SetAlpha(a * (1 - (alphaMod or 0)))
 					texture:SetDrawLayer("BORDER")
+					texture:SetVertexColor(r, g, b)
+					texture:SetAlpha(alpha * 1)
 				end
 
 				texture:Show()
@@ -1147,27 +1162,29 @@ local function UpdateOverlayTextures(_, frame, frameName, textureCache, scale, a
 		end
 	end
 
-	for i = textureCount + 1, numOv do
+	for i = textureCount + 1, numOverlays do
 		textureCache[i]:Hide()
 	end
 
 	twipe(discoveredOverlays)
 end
 
-function Fog:UpdateWorldMapOverlays()
+function FC:UpdateWorldMapOverlays()
 	if not WorldMapFrame:IsShown() then return end
 
 	if NUM_WORLDMAP_OVERLAYS > self.NUM_WORLDMAP_OVERLAYS then
 		for i = self.NUM_WORLDMAP_OVERLAYS + 1, NUM_WORLDMAP_OVERLAYS do
 			tinsert(worldMapCache, i, _G[format("WorldMapOverlay%d", i)])
 		end
+
 		self.NUM_WORLDMAP_OVERLAYS = NUM_WORLDMAP_OVERLAYS
 	end
 
-	UpdateOverlayTextures(Fog, WorldMapDetailFrame, "FogWorldMapOverlay%d", worldMapCache, 1, 0)
+	local color = E.db.enhanced.map.fogClear.color
+	UpdateOverlayTextures(WorldMapDetailFrame, "WorldMapOverlay%d", worldMapCache, 1, color.r, color.g, color.b, color.a)
 end
 
-function Fog:UpdateFog()
+function FC:UpdateFog()
 	if E.db.enhanced.map.fogClear.enable then
 		self:SecureHook("WorldMapFrame_Update", "UpdateWorldMapOverlays")
 
@@ -1182,10 +1199,9 @@ function Fog:UpdateFog()
 
 		for i = 1, NUM_WORLDMAP_OVERLAYS do
 			local tex = _G[format("WorldMapOverlay%d", i)]
-
+			tex:SetDrawLayer("ARTWORK")
 			tex:SetVertexColor(1, 1, 1)
 			tex:SetAlpha(1)
-			tex:SetDrawLayer("ARTWORK")
 		end
 
 		for i = 1, #worldMapCache do
@@ -1198,12 +1214,17 @@ function Fog:UpdateFog()
 	end
 end
 
-function Fog:Initialize()
-	Fog:UpdateFog()
+function FC:Initialize()
+	local _, _, _, enabled, _, reason = GetAddOnInfo("Mapster")
+	if reason ~= "MISSED" and enabled then return end
+
+	if not E.db.enhanced.map.fogClear.enable then return end
+
+	self:UpdateFog()
 end
 
 local function InitializeCallback()
-	Fog:Initialize()
+	FC:Initialize()
 end
 
-E:RegisterModule(Fog:GetName(), InitializeCallback)
+E:RegisterModule(FC:GetName(), InitializeCallback)
