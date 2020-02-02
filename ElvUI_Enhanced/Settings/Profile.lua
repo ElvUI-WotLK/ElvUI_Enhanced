@@ -69,6 +69,12 @@ P.enhanced = {
 			yOffset = 0
 		}
 	},
+	map = {
+		fogClear = {
+			enable = false,
+			color = {r = 0.5, g = 0.5, b = 0.5, a = 1}
+		}
+	},
 	minimap = {
 		location = false,
 		showlocationdigits = true,

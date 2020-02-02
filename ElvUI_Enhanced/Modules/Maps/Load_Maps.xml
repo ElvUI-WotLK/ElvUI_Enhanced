@@ -2,4 +2,5 @@
 	<Script file="MinimapLocation.lua"/>
 	<Script file="WorldMapBlips.lua"/>
 	<Script file="MinimapButtonGrabber.lua"/>
+	<Script file="FogClear.lua"/>
 </Ui>

@@ -134,6 +134,19 @@ function addon:DBConversions()
 
 		E.db.general.minimap.buttons = nil
 	end
+
+	if E.db.fogofwar then
+		E.db.enhanced.map.fogClear.enable = E.db.fogofwar.enable
+
+		if E.db.fogofwar.color then
+			E.db.enhanced.map.fogClear.color.r = E.db.fogofwar.color.r
+			E.db.enhanced.map.fogClear.color.g = E.db.fogofwar.color.g
+			E.db.enhanced.map.fogClear.color.b = E.db.fogofwar.color.b
+			E.db.enhanced.map.fogClear.color.a = E.db.fogofwar.color.a
+		end
+
+		E.db.fogofwar = nil
+	end
 end
 
 function addon:PrintAddonMerged(mergedAddonName)
@@ -184,6 +197,7 @@ function addon:Initialize()
 	end
 
 	self:PrintAddonMerged("ElvUI_MinimapButtons")
+	self:PrintAddonMerged("ElvUI_FogofWar")
 end
 
 local function InitializeCallback()

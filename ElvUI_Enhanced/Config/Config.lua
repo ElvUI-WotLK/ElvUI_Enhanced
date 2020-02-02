@@ -835,6 +835,56 @@ local function EquipmentInfoOptions()
 	}
 end
 
+local function MapOptions()
+	local MFC = E:GetModule("Enhanced_FogClear")
+
+	return {
+		type = "group",
+		name = L["Map"],
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = EE:ColorizeSettingName(L["Map"])
+			},
+			fogClear ={
+				type = "group",
+				name = L["Fog of War"],
+				guiInline = true,
+				args = {
+					enable = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						get = function(info) return E.db.enhanced.map.fogClear.enable end,
+						set = function(info, value)
+							E.db.enhanced.map.fogClear.enable = value
+							MFC:UpdateFog()
+						end
+					},
+					overlay = {
+						order = 2,
+						type = "color",
+						name = L["Overlay Color"],
+						hasAlpha = true,
+						get = function(info)
+							local t = E.db.enhanced.map.fogClear.color
+							local d = E.db.enhanced.map.fogClear.color
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+						end,
+						set = function(_, r, g, b, a)
+							local color = E.db.enhanced.map.fogClear.color
+							color.r, color.g, color.b, color.a = r, g, b, a
+							MFC:UpdateWorldMapOverlays()
+						end,
+						disabled = function() return not E.db.enhanced.map.fogClear.enable end
+					}
+				}
+			}
+		}
+	}
+end
+
 local function MinimapOptions()
 	E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationText.values = {
 		["MOUSEOVER"] = L["Minimap Mouseover"],
@@ -1935,6 +1985,7 @@ function EE:GetOptions()
 			actionbarGroup = ActionbarOptions(),
 			blizzardGroup = BlizzardOptions(),
 			equipmentInfoGroup = EquipmentInfoOptions(),
+			mapGroup = MapOptions(),
 			minimapGroup = MinimapOptions(),
 			namePlatesGroup = NamePlatesOptions(),
 			tooltipGroup = TooltipOptions(),
