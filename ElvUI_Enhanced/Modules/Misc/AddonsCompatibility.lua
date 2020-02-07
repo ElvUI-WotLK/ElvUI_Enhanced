@@ -185,8 +185,12 @@ local addonFixes = {
 			local origOnMouseWheel
 
 			local function onMouseWheel(self, delta)
-				if MouseIsOver(CharacterStatsPane) then
-					CharacterStatsPane:GetScript("OnMouseWheel")(self, delta, CharacterStatsPaneScrollBar)
+				if CharacterStatsPane:IsShown() and MouseIsOver(CharacterStatsPane) then
+					CharacterStatsPane:GetScript("OnMouseWheel")(CharacterStatsPane, delta)
+				elseif PaperDollTitlesPane:IsShown() and MouseIsOver(PaperDollTitlesPane) then
+					PaperDollTitlesPane:GetScript("OnMouseWheel")(PaperDollTitlesPane, delta)
+				elseif PaperDollEquipmentManagerPane:IsShown() and MouseIsOver(PaperDollEquipmentManagerPane) then
+					PaperDollEquipmentManagerPane:GetScript("OnMouseWheel")(PaperDollEquipmentManagerPane, delta)
 				else
 					origOnMouseWheel(self, delta)
 				end
