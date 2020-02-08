@@ -51,7 +51,13 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 
 		if E.db.enhanced.nameplates.titleCache then
 			local guildName = GetGuildInfo("mouseover")
-			if not guildName then return end
+			if not guildName then
+				if EnhancedDB.UnitTitle[name] then
+					EnhancedDB.UnitTitle[name] = nil
+					UpdateNameplateByName(name)
+				end
+				return
+			end
 
 			if not guildMap[guildName] then
 				tinsert(EnhancedDB.GuildList, guildName)
