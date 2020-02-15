@@ -1082,7 +1082,7 @@ local function UpdateOverlayTextures(frame, frameName, textureCache, scale, r, g
 	end
 
 	local textureCount = 0
-	local numOverlays = #textureCache
+	local numTextures = #textureCache
 
 	for texName, texID in pairs(overlayMap) do
 		local textureName = pathPrefix .. texName
@@ -1093,14 +1093,14 @@ local function UpdateOverlayTextures(frame, frameName, textureCache, scale, r, g
 
 		local neededTextures = textureCount + (numTexturesWide * numTexturesTall)
 
-		if neededTextures > numOverlays then
-			for j = numOverlays + 1, neededTextures do
+		if neededTextures > numTextures then
+			for j = numTextures + 1, neededTextures do
 				tinsert(textureCache, (frame:CreateTexture(format(frameName, j), "ARTWORK")))
 			end
 
-			numOverlays = neededTextures
-			FC.NUM_WORLDMAP_OVERLAYS = numOverlays
-			NUM_WORLDMAP_OVERLAYS = numOverlays
+			numTextures = neededTextures
+			FC.NUM_WORLDMAP_OVERLAYS = numTextures
+			NUM_WORLDMAP_OVERLAYS = numTextures
 		end
 
 		local texture, texturePixelWidth, textureFileWidth, texturePixelHeight, textureFileHeight
@@ -1162,7 +1162,7 @@ local function UpdateOverlayTextures(frame, frameName, textureCache, scale, r, g
 		end
 	end
 
-	for i = textureCount + 1, numOverlays do
+	for i = textureCount + 1, numTextures do
 		textureCache[i]:Hide()
 	end
 
