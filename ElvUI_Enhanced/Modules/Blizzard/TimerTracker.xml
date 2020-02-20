@@ -55,7 +55,7 @@
 						<Scale scaleX="0.25" scaleY="0.25" duration="0.0" order="1"/>
 						<Alpha change="1" duration="0.0" order="1"/>
 						<Scale scaleX="4" scaleY="4" duration="0.3" smoothing="OUT" order="2"/>
-						<Scale startDelay="0.6" scaleX="1.2" scaleY="1.2"	duration="0.1" order="3"/>
+						<Scale startDelay="0.6" scaleX="1.2" scaleY="1.2" duration="0.1" order="3"/>
 						<Alpha startDelay="0.6" change="-1.0" duration="0.1" order="3"/>
 						<Scripts>
 							<OnPlay>

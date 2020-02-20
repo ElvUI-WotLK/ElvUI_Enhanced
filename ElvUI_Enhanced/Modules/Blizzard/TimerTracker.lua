@@ -148,19 +148,17 @@ function TT:CreateTimer(timerType, timeSeconds, totalTime)
 			timer.endTime = GetTime() + timeSeconds
 		end
 	else
-		if not timer then
-			for _, frame in ipairs(self.timerList) do
-				if frame.isFree then
-					timer = frame
-					break
-				end
+		for _, frame in ipairs(self.timerList) do
+			if frame.isFree then
+				timer = frame
+				break
 			end
+		end
 
-			if not timer then
-				timer = CreateFrame("Frame", "ElvUI_Timer"..(#self.timerList + 1), UIParent, "ElvUI_StartTimerBar")
-				self:CreateTimerBar(timer)
-				self.timerList[#self.timerList+1] = timer
-			end
+		if not timer then
+			timer = CreateFrame("Frame", "ElvUI_Timer"..(#self.timerList + 1), UIParent, "ElvUI_StartTimerBar")
+			self:CreateTimerBar(timer)
+			self.timerList[#self.timerList+1] = timer
 		end
 
 		timer:ClearAllPoints()
