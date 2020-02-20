@@ -803,8 +803,10 @@ function module:SetLabelAndText(statFrame, label, text, isPercentage)
 end
 
 function module:ItemLevel(statFrame, unit)
-	if PersonalGearScore then
-		if GearScore_GetScore then
+	if not self.Initialized then return end
+
+	if GearScore_GetScore then
+		if not self.gearScore or not GS_PlayerIsInCombat then
 			local gearScore = GearScore_GetScore(E.myname, "player")
 
 			if not gearScore then
@@ -816,11 +818,20 @@ function module:ItemLevel(statFrame, unit)
 			if gearScore then
 				local r, b, g = GearScore_GetQuality(gearScore)
 
+				self.gearScore = gearScore
+				self.gearScoreR = r
+				self.gearScoreG = g
+				self.gearScoreB = b
+
 				statFrame.Label:SetText(gearScore)
 				statFrame.Label:SetTextColor(r, g, b)
 
 				return
 			end
+		else
+			statFrame.Label:SetText(self.gearScore)
+			statFrame.Label:SetTextColor(self.gearScoreR, self.gearScoreG, self.gearScoreB)
+			return
 		end
 	end
 
@@ -835,7 +846,6 @@ function module:ItemLevel(statFrame, unit)
 	local avgItemLevel, r, g, b = GetAverageItemLevel()
 	statFrame.Label:SetFormattedText("%.1f", avgItemLevel)
 	statFrame.Label:SetTextColor(r, g, b)
-
 end
 
 function module:SetStat(statFrame, unit, statIndex)
