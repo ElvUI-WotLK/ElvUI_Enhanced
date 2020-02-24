@@ -1323,6 +1323,7 @@ local function NamePlatesOptions()
 								type = "toggle",
 								name = L["Reaction Color"],
 								desc = L["Color based on reaction type."]
+								--TO DO: Connect to Nameplates.lua to enable/disable UnitReaction coloring 
 							},
 							color = {
 								order = 5,
