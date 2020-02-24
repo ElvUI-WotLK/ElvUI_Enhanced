@@ -212,17 +212,17 @@ local function Update_NameHook(self, frame)
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 		
 		if E.db.enhanced.nameplates.npc.reactionColor then
-			local red, green, blue --TO DO: Instead of coding rgb values, link to E.db.nameplates.colors.reactions.(good/neutral/bad) 
+			local db = self.db.colors
 			if frame.UnitReaction == 5 then -- friendly
-				red, green, blue = 73/255, 173/255, 73/255 -- green.
-			elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile npc
-				red, green, blue = 199/255, 64/255, 64/255 -- red
+				r, g, b = db.reactions.good.r, db.reactions.good.g, db.reactions.good.b
+			elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile
+				r, g, b = db.reactions.bad.r, db.reactions.bad.g, db.reactions.bad.b
 			elseif frame.UnitReaction == 4  then -- neutral
-				red, green, blue = 217/255, 195/255, 92/255 -- yellow
-			else --needed?
-				red, green, blue = 1, 1, 1
+				r, g, b = db.reactions.neutral.r, db.reactions.neutral.g, db.reactions.neutral.b
+			else
+				r, g, b = 1, 1, 1
 			end
-			frame.Title:SetTextColor(red, green, blue)
+			frame.Title:SetTextColor(r, g, b)
 		else 
 			frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
 		end
