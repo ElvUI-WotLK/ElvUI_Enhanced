@@ -210,7 +210,23 @@ local function Update_NameHook(self, frame)
 
 		local db = E.db.enhanced.nameplates.npc
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-		frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
+		
+		if E.db.enhanced.nameplates.npc.reactionColor then
+			local db = self.db.colors
+			if frame.UnitReaction == 5 then -- friendly
+				r, g, b = db.reactions.good.r, db.reactions.good.g, db.reactions.good.b
+			elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile
+				r, g, b = db.reactions.bad.r, db.reactions.bad.g, db.reactions.bad.b
+			elseif frame.UnitReaction == 4  then -- neutral
+				r, g, b = db.reactions.neutral.r, db.reactions.neutral.g, db.reactions.neutral.b
+			else
+				r, g, b = 1, 1, 1
+			end
+			frame.Title:SetTextColor(r, g, b)
+		else 
+			frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
+		end
+		
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
 		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
