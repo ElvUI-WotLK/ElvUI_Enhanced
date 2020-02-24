@@ -1318,8 +1318,14 @@ local function NamePlatesOptions()
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
 							},
-							color = {
+							reactionColor = {
 								order = 4,
+								type = "toggle",
+								name = L["Reaction Color"],
+								desc = L["Color based on reaction type."]
+							},
+							color = {
+								order = 5,
 								type = "color",
 								name = L["COLOR"],
 								get = function(info)
@@ -1331,7 +1337,8 @@ local function NamePlatesOptions()
 									local t = E.db.enhanced.nameplates.npc[info[#info]]
 									t.r, t.g, t.b = r, g, b
 									E:GetModule("NamePlates"):ConfigureAll()
-								end
+								end,
+								disabled = function() return E.db.enhanced.nameplates.npc.reactionColor end
 							},
 							separator = {
 								order = 5,
