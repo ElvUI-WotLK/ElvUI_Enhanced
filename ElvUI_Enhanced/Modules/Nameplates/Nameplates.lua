@@ -211,18 +211,22 @@ local function Update_NameHook(self, frame)
 		local db = E.db.enhanced.nameplates.npc
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 		
-		local red, green, blue --TO DO: Instead of coding rgb values, link to E.db.nameplates.colors.reactions.(good/neutral/bad) 
-		if frame.UnitReaction == 5 then -- friendly
-           		red, green, blue = 73/255, 173/255, 73/255 -- green.
-        	elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile npc
-            		red, green, blue = 199/255, 64/255, 64/255 -- red
-        	elseif frame.UnitReaction == 4  then -- neutral
-           		red, green, blue = 217/255, 195/255, 92/255 -- yellow
-        	else --needed?
-            		red, green, blue = 1, 1, 1
-        	end
+		if E.db.enhanced.nameplates.npc.reactionColor then
+			local red, green, blue --TO DO: Instead of coding rgb values, link to E.db.nameplates.colors.reactions.(good/neutral/bad) 
+			if frame.UnitReaction == 5 then -- friendly
+				red, green, blue = 73/255, 173/255, 73/255 -- green.
+			elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile npc
+				red, green, blue = 199/255, 64/255, 64/255 -- red
+			elseif frame.UnitReaction == 4  then -- neutral
+				red, green, blue = 217/255, 195/255, 92/255 -- yellow
+			else --needed?
+				red, green, blue = 1, 1, 1
+			end
+			frame.Title:SetTextColor(red, green, blue)
+		else 
+			frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
+		end
 		
-		frame.Title:SetTextColor(red, green, blue)
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
 		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
