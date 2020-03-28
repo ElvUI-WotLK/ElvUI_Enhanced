@@ -8,16 +8,7 @@ L["ITEMLEVEL_DESC"] = "Passen Sie die Einstellungen für die Anzeige von Gegenst
 L["WATCHFRAME_DESC"] = "Passen Sie die Einstellungen des Watchframe (Questlog) nach ihren Wünschen an."
 
 -- Incompatibility
-L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
-
-L["Blizzard"] = true
-
--- Actionbars
-L["Sets actionbars' backgrounds to transparent template."] = "Setzt den Aktionsleisten Hintergrund transparent."
-L["Sets actionbars buttons' backgrounds to transparent template."] = "Setzt die Aktionsleisten Tasten transparent."
-L["Transparent ActionBars"] = "Transparente Aktionsleisten"
-L["Transparent Backdrop"] = "Transparenter Hintergrund"
-L["Transparent Buttons"] = "Transparente Tasten"
+L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"] = true
 
 -- AddOn List
 L["Enable All"] = "Alle aktivieren"
@@ -34,14 +25,12 @@ L["Replaces reports from damage meters with a clickable hyperlink to reduce chat
 L["Ammo/Shard Counter"] = true
 L["Combat Indicator"] = "Kampfanzeige"
 L["Distance"] = "Entfernung"
-L["Equipped"] = "Angelegt"
 L["In Combat"] = "Im Kampf"
 L["New Mail"] = "Neue Post"
 L["No Mail"] = "Keine Post"
 L["Out of Combat"] = "Außerhalb des Kampfes"
 L["Reincarnation"] = "Wiederbelebung"
 L["Target Range"] = "Zielreichweite"
-L["Total"] = "Gesamt"
 
 -- Death Recap
 L["Death Recap Frame"] = true
@@ -55,7 +44,6 @@ L["(%d Resisted)"] = "(%d Widerstanden)"
 L["Death Recap unavailable."] = "Todesursache nicht verfügbar."
 L["Death Recap"] = "Todesursache"
 L["Killing blow at %s%% health."] = "Todesstoß bei %s%% Gesundheit."
-L["Recap"] = "Zusammenfassung"
 L["You died."] = "Du bist gestorben."
 
 -- Decline Duels
@@ -66,8 +54,8 @@ L["Declined duel request from "] = "Duellaufforderung abgelehnt von "
 -- Enhanced Character Frame / Paperdoll Backgrounds
 L["Character Background"] = true
 L["Enhanced Character Frame"] = true
+L["Enhanced Model Frames"] = true
 L["Inspect Background"] = true
-L["Model Frames"] = true
 L["Paperdoll Backgrounds"] = true
 L["Pet Background"] = true
 
@@ -75,7 +63,6 @@ L["Pet Background"] = true
 L["Damaged Only"] = "Nur Beschädigte"
 L["Enable/Disable the display of durability information on the character screen."] = "Anzeige der Haltbarkeit im Charakterfenster."
 L["Enable/Disable the display of item levels on the character screen."] = "Anzeige von Gegenstandsstufen im Charakterfenster aktivieren / deaktivieren."
-L["Equipment"] = "Ausrüstung"
 L["Only show durabitlity information for items that are damaged."] = "Nur die Haltbarkeit für beschädigte Ausrüstungsteile anzeigen."
 L["Quality Color"] = "Qualitätsfarbe"
 
@@ -84,13 +71,12 @@ L["Add button to Dressing Room frame with ability to undress model."] = true
 L["Add button to Trainer frame with ability to train all available skills in one click."] = true
 L["Alt-Click Merchant"] = true
 L["Already Known"] = true
-L["Animated Bars"] = true
+L["Animated Achievement Bars"] = true
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Ändere automatisch die beobachtete Fraktion auf der Erfahrungsleiste zu der Fraktion für die Sie grade Rufpunkte erhalten haben."
 L["Automatically release body when killed inside a battleground."] = "Gibt automatisch Ihren Geist frei, wenn Sie auf dem Schlachtfeld getötet wurden."
 L["Automatically select the quest reward with the highest vendor sell value."] = "Wählt automatisch die Questbelohnung mit dem höchsten Wiederverkaufswert beim Händler"
 L["Change color of item icons which already known."] = true
 L["Changes the transparency of all the movers."] = "Ändere die Transparenz aller Ankerpukte"
-L["Colorizes recipes, mounts & pets that are already known"] = "Rezepte, Reittiere und Begleiter einfärben, die bereits bekannt sind"
 L["Display quest levels at Quest Log."] = "Questlevel im Questlog anzeigen."
 L["Hide Zone Text"] = "Zonentext verstecken"
 L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true
@@ -102,7 +88,6 @@ L["Track Reputation"] = "Ruf beobachten"
 L["Train All Button"] = true
 L["Undress Button"] = true
 L["Undress"] = "Ausziehen"
-L["Use blizzard close buttons, but desaturated"] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true
@@ -137,7 +122,7 @@ L["Hook DBM"] = true
 -- Tooltip
 L["Check Player"] = true
 L["Colorize the tooltip border based on item quality."] = "Färbe den Tooltip-Rahmen basierend auf der Gegenstandsqualität"
-L["Display the players raid progression in the tooltip, this may not immediately update when mousing over a unit."] = true
+L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."] = true
 L["Icecrown Citadel"] = true
 L["Item Border Color"] = "Gegenstandsrahmen-Farbe"
 L["Progress Info"] = true
@@ -152,7 +137,7 @@ L["Trial of the Crusader"] = true
 L["Ulduar"] = true
 
 -- Movers
-L["Loss Control Icon"] = "Kontrollverlust-Icon"
+L["Loss Control"] = "Kontrollverlust"
 L["Player Portrait"] = "Spieler-Portrait"
 L["Target Portrait"] = "Ziel-Portrait"
 
@@ -166,16 +151,11 @@ L["Silence"] = "Stille"
 L["Snare"] = "Verlangsamung"
 
 -- Unitframes
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Alle Rollensymbole (Schaden/Heiler/Tank) auf den Einheitenfenstern werden versteckt, wenn der Charakter sich im Kampf befindet."
 L["Class Icons"] = "Klassensymbole"
 L["Detached Height"] = "Höhe loslösen"
-L["Hide Role Icon in combat"] = "Verstecke Rollensymbol im Kampf"
-L["Player"] = true
 L["Show class icon for units."] = "Zeige Klassensymbole für Einheiten"
-L["Target"] = "Ziel"
 
 -- WatchFrame
-L["Arena"] = "Arena"
 L["City (Resting)"] = "Stadt (erholend)"
 L["Collapsed"] = "Eingeklappt"
 L["Hidden"] = "Versteckt"
@@ -188,7 +168,7 @@ L["Drag"] = true
 L["Left-click on character and drag to rotate."] = true
 L["Mouse Wheel Down"] = true
 L["Mouse Wheel Up"] = true
-L["Reset Position"] = true
+L["Reset Position"] = "Position zurücksetzen"
 L["Right-click on character and drag to move it within the window."] = true
 L["Rotate Left"] = true
 L["Rotate Right"] = true
@@ -196,13 +176,12 @@ L["Zoom In"] = true
 L["Zoom Out"] = true
 
 --
-L["Change Name/Icon"] = true
 L["Character Stats"] = true
 L["Damage Per Second"] = "DPS"
 L["Equipment Manager"] = true
 L["Hide Character Information"] = true
 L["Hide Pet Information"] = true
-L["Item Level"] = true
+L["Item Level"] = "Itemlevel"
 L["New Set"] = true
 L["Resistance"] = true
 L["Show Character Information"] = true
@@ -210,3 +189,49 @@ L["Show Pet Information"] = true
 L["Titles"] = true
 L["Total Companions"] = true
 L["Total Mounts"] = true
+
+L["ALL"] = "Alle"
+L["ALT_KEY"] = "ALT-Taste"
+
+L["%d mails\nShift-Click to remove empty mails."] = true
+L["Addon |cffFFD100%s|r was merged into |cffFFD100ElvUI_Enhanced|r.\nPlease remove it to avoid conflicts."] = true
+L["Cache Unit Guilds / NPC Titles"] = true
+L["Check Achievements"] = true
+L["Collected "] = true
+L["Collection completed."] = true
+L["Collection stopped, inventory is full."] = true
+L["Color based on reaction type."] = true
+L["Compact mode"] = true
+L["Companion Background"] = true
+L["Desaturate"] = true
+L["Detached Portrait"] = true
+L["Dressing Room"] = true
+L["Enhanced"] = true
+L["Equipment Info"] = true
+L["Error Frame"] = true
+L["Everywhere"] = true
+L["Fog of War"] = true
+L["Grow direction"] = true
+L["Guild"] = true
+L["Inside Minimap"] = true
+L["Key Press Animation"] = true
+L["Map"] = true
+L["Minimap Button Grabber"] = true
+L["NPC"] = "NSC"
+L["Overlay Color"] = true
+L["Reaction Color"] = true
+L["Reported by %s"] = true
+L["Rotation"] = true
+L["Separator"] = true
+L["Set the height of Error Frame. Higher frame can show more lines at once."] = true
+L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"] = true
+L["Show Everywhere"] = true
+L["Show on Arena."] = true
+L["Show on Battleground."] = true
+L["Smooth Animations"] = true
+L["Take All"] = true
+L["Take All Mail"] = true
+L["Take Cash"] = true
+L["This addon has been disabled. You should install an updated version."] = true
+L["Where to show"] = true
+L["seconds"] = true

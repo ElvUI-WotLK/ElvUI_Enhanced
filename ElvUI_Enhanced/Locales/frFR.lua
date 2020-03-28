@@ -8,16 +8,7 @@ L["ITEMLEVEL_DESC"] = "Réglez les paramètres pour afficher le niveau d'objet s
 L["WATCHFRAME_DESC"] = "Adjust the settings for the visibility of the watchframe (questlog) to your personal preference."
 
 -- Incompatibility
-L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = true
-
-L["Blizzard"] = true
-
--- Actionbars
-L["Sets actionbars' backgrounds to transparent template."] = true
-L["Sets actionbars buttons' backgrounds to transparent template."] = true
-L["Transparent ActionBars"] = true
-L["Transparent Backdrop"] = true
-L["Transparent Buttons"] = true
+L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"] = true
 
 -- AddOn List
 L["Enable All"] = true
@@ -34,14 +25,12 @@ L["Replaces reports from damage meters with a clickable hyperlink to reduce chat
 L["Ammo/Shard Counter"] = true
 L["Combat Indicator"] = true
 L["Distance"] = true
-L["Equipped"] = true
 L["In Combat"] = true
 L["New Mail"] = true
 L["No Mail"] = true
 L["Out of Combat"] = true
 L["Reincarnation"] = true
 L["Target Range"] = true
-L["Total"] = true
 
 -- Death Recap
 L["Death Recap Frame"] = true
@@ -55,7 +44,6 @@ L["(%d Resisted)"] = true
 L["Death Recap unavailable."] = true
 L["Death Recap"] = "Récapitulatif lors de la mort"
 L["Killing blow at %s%% health."] = true
-L["Recap"] = true
 L["You died."] = true
 
 -- Decline Duels
@@ -66,8 +54,8 @@ L["Declined duel request from "] = "Décliné les invites en duel de "
 -- Enhanced Character Frame / Paperdoll Backgrounds
 L["Character Background"] = true
 L["Enhanced Character Frame"] = true
+L["Enhanced Model Frames"] = true
 L["Inspect Background"] = true
-L["Model Frames"] = true
 L["Paperdoll Backgrounds"] = true
 L["Pet Background"] = true
 
@@ -75,7 +63,6 @@ L["Pet Background"] = true
 L["Damaged Only"] = "Dégâts seulement"
 L["Enable/Disable the display of durability information on the character screen."] = "Activer / Désactiver l'affichage des informations de durabilité sur l'écran d'infos de personnage."
 L["Enable/Disable the display of item levels on the character screen."] = "Activer / Désactiver l'affichage des informations du niveau d'objet sur l'écran d'infos de personnage."
-L["Equipment"] = "Équipement"
 L["Only show durabitlity information for items that are damaged."] = "Afficher la durabilité seulement quand l'équipement est endommagé."
 L["Quality Color"] = true
 
@@ -84,13 +71,12 @@ L["Add button to Dressing Room frame with ability to undress model."] = true
 L["Add button to Trainer frame with ability to train all available skills in one click."] = true
 L["Alt-Click Merchant"] = true
 L["Already Known"] = true
-L["Animated Bars"] = true
+L["Animated Achievement Bars"] = true
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Change automatiquement la réputation suivie sur la barre de réputation avec la faction que vous êtes en train de faire."
 L["Automatically release body when killed inside a battleground."] = "Libère automatiquement votre corps quand vous êtes tué en Champs de Bataille."
 L["Automatically select the quest reward with the highest vendor sell value."] = "Sélectionne automatiquement la récompense de quête qui vaut la plus chère chez le vendeur."
 L["Changes the transparency of all the movers."] = "Change la transparence des Ancres"
 L["Change color of item icons which already known."] = true
-L["Colorizes recipes, mounts & pets that are already known"] = true
 L["Display quest levels at Quest Log."] = true
 L["Hide Zone Text"] = true
 L["Holding Alt key while buying something from vendor will now buy an entire stack."] = true
@@ -102,7 +88,6 @@ L["Track Reputation"] = "Suivre la Réputation"
 L["Train All Button"] = true
 L["Undress Button"] = true
 L["Undress"] = "Déshabillé"
-L["Use blizzard close buttons, but desaturated"] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true
@@ -136,8 +121,8 @@ L["Hook DBM"] = true
 
 -- Tooltip
 L["Check Player"] = true
+L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."] = true
 L["Colorize the tooltip border based on item quality."] = true
-L["Display the players raid progression in the tooltip, this may not immediately update when mousing over a unit."] = true
 L["Icecrown Citadel"] = true
 L["Item Border Color"] = true
 L["Progress Info"] = true
@@ -152,7 +137,7 @@ L["Trial of the Crusader"] = true
 L["Ulduar"] = true
 
 -- Movers
-L["Loss Control Icon"] = "Icône de la perte de contrôle"
+L["Loss Control"] = "Perte de contrôle"
 L["Player Portrait"] = true
 L["Target Portrait"] = true
 
@@ -166,20 +151,15 @@ L["Silence"] = "Silence"
 L["Snare"] = "Ralentissement"
 
 -- Unitframes
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "Cachez toutes les icônes de rôle (Dommages/Healer/Tank) sur les cadres d'unité quand vous serait en combat."
 L["Class Icons"] = true
 L["Detached Height"] = true
-L["Hide Role Icon in combat"] = "Cachez les icônes de rôle en combat"
-L["Player"] = true
 L["Show class icon for units."] = true
-L["Target"] = true
 
 -- WatchFrame
 L["Hidden"] = "Caché"
 L["Collapsed"] = "Replié"
 L["City (Resting)"] = "Ville (repos)"
 L["PvP"] = "PvP"
-L["Arena"] = "Arêne"
 L["Party"] = "Groupe"
 L["Raid"] = "Raid"
 
@@ -188,7 +168,7 @@ L["Drag"] = true
 L["Left-click on character and drag to rotate."] = true
 L["Mouse Wheel Down"] = true
 L["Mouse Wheel Up"] = true
-L["Reset Position"] = true
+L["Reset Position"] = "Réinitialiser la position"
 L["Right-click on character and drag to move it within the window."] = true
 L["Rotate Left"] = true
 L["Rotate Right"] = true
@@ -196,13 +176,12 @@ L["Zoom In"] = true
 L["Zoom Out"] = true
 
 --
-L["Change Name/Icon"] = true
 L["Character Stats"] = true
 L["Damage Per Second"] = "DPS"
 L["Equipment Manager"] = true
 L["Hide Character Information"] = true
 L["Hide Pet Information"] = true
-L["Item Level"] = true
+L["Item Level"] = "Niveau d'objet"
 L["New Set"] = true
 L["Resistance"] = true
 L["Show Character Information"] = true
@@ -210,3 +189,49 @@ L["Show Pet Information"] = true
 L["Titles"] = true
 L["Total Companions"] = true
 L["Total Mounts"] = true
+
+L["ALL"] = "Tous"
+L["ALT_KEY"] = "Touche ALT"
+
+L["%d mails\nShift-Click to remove empty mails."] = true
+L["Addon |cffFFD100%s|r was merged into |cffFFD100ElvUI_Enhanced|r.\nPlease remove it to avoid conflicts."] = true
+L["Cache Unit Guilds / NPC Titles"] = true
+L["Check Achievements"] = true
+L["Collected "] = true
+L["Collection completed."] = true
+L["Collection stopped, inventory is full."] = true
+L["Color based on reaction type."] = true
+L["Compact mode"] = true
+L["Companion Background"] = true
+L["Desaturate"] = true
+L["Detached Portrait"] = true
+L["Dressing Room"] = true
+L["Enhanced"] = true
+L["Equipment Info"] = true
+L["Error Frame"] = true
+L["Everywhere"] = true
+L["Fog of War"] = true
+L["Grow direction"] = true
+L["Guild"] = true
+L["Inside Minimap"] = true
+L["Key Press Animation"] = true
+L["Map"] = true
+L["Minimap Button Grabber"] = true
+L["NPC"] = true
+L["Overlay Color"] = true
+L["Reaction Color"] = true
+L["Reported by %s"] = true
+L["Rotation"] = true
+L["Separator"] = true
+L["Set the height of Error Frame. Higher frame can show more lines at once."] = true
+L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"] = true
+L["Show Everywhere"] = true
+L["Show on Arena."] = true
+L["Show on Battleground."] = true
+L["Smooth Animations"] = true
+L["Take All"] = true
+L["Take All Mail"] = true
+L["Take Cash"] = true
+L["This addon has been disabled. You should install an updated version."] = true
+L["Where to show"] = true
+L["seconds"] = true

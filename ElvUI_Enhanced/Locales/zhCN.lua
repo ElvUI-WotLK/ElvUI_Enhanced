@@ -9,16 +9,7 @@ L["WATCHFRAME_DESC"] = "根据个人喜好调整任务追踪框架的设置。"
 L["Enhanced"] = "功能增强"
 
 -- Incompatibility
-L["GearScore '3.1.20b - Release' not for WotLK. Download 3.1.7. Disable this version?"] = "GearScore '3.1.20b - Release'并非是为WotLK设计的，请下载版本3.1.7。要禁用此插件吗？"
-
-L["Blizzard"] = true
-
--- Actionbars
-L["Sets actionbars' backgrounds to transparent template."] = "将动作条背景设为透明模版。"
-L["Sets actionbars buttons' backgrounds to transparent template."] = "将动作条按钮背景设为透明模版。"
-L["Transparent ActionBars"] = "透明动作条"
-L["Transparent Backdrop"] = "透明背景"
-L["Transparent Buttons"] = "透明按钮"
+L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this version?"] = "GearScore '3.1.20b - Release'并非是为WotLK设计的，请下载版本3.1.7。要禁用此插件吗？"
 
 -- AddOn List
 L["Enable All"] = "全部启用"
@@ -35,14 +26,12 @@ L["Replaces reports from damage meters with a clickable hyperlink to reduce chat
 L["Ammo/Shard Counter"] = "弹药/碎片 计数"
 L["Combat Indicator"] = "战斗指示"
 L["Distance"] = "距离"
-L["Equipped"] = "已装备"
 L["In Combat"] = "战斗中"
 L["New Mail"] = "新邮件"
 L["No Mail"] = "无邮件"
 L["Out of Combat"] = "脱离战斗"
 L["Reincarnation"] = "灵魂状态"
 L["Target Range"] = "目标距离"
-L["Total"] = "总计"
 
 -- Death Recap
 L["Death Recap Frame"] = "死亡回顾框架"
@@ -56,7 +45,6 @@ L["(%d Resisted)"] = "(%d 抵抗)"
 L["Death Recap unavailable."] = "死因回顾不可用"
 L["Death Recap"] = "死因回顾"
 L["Killing blow at %s%% health."] = "血量 %s%% 时被一击致命。"
-L["Recap"] = "回顾"
 L["You died."] = "你死了。"
 
 -- Decline Duels
@@ -69,20 +57,17 @@ L["Character Background"] = "角色界面背景"
 L["Companion Background"] = "小伙伴界面背景"
 L["Dressing Room"] = "试衣间"
 L["Enhanced Character Frame"] = "增强角色界面框架"
-L["Enhanced Control Panel"] = "增强信息面板"
+L["Enhanced Model Frames"] = "增强模型框架"
 L["Error Frame"] = "错误信息框架"
 L["Inspect Background"] = "观察界面背景"
-L["Model Frames"] = "模型框架"
 L["Paperdoll Backgrounds"] = "纸娃娃系统背景"
 L["Pet Background"] = "宠物界面背景"
 L["Smooth Animations"] = "平滑动画"
 
 -- Equipment
 L["Damaged Only"] = "仅显示受损"
-L["Enable/Disable the battleground switch."] = "开启/关闭 战场切换"
 L["Enable/Disable the display of durability information on the character screen."] = "开启/关闭 角色界面装备耐久度显示。"
 L["Enable/Disable the display of item levels on the character screen."] = "开启/关闭 角色界面物品等级显示。"
-L["Equipment"] = "装备"
 L["Only show durabitlity information for items that are damaged."] = "只在装备受损时显示耐久度信息。"
 L["Quality Color"] = "品质颜色"
 
@@ -91,13 +76,12 @@ L["Add button to Dressing Room frame with ability to undress model."] = "在试�
 L["Add button to Trainer frame with ability to train all available skills in one click."] = "在训练师界面添加<学习全部>按钮，以便一键学习所有可用技能。"
 L["Alt-Click Merchant"] = "Alt-点击快速购买"
 L["Already Known"] = "已经学会"
-L["Animated Bars"] = "动画条"
+L["Animated Achievement Bars"] = "动成就画条"
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "当你获得某个阵营的声望时，自动用声望条追踪此阵营的声望。"
 L["Automatically release body when killed inside a battleground."] = "在战场中死亡后自动释放灵魂。"
 L["Automatically select the quest reward with the highest vendor sell value."] = "自动选择任务奖励中售价最高的物品。"
 L["Change color of item icons which already known."] = "改变已经学会的物品图标颜色。"
 L["Changes the transparency of all the movers."] = "改变所有移动框架的透明度。"
-L["Colorizes recipes, mounts & pets that are already known"] = "对已经学会的配方、坐骑和宠物上色。"
 L["Display quest levels at Quest Log."] = "在任务日志中显示任务等级。"
 L["Hide Zone Text"] = "隐藏区域文字"
 L["Holding Alt key while buying something from vendor will now buy an entire stack."] = "按下Alt键可在商人处购买整组物品。"
@@ -109,7 +93,6 @@ L["Track Reputation"] = "声望追踪"
 L["Train All Button"] = "学习全部按钮"
 L["Undress Button"] = "裸体按钮"
 L["Undress"] = "裸体"
-L["Use blizzard close buttons, but desaturated"] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true
@@ -147,8 +130,8 @@ L["Hook DBM"] = "连接DBM"
 
 -- Tooltip
 L["Check Player"] = "检查玩家"
+L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."] = true
 L["Colorize the tooltip border based on item quality."] = "以物品品质着色鼠标提示边框。"
-L["Display the players raid progression in the tooltip, this may not immediately update when mousing over a unit."] = "在鼠标提示中显示该玩家的团队副本进度。鼠标悬停在该单位上时可能不会立即更新此信息。"
 L["Icecrown Citadel"] = "冰冠堡垒"
 L["Item Border Color"] = "物品边框颜色"
 L["Progress Info"] = "进度信息"
@@ -163,7 +146,7 @@ L["Trial of the Crusader"] = "十字军的试炼"
 L["Ulduar"] = "奥杜尔"
 
 -- Movers
-L["Loss Control Icon"] = "失控图标"
+L["Loss Control"] = "失控图标"
 L["Player Portrait"] = "玩家头像"
 L["Target Portrait"] = "目标头像"
 
@@ -177,25 +160,17 @@ L["Silence"] = "沉默类技能"
 L["Snare"] = "减速类技能"
 
 -- Unitframes
-L["All role icons (Damage/Healer/Tank) on the unit frames are hidden when you go into combat."] = "进入战斗后隐藏所有单位框架上的职能图标(输出/治疗/坦克)。"
 L["Class Icons"] = "职业图标"
 L["Detached Height"] = "分离后的高度"
-L["Hide Role Icon in combat"] = "战斗中隐藏职能图标"
-L["Player"] = "玩家"
 L["Show class icon for units."] = "显示单位的职业图标。"
-L["Target"] = "目标"
-L["xOffset"] = "X偏移"
-L["yOffset"] = "Y偏移"
 
 -- WatchFrame
 L["Hidden"] = "隐藏"
 L["Collapsed"] = "折叠"
 L["City (Resting)"] = "城市 (休息)"
 L["PvP"] = true
-L["Arena"] = "竞技场"
 L["Party"] = "小队"
 L["Raid"] = "团队"
-L["Watch Frame"] = "任务追踪"
 
 --
 L["Drag"] = "拖动"
@@ -210,7 +185,6 @@ L["Zoom In"] = "放大"
 L["Zoom Out"] = "缩小"
 
 --
-L["Change Name/Icon"] = "更改名称/图标"
 L["Character Stats"] = "角色属性"
 L["Damage Per Second"] = "DPS"
 L["Equipment Manager"] = "装备管理"
@@ -224,3 +198,40 @@ L["Show Pet Information"] = "显示宠物信息"
 L["Titles"] = "头衔"
 L["Total Companions"] = "所有小伙伴"
 L["Total Mounts"] = "所有坐骑"
+
+L["ALL"] = "全部"
+L["ALT_KEY"] = "ALT键"
+
+L["%d mails\nShift-Click to remove empty mails."] = true
+L["Addon |cffFFD100%s|r was merged into |cffFFD100ElvUI_Enhanced|r.\nPlease remove it to avoid conflicts."] = true
+L["Check Achievements"] = true
+L["Collected "] = true
+L["Collection completed."] = true
+L["Collection stopped, inventory is full."] = true
+L["Color based on reaction type."] = true
+L["Compact mode"] = true
+L["Desaturate"] = true
+L["Detached Portrait"] = true
+L["Equipment Info"] = true
+L["Fog of War"] = true
+L["Grow direction"] = true
+L["Inside Minimap"] = true
+L["Key Press Animation"] = true
+L["Map"] = true
+L["Minimap Button Grabber"] = true
+L["NPC"] = true
+L["Overlay Color"] = true
+L["Reaction Color"] = true
+L["Reported by %s"] = true
+L["Rotation"] = true
+L["Separator"] = true
+L["Set the height of Error Frame. Higher frame can show more lines at once."] = true
+L["Set the width of Error Frame. Too narrow frame may cause messages to be split in several lines"] = true
+L["Show Everywhere"] = true
+L["Show on Arena."] = true
+L["Show on Battleground."] = true
+L["Take All"] = true
+L["Take All Mail"] = true
+L["Take Cash"] = true
+L["This addon has been disabled. You should install an updated version."] = true
+L["seconds"] = true
