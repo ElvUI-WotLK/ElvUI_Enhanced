@@ -36,10 +36,12 @@ local function OnEvent(self)
 	if E.myclass == "WARLOCK" then
 		name = GetItemInfo(6265)
 		count = GetItemCount(6265)
-		if count > 0 then
-			self.text:SetFormattedText(displayString, name, count)
-		else
-			self.text:SetFormattedText(displayString, name, 0)
+		if name then
+			if count > 0 then
+				self.text:SetFormattedText(displayString, name, count)
+			else
+				self.text:SetFormattedText(displayString, name, 0)
+			end
 		end
 	else
 		link = GetInventoryItemLink("player", GetInventorySlotInfo("AmmoSlot"))
