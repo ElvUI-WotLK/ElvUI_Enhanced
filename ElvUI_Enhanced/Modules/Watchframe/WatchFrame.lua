@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local WF = E:NewModule("Enhanced_WatchFrame", "AceEvent-3.0")
 
+local format = string.format
+
 local IsInInstance = IsInInstance
 local IsResting = IsResting
 local UnitAffectingCombat = UnitAffectingCombat
