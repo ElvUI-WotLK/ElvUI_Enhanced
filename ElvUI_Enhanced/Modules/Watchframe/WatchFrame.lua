@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local WF = E:NewModule("Enhanced_WatchFrame", "AceEvent-3.0")
+local WF = E:NewModule("Enhanced_WatchFrame", "AceHook-3.0", "AceEvent-3.0")
 
 local format = string.format
 
@@ -86,7 +86,9 @@ end
 
 function WF:QuestLevelToggle()
 	if self.db.level then
-		hooksecurefunc("WatchFrame_Update", ShowLevel)
+		self:SecureHook("WatchFrame_Update", ShowLevel)
+	else
+		self:Unhook("WatchFrame_Update")
 	end
 
 	WatchFrame_Update()
