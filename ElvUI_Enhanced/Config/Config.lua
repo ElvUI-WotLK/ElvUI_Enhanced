@@ -499,8 +499,18 @@ local function BlizzardOptions()
 						type = "toggle",
 						name = L["Enable"]
 					},
-					settings = {
+					level = {
 						order = 4,
+						type = "toggle",
+						name = L["Show Quest Level"],
+						desc = L["Display quest levels at Quest Tracker."],
+						set = function(info, value)
+							E.db.enhanced.watchframe.level = value
+							WF:QuestLevelToggle()
+						end
+					},
+					settings = {
+						order = 5,
 						type = "group",
 						name = L["Visibility State"],
 						guiInline = true,

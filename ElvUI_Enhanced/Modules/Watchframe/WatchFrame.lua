@@ -63,11 +63,39 @@ function WF:UpdateSettings()
 	end
 end
 
+local function ShowLevel()
+	local questIndex, title, level
+
+	for i = 1, GetNumQuestWatches() do
+		questIndex = GetQuestIndexForWatch(i)
+		if questIndex then
+			title, level = GetQuestLogTitle(questIndex)
+
+			for j = 1, #WATCHFRAME_QUESTLINES do
+				if WATCHFRAME_QUESTLINES[j].text:GetText() == title then
+					if E.db.enhanced.watchframe.level then
+						WATCHFRAME_QUESTLINES[j].text:SetText(format("[%d] %s", level, title))
+					end
+				end
+			end
+		end
+	end
+end
+
+function WF:QuestLevelToggle()
+	if self.db.level then
+		hooksecurefunc("WatchFrame_Update", ShowLevel)
+	end
+
+	WatchFrame_Update()
+end
+
 function WF:Initialize()
 	watchFrame = _G["WatchFrame"]
 	self.db = E.db.enhanced.watchframe
 
 	self:UpdateSettings()
+	self:QuestLevelToggle()
 end
 
 local function InitializeCallback()
