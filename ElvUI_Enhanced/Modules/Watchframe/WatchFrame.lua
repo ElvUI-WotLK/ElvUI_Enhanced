@@ -1,23 +1,28 @@
 local E, L, V, P, G = unpack(ElvUI)
 local WF = E:NewModule("Enhanced_WatchFrame", "AceHook-3.0", "AceEvent-3.0")
 
-local format = string.format
+local ipairs = ipairs
 
+local GetQuestIndexForWatch = GetQuestIndexForWatch
+local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
 local IsResting = IsResting
 local UnitAffectingCombat = UnitAffectingCombat
 
-local watchFrame
+local WATCHFRAME_LINKBUTTONS = WATCHFRAME_LINKBUTTONS
+local WATCHFRAME_QUESTLINES = WATCHFRAME_QUESTLINES
+
+local WatchFrame = WatchFrame
 
 local statedriver = {
 	["NONE"] = function()
 		WatchFrame.userCollapsed = false
-		WatchFrame_Expand(watchFrame)
+		WatchFrame_Expand(WatchFrame)
 		WatchFrame:Show()
 	end,
 	["COLLAPSED"] = function()
 		WatchFrame.userCollapsed = true
-		WatchFrame_Collapse(watchFrame)
+		WatchFrame_Collapse(WatchFrame)
 		WatchFrame:Show()
 	end,
 	["HIDDEN"] = function()
@@ -33,19 +38,19 @@ function WF:ChangeState()
 	end
 
 	if IsResting() then
-		statedriver[self.db.city](watchFrame)
+		statedriver[self.db.city](WatchFrame)
 	else
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
-			statedriver[self.db.pvp](watchFrame)
+			statedriver[self.db.pvp](WatchFrame)
 		elseif instanceType == "arena" then
-			statedriver[self.db.arena](watchFrame)
+			statedriver[self.db.arena](WatchFrame)
 		elseif instanceType == "party" then
-			statedriver[self.db.party](watchFrame)
+			statedriver[self.db.party](WatchFrame)
 		elseif instanceType == "raid" then
-			statedriver[self.db.raid](watchFrame)
+			statedriver[self.db.raid](WatchFrame)
 		else
-			statedriver["NONE"](watchFrame)
+			statedriver["NONE"](WatchFrame)
 		end
 	end
 
@@ -66,28 +71,19 @@ function WF:UpdateSettings()
 end
 
 local function ShowLevel()
-	local questIndex, title, level
-
-	for i = 1, GetNumQuestWatches() do
-		questIndex = GetQuestIndexForWatch(i)
-		if questIndex then
-			title, level = GetQuestLogTitle(questIndex)
-
-			for j = 1, #WATCHFRAME_QUESTLINES do
-				if WATCHFRAME_QUESTLINES[j].text:GetText() == title then
-					if E.db.enhanced.watchframe.level then
-						WATCHFRAME_QUESTLINES[j].text:SetText(format("[%d] %s", level, title))
-					end
-				end
-			end
+	for _, button in ipairs(WATCHFRAME_LINKBUTTONS) do
+		if button.type == "QUEST" then
+			local questIndex = GetQuestIndexForWatch(button.index)
+			local title, level = GetQuestLogTitle(questIndex)
+			WATCHFRAME_QUESTLINES[button.startLine].text:SetFormattedText("[%d] %s", level, title)
 		end
 	end
 end
 
 function WF:QuestLevelToggle()
-	if self.db.level then
+	if self.db.level and not self:IsHooked("WatchFrame_Update") then
 		self:SecureHook("WatchFrame_Update", ShowLevel)
-	else
+	elseif not self.db.level and self:IsHooked("WatchFrame_Update") then
 		self:Unhook("WatchFrame_Update")
 	end
 
@@ -95,7 +91,6 @@ function WF:QuestLevelToggle()
 end
 
 function WF:Initialize()
-	watchFrame = _G["WatchFrame"]
 	self.db = E.db.enhanced.watchframe
 
 	self:UpdateSettings()
