@@ -374,6 +374,7 @@ function mod:DeathRecap()
 	local S = E:GetModule("Skins")
 
 	local frame = CreateFrame("Frame", "ElvUI_DeathRecapFrame", UIParent)
+	frame:SetFrameStrata("HIGH")
 	frame:Size(340, 326)
 	frame:Point("CENTER")
 	frame:SetTemplate("Transparent")

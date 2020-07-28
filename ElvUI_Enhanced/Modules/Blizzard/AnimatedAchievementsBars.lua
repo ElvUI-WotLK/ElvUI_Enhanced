@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 local _G = _G
 local band = bit.band
 
-local function LoadSkin()
+S:AddCallbackForAddon("Blizzard_AchievementUI", "Enhanced_AchievementUI", function()
 	if not E.private.enhanced.animatedAchievementBars then return end
 
 	local function AnimationStatusBar(bar, noNumber)
@@ -109,6 +109,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Blizzard_AchievementUI", "Enhanced_AchievementUI", LoadSkin)
+end)
