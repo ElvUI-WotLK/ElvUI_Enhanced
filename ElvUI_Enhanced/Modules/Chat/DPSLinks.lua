@@ -39,6 +39,7 @@ local spamFirstLines = {
 	"^Skada报告(.*)的(.*):$",		-- Skada zhCN
 	"^Skada:(.*)來自(.*):$",			-- Skada zhTW
 	"^(.*) Done for (.*)$",			-- TinyDPS
+	"^Details!:(.*)$" -- Details!
 }
 
 local spamNextLines = {
