@@ -310,10 +310,10 @@ function mod:AddonList()
 	scrollFrame:Point("TOPLEFT", 8, -25)
 	scrollFrame:Point("BOTTOMRIGHT", -29, 37)
 	scrollFrame.scrollBar = _G[scrollFrame:GetName().."ScrollBar"]
-	S:HandleScrollBar(scrollFrame.scrollBar, 5)
+	S:HandleScrollBar(scrollFrame.scrollBar)
 
-	scrollFrame.scrollBar:Point("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -18)
-	scrollFrame.scrollBar:Point("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 18)
+	scrollFrame.scrollBar:Point("TOPLEFT", scrollFrame, "TOPRIGHT", 3, -19)
+	scrollFrame.scrollBar:Point("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 3, 19)
 
 	scrollFrame:SetScript("OnVerticalScroll", function(self, offset)
 		self.scrollBar:SetValue(offset)

@@ -2157,16 +2157,6 @@ function module:Initialize()
 		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
 	end
 
-	local function FixHybridScrollBarSkin(frame, h1, h2)
-		frame.scrollUp:Size(18)
-		frame.scrollDown:Size(18)
-
-		frame.scrollBar.thumbTexture:Size(18, 24)
-
-		frame.scrollBar.Thumb.backdrop:Point("TOPLEFT", frame.scrollBar.Thumb, "TOPLEFT", 2, h1 or -5)
-		frame.scrollBar.Thumb.backdrop:Point("BOTTOMRIGHT", frame.scrollBar.Thumb, "BOTTOMRIGHT", -2, h2 or 1)
-	end
-
 	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
 	expandButton:Point("BOTTOMLEFT", CharacterFrame, 325, 85)
 	expandButton:SetFrameLevel(CharacterFrame:GetFrameLevel() + 5)
@@ -2245,10 +2235,9 @@ do -- CharacterFrame
 	titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
 
 	titlePane.scrollBar = CreateFrame("Slider", "$parentScrollBar", titlePane, "HybridScrollBarTemplate")
-	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 2, -16)
-	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 2, 14)
+	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 3, -19)
+	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 3, 17)
 	S:HandleScrollBar(titlePane.scrollBar)
-	FixHybridScrollBarSkin(titlePane)
 
 	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
 
@@ -2287,8 +2276,8 @@ do -- CharacterFrame
 	statsPane.Categories = {}
 
 	statsPane.scrollBar = CharacterStatsPaneScrollBar
-	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 4, -18)
-	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 4, 16)
+	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 3, -19)
+	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 3, 17)
 	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 
 	CharacterStatsPaneScrollBar.scrollStep = 50
@@ -2413,10 +2402,9 @@ do -- CharacterFrame
 	equipmentManagerPane.SaveSet:SetScript("OnClick", GearManagerDialogSaveSet_OnClick)
 
 	equipmentManagerPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", equipmentManagerPane, "HybridScrollBarTemplate")
-	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 2, -16)
-	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 2, 14)
+	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 3, -19)
+	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 3, 17)
 	S:HandleScrollBar(equipmentManagerPane.scrollBar)
-	FixHybridScrollBarSkin(equipmentManagerPane)
 
 	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
@@ -2740,10 +2728,9 @@ do -- CompanionFrame
 	companionPane.text:FontTemplate()
 
 	companionPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", companionPane, "HybridScrollBarTemplate")
-	companionPane.scrollBar:Point("TOPLEFT", companionPane, "TOPRIGHT", 2, -16)
-	companionPane.scrollBar:Point("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 2, 14)
+	companionPane.scrollBar:Point("TOPLEFT", companionPane, "TOPRIGHT", 3, -19)
+	companionPane.scrollBar:Point("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 3, 17)
 	S:HandleScrollBar(companionPane.scrollBar)
-	FixHybridScrollBarSkin(companionPane)
 
 	CreateSmoothScrollAnimation(companionPane.scrollBar, true)
 
