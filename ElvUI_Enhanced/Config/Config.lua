@@ -1901,7 +1901,6 @@ local function UnitFrameOptions()
 							E.db.enhanced.unitframe.units.target.classicon[info[#info]] = value
 							TC:ToggleSettings()
 						end,
-						disabled = function() return not E.db.enhanced.unitframe.units.target.classicon.enable end,
 						args = {
 							header = {
 								order = 0,
