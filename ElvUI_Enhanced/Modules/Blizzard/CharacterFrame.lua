@@ -1425,6 +1425,8 @@ function module:PaperDoll_InitStatCategories(defaultOrder, orderData, collapsedD
 end
 
 local function PaperDoll_SaveStatCategoryOrder()
+	local activeSpec = GetActiveTalentGroup()
+
 	if CharacterStatsPane.defaultOrder and #CharacterStatsPane.defaultOrder == #StatCategoryFrames then
 		local same = true
 		for index = 1, #StatCategoryFrames do
@@ -1434,7 +1436,11 @@ local function PaperDoll_SaveStatCategoryOrder()
 			end
 		end
 		if same then
-			E.private.enhanced.character[CharacterStatsPane.unit].orderName = ""
+			if activeSpec == 1 then
+				E.private.enhanced.character[CharacterStatsPane.unit].orderName = ""
+			else
+				E.private.enhanced.character[CharacterStatsPane.unit].orderName2 = ""
+			end
 			return
 		end
 	end
@@ -1445,7 +1451,11 @@ local function PaperDoll_SaveStatCategoryOrder()
 		order[index] = PAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id
 	end
 
-	E.private.enhanced.character[CharacterStatsPane.unit].orderName = tconcat(order, ",")
+	if activeSpec == 1 then
+		E.private.enhanced.character[CharacterStatsPane.unit].orderName1 = tconcat(order, ",")
+	else
+		E.private.enhanced.character[CharacterStatsPane.unit].orderName2 = tconcat(order, ",")
+	end    
 end
 
 function module:PaperDoll_UpdateCategoryPositions()
