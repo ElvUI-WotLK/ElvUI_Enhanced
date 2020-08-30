@@ -1452,7 +1452,7 @@ local function PaperDoll_SaveStatCategoryOrder()
 	end
 
 	if activeSpec == 1 then
-		E.private.enhanced.character[CharacterStatsPane.unit].orderName1 = tconcat(order, ",")
+		E.private.enhanced.character[CharacterStatsPane.unit].orderName = tconcat(order, ",")
 	else
 		E.private.enhanced.character[CharacterStatsPane.unit].orderName2 = tconcat(order, ",")
 	end    
