@@ -471,6 +471,20 @@ local function BlizzardOptions()
 							E:GetModule("Enhanced_TimerTracker"):HookDBM()
 						end,
 						disabled = function() return not E.db.enhanced.timerTracker.enable end
+					},
+					dbmTimerType = {
+						order = 8,
+						type = "select",
+						name = L["DBM Timer Type"],
+						set = function(info, value)
+							E.db.enhanced.timerTracker.dbmTimerType = value
+						end,
+						values = {
+							[1] = L["PvP"],
+							[2] = L["Challenge Mode"],
+							[3] = L["Player Countdown"]
+						},
+						disabled = function() return not E.db.enhanced.timerTracker.enable or not E.db.enhanced.timerTracker.dbm end
 					}
 				}
 			},

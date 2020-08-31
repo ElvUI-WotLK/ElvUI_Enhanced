@@ -164,7 +164,8 @@ P.enhanced = {
 		Snare = false
 	},
 	timerTracker = {
-		dbm = true
+		dbm = true,
+		dbmTimerType = 3
 	},
 	interruptTracker = {
 		size = 32,

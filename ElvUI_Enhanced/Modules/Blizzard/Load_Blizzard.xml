@@ -8,7 +8,6 @@
 	<Script file="AnimatedAchievementsBars.lua"/>
 	<Script file="ErrorFrame.lua"/>
 
-	<Include file="TimerTracker.xml"/>
 	<Script file="TimerTracker.lua"/>
 
 	<Script file="Modelframes.lua"/>

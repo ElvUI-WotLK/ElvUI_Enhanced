@@ -92,10 +92,12 @@ local chatMessage = {
 local TIMER_MINUTES_DISPLAY = "%d:%02d"
 local TIMER_TYPE_PVP = 1
 local TIMER_TYPE_CHALLENGE_MODE = 2
+local TIMER_TYPE_PLAYER_COUNTDOWN = 3
 
 local TIMER_DATA = {
 	[1] = {mediumMarker = 11, largeMarker = 6, updateInterval = 10},
-	[2] = {mediumMarker = 100, largeMarker = 100, updateInterval = 100}
+	[2] = {mediumMarker = 100, largeMarker = 100, updateInterval = 100},
+	[3] = {mediumMarker = 31, largeMarker = 11, updateInterval = 10}
 }
 
 local TIMER_NUMBERS_SETS = {}
@@ -116,16 +118,174 @@ TIMER_NUMBERS_SETS["BigGold"] = {
 	}
 }
 
-function TT:OnShow(timer)
-	timer.time = timer.endTime - GetTime()
+local function CreateAlphaAnim(group, order, duration, change, delay, smoothing)
+	local anim = group:CreateAnimation("Alpha")
+	anim:SetOrder(order)
+	anim:SetDuration(duration)
+	anim:SetChange(change)
 
-	if timer.time <= 0 then
-		timer:Hide()
-		timer.isFree = true
-	elseif timer.digit.startNumbers:IsPlaying() then
-		timer.digit.startNumbers:Stop()
-		timer.digit.startNumbers:Play()
+	if delay then
+		anim:SetStartDelay(delay)
 	end
+	if smoothing then
+		anim:SetSmoothing(smoothing)
+	end
+end
+
+local function CreateScaleAnim(group, order, duration, scale, delay, smoothing)
+	local anim = group:CreateAnimation("Scale")
+	anim:SetOrder(order)
+	anim:SetDuration(duration)
+	anim:SetScale(scale, scale)
+
+	if delay then
+		anim:SetStartDelay(delay)
+	end
+	if smoothing then
+		anim:SetSmoothing(smoothing)
+	end
+end
+
+local function Timer_OnShow(self)
+	self.time = self.endTime - GetTime()
+
+	if self.time <= 0 then
+		self:Hide()
+		self.isFree = true
+	elseif self.StartNumbers:IsPlaying() then
+		self.StartNumbers:Stop()
+		self.StartNumbers:Play()
+		self.StartGlowNumbers:Stop()
+		self.StartGlowNumbers:Play()
+	end
+end
+
+local function StartNumbers_OnPlay(self)
+	local timer = self:GetParent():GetParent()
+	TT:SetTexNumbers(timer, timer.Digit1, timer.Digit2)
+end
+
+local function StartNumbers_OnFinished(self)
+	local timer = self:GetParent():GetParent()
+	timer.time = timer.time - 1
+
+	if timer.time > 0 then
+		if timer.time < TIMER_DATA[timer.type].largeMarker and not self.anchorCenter then
+			TT:SwitchToLargeDisplay(timer)
+		end
+
+		timer.StartNumbers:Play()
+		timer.StartGlowNumbers:Play()
+	else
+		timer.anchorCenter = false
+		timer.isFree = true
+		timer.GoTextureAnim:Play()
+		timer.GoTextureGlowAnim:Play()
+	end
+end
+
+local function FadeBarIn_OnPlay(self)
+	local timer = self:GetParent():GetParent()
+	timer.StatusBar:Show()
+end
+
+local function FadeBarOut_OnFinished(self)
+	local timer = self:GetParent():GetParent()
+	timer.time = timer.time - 0.9
+	timer.StatusBar:Hide()
+	timer.StartNumbers:Play()
+	timer.StartGlowNumbers:Play()
+end
+
+function TT:CreateTimerBar()
+	local timer = CreateFrame("Frame", "ElvUI_Timer"..(#self.timerList + 1), UIParent)
+	timer:Size(206, 26)
+
+	timer.GoFrame = CreateFrame("Frame", "$parentGoFrame", timer)
+	timer.GoFrame:SetFrameLevel(1)
+	timer.GoFrame:SetAlpha(0)
+	timer.GoFrame:SetSize(256, 256)
+	timer.GoFrame:SetPoint("CENTER", UIParent)
+	timer.GoTextureAnim = timer.GoFrame:CreateAnimationGroup()
+	CreateScaleAnim(timer.GoTextureAnim, 1, 0, 0.25)
+	CreateAlphaAnim(timer.GoTextureAnim, 1, 0, 1)
+	CreateScaleAnim(timer.GoTextureAnim, 2, 0.4, 4, nil, "OUT")
+	CreateScaleAnim(timer.GoTextureAnim, 3, 0.2, 1.4, 0.6, "OUT")
+	CreateAlphaAnim(timer.GoTextureAnim, 3, 0.2, -1, 0.6, "OUT")
+
+	timer.GoTexture = timer.GoFrame:CreateTexture()
+	timer.GoTexture:SetAllPoints()
+
+	timer.GoGlowFrame = CreateFrame("Frame", "$parentGoGlowFrame", timer)
+	timer.GoGlowFrame:SetFrameLevel(2)
+	timer.GoGlowFrame:SetAlpha(0)
+	timer.GoGlowFrame:SetAllPoints(timer.GoFrame)
+	timer.GoTextureGlowAnim = timer.GoGlowFrame:CreateAnimationGroup()
+	CreateScaleAnim(timer.GoTextureGlowAnim, 1, 0, 0.25)
+	CreateAlphaAnim(timer.GoTextureGlowAnim, 1, 0, 1)
+	CreateScaleAnim(timer.GoTextureGlowAnim, 2, 0.4, 4, nil, "OUT")
+	CreateAlphaAnim(timer.GoTextureGlowAnim, 2, 0.4, -1, nil, "IN")
+
+	timer.GoTextureGlow = timer.GoGlowFrame:CreateTexture()
+	timer.GoTextureGlow:SetAllPoints()
+
+	timer.DigitFrame = CreateFrame("Frame", "$parentDigitFrame", timer)
+	timer.DigitFrame:SetFrameLevel(1)
+	timer.DigitFrame:SetAlpha(0)
+	timer.StartNumbers = timer.DigitFrame:CreateAnimationGroup()
+	CreateScaleAnim(timer.StartNumbers, 1, 0, 0.25)
+	CreateAlphaAnim(timer.StartNumbers, 1, 0, -1)
+	CreateAlphaAnim(timer.StartNumbers, 2, 0, 1)
+	CreateScaleAnim(timer.StartNumbers, 3, 0.3, 4, nil, "OUT")
+	CreateScaleAnim(timer.StartNumbers, 4, 0.1, 1.2, 0.6)
+	CreateAlphaAnim(timer.StartNumbers, 4, 0.1, -1, 0.6)
+	timer.StartNumbers:SetScript("OnPlay", StartNumbers_OnPlay)
+	timer.StartNumbers:SetScript("OnFinished", StartNumbers_OnFinished)
+
+	timer.Digit1 = timer.DigitFrame:CreateTexture()
+	timer.Digit2 = timer.DigitFrame:CreateTexture()
+
+	timer.DigitGlowFrame = CreateFrame("Frame", "$parentDigitGlowFrame", timer)
+	timer.DigitGlowFrame:SetFrameLevel(2)
+	timer.DigitGlowFrame:SetAlpha(0)
+	timer.StartGlowNumbers = timer.DigitGlowFrame:CreateAnimationGroup()
+	CreateScaleAnim(timer.StartGlowNumbers, 1, 0, 0.25)
+	CreateAlphaAnim(timer.StartGlowNumbers, 1, 0, 1)
+	CreateScaleAnim(timer.StartGlowNumbers, 2, 0.3, 4, nil, "OUT")
+	CreateAlphaAnim(timer.StartGlowNumbers, 2, 0.3, -1, nil, "IN")
+
+	timer.Digit1.Glow = timer.DigitGlowFrame:CreateTexture()
+	timer.Digit1.Glow:SetAllPoints(timer.Digit1)
+	timer.Digit2.Glow = timer.DigitGlowFrame:CreateTexture()
+	timer.Digit2.Glow:SetAllPoints(timer.Digit2)
+
+	timer.StatusBar = CreateFrame("StatusBar", "$parentStatusBar", timer)
+	timer.StatusBar:Hide()
+	timer.StatusBar:Size(195, 13)
+	timer.StatusBar:Point("TOP", 0, -2)
+	timer.StatusBar:SetStatusBarTexture(E.media.glossTex)
+	E:RegisterStatusBar(timer.StatusBar)
+	timer.StatusBar:CreateBackdrop("Default")
+
+	timer.StatusBar.Background = timer.StatusBar:CreateTexture("$parentBackground", "BORDER")
+	timer.StatusBar.Background:SetAllPoints()
+	timer.StatusBar.Background:SetTexture(E.media.blankTex)
+
+	timer.StatusBar.Text = timer.StatusBar:CreateFontString("$parentTimeText", "OVERLAY", "GameFontHighlight")
+	timer.StatusBar.Text:SetPoint("CENTER", 0, 0)
+
+	timer.FadeBarIn = timer.StatusBar:CreateAnimationGroup()
+	CreateAlphaAnim(timer.FadeBarIn, 1, 0, -1)
+	CreateAlphaAnim(timer.FadeBarIn, 2, 1.9, 1)
+	timer.FadeBarIn:SetScript("OnPlay", FadeBarIn_OnPlay)
+
+	timer.FadeBarOut = timer.StatusBar:CreateAnimationGroup()
+	CreateAlphaAnim(timer.FadeBarOut, 1, 0.9, -1)
+	timer.FadeBarOut:SetScript("OnFinished", FadeBarOut_OnFinished)
+
+	timer:SetScript("OnShow", Timer_OnShow)
+
+	return timer
 end
 
 function TT:CreateTimer(timerType, timeSeconds, totalTime)
@@ -142,8 +302,8 @@ function TT:CreateTimer(timerType, timeSeconds, totalTime)
 		end
 	end
 
-	if isTimerRunning then
-		if not timer.digit.startNumbers:IsPlaying() then
+	if isTimerRunning and timer.type ~= TIMER_TYPE_PLAYER_COUNTDOWN then
+		if not timer.StartNumbers:IsPlaying() then
 			timer.time = timeSeconds
 			timer.endTime = GetTime() + timeSeconds
 		end
@@ -156,9 +316,8 @@ function TT:CreateTimer(timerType, timeSeconds, totalTime)
 		end
 
 		if not timer then
-			timer = CreateFrame("Frame", "ElvUI_Timer"..(#self.timerList + 1), UIParent, "ElvUI_StartTimerBar")
-			self:CreateTimerBar(timer)
-			self.timerList[#self.timerList+1] = timer
+			timer = self:CreateTimerBar()
+			self.timerList[#self.timerList + 1] = timer
 		end
 
 		timer:ClearAllPoints()
@@ -169,23 +328,17 @@ function TT:CreateTimer(timerType, timeSeconds, totalTime)
 		timer.time = timeSeconds
 		timer.endTime = GetTime() + timeSeconds
 		timer.totalTime = totalTime
-		timer.bar:SetMinMaxValues(0, totalTime)
+		timer.StatusBar:SetMinMaxValues(0, totalTime)
 		timer.style = TIMER_NUMBERS_SETS["BigGold"]
 
-		timer.digit1 = timer.digit.digit1
-		timer.digit2 = timer.digit.digit2
-
-		timer.digit1:SetTexture(timer.style.texture)
-		timer.digit2:SetTexture(timer.style.texture)
-		timer.digit1:Size(timer.style.w / 2, timer.style.h / 2)
-		timer.digit2:Size(timer.style.w / 2, timer.style.h / 2)
-		timer.digit1.width = timer.style.w / 2
-		timer.digit2.width = timer.style.w / 2
-
-		timer.digit1.glow = timer.glow1
-		timer.digit2.glow = timer.glow2
-		timer.glow1:SetTexture(timer.style.texture.."Glow")
-		timer.glow2:SetTexture(timer.style.texture.."Glow")
+		timer.Digit1:Size(timer.style.w / 2, timer.style.h / 2)
+		timer.Digit2:Size(timer.style.w / 2, timer.style.h / 2)
+		timer.Digit1.width = timer.style.w / 2
+		timer.Digit2.width = timer.style.w / 2
+		timer.Digit1:SetTexture(timer.style.texture)
+		timer.Digit2:SetTexture(timer.style.texture)
+		timer.Digit1.Glow:SetTexture(timer.style.texture.."Glow")
+		timer.Digit2.Glow:SetTexture(timer.style.texture.."Glow")
 
 		timer.updateTime = TIMER_DATA[timer.type].updateInterval
 		timer:SetScript("OnUpdate", self.BigNumberOnUpdate)
@@ -195,102 +348,40 @@ function TT:CreateTimer(timerType, timeSeconds, totalTime)
 	self:SetGoTexture(timer)
 end
 
-function TT:CreateTimerBar(timer)
-	timer.bar = CreateFrame("StatusBar", "$parentStatusBar", timer)
-	timer.bar:SetSize(195, 13)
-	timer.bar:SetPoint("TOP", 0, -2)
-	timer.bar:SetAlpha(0)
-	timer.bar:SetStatusBarTexture(E.media.glossTex)
-	E:RegisterStatusBar(timer.bar)
-	timer.bar:CreateBackdrop("Default")
-
-	timer.bar.bg = timer.bar:CreateTexture("$parentBackgrund", "BORDER")
-	timer.bar.bg:SetAllPoints()
-	timer.bar.bg:SetTexture(E.media.blankTex)
-
-	timer.timeText = timer.bar:CreateFontString("$parentTimeText", "OVERLAY", "GameFontHighlight")
-	timer.timeText:SetSize(0, 9)
-	timer.timeText:SetPoint("CENTER", 0, 0)
-
-	timer.fadeBarIn = CreateAnimationGroup(timer.bar):CreateAnimation("Fade")
-	timer.fadeBarIn:SetDuration(1.9)
-	timer.fadeBarIn:SetChange(1)
-
-	timer.fadeBarIn:SetScript("OnPlay", function()
-		timer.bar:SetAlpha(0)
-	end)
-
-	timer.fadeBarIn:SetScript("OnFinished", function()
-		timer.bar:SetAlpha(1)
-	end)
-
-	timer.fadeBarOut = CreateAnimationGroup(timer.bar):CreateAnimation("Fade")
-	timer.fadeBarOut:SetDuration(0.9)
-	timer.fadeBarOut:SetChange(-1)
-
-	timer.fadeBarOut:SetScript("OnFinished", function()
-		timer.bar:SetAlpha(0)
-		timer.time = timer.time - 0.9
-
-		timer.digit.startNumbers:Play()
-	end)
-end
-
 function TT:BigNumberOnUpdate(elapsed)
 	self.time = self.endTime - GetTime()
 	self.updateTime = self.updateTime - elapsed
 
-	local minutes, seconds = floor(self.time / 60), floor(fmod(self.time, 60))
-
 	if self.time < TIMER_DATA[self.type].mediumMarker then
-		self.anchorCenter = false
-
-		if self.time < TIMER_DATA[self.type].largeMarker then
+		if (self.time < TIMER_DATA[self.type].largeMarker) and not self.anchorCenter then
 			TT:SwitchToLargeDisplay(self)
-			self.bar:SetAlpha(0)
+		elseif self.anchorCenter then
+			self.anchorCenter = false
 		end
 
 		self:SetScript("OnUpdate", nil)
 
 		if self.barShowing then
 			self.barShowing = false
-			self.fadeBarOut:Play()
+			self.FadeBarOut:Play()
 		else
-			self.digit.startNumbers:Play()
+			self.StartNumbers:Play()
+			self.StartGlowNumbers:Play()
 		end
 	elseif not self.barShowing then
-		self.fadeBarIn:Play()
+		self.FadeBarIn:Play()
 		self.barShowing = true
 	elseif self.updateTime <= 0 then
 		self.updateTime = TIMER_DATA[self.type].updateInterval
 	end
 
-	self.bar:SetValue(self.time)
-	self.timeText:SetFormattedText(TIMER_MINUTES_DISPLAY, minutes, seconds)
+	self.StatusBar:SetValue(self.time)
+	local minutes, seconds = floor(self.time / 60), floor(fmod(self.time, 60))
+	self.StatusBar.Text:SetFormattedText(TIMER_MINUTES_DISPLAY, minutes, seconds)
 
 	local r, g, b = E:ColorGradient((self.time - 10) / self.totalTime, 1,0,0, 1,1,0, 0,1,0)
-	self.bar:SetStatusBarColor(r, g, b)
-	self.bar.bg:SetVertexColor(r * 0.25, g * 0.25, b * 0.25)
-end
-
-function TT:BarOnlyOnUpdate(elapsed)
-	self.time = self.endTime - GetTime()
-	local minutes, seconds = floor(self.time / 60), fmod(self.time, 60)
-
-	self.bar:SetValue(self.time)
-	self.timeText:SetFormattedText(TIMER_MINUTES_DISPLAY, minutes, seconds)
-
-	if self.time < 0 then
-		self:SetScript("OnUpdate", nil)
-		self.barShowing = false
-		self.isFree = true
-		self:Hide()
-	end
-
-	if not self.barShowing then
-		self.fadeBarIn:Play()
-		self.barShowing = true
-	end
+	self.StatusBar:SetStatusBarColor(r, g, b)
+	self.StatusBar.Background:SetVertexColor(r * 0.25, g * 0.25, b * 0.25)
 end
 
 function TT:SetTexNumbers(timer, ...)
@@ -310,7 +401,7 @@ function TT:SetTexNumbers(timer, ...)
 		if timeDigits > 0 then
 			digit = fmod(timeDigits, 10)
 
-			digits[i].hw = style.numberHalfWidths[digit+1] * digits[i].width
+			digits[i].hw = style.numberHalfWidths[digit + 1] * digits[i].width
 			numberOffset = numberOffset + digits[i].hw
 
 			l = fmod(digit, columns) * texCoW
@@ -319,13 +410,13 @@ function TT:SetTexNumbers(timer, ...)
 			b = t + texCoH
 
 			digits[i]:SetTexCoord(l, r, t, b)
-			digits[i].glow:SetTexCoord(l, r, t, b)
+			digits[i].Glow:SetTexCoord(l, r, t, b)
 
 			timeDigits = floor(timeDigits / 10)
 			numShown = numShown + 1
 		else
 			digits[i]:SetTexCoord(0, 0, 0, 0)
-			digits[i].glow:SetTexCoord(0, 0, 0, 0)
+			digits[i].Glow:SetTexCoord(0, 0, 0, 0)
 		end
 
 		i = i + 1
@@ -342,7 +433,7 @@ function TT:SetTexNumbers(timer, ...)
 
 		for j = 2, numShown do
 			digits[j]:ClearAllPoints()
-			digits[j]:Point("CENTER", digits[j-1], "CENTER", -(digits[j].hw + digits[j-1].hw), 0)
+			digits[j]:Point("CENTER", digits[j - 1], "CENTER", -(digits[j].hw + digits[j - 1].hw), 0)
 		end
 	end
 end
@@ -358,36 +449,18 @@ function TT:SetGoTexture(timer)
 	elseif timer.type == TIMER_TYPE_CHALLENGE_MODE then
 		timer.GoTexture:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\Challenges-Logo")
 		timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\ChallengesGlow-Logo")
-	end
-end
-
-function TT:NumberAnimOnFinished(timer)
-	timer.time = timer.time - 1
-
-	if timer.time > 0 then
-		if timer.time < TIMER_DATA[timer.type].largeMarker then
-			self:SwitchToLargeDisplay(timer)
-		end
-
-		timer.digit.startNumbers:Play()
-	else
-		timer.anchorCenter = false
-		timer.isFree = true
-		timer.GoTexture.GoTextureAnim:Play()
-		timer.GoTextureGlow.GoTextureAnim:Play()
+	elseif timer.type == TIMER_TYPE_PLAYER_COUNTDOWN then 
+		timer.GoTexture:SetTexture("")
+		timer.GoTextureGlow:SetTexture("")
 	end
 end
 
 function TT:SwitchToLargeDisplay(timer)
-	if not timer.anchorCenter then
-		timer.anchorCenter = true
-
-		timer.digit1.width = timer.style.w
-		timer.digit2.width = timer.style.w
-
-		timer.digit1:Size(timer.style.w, timer.style.h)
-		timer.digit2:Size(timer.style.w, timer.style.h)
-	end
+	timer.Digit1:Size(timer.style.w, timer.style.h)
+	timer.Digit2:Size(timer.style.w, timer.style.h)
+	timer.Digit1.width = timer.style.w
+	timer.Digit2.width = timer.style.w
+	timer.anchorCenter = true
 end
 
 function TT:ReleaseTimers()
@@ -414,20 +487,8 @@ function TT:HookDBM()
 		self:SecureHook(DBM, "CreatePizzaTimer", function(_, time, text)
 			if text == DBM_CORE_TIMER_PULL then
 				DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-				time = (tonumber(time) or 10) + 1
-				self:CreateTimer(1, time, time)
-
-				local foundTimer
-				for _, timer in ipairs(self.timerList) do
-					if timer.type == 1 and not timer.isFree then
-						foundTimer = timer
-						break
-					end
-				end
-				if foundTimer then
-					foundTimer.GoTexture:SetTexture("")
-					foundTimer.GoTextureGlow:SetTexture("")
-				end
+				time = (tonumber(time) or 10) + 0.1
+				self:CreateTimer(E.db.enhanced.timerTracker.dbmTimerType, time, time)
 			end
 		end)
 	else
