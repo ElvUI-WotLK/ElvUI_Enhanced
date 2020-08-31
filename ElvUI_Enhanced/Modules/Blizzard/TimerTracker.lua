@@ -414,7 +414,8 @@ function TT:HookDBM()
 		self:SecureHook(DBM, "CreatePizzaTimer", function(_, time, text)
 			if text == DBM_CORE_TIMER_PULL then
 				DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-				time = (tonumber(time) or 10) + 1
+				if (tonumber(time) <=10) then time = tonumber(time) + 1 end
+				time = (tonumber(time) or 10)
 				self:CreateTimer(1, time, time)
 
 				local foundTimer
