@@ -364,7 +364,7 @@ end
 function TT:NumberAnimOnFinished(timer)
 	timer.time = timer.time - 1
 
-	if timer.time >= 1 then
+	if timer.time > 0 then
 		if timer.time < TIMER_DATA[timer.type].largeMarker then
 			self:SwitchToLargeDisplay(timer)
 		end
@@ -414,8 +414,20 @@ function TT:HookDBM()
 		self:SecureHook(DBM, "CreatePizzaTimer", function(_, time, text)
 			if text == DBM_CORE_TIMER_PULL then
 				DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-				time = tonumber(time) + 1
-				self:CreateTimer(2, time, time)
+				time = (tonumber(time) or 10) + 1
+				self:CreateTimer(1, time, time)
+
+				local foundTimer
+				for _, timer in ipairs(self.timerList) do
+					if timer.type == 1 and not timer.isFree then
+						foundTimer = timer
+						break
+					end
+				end
+				if foundTimer then
+					foundTimer.GoTexture:SetTexture("")
+					foundTimer.GoTextureGlow:SetTexture("")
+				end
 			end
 		end)
 	else
