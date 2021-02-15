@@ -146,7 +146,7 @@ local separatorMap = {
 local function Update_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
-	if frame.Health:IsShown() or (not frame.Name:IsShown() or frame.Name:GetText() == nil) then
+	if frame.Health:IsShown() then
 		if frame.Title then
 			frame.Title:SetText()
 			frame.Title:Hide()
@@ -210,7 +210,7 @@ local function Update_NameHook(self, frame)
 
 		local db = E.db.enhanced.nameplates.npc
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-
+		
 		if E.db.enhanced.nameplates.npc.reactionColor then
 			local db = self.db.colors
 			if frame.UnitReaction == 5 then -- friendly
@@ -226,7 +226,7 @@ local function Update_NameHook(self, frame)
 		else 
 			frame.Title:SetTextColor(db.color.r, db.color.g, db.color.b)
 		end
-
+		
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
 		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
 		frame.Title:Show()
