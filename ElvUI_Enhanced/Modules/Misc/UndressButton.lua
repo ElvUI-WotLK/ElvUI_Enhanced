@@ -31,11 +31,12 @@ function UB:CreateUndressButton(auction)
 		self.auctionDressUpButton.model = AuctionDressUpModel
 
 		if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then
-			self.auctionDressUpButton:Point("BOTTOM", AuctionDressUpFrameResetButton, "BOTTOM", 0, -25)
+			self.auctionDressUpButton:Point("BOTTOM", AuctionDressUpFrameResetButton, "BOTTOM", 0, 25)
 		else
 			S:HandleButton(self.auctionDressUpButton)
 			self.auctionDressUpButton:Point("RIGHT", AuctionDressUpFrameResetButton, "LEFT", -3, 0)
-			AuctionDressUpFrameResetButton:Point("BOTTOM", 42, 33)
+			AuctionDressUpFrameResetButton:Point("BOTTOM", AuctionDressUpModel, "BOTTOM", 41, 7)
+			AuctionDressUpFrameResetButton.SetPoint = E.noop
 		end
 	end
 end
