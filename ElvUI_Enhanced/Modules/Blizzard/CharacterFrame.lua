@@ -552,6 +552,7 @@ do
 		local titanGripCheck = CreateFrame("Frame")
 		titanGripCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
 		titanGripCheck:RegisterEvent("SPELL_UPDATE_USABLE")
+		titanGripCheck:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 		titanGripCheck:RegisterEvent("CHARACTER_POINTS_CHANGED")
 		titanGripCheck:SetScript("OnEvent", function(self, event, ...)
 			titanGrip = select(5, GetTalentInfo(2, 27)) == 1
