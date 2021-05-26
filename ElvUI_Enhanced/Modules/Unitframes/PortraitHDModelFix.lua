@@ -37,7 +37,7 @@ local function portraitHDModelFix(self)
 		if not model then return end
 
 		if E.db.enhanced.unitframe.portraitHDModelFix.debug then
-			print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+%.m2)", "%1")))
+			E:Print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+%.m2)", "%1")))
 		end
 
 		model = lower(model)
