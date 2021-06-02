@@ -4,6 +4,7 @@ local UF = E:GetModule("UnitFrames")
 
 local _G = _G
 local ipairs = ipairs
+local type = type
 local find, format, gsub, lower, split = string.find, string.format, string.gsub, string.lower, string.split
 local tinsert, twipe = table.insert, table.wipe
 
@@ -21,11 +22,8 @@ local function checkHDModels()
 	local t = f:CreateTexture()
 
 	for _, modelPath in ipairs(hdTexturePathList) do
-		t:SetTexture(modelPath)
-		local texturePath = t:GetTexture()
-		t:SetTexture(nil)
-
-		if texturePath then
+		if t:SetTexture(modelPath) then
+			t:SetTexture(nil)
 			return true
 		end
 	end
@@ -34,7 +32,7 @@ end
 local function portraitHDModelFix(self)
 	if self:IsObjectType("Model") then
 		local model = self:GetModel()
-		if not model then return end
+		if type(model) ~= "string" then return end
 
 		if E.db.enhanced.unitframe.portraitHDModelFix.debug then
 			E:Print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+%.m2)", "%1")))
