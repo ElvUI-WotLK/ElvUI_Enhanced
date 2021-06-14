@@ -33,6 +33,7 @@ local spamFirstLines = {
 	"^Skada: (.*) für (.*):$",		-- Skada deDE
 --	"^Skada: (.*) fur (.*):$",		-- Skada deDE
 	"^Skada: (.*) pour (.*):$",		-- Skada frFR
+	"^Skada: (.*) для (.*):$",		-- Skada ruRU
 --	"^Skada: (.*) per (.*):$",		-- Skada itIT
 	"^(.*) 의 Skada 보고 (.*):$",	-- Skada koKR
 	"^Отчёт Skada: (.*), с (.*):$",	-- Skada ruRU
@@ -45,7 +46,8 @@ local spamFirstLines = {
 local spamNextLines = {
 	"^(%d+)%. (.*)$",	-- Recount, Skada
 	"^ (%d+). (.*)$",	-- Skada
---	"^(.*)   (.*)$",	-- Additional Skada
+	"^(%d+). (.*)$", -- Recount, Details! and Skada
+	"^(.*)  (.*)$", -- Additional Skada
 	"^.*%%%)$",			-- Skada player details
 	"^(%d+). (.*):(.*)(%d+)(.*)(%d+)%%(.*)%((%d+)%)$", -- TinyDPS
 }
