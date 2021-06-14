@@ -46,8 +46,7 @@ local spamFirstLines = {
 local spamNextLines = {
 	"^(%d+)%. (.*)$",	-- Recount, Skada
 	"^ (%d+). (.*)$",	-- Skada
-	"^(%d+). (.*)$", -- Recount, Details! and Skada
-	"^(.*)  (.*)$", -- Additional Skada
+--	"^(.*)   (.*)$",	-- Additional Skada
 	"^.*%%%)$",			-- Skada player details
 	"^(%d+). (.*):(.*)(%d+)(.*)(%d+)%%(.*)%((%d+)%)$", -- TinyDPS
 }
