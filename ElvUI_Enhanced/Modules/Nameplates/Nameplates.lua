@@ -21,6 +21,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
+local ICON_LIST = ICON_LIST
+local ICON_TAG_LIST = ICON_TAG_LIST
 local UNKNOWN = UNKNOWN
 
 local classMap = {}
@@ -357,6 +359,13 @@ local function AcquireBubble()
 	return CreateBubble()
 end
 
+local function replaceIconTags(value)
+	value = lower(value)
+	if ICON_TAG_LIST[value] and ICON_LIST[ICON_TAG_LIST[value]] then
+		return format("%s0|t", ICON_LIST[ICON_TAG_LIST[value]])
+	end
+end
+
 function ENP:AddBubbleMessage(frame, msg, author, guid)
 	if E.private.general.chatBubbleName then
 		M:AddChatBubbleName(frame, guid, author)
@@ -370,8 +379,10 @@ function ENP:AddBubbleMessage(frame, msg, author, guid)
 		frame.text:SetWidth(300)
 	end
 
+	local rebuiltString
+
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
-		local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord, wordMatch, classMatch
+		local classColorTable, lowerCaseWord, isFirstWord, tempWord, wordMatch, classMatch
 		if msg and match(msg, "%s-%S+%s*") then
 			for word in gmatch(msg, "%s-%S+%s*") do
 				tempWord = gsub(word, "^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
@@ -392,11 +403,15 @@ function ENP:AddBubbleMessage(frame, msg, author, guid)
 					rebuiltString = format("%s%s", rebuiltString, word)
 				end
 			end
-
-			if rebuiltString ~= nil then
-				frame.text:SetText(rebuiltString)
-			end
 		end
+	end
+
+	if msg then
+		rebuiltString = gsub(rebuiltString or msg, "{([^}]+)}", replaceIconTags)
+	end
+
+	if rebuiltString then
+		frame.text:SetText(rebuiltString)
 	end
 end
 
