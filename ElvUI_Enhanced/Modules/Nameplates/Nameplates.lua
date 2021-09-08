@@ -410,7 +410,7 @@ function ENP:AddBubbleMessage(frame, msg, author, guid)
 		rebuiltString = gsub(rebuiltString or msg, "{([^}]+)}", replaceIconTags)
 	end
 
-	if rebuiltString ~= nil then
+	if rebuiltString then
 		frame.text:SetText(rebuiltString)
 	end
 end
