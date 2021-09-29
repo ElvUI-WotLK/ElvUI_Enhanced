@@ -760,7 +760,7 @@ end
 ]]
 
 local function GetAverageItemLevel()
-	local items = 16
+	local items = 0
 	local ilvl = 0
 	local colorCount, sumR, sumG, sumB = 0, 0, 0, 0
 
@@ -771,17 +771,15 @@ local function GetAverageItemLevel()
 			if itemLink then
 				local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
-				if itemLevel then
+				if itemLevel and itemLevel > 0 then
 					ilvl = ilvl + itemLevel
+					items = items + 1
 
 					colorCount = colorCount + 1
 					sumR = sumR + qualityColors[quality][1]
 					sumG = sumG + qualityColors[quality][2]
 					sumB = sumB + qualityColors[quality][3]
 
-					if slotID == INVSLOT_MAINHAND and (itemEquipLoc ~= "INVTYPE_2HWEAPON" or titanGrip) then
-						items = 17
-					end
 				end
 			end
 		end
