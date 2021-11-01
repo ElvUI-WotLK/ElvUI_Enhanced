@@ -80,7 +80,13 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
 		if not description then return end
 
-		if match(description, UNIT_LEVEL_TEMPLATE) then return end
+		if match(description, UNIT_LEVEL_TEMPLATE) then 
+			if EnhancedDB.UnitTitle[name] then
+				EnhancedDB.UnitTitle[name] = nil
+				UpdateNameplateByName(name)
+			end
+			return
+		end
 
 		name = gsub(gsub((name), "|c........", "" ), "|r", "")
 		if name ~= UnitName("mouseover") then return end
